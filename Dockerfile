@@ -20,20 +20,19 @@ RUN npm install -f
 RUN npm cache clean --force
 
 RUN npm run build 
-
-# RUN node-sass BUILD/assets/layout/css/layout-blue.scss BUILD/assets/layout/css/layout-blue.css
-# RUN node-sass BUILD/assets/theme/theme-blue.scss BUILD/assets/theme/theme-blue.css
-RUN ls -a
+RUN npm install -g serve
+EXPOSE 80
 # RUN ls
 
 RUN ls -a dist
-# Stage 2: Serve app with nginx server
+CMD ["serve", "-s", "dist/template/browser", "-l", "80"]
+# # Stage 2: Serve app with nginx server
 
-# Use official nginx image as the base image
-FROM nginx:latest
+# # Use official nginx image as the base image
+# FROM nginx:latest
 
-# Copy the build output to replace the default nginx contents.
-COPY --from=build /usr/local/app/dist/template/browser /usr/share/nginx/html
+# # Copy the build output to replace the default nginx contents.
+# COPY --from=build /usr/local/app/dist/template/browser /usr/share/nginx/html
 
-# Expose port 80
-EXPOSE 80
+# # Expose port 80
+# EXPOSE 80
