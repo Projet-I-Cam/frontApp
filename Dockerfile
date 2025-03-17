@@ -1,7 +1,7 @@
 # Stage 1: Compile and Build angular codebase
 
 # Use official node image as the base image
-FROM node:latest as build
+FROM node:18.20.4 as build
 LABEL Ismael Foletia alias XmaelXD <xmael@keepsec.ca>
 
 # Set the working directory
