@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HomePageComponent } from './site/components/home-page/home-page.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'home',
     pathMatch: 'full',
   },
+  { path: '', loadChildren: () => import('./site/site.module').then(m => m.SiteModule) },
   {
     path: '',
     loadChildren: () =>
@@ -14,11 +16,11 @@ const routes: Routes = [
         (m) => m.FeatureModuleModule
       ),
   },
- 
+
   { path: '', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
- 
+
   { path: 'error-pages', loadChildren: () => import('./error-pages/error-pages.module').then(m => m.ErrorPagesModule) },
- 
+
 ];
 
 @NgModule({

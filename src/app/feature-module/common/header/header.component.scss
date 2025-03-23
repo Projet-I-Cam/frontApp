@@ -1,0 +1,30 @@
+.logo {
+  height: 3rem;
+  width: 6rem;
+  padding-top: 10px;
+  display: block;
+}
+
+
+
+.logo-small {
+  height: 30px;
+  display: none;
+}
+
+body.dark-mode .logo {
+  display: none;
+}
+
+body.dark-mode .logo-dark {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .logo {
+      display: none;
+  }
+  .logo-small {
+      display: block;
+  }
+}

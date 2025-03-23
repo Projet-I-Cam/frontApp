@@ -27,7 +27,7 @@ import { LockScreenComponent } from './lock-screen/lock-screen.component';
 const routes: Routes = [{ path: '', component: AuthComponent,children:[
   {
     path: 'login',
-    component: LoginComponent
+    component: Login3Component
   },
   {
     path: 'login-2',
@@ -35,7 +35,7 @@ const routes: Routes = [{ path: '', component: AuthComponent,children:[
   },
   {
     path: 'login-3',
-    component: Login3Component
+    component: LoginComponent
   },
   {
     path: 'register',
