@@ -4,6 +4,7 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { SiteRoutingModule } from './site-routing.module';
 import { LayoutComponent } from './components/layout/layout.component';
 import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 
 
@@ -11,7 +12,8 @@ import { HeaderComponent } from './components/header/header.component';
   declarations: [
     HomePageComponent,
     LayoutComponent,
-    HeaderComponent
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     CommonModule,
@@ -19,7 +21,8 @@ import { HeaderComponent } from './components/header/header.component';
   ],
   exports: [
     LayoutComponent,
-    HeaderComponent
+    HeaderComponent,
+    FooterComponent
   ]
 })
 export class SiteModule { }
