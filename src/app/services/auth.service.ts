@@ -17,4 +17,18 @@ export class AuthService {
     return await Parse.User.logOut();
   }
 
+   async registerUser(username: string, password: string, email: string): Promise<any> {
+    const user = new Parse.User();
+    user.set('username', username);
+    user.set('password', password);
+    user.set('email', email);
+    try {
+      const newUser = await user.signUp();
+      return newUser;
+    } catch (error) {
+      console.error("Error while registering user", error);
+      throw error;
+    }
+  }
+
 }
