@@ -8,17 +8,17 @@
           class="d-md-flex d-block align-items-center justify-content-between mb-3"
         >
           <div class="my-auto mb-2">
-            <h3 class="page-title mb-1">Student Details</h3>
+            <h3 class="page-title mb-1">Détails de l'Élève</h3>
             <nav>
               <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item">
-                  <a [routerLink]="routes.adminDashboard">Dashboard</a>
+                  <a [routerLink]="routes.adminDashboard">Tableau de bord</a>
                 </li>
                 <li class="breadcrumb-item">
-                  <a [routerLink]="routes.studentsList">Student</a>
+                  <a [routerLink]="routes.studentsList">Élèves</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                  Student Details
+                  Détails de l'Élève
                 </li>
               </ol>
             </nav>
@@ -31,12 +31,12 @@
               class="btn btn-light me-2 mb-2"
               data-bs-toggle="modal"
               data-bs-target="#login_detail"
-              ><i class="ti ti-lock me-2"></i>Login Details</a
+              ><i class="ti ti-lock me-2"></i>Détails de connexion</a
             >
             <a
               [routerLink]="routes.editStudent"
               class="btn btn-primary d-flex align-items-center mb-2"
-              ><i class="ti ti-edit-circle me-2"></i>Edit Student</a
+              ><i class="ti ti-edit-circle me-2"></i>Modifier l'Élève</a
             >
           </div>
         </div>
@@ -63,7 +63,7 @@
               <div class="overflow-hidden">
                 <span
                   class="badge badge-soft-success d-inline-flex align-items-center mb-1"
-                  ><i class="ti ti-circle-filled fs-5 me-1"></i>Active</span
+                  ><i class="ti ti-circle-filled fs-5 me-1"></i>Actif</span
                 >
                 <h5 class="mb-1 text-truncate">Janet Daniel</h5>
                 <p class="text-primary">AD1256589</p>
@@ -73,30 +73,30 @@
 
           <!-- Basic Information -->
           <div class="card-body">
-            <h5 class="mb-3">Basic Information</h5>
+            <h5 class="mb-3">Informations de base</h5>
             <dl class="row mb-0">
-              <dt class="col-6 fw-medium text-dark mb-3">Roll No</dt>
+              <dt class="col-6 fw-medium text-dark mb-3">N° de matricule</dt>
               <dd class="col-6 mb-3">35013</dd>
-              <dt class="col-6 fw-medium text-dark mb-3">Gender</dt>
-              <dd class="col-6 mb-3">Female</dd>
-              <dt class="col-6 fw-medium text-dark mb-3">Date Of Birth</dt>
+              <dt class="col-6 fw-medium text-dark mb-3">Genre</dt>
+              <dd class="col-6 mb-3">Féminin</dd>
+              <dt class="col-6 fw-medium text-dark mb-3">Date de naissance</dt>
               <dd class="col-6 mb-3">25 Jan 2008</dd>
-              <dt class="col-6 fw-medium text-dark mb-3">Blood Group</dt>
-              <dd class="col-6 mb-3">O +ve</dd>
-              <dt class="col-6 fw-medium text-dark mb-3">Blood Group</dt>
-              <dd class="col-6 mb-3">Red</dd>
-              <dt class="col-6 fw-medium text-dark mb-3">Reigion</dt>
-              <dd class="col-6 mb-3">Christianity</dd>
+              <dt class="col-6 fw-medium text-dark mb-3">Groupe sanguin</dt>
+              <dd class="col-6 mb-3">O +</dd>
+              <dt class="col-6 fw-medium text-dark mb-3">Couleur préférée</dt>
+              <dd class="col-6 mb-3">Rouge</dd>
+              <dt class="col-6 fw-medium text-dark mb-3">Religion</dt>
+              <dd class="col-6 mb-3">Christianisme</dd>
               <dt class="col-6 fw-medium text-dark mb-3">Caste</dt>
-              <dd class="col-6 mb-3">Catholic</dd>
-              <dt class="col-6 fw-medium text-dark mb-3">Category</dt>
+              <dd class="col-6 mb-3">Catholique</dd>
+              <dt class="col-6 fw-medium text-dark mb-3">Catégorie</dt>
               <dd class="col-6 mb-3">OBC</dd>
-              <dt class="col-6 fw-medium text-dark mb-3">Mother tongue</dt>
-              <dd class="col-6 mb-3">English</dd>
-              <dt class="col-6 fw-medium text-dark mb-3">Language</dt>
+              <dt class="col-6 fw-medium text-dark mb-3">Langue maternelle</dt>
+              <dd class="col-6 mb-3">Anglais</dd>
+              <dt class="col-6 fw-medium text-dark mb-3">Langues</dt>
               <dd class="col-6 mb-3">
-                <span class="badge badge-light text-dark me-2">English</span
-                ><span class="badge badge-light text-dark">Spanish</span>
+                <span class="badge badge-light text-dark me-2">Anglais</span
+                ><span class="badge badge-light text-dark">Espagnol</span>
               </dd>
             </dl>
             <a
@@ -104,7 +104,7 @@
               data-bs-toggle="modal"
               data-bs-target="#add_fees_collect"
               class="btn btn-primary btn-sm w-100"
-              >Add Fees</a
+              >Ajouter des frais</a
             >
           </div>
           <!-- /Basic Information -->
@@ -113,14 +113,14 @@
         <!-- Primary Contact Info -->
         <div class="card border-white">
           <div class="card-body">
-            <h5 class="mb-3">Primary Contact Info</h5>
+            <h5 class="mb-3">Informations de contact</h5>
             <div class="d-flex align-items-center mb-3">
               <span
                 class="avatar avatar-md bg-light-300 rounded me-2 flex-shrink-0 text-default"
                 ><i class="ti ti-phone"></i
               ></span>
               <div>
-                <span class="text-dark fw-medium mb-1">Phone Number</span>
+                <span class="text-dark fw-medium mb-1">Numéro de téléphone</span>
                 <p>+1 46548 84498</p>
               </div>
             </div>
@@ -130,7 +130,7 @@
                 ><i class="ti ti-mail"></i
               ></span>
               <div>
-                <span class="text-dark fw-medium mb-1">Email Address</span>
+                <span class="text-dark fw-medium mb-1">Adresse email</span>
                 <p>jan&#64;example.com</p>
               </div>
             </div>
@@ -141,7 +141,7 @@
         <!-- Sibiling Information -->
         <div class="card border-white">
           <div class="card-body">
-            <h5 class="mb-3">Sibiling Information</h5>
+            <h5 class="mb-3">Informations sur les frères et sœurs</h5>
             <div
               class="d-flex align-items-center bg-light-300 rounded p-3 mb-3"
             >
@@ -180,12 +180,12 @@
             <ul class="nav nav-tabs nav-tabs-bottom mb-3">
               <li class="nav-item">
                 <a class="nav-link active" href="#hostel" data-bs-toggle="tab"
-                  >Hostel</a
+                  >Internat</a
                 >
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#transport" data-bs-toggle="tab"
-                  >Transportation</a
+                  >Transport</a
                 >
               </li>
             </ul>
@@ -197,8 +197,18 @@
                     ><i class="ti ti-building-fortress fs-16"></i
                   ></span>
                   <div>
-                    <h6 class="fs-14 mb-1">HI-Hostel, Floor</h6>
-                    <p class="text-primary">Room No : 25</p>
+                    <h6 class="fs-14 mb-1">HI-Internat, Étage</h6>
+                    <p>3ème étage, 303</p>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center">
+                  <span
+                    class="avatar avatar-md bg-light-300 rounded me-2 flex-shrink-0 text-default"
+                    ><i class="ti ti-bed fs-16"></i
+                  ></span>
+                  <div>
+                    <h6 class="fs-14 mb-1">Type de chambre</h6>
+                    <p>Dortoir mixte standard</p>
                   </div>
                 </div>
               </div>
@@ -206,25 +216,21 @@
                 <div class="d-flex align-items-center mb-3">
                   <span
                     class="avatar avatar-md bg-light-300 rounded me-2 flex-shrink-0 text-default"
-                    ><i class="ti ti-bus fs-16"></i
+                    ><i class="ti ti-car fs-16"></i
                   ></span>
                   <div>
-                    <span class="fs-12 mb-1">Route</span>
-                    <p class="text-dark">Newyork</p>
+                    <h6 class="fs-14 mb-1">Véhicule</h6>
+                    <p>KL-54896-52</p>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-sm-6">
-                    <div class="mb-3">
-                      <span class="fs-12 mb-1">Bus Number</span>
-                      <p class="text-dark">AM 54548</p>
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="mb-3">
-                      <span class="fs-12 mb-1">Pickup Point</span>
-                      <p class="text-dark">Cincinatti</p>
-                    </div>
+                <div class="d-flex align-items-center">
+                  <span
+                    class="avatar avatar-md bg-light-300 rounded me-2 flex-shrink-0 text-default"
+                    ><i class="ti ti-map-pin fs-16"></i
+                  ></span>
+                  <div>
+                    <h6 class="fs-14 mb-1">Point de départ</h6>
+                    <p>Quartier Liberté</p>
                   </div>
                 </div>
               </div>
@@ -243,32 +249,32 @@
             <ul class="nav nav-tabs nav-tabs-bottom mb-4">
               <li>
                 <a [routerLink]="routes.studentDetails" class="nav-link active"
-                  ><i class="ti ti-school me-2"></i>Student Details</a
+                  ><i class="ti ti-school me-2"></i>Détails de l'Élève</a
                 >
               </li>
               <li>
                 <a [routerLink]="routes.studentTimeTable" class="nav-link"
-                  ><i class="ti ti-table-options me-2"></i>Time Table</a
+                  ><i class="ti ti-table-options me-2"></i>Emploi du temps</a
                 >
               </li>
               <li>
                 <a [routerLink]="routes.studentLeaves" class="nav-link"
-                  ><i class="ti ti-calendar-due me-2"></i>Leave & Attendance</a
+                  ><i class="ti ti-calendar-due me-2"></i>Congés & Présences</a
                 >
               </li>
               <li>
                 <a [routerLink]="routes.studentFees" class="nav-link"
-                  ><i class="ti ti-report-money me-2"></i>Fees</a
+                  ><i class="ti ti-report-money me-2"></i>Frais</a
                 >
               </li>
               <li>
                 <a [routerLink]="routes.examResults" class="nav-link"
-                  ><i class="ti ti-bookmark-edit me-2"></i>Exam & Results</a
+                  ><i class="ti ti-bookmark-edit me-2"></i>Examens & Résultats</a
                 >
               </li>
               <li>
                 <a [routerLink]="routes.studentLibrary" class="nav-link"
-                  ><i class="ti ti-books me-2"></i>Library</a
+                  ><i class="ti ti-books me-2"></i>Bibliothèque</a
                 >
               </li>
             </ul>
@@ -277,7 +283,7 @@
             <!-- Parents Information -->
             <div class="card">
               <div class="card-header">
-                <h5>Parents Information</h5>
+                <h5>Informations sur les parents</h5>
               </div>
               <div class="card-body">
                 <div class="border rounded p-3 pb-0 mb-3">
@@ -293,13 +299,13 @@
                         </span>
                         <div class="ms-2 overflow-hidden">
                           <h6 class="text-truncate">Jerald Vicinius</h6>
-                          <p class="text-primary">Father</p>
+                          <p class="text-primary">Père</p>
                         </div>
                       </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
                       <div class="mb-3">
-                        <p class="text-dark fw-medium mb-1">Phone</p>
+                        <p class="text-dark fw-medium mb-1">Téléphone</p>
                         <p>+1 45545 46464</p>
                       </div>
                     </div>
@@ -316,7 +322,7 @@
                           data-bs-toggle="tooltip"
                           data-bs-placement="top"
                           aria-label="Print"
-                          data-bs-original-title="Reset Password"
+                          data-bs-original-title="Réinitialiser le mot de passe"
                           class="btn btn-dark btn-icon btn-sm mb-3"
                           ><i class="ti ti-lock-x"></i
                         ></a>
@@ -337,13 +343,13 @@
                         </span>
                         <div class="ms-2 overflow-hidden">
                           <h6 class="text-truncate">Roberta Webber</h6>
-                          <p class="text-primary">Mother</p>
+                          <p class="text-primary">Mère</p>
                         </div>
                       </div>
                     </div>
                     <div class="col-lg-4 col-sm-6">
                       <div class="mb-3">
-                        <p class="text-dark fw-medium mb-1">Phone</p>
+                        <p class="text-dark fw-medium mb-1">Téléphone</p>
                         <p>+1 46499 24357</p>
                       </div>
                     </div>
@@ -360,7 +366,7 @@
                           data-bs-toggle="tooltip"
                           data-bs-placement="top"
                           aria-label="Print"
-                          data-bs-original-title="Reset Password"
+                          data-bs-original-title="Réinitialiser le mot de passe"
                           class="btn btn-dark btn-icon btn-sm mb-3"
                           ><i class="ti ti-lock-x"></i
                         ></a>
@@ -381,13 +387,13 @@
                         </span>
                         <div class="ms-2 overflow-hidden">
                           <h6 class="text-truncate">Jerald Vicinius</h6>
-                          <p class="text-primary">Gaurdian (Father)</p>
+                          <p class="text-primary">Tuteur (Père)</p>
                         </div>
                       </div>
                     </div>
                     <div class="col-lg-4 col-sm-6">
                       <div class="mb-3">
-                        <p class="text-dark fw-medium mb-1">Phone</p>
+                        <p class="text-dark fw-medium mb-1">Téléphone</p>
                         <p>+1 45545 46464</p>
                       </div>
                     </div>
@@ -404,7 +410,7 @@
                           data-bs-toggle="tooltip"
                           data-bs-placement="top"
                           aria-label="Print"
-                          data-bs-original-title="Reset Password"
+                          data-bs-original-title="Réinitialiser le mot de passe"
                           class="btn btn-dark btn-icon btn-sm mb-3"
                           ><i class="ti ti-lock-x"></i
                         ></a>
@@ -434,7 +440,7 @@
                     ></span>
                     <div class="ms-2">
                       <p class="text-truncate fw-medium text-dark">
-                        BirthCertificate.pdf
+                        CertificatNaissance.pdf
                       </p>
                     </div>
                   </div>
@@ -452,7 +458,7 @@
                     ></span>
                     <div class="ms-2">
                       <p class="text-truncate fw-medium text-dark">
-                        Transfer Certificate.pdf
+                        CertificatTransfert.pdf
                       </p>
                     </div>
                   </div>
@@ -469,7 +475,7 @@
           <div class="col-xxl-6 d-flex">
             <div class="card flex-fill">
               <div class="card-header">
-                <h5>Address</h5>
+                <h5>Adresse</h5>
               </div>
               <div class="card-body">
                 <div class="d-flex align-items-center mb-3">
@@ -478,7 +484,7 @@
                     ><i class="ti ti-map-pin-up"></i
                   ></span>
                   <div>
-                    <p class="text-dark fw-medium mb-1">Current Address</p>
+                    <p class="text-dark fw-medium mb-1">Adresse actuelle</p>
                     <p>3495 Red Hawk Road, Buffalo Lake, MN 55314</p>
                   </div>
                 </div>
@@ -488,7 +494,7 @@
                     ><i class="ti ti-map-pins"></i
                   ></span>
                   <div>
-                    <p class="text-dark fw-medium mb-1">Permanent Address</p>
+                    <p class="text-dark fw-medium mb-1">Adresse permanente</p>
                     <p>3495 Red Hawk Road, Buffalo Lake, MN 55314</p>
                   </div>
                 </div>
@@ -501,21 +507,21 @@
           <div class="col-xxl-12">
             <div class="card">
               <div class="card-header">
-                <h5>Previous School Details</h5>
+                <h5>Détails de l'école précédente</h5>
               </div>
               <div class="card-body pb-1">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="mb-3">
                       <p class="text-dark fw-medium mb-1">
-                        Previous School Name
+                        Nom de l'école précédente
                       </p>
                       <p>Oxford Matriculation, USA</p>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <p class="text-dark fw-medium mb-1">School Address</p>
+                      <p class="text-dark fw-medium mb-1">Adresse de l'école</p>
                       <p>1852 Barnes Avenue, Cincinnati, OH 45202</p>
                     </div>
                   </div>
@@ -529,25 +535,25 @@
           <div class="col-xxl-6 d-flex">
             <div class="card flex-fill">
               <div class="card-header">
-                <h5>Bank Details</h5>
+                <h5>Coordonnées bancaires</h5>
               </div>
               <div class="card-body pb-1">
                 <div class="row">
                   <div class="col-md-4">
                     <div class="mb-3">
-                      <p class="text-dark fw-medium mb-1">Bank Name</p>
+                      <p class="text-dark fw-medium mb-1">Nom de la banque</p>
                       <p>Bank of America</p>
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="mb-3">
-                      <p class="text-dark fw-medium mb-1">Branch</p>
+                      <p class="text-dark fw-medium mb-1">Agence</p>
                       <p>Cincinnati</p>
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="mb-3">
-                      <p class="text-dark fw-medium mb-1">IFSC</p>
+                      <p class="text-dark fw-medium mb-1">Code IFSC</p>
                       <p>BOA83209832</p>
                     </div>
                   </div>
@@ -561,19 +567,19 @@
           <div class="col-xxl-6 d-flex">
             <div class="card flex-fill">
               <div class="card-header">
-                <h5>Medical History</h5>
+                <h5>Antécédents médicaux</h5>
               </div>
               <div class="card-body pb-1">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <p class="text-dark fw-medium mb-1">Known Allergies</p>
-                      <span class="badge bg-light text-dark">Rashes</span>
+                      <p class="text-dark fw-medium mb-1">Allergies connues</p>
+                      <span class="badge bg-light text-dark">Éruptions cutanées</span>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <p class="text-dark fw-medium mb-1">Medications</p>
+                      <p class="text-dark fw-medium mb-1">Médicaments</p>
                       <p>-</p>
                     </div>
                   </div>
@@ -587,15 +593,15 @@
           <div class="col-xxl-12">
             <div class="card">
               <div class="card-header">
-                <h5>Other Info</h5>
+                <h5>Autres informations</h5>
               </div>
               <div class="card-body">
                 <p>
-                  Depending on the specific needs of your organization or
-                  system, additional information may be collected or tracked.
-                  It's important to ensure that any data collected complies with
-                  privacy regulations and policies to protect students'
-                  sensitive information.
+                  En fonction des besoins spécifiques de votre organisation ou
+                  système, des informations supplémentaires peuvent être collectées ou suivies.
+                  Il est important de s'assurer que toutes les données collectées sont conformes
+                  aux réglementations et politiques de confidentialité pour protéger les informations
+                  sensibles des Élèves.
                 </p>
               </div>
             </div>
@@ -613,7 +619,7 @@
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Login Details</h4>
+        <h4 class="modal-title">Détails de connexion</h4>
         <button
           type="button"
           class="btn-close custom-btn-close"
@@ -636,9 +642,9 @@
           <table class="table datanew">
             <thead class="thead-light">
               <tr>
-                <th>User Type</th>
-                <th>User Name</th>
-                <th>Password</th>
+                <th>Type d'utilisateur</th>
+                <th>Nom d'utilisateur</th>
+                <th>Mot de passe</th>
               </tr>
             </thead>
             <tbody>
@@ -648,7 +654,7 @@
                 <td>parent&#64;53</td>
               </tr>
               <tr>
-                <td>Student</td>
+                <td>Élève</td>
                 <td>student20</td>
                 <td>stdt&#64;53</td>
               </tr>
@@ -658,7 +664,7 @@
       </div>
       <div class="modal-footer">
         <a href="javascript:void(0);" class="btn btn-light me-2" data-bs-dismiss="modal"
-          >Cancel</a
+          >Annuler</a
         >
       </div>
     </div>
@@ -671,7 +677,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <div class="d-flex align-items-center">
-          <h4 class="modal-title">Collect Fees</h4>
+          <h4 class="modal-title">Percevoir frais</h4>
           <span class="badge badge-sm bg-primary ms-2">AD124556</span>
         </div>
         <button
@@ -704,20 +710,20 @@
               </div>
               <div class="col-lg-3 col-md-6">
                 <div class="mb-3">
-                  <span class="fs-12 mb-1">Total Outstanding</span>
+                  <span class="fs-12 mb-1">Total impayé</span>
                   <p class="text-dark">2000</p>
                 </div>
               </div>
               <div class="col-lg-3 col-md-6">
                 <div class="mb-3">
-                  <span class="fs-12 mb-1">Last Date</span>
-                  <p class="text-dark">25 May 2024</p>
+                  <span class="fs-12 mb-1">Date limite</span>
+                  <p class="text-dark">25 Mai 2024</p>
                 </div>
               </div>
               <div class="col-lg-3 col-md-6">
                 <div class="mb-3">
                   <span class="badge badge-soft-danger"
-                    ><i class="ti ti-circle-filled me-2"></i>Unpaid</span
+                    ><i class="ti ti-circle-filled me-2"></i>Non payé</span
                   >
                 </div>
               </div>
@@ -726,61 +732,61 @@
           <div class="row">
             <div class="col-lg-6">
               <div class="mb-3">
-                <label class="form-label">Fees Group</label>
+                <label class="form-label">Groupe de frais</label>
 
                 <p-dropdown
                   [options]="[
-                    { label: 'Select', value: '' },
-                    { label: 'Class 1 General', value: 'Class 1 General' },
-                    { label: 'Monthly Fees', value: 'Monthly Fees' },
-                    { label: 'Admission-Fees', value: 'Admission-Fees' },
+                    { label: 'Sélectionner', value: '' },
+                    { label: 'Classe 1 Général', value: 'Class 1 General' },
+                    { label: 'Frais mensuels', value: 'Monthly Fees' },
+                    { label: 'Frais d\'admission', value: 'Admission-Fees' },
                     {
-                      label: 'Class 1- I Installment',
+                      label: 'Classe 1- Versement I',
                       value: 'Class 1- I Installment'
                     }
                   ]"
-                  placeholder="Select"
+                  placeholder="Sélectionner"
                   class="select"
                 ></p-dropdown>
               </div>
             </div>
             <div class="col-lg-6">
               <div class="mb-3">
-                <label class="form-label">Fees Type</label>
+                <label class="form-label">Type de frais</label>
 
                 <p-dropdown
                   [options]="[
-                    { label: 'Select', value: '' },
-                    { label: 'Tuition Fees', value: 'Tuition Fees' },
-                    { label: 'Monthly Fees', value: 'Monthly Fees' },
-                    { label: 'Admission-Fees', value: 'Admission-Fees' },
-                    { label: 'Bus Fees', value: 'Bus Fees' }
+                    { label: 'Sélectionner', value: '' },
+                    { label: 'Frais de scolarité', value: 'Tuition Fees' },
+                    { label: 'Frais mensuels', value: 'Monthly Fees' },
+                    { label: 'Frais d\'admission', value: 'Admission-Fees' },
+                    { label: 'Frais de transport', value: 'Bus Fees' }
                   ]"
-                  placeholder="Select"
+                  placeholder="Sélectionner"
                   class="select"
                 ></p-dropdown>
               </div>
             </div>
             <div class="col-lg-6">
               <div class="mb-3">
-                <label class="form-label">Amount</label>
+                <label class="form-label">Montant</label>
                 <input
                   type="text"
                   class="form-control"
-                  placeholder="Enter Amout"
+                  placeholder="Saisir montant"
                 />
               </div>
             </div>
             <div class="col-lg-6">
               <div class="mb-3">
-                <label class="form-label">Collection Date</label>
+                <label class="form-label">Date de perception</label>
                 <div class="date-pic">
                   <input
                     type="text"
                     class="form-control datetimepicker"
                     bsDatepicker
                     container=".date-pic"
-                    placeholder="Select"
+                    placeholder="Sélectionner"
                   />
                   <span class="cal-icon"><i class="ti ti-calendar"></i></span>
                 </div>
@@ -788,26 +794,26 @@
             </div>
             <div class="col-lg-6">
               <div class="mb-3">
-                <label class="form-label">Payment Type</label>
+                <label class="form-label">Type de paiement</label>
 
                 <p-dropdown
                   [options]="[
-                    { label: 'Select', value: '' },
+                    { label: 'Sélectionner', value: '' },
                     { label: 'Paytm', value: 'Paytm' },
-                    { label: 'Cash On Delivery', value: 'Cash On Delivery' }
+                    { label: 'Paiement à la livraison', value: 'Cash On Delivery' }
                   ]"
-                  placeholder="Select"
+                  placeholder="Sélectionner"
                   class="select"
                 ></p-dropdown>
               </div>
             </div>
             <div class="col-lg-6">
               <div class="mb-3">
-                <label class="form-label">Payment Reference No</label>
+                <label class="form-label">N° de référence du paiement</label>
                 <input
                   type="text"
                   class="form-control"
-                  placeholder="Enter Payment Reference No"
+                  placeholder="Saisir le n° de référence"
                 />
               </div>
             </div>
@@ -816,8 +822,8 @@
                 class="modal-satus-toggle d-flex align-items-center justify-content-between mb-3"
               >
                 <div class="status-title">
-                  <h5>Status</h5>
-                  <p>Change the Status by toggle</p>
+                  <h5>Statut</h5>
+                  <p>Changer le statut avec le commutateur</p>
                 </div>
                 <div class="status-toggle modal-status">
                   <input type="checkbox" id="user1" class="check" />
@@ -831,7 +837,7 @@
                 <textarea
                   rows="4"
                   class="form-control"
-                  placeholder="Add Notes"
+                  placeholder="Ajouter des notes"
                 ></textarea>
               </div>
             </div>
@@ -842,10 +848,10 @@
             href="javascript:void(0);"
             class="btn btn-light me-2"
             data-bs-dismiss="modal"
-            >Cancel</a
+            >Annuler</a
           >
           <button type="button" data-bs-dismiss="modal" class="btn btn-primary">
-            Pay Fees
+            Payer les frais
           </button>
         </div>
       </form>
@@ -853,3 +859,5 @@
   </div>
 </div>
 <!-- Add Fees Collect -->
+
+

@@ -291,6 +291,15 @@ export class routes {
   public static get examList(): string {
     return this.academic + '/examinations/exam-list';
   }
+  public static get gradeEntry(): string {
+    return this.academic + '/grades/entry';
+  }
+  public static get gradeCalculation(): string {
+    return this.academic + '/grades/calculation';
+  }
+  public static get reportCard(): string {
+    return this.academic + '/grades/report-card';
+  }
 
   //user-management routes
   public static get userManagement(): string {
@@ -317,7 +326,7 @@ export class routes {
     return this.peoples + '/teachers/add-teacher';
   }
   public static get editTeacher(): string {
-    return this.peoples + '/teachers/edit-teacher';
+    return this.peoples + '/teachers/edit-teacher/:id';
   }
   public static get teacherRoutine(): string {
     return this.peoples + '/teachers/teachers-routine';
@@ -382,11 +391,22 @@ export class routes {
   public static get teacherLibrary(): string {
     return this.peoples + '/teachers/teacher-library';
   }
+  public static get teacherAssignments(): string {
+    return this.peoples + '/teachers/teacher-assignments';
+  }
   public static get studentLibrary(): string {
     return this.peoples + '/students/student-library';
   }
   public static get studentTimeTable(): string {
     return this.peoples + '/students/student-time-table';
+  }
+  
+  public static get studentTransfer(): string {
+    return this.peoples + '/students/student-transfer';
+  }
+  
+  public static get studentReportCard(): string {
+    return this.peoples + '/students/student-report-card';
   }
 
  
@@ -706,7 +726,7 @@ export class routes {
     return this.baseUrl + '/management';
   }
   public static get transportVehicle(): string {
-    return this.management + '/transport/transport-vehicle';
+    return this.management + '/transport-vehicle';
   }
   public static get transportVehicleDrivers(): string {
     return this.management + '/transport/transport-vehicle-drivers';
@@ -961,6 +981,25 @@ export class routes {
     return this.baseUrl + '/layout-dark';
   }
  
+  // Pupil Management Routes
+  public static get pupilManagement(): string {
+    return this.baseUrl + '/pupil-management';
+  }
+  public static get pupilManagementDashboard(): string {
+    return this.pupilManagement + '/dashboard';
+  }
+  public static get pupilManagementList(): string {
+    return this.pupilManagement + '/list';
+  }
+  public static get pupilManagementRegister(): string {
+    return this.pupilManagement + '/register';
+  }
+  public static get pupilManagementReportCards(): string {
+    return this.pupilManagement + '/report-cards';
+  }
+  public static get pupilManagementTransfers(): string {
+    return this.pupilManagement + '/transfers';
+  }
 
 }
 

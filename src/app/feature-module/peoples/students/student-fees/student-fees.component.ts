@@ -10,12 +10,22 @@ import {
   tablePageSize,
 } from '../../../../shared/custom-pagination/pagination.service';
 import { FeesRecord, apiResultFormat } from '../../../../shared/model/pages.model';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { CustomPaginationModule } from '../../../../shared/custom-pagination/custom-pagination.module';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { DropdownModule } from 'primeng/dropdown';
+import { SharedModule } from '../../../../shared/shared.module';
 
 @Component({
     selector: 'app-student-fees',
     templateUrl: './student-fees.component.html',
     styleUrl: './student-fees.component.scss',
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, RouterModule, FormsModule, MatSortModule, MatTableModule, CustomPaginationModule, BsDatepickerModule, DropdownModule, SharedModule]
 })
 export class StudentFeesComponent {
   public routes = routes;

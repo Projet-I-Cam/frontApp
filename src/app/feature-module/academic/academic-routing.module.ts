@@ -9,6 +9,7 @@ import { ClassTimeTableComponent } from './class-time-table/class-time-table.com
 import { ClassSyllabusComponent } from './class-syllabus/class-syllabus.component';
 import { ClassSubjectComponent } from './class-subject/class-subject.component';
 import { ClassHomeWorkComponent } from './class-home-work/class-home-work.component';
+import { ExamScheduleComponent } from './examinations/exam-schedule/exam-schedule.component';
 
 const routes: Routes = [
   {
@@ -58,6 +59,15 @@ const routes: Routes = [
           import('./examinations/examinations.module').then(
             (m) => m.ExaminationsModule
           ),
+      },
+      {
+        path: 'exam-schedule',
+        component: ExamScheduleComponent
+      },
+      {
+        path: 'grades',
+        loadChildren: () =>
+          import('./grades/grades.module').then((m) => m.GradesModule),
       },
     ],
   },

@@ -965,7 +965,7 @@ export class DataService {
       base:'peoples',
       menu: [
         {
-          menuValue: 'Students',
+          menuValue: 'Élèves',
           hasSubRoute: true,
           showSubRoute: false,
           icon: 'school',
@@ -973,30 +973,20 @@ export class DataService {
          
           subMenus: [
             {
-              menuValue: 'All Students',
-              route: routes.studentsGrid,
-              // page1: 'add-student',
-              
-            },
-            {
-              menuValue: 'Student List',
+              menuValue: 'Liste des Élèves',
               route: routes.studentList,
-            
             },
             {
-              menuValue: 'Student Details',
-              route: routes.studentDetails,
-              page1: 'student-time-table',
-              // page2: 'student-leaves',
-              // page3: 'student-fees',
-              // page4: 'student-library',
-              // page5: 'exam-results',
-
-            },
-            {
-              menuValue: 'Student Promotion',
+              menuValue: 'Promotion d\'Élèves',
               route: routes.studentPromotion,
-             
+            },
+            {
+              menuValue: 'Transfert d\'Élève',
+              route: routes.studentTransfer,
+            },
+            {
+              menuValue: 'Bulletin de notes',
+              route: routes.studentReportCard,
             },
           ],
         },
@@ -1051,40 +1041,23 @@ export class DataService {
           hasSubRoute: true,
           showSubRoute: false,
           page: 'teachers',
-          icon: 'users',
+          icon: 'fas fa-chalkboard-teacher',
           subMenus: [
             {
-              menuValue: 'All Teachers',
-              route: routes.teacherGrid,
-              hasSubRoute: false,
-              showSubRoute: false,
-              customSubmenuTwo: false,
-              
-            },
-            {
-              menuValue: 'Teacher List',
+              menuValue: 'Teachers List',
               route: routes.teachersList,
-              hasSubRoute: false,
-              showSubRoute: false,
-              customSubmenuTwo: false,
-             
+              parentMenuValue: 'Teachers',
             },
             {
-              menuValue: 'Teacher Details',
-              route: routes.teacherDetails,
-              customSubmenuTwo: false,
-              hasSubRoute: false,
-              showSubRoute: false,
-              
+              menuValue: 'Add Teacher',
+              route: routes.addTeacher,
+              parentMenuValue: 'Teachers',
             },
             {
-              menuValue: 'Routine',
-              customSubmenuTwo: false,
-              route: routes.teacherRoutine,
-              hasSubRoute: true,
-              showSubRoute: false,
-             
-            },
+              menuValue: 'Teachers Assignments',
+              route: routes.teacherAssignments,
+              parentMenuValue: 'Teachers',
+            }
           ],
         },
       ],
@@ -1239,6 +1212,27 @@ export class DataService {
           subRoutes: [],
         },
         {
+          menuValue: 'Notes',
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'file-text',
+          page: 'grades',
+          subMenus: [
+            {
+              menuValue: 'Saisie des Notes',
+              route: routes.gradeEntry,
+            },
+            {
+              menuValue: 'Calcul des Moyennes',
+              route: routes.gradeCalculation,
+            },
+            {
+              menuValue: 'Bulletins Scolaires',
+              route: routes.reportCard,
+            },
+          ],
+        },
+        {
           menuValue: 'Examinations',
           hasSubRoute: true,
           showSubRoute: false,
@@ -1285,6 +1279,31 @@ export class DataService {
           customSubmenuTwo: false,
           subRoutes: [],
         },
+        {
+          menuValue: 'exam',
+          title: 'Exam',
+          link: routes.examList,
+        },
+        {
+          menuValue: 'grades',
+          title: 'Notes et Bulletins',
+          hasSubRoute: true,
+          showSubRoute: false,
+          subRoutes: [
+            {
+              title: 'Saisie des Notes',
+              link: routes.gradeEntry,
+            },
+            {
+              title: 'Calcul des Moyennes',
+              link: routes.gradeCalculation,
+            },
+            {
+              title: 'Bulletins Scolaires',
+              link: routes.reportCard,
+            },
+          ],
+        },
       ],
     },
     {
@@ -1292,6 +1311,64 @@ export class DataService {
       showAsTab: true,
       separateRoute: false,
       menu: [
+        {
+          menuValue: 'Pupil Management',
+          page: 'pupil-management',
+          icon: 'users',
+          hasSubRoute: true,
+          showSubRoute: false,
+          base: 'pupil-management',
+          base2: "",
+          base3: "",
+          base4: "",
+          base5: "",
+          base6: "",
+          base7: "",
+          base8: "",
+          base9: "",
+          subMenus: [
+            {
+              menuValue: 'Dashboard',
+              icon: 'dashboard',
+              route: routes.pupilManagementDashboard,
+              hasSubRoute: false,
+              showSubRoute: false,
+              base: 'dashboard',
+            },
+            {
+              menuValue: 'Pupil List',
+              icon: 'list',
+              route: routes.pupilManagementList,
+              hasSubRoute: false,
+              showSubRoute: false,
+              base: 'list',
+            },
+            {
+              menuValue: 'Register Pupil',
+              icon: 'user-plus',
+              route: routes.pupilManagementRegister,
+              hasSubRoute: false,
+              showSubRoute: false,
+              base: 'register',
+            },
+            {
+              menuValue: 'Report Cards',
+              icon: 'file-text',
+              route: routes.pupilManagementReportCards,
+              hasSubRoute: false,
+              showSubRoute: false,
+              base: 'report-cards',
+            },
+            {
+              menuValue: 'Pupil Transfers',
+              icon: 'exchange',
+              route: routes.pupilManagementTransfers,
+              hasSubRoute: false,
+              showSubRoute: false,
+              base: 'transfers',
+            }
+          ],
+        },
         {
           menuValue: 'Fees Collection',
           page: 'fees-collection',
@@ -3128,4 +3205,36 @@ export class DataService {
       name: 'Freda',
     },
   ];
+
+  public getMenuItems(): Array<any> {
+    return [
+      // ... existing items ...
+      {
+        menuValue: 'Teachers',
+        route: routes.teachersList,
+        hasSubRoute: true,
+        showSubRoute: false,
+        page: 'teachers',
+        icon: 'fas fa-chalkboard-teacher',
+        subMenus: [
+          {
+            menuValue: 'Teachers List',
+            route: routes.teachersList,
+            parentMenuValue: 'Teachers',
+          },
+          {
+            menuValue: 'Add Teacher',
+            route: routes.addTeacher,
+            parentMenuValue: 'Teachers',
+          },
+          {
+            menuValue: 'Teachers Assignments',
+            route: routes.teacherAssignments,
+            parentMenuValue: 'Teachers',
+          }
+        ],
+      },
+      // ... more menu items ...
+    ];
+  }
 }

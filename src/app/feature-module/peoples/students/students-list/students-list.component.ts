@@ -6,12 +6,22 @@ import { DataService } from '../../../../shared/data/data.service';
 import { Router } from '@angular/router';
 import { PaginationService, tablePageSize } from '../../../../shared/custom-pagination/pagination.service';
 import { Sort } from '@angular/material/sort';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { CustomPaginationModule } from '../../../../shared/custom-pagination/custom-pagination.module';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { DropdownModule } from 'primeng/dropdown';
+import { SharedModule } from '../../../../shared/shared.module';
 
 @Component({
     selector: 'app-students-list',
     templateUrl: './students-list.component.html',
     styleUrl: './students-list.component.scss',
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, RouterModule, FormsModule, MatSortModule, MatTableModule, CustomPaginationModule, BsDatepickerModule, DropdownModule, SharedModule]
 })
 export class StudentsListComponent {
   initChecked = false;
@@ -58,6 +68,21 @@ export class StudentsListComponent {
         const serialNumber = index + 1;
         if (index >= pageOption.skip && serialNumber <= pageOption.limit) {
           res.sNo = serialNumber;
+          
+          // Traduire le statut si nécessaire
+          if (res.status === 'Active') {
+            res.status = 'Actif';
+          } else if (res.status === 'Inactive') {
+            res.status = 'Inactif';
+          }
+          
+          // Traduire le genre si nécessaire
+          if (res.gender === 'Male') {
+            res.gender = 'Homme';
+          } else if (res.gender === 'Female') {
+            res.gender = 'Femme';
+          }
+          
           this.tableData.push(res);
           this.tableDataCopy.push(res);
           this.serialNumberArray.push(serialNumber);

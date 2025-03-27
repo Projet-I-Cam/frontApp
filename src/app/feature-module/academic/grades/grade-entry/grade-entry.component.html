@@ -1,0 +1,231 @@
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+  <div class="content content-two">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">Saisie des Notes</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a [routerLink]="routes.adminDashboard">Tableau de bord</a>
+            </li>
+            <li class="breadcrumb-item"><a>Notes</a></li>
+            <li class="breadcrumb-item active">Saisie des Notes</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card card-table comman-shadow">
+          <div class="card-body">
+            <!-- Filters -->
+            <div class="row mb-4">
+              <div class="col-12">
+                <h5 class="form-title"><span>Critères de sélection</span></h5>
+              </div>
+              
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Classe <span class="text-danger">*</span></label>
+                  <p-dropdown 
+                    [options]="classes" 
+                    [(ngModel)]="selectedClass" 
+                    optionLabel="name" 
+                    [filter]="true" 
+                    filterBy="name" 
+                    [showClear]="true"
+                    placeholder="Sélectionner une classe"
+                    styleClass="w-100"
+                    [disabled]="hasLoaded"
+                  ></p-dropdown>
+                </div>
+              </div>
+              
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Section <span class="text-danger">*</span></label>
+                  <p-dropdown 
+                    [options]="sections" 
+                    [(ngModel)]="selectedSection" 
+                    optionLabel="name" 
+                    [filter]="true" 
+                    filterBy="name" 
+                    [showClear]="true"
+                    placeholder="Sélectionner une section"
+                    styleClass="w-100"
+                    [disabled]="hasLoaded"
+                  ></p-dropdown>
+                </div>
+              </div>
+              
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Matière <span class="text-danger">*</span></label>
+                  <p-dropdown 
+                    [options]="subjects" 
+                    [(ngModel)]="selectedSubject" 
+                    optionLabel="name" 
+                    [filter]="true" 
+                    filterBy="name" 
+                    [showClear]="true"
+                    placeholder="Sélectionner une matière"
+                    styleClass="w-100"
+                    [disabled]="hasLoaded"
+                  ></p-dropdown>
+                </div>
+              </div>
+              
+              <div class="col-12 text-end mt-3">
+                <button 
+                  *ngIf="!hasLoaded" 
+                  class="btn btn-primary" 
+                  (click)="loadStudents()" 
+                  [disabled]="!selectedClass || !selectedSection || !selectedSubject || isLoading"
+                >
+                  <i class="fas fa-search" *ngIf="!isLoading"></i>
+                  <i class="fas fa-spinner fa-spin" *ngIf="isLoading"></i>
+                  Charger les Élèves
+                </button>
+                
+                <button 
+                  *ngIf="hasLoaded" 
+                  class="btn btn-danger" 
+                  (click)="saveGrades()"
+                  [disabled]="isSubmitting"
+                >
+                  <i class="fas fa-times" *ngIf="!isSubmitting"></i>
+                  <i class="fas fa-spinner fa-spin" *ngIf="isSubmitting"></i>
+                  Annuler
+                </button>
+              </div>
+            </div>
+            <!-- /Filters -->
+
+            <!-- Grade Entry Form -->
+            <div *ngIf="hasLoaded">
+              <div class="row mb-3">
+                <div class="col">
+                  <h5>Saisie des notes : {{ selectedClass?.name }} {{ selectedSection?.name }} - {{ selectedSubject?.name }}</h5>
+                </div>
+              </div>
+              
+              <div class="table-responsive">
+                <table class="table border-0 star-student table-hover table-center mb-0 table-striped">
+                  <thead class="student-thread">
+                    <tr>
+                      <th>#</th>
+                      <th>Élève</th>
+                      <th>Numéro</th>
+                      <th>Note</th>
+                      <th>Grade</th>
+                      <th>Appréciation</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let grade of grades; let i = index">
+                      <td>{{ i + 1 }}</td>
+                      <td>
+                        <h2 class="table-avatar">
+                          <a href="javascript:void(0);" class="avatar avatar-sm me-2">
+                            <img 
+                              *ngIf="students[i].image"
+                              class="avatar-img rounded-circle" 
+                              [src]="students[i].image" 
+                              alt="Student Image"
+                            >
+                          </a>
+                          <a href="javascript:void(0);" class="student-name">{{ grade.studentName }}</a>
+                        </h2>
+                      </td>
+                      <td>{{ grade.studentRollNo }}</td>
+                      <td>
+                        <div class="form-group mb-0">
+                          <input 
+                            type="number" 
+                            class="form-control" 
+                            [(ngModel)]="grade.marks" 
+                            (ngModelChange)="onMarksChange(grade)"
+                            placeholder="0"
+                            min="0"
+                            [max]="grade.outOf"
+                          >
+                          <small class="form-text text-muted">Sur {{ grade.outOf }}</small>
+                        </div>
+                      </td>
+                      <td>
+                        <span 
+                          class="badge" 
+                          [ngClass]="{
+                            'bg-success': grade.grade === 'A+' || grade.grade === 'A',
+                            'bg-primary': grade.grade === 'B',
+                            'bg-info': grade.grade === 'C',
+                            'bg-warning': grade.grade === 'D',
+                            'bg-danger': grade.grade === 'F'
+                          }"
+                        >
+                          {{ grade.grade || '-' }}
+                        </span>
+                      </td>
+                      <td>
+                        <input 
+                          type="text" 
+                          class="form-control" 
+                          [(ngModel)]="grade.remarks" 
+                          placeholder="Appréciation (optionnel)"
+                        >
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <div class="row mt-3">
+                <div class="col-12 text-end">
+                  <button 
+                    class="btn btn-primary" 
+                    (click)="saveGrades()" 
+                    [disabled]="isSubmitting"
+                  >
+                    <i class="fas fa-save" *ngIf="!isSubmitting"></i>
+                    <i class="fas fa-spinner fa-spin" *ngIf="isSubmitting"></i>
+                    Enregistrer les notes
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- /Grade Entry Form -->
+            
+            <!-- Empty State -->
+            <div *ngIf="!hasLoaded && !isLoading" class="row justify-content-center mt-4">
+              <div class="col-md-6 text-center">
+                <div class="alert alert-info">
+                  <i class="fas fa-info-circle fa-3x mb-3"></i>
+                  <h4>Aucun Élève sélectionné</h4>
+                  <p>Veuillez sélectionner une classe, une section et une matière, puis cliquer sur "Charger les Élèves" pour commencer la saisie des notes.</p>
+                </div>
+              </div>
+            </div>
+            <!-- /Empty State -->
+            
+            <!-- Loading State -->
+            <div *ngIf="isLoading" class="row justify-content-center mt-4">
+              <div class="col-md-6 text-center">
+                <div class="alert alert-info">
+                  <i class="fas fa-spinner fa-spin fa-3x mb-3"></i>
+                  <h4>Chargement en cours...</h4>
+                  <p>Veuillez patienter pendant le chargement des données des Élèves.</p>
+                </div>
+              </div>
+            </div>
+            <!-- /Loading State -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Page Wrapper --> 
