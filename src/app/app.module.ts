@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { SiteModule } from './site/site.module';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, AppRoutingModule, SharedModule, SiteModule],
@@ -18,7 +19,8 @@ export class AppModule {
   constructor() {
 
     Parse.initialize('hC9Y8NG2uLLTUVaZsoa30CW0S', '2cQBXh9nDkQDZC7J8Mu9');
-    Parse.serverURL = 'http://5.196.68.13:1337/parse';
+    // Parse.serverURL = 'http://5.196.68.13:1337/parse';
+    Parse.serverURL = 'http://85.214.29.254:1337/parse';
 
     console.log('Parse current user => ',  Parse.User.current())
   }

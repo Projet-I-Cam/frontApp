@@ -17,6 +17,8 @@ export class AuthService {
     return await Parse.User.logOut();
   }
 
+
+
    async registerUser(fullname:string, username: string, password: string, email: string): Promise<any> {
     const user = new Parse.User();
     user.set('username', username);
