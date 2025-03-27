@@ -17,11 +17,12 @@ export class AuthService {
     return await Parse.User.logOut();
   }
 
-   async registerUser(username: string, password: string, email: string): Promise<any> {
+   async registerUser(fullname:string, username: string, password: string, email: string): Promise<any> {
     const user = new Parse.User();
     user.set('username', username);
     user.set('password', password);
     user.set('email', email);
+    user.set('fullname', fullname);
     try {
       const newUser = await user.signUp();
       return newUser;
