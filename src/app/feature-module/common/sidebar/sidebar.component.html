@@ -7,26 +7,26 @@
                 <li>
                     <a href="javascript:void(0);"
                         class="d-flex align-items-center border bg-white rounded p-2 mb-4">
-                        <img src="assets/img/icons/global-img.svg" class="avatar avatar-md img-fluid rounded"
+                        <img src="favicon.ico" class="avatar avatar-md img-fluid rounded"
                             alt="Profile">
-                        <span class="text-dark ms-2 fw-normal">Global International</span>
+                        <span class="text-dark ms-2 fw-normal">I-CAM School</span>
                     </a>
                 </li>
             </ul>
           <ul>
             @for (mainTittle of side_bar_data; track mainTittle) {
             <li class="submenu-open">
-              <h6 class="submenu-hdr"><span>{{ mainTittle.tittle }}</span></h6>
+              <!-- <h6 class="submenu-hdr"><span>{{ mainTittle.tittle }}</span></h6> -->
               <ul>
                 @for (menu of mainTittle?.menu; track menu) {
-                @if (menu?.hasSubRoute === false) {
+                <!-- @if (menu?.hasSubRoute === false) {
                 <li [class.active]="base === menu.base || page === menu.base || page === menu.base2 || page === menu.base3 || page === menu.base4 || page === menu.base5
                 || page === menu.base6 || page === menu.base7 || page === menu.base8 || page === menu.base9">
                   <a   (click)="expandSubMenus(menu)"  [routerLink]="menu?.route" ><i class="ti" [class]="'ti-' + menu.icon"></i>
                     <span>{{ menu?.menuValue }}</span>
                   </a>
                 </li>
-                }
+                } -->
                 @if (menu.hasSubRoute === true) {
                 <li class="submenu">
                   <a  href="javascript:void(0)" (click)="expandSubMenus(menu)"
@@ -127,12 +127,12 @@
               </ul>
             </li>
             }
-            <li>
+            <!-- <li>
               <ul>
                 <li><a href="https://preschool.dreamstechnologies.com/documentation/index.html"><i class="ti ti-file-text"></i><span>Documentation</span></a></li>
 								<li><a href="https://preschool.dreamstechnologies.com/documentation/changelog.html"><i class="ti ti-exchange"></i><span>Changelog</span><span class="badge badge-primary badge-xs text-white fs-10 ms-auto">v1.8.5</span></a></li>
               </ul>
-            </li>
+            </li> -->
 
           </ul>
         </div>
