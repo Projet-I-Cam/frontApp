@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { routes } from '../../../shared/routes/routes';
-import { AuthService } from '../../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { AuthService } from '../../../services/auth.service';
+import { routes } from '../../../shared/routes/routes';
 
 @Component({
     selector: 'app-login3',
@@ -49,11 +49,16 @@ export class Login3Component {
 
     const { email, password } = this.loginForm.value;
     try {
-      const user = await this.authService.login(email, password);
-      localStorage.setItem('user', JSON.stringify(user));
-      this.navigate();
-    } catch (error) {
-      this.errorMessage = 'Login failed. Please check your credentials and try again.';
+      const user: any = await this.authService.login(email, password);
+      if(user?.error){
+        throw user.error
+      }
+      console.log(' USER FINAL ', user)
+      localStorage.setItem('user', JSON.stringify(user)); 
+      return this.navigate();
+    } catch (error: any) {
+      console.error('Error Form login submited ', error?.message)
+      this.errorMessage = error?.message || 'Login failed. Please check your credentials and try again.';
     }
   }
 }
