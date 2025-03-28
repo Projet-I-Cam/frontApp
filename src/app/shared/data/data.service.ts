@@ -777,7 +777,7 @@ export class DataService {
               page: 'teacher-dashboard',
             },
             {
-              menuValue: 'Student Dashboard',
+              menuValue: 'Tableau Bord Elève',
               route: routes.studentDashboard,
               page: 'student-dashboard',
             },
