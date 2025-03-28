@@ -1193,3 +1193,123 @@ export interface file {
   folderimg: string;
   isSelected?: boolean;
 }
+export interface studentComplete {
+  isSelected: boolean;
+  id?: number;
+  studentIdNumber: string;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+  gender: string;
+  academicYear: string;
+  admissionNumber: string;
+  admissionDate: string;
+  rollNumber: string;
+  class: string;
+  section: string;
+  bloodGroup: string;
+  house: string;
+  religion: string;
+  category: string;
+  language: string;
+  nationality: string;
+  status: string;
+  address: string;
+  city: string;
+  state: string;
+  country: string;
+  zipCode: string;
+  phoneNumber: string;
+  email: string;
+  
+  previousSchool?: string;
+  previousSchoolAddress?: string;
+  transferCertificateNumber?: string;
+  transferDate?: string;
+  academicPerformance?: AcademicPerformanceRecord[];
+  
+  medicalConditions?: string;
+  allergies?: string[];
+  medications?: string[];
+  emergencyContactName?: string;
+  emergencyContactPhone?: string;
+  emergencyContactRelation?: string;
+  
+  disciplinaryRecords?: DisciplinaryRecord[];
+  
+  parentGuardianInfo?: ParentGuardianInfo[];
+  
+  img?: string;
+}
+
+export interface AcademicPerformanceRecord {
+  academicYear: string;
+  class: string;
+  section: string;
+  subjects: SubjectPerformance[];
+  totalMarks: number;
+  percentage: number;
+  grade: string;
+  rank: number;
+  remarks: string;
+}
+
+export interface SubjectPerformance {
+  subject: string;
+  marksObtained: number;
+  maxMarks: number;
+  grade: string;
+}
+
+export interface DisciplinaryRecord {
+  date: string;
+  incidentType: string;
+  description: string;
+  actionTaken: string;
+  reportedBy: string;
+}
+
+export interface ParentGuardianInfo {
+  relation: string;
+  firstName: string;
+  lastName: string;
+  occupation: string;
+  education: string;
+  email: string;
+  phoneNumber: string;
+  address: string;
+  img?: string;
+}
+
+export interface StudentTransfer {
+  studentId: string;
+  transferDate: string;
+  fromSchool: string;
+  toSchool: string;
+  reason: string;
+  transferCertificateNumber: string;
+  status: string;
+  documents: string[];
+}
+
+export interface StudentReportCard {
+  studentId: string;
+  academicYear: string;
+  class: string;
+  section: string;
+  examType: string;
+  subjects: SubjectPerformance[];
+  totalMarks: number;
+  percentage: number;
+  grade: string;
+  rank: number;
+  teacherRemarks: string;
+  principalRemarks: string;
+  attendanceRecord: {
+    totalDays: number;
+    daysPresent: number;
+    daysAbsent: number;
+    percentage: number;
+  };
+  issuedDate: string;
+}

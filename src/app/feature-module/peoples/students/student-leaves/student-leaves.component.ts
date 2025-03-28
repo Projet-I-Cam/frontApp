@@ -6,12 +6,22 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { PaginationService, tablePageSize } from '../../../../shared/custom-pagination/pagination.service';
 import { DataService } from '../../../../shared/data/data.service';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { CustomPaginationModule } from '../../../../shared/custom-pagination/custom-pagination.module';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { DropdownModule } from 'primeng/dropdown';
+import { SharedModule } from '../../../../shared/shared.module';
 
 @Component({
     selector: 'app-student-leaves',
     templateUrl: './student-leaves.component.html',
     styleUrl: './student-leaves.component.scss',
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, RouterModule, FormsModule, MatSortModule, MatTableModule, CustomPaginationModule, BsDatepickerModule, DropdownModule, SharedModule]
 })
 export class StudentLeavesComponent {
   public routes = routes;

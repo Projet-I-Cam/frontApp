@@ -193,13 +193,6 @@ const routes: Routes = [
           ).then((m) => m.FinancialSettingsModule),
       },
       {
-        path: 'financial-settings',
-        loadChildren: () =>
-          import(
-            './settings/financial-settings/financial-settings.module'
-          ).then((m) => m.FinancialSettingsModule),
-      },
-      {
         path: 'application',
         loadChildren: () =>
           import('./main/application/application.module').then(
@@ -213,7 +206,7 @@ const routes: Routes = [
             (m) => m.AcademicSettingsModule
           ),
       },
-     
+      
       { path: 'layout-mini', component: AdminDashboardComponent },
       { path: 'layout-default', component: AdminDashboardComponent },
       

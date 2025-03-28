@@ -5,24 +5,24 @@
         <!-- Page Header -->
         <div class="d-md-flex d-block align-items-center justify-content-between mb-3">
             <div class="my-auto mb-2">
-                <h3 class="page-title mb-1">Teacher List</h3>
+                <h3 class="page-title mb-1">Liste des Enseignants</h3>
                 <nav>
                     <ol class="breadcrumb mb-0">
                         <li class="breadcrumb-item">
-                            <a [routerLink] = "routes.adminDashboard">Dashboard</a>
+                            <a [routerLink]="['/dashboard/index']">Tableau de bord</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="javascript:void(0);">Peoples</a>
+                            <a [routerLink]="['/peoples']">Personnes</a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Teacher List</li>
+                        <li class="breadcrumb-item active" aria-current="page">Liste des Enseignants</li>
                     </ol>
                 </nav>
             </div>
             <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
                 <app-tooltip-content />
                 <div class="mb-2">
-                    <a [routerLink] = "routes.addTeacher" class="btn btn-primary d-flex align-items-center"><i
-                            class="ti ti-square-rounded-plus me-2"></i>Add Teacher</a>
+                    <a [routerLink]="['/peoples/teachers/add-teacher']" class="btn btn-primary d-flex align-items-center"><i
+                            class="ti ti-square-rounded-plus me-2"></i>Ajouter un Enseignant</a>
                 </div>
             </div>
         </div>
@@ -31,7 +31,7 @@
         <!-- Students List -->
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between flex-wrap pb-0">
-                <h4 class="mb-3">Teachers List</h4>
+                <h4 class="mb-3">Liste des Enseignants</h4>
                 <div class="d-flex align-items-center flex-wrap">
                     <div class="input-icon-start mb-3 me-2 position-relative">
                         <app-date-range-picker />
@@ -39,17 +39,17 @@
                     <div class="dropdown mb-3 me-2">
                         <a href="javascript:void(0);" class="btn btn-outline-light bg-white dropdown-toggle"
                             data-bs-toggle="dropdown" data-bs-auto-close="outside"><i
-                                class="ti ti-filter me-2"></i>Filter</a>
+                                class="ti ti-filter me-2"></i>Filtrer</a>
                         <div class="dropdown-menu drop-width">
                             <form>
                                 <div class="d-flex align-items-center border-bottom p-3">
-                                    <h4>Filter</h4>
+                                    <h4>Filtres</h4>
                                 </div>
                                 <div class="p-3 border-bottom pb-0">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="mb-3">
-                                                <label class="form-label">Name</label>
+                                                <label class="form-label">Nom</label>
                                              
                                                 <p-dropdown
                                                 [options]="[
@@ -59,73 +59,67 @@
                                                   { label: 'Hellana', value: 'Hellana' },
                                                  
                                                 ]"
-                                                placeholder="Select"
+                                                placeholder="Sélectionner"
                                                 class="select"
                                               ></p-dropdown>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="mb-3">
-                                                <label class="form-label">Class</label>
+                                                <label class="form-label">Classe</label>
                                               
                                                 <p-dropdown [options]="[
-                                                { label: 'Select', value: '' },
+                                                { label: 'Sélectionner', value: '' },
                                                 { label: 'I', value: 'I' },
                                                 { label: 'II', value: 'II' },
                                                 { label: 'III', value: 'III' }
-                                              ]" placeholder="Select" class="select"></p-dropdown>
+                                              ]" placeholder="Sélectionner" class="select"></p-dropdown>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="mb-3">
-                                                <label class="form-label">Status</label>
+                                                <label class="form-label">Statut</label>
                                               
                                                 <p-dropdown [options]="[
-                                                { label: 'Select', value: '' },
-                                                { label: 'Active', value: 'Active' },
-                                                { label: 'Inactive', value: 'Inactive' },
+                                                { label: 'Sélectionner', value: '' },
+                                                { label: 'Actif', value: 'Active' },
+                                                { label: 'Inactif', value: 'Inactive' },
                                              
-                                              ]" placeholder="Select" class="select"></p-dropdown>
+                                              ]" placeholder="Sélectionner" class="select"></p-dropdown>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="p-3 d-flex align-items-center justify-content-end">
-                                    <a href="javascript:void(0);" class="btn btn-light me-3">Reset</a>
-                                    <button type="submit" class="btn btn-primary">Apply</button>
+                                    <a href="javascript:void(0);" class="btn btn-light me-3">Réinitialiser</a>
+                                    <button type="submit" class="btn btn-primary">Appliquer</button>
                                 </div>
                             </form>
                         </div>
                     </div>
-                    <div class="d-flex align-items-center bg-white border rounded-2 p-1 mb-3 me-2">
-                        <a [routerLink] = "routes.teachersList" class="active btn btn-icon btn-sm me-1 primary-hover"><i
-                                class="ti ti-list-tree"></i></a>
-                        <a [routerLink] = "routes.teacherGrid" class="btn btn-icon btn-sm bg-light primary-hover"><i
-                                class="ti ti-grid-dots"></i></a>
-                    </div>
                     <div class="dropdown mb-3">
                         <a href="javascript:void(0);" class="btn btn-outline-light bg-white dropdown-toggle"
-                            data-bs-toggle="dropdown"><i class="ti ti-sort-ascending-2 me-2"></i>Sort by A-Z
+                            data-bs-toggle="dropdown"><i class="ti ti-sort-ascending-2 me-2"></i>Trier par A-Z
                         </a>
                         <ul class="dropdown-menu p-3">
                             <li>
                                 <a href="javascript:void(0);" class="dropdown-item rounded-1 active">
-                                    Ascending
+                                    Ascendant
                                 </a>
                             </li>
                             <li>
                                 <a href="javascript:void(0);" class="dropdown-item rounded-1">
-                                    Descending
+                                    Descendant
                                 </a>
                             </li>
                             <li>
                                 <a href="javascript:void(0);" class="dropdown-item rounded-1">
-                                    Recently Viewed
+                                    Récemment vus
                                 </a>
                             </li>
                             <li>
                                 <a href="javascript:void(0);" class="dropdown-item rounded-1">
-                                    Recently Added
+                                    Récemment ajoutés
                                 </a>
                             </li>
                         </ul>
@@ -141,7 +135,7 @@
                                 <label>
                                     <input [(ngModel)]="searchDataValue" [ngModelOptions]="{ standalone: true }"
                                         (ngModelChange)="searchData(searchDataValue)" type="search" class="form-control"
-                                        placeholder="Search..." /></label>
+                                        placeholder="Rechercher..." /></label>
                             </div>
                         </div>
                     </div>
@@ -158,14 +152,14 @@
                                     </div>
                                 </th>
                                 <th mat-sort-header="ids">ID</th>
-                                <th mat-sort-header="name">Name</th>
-                                <th mat-sort-header="class">Class </th>
-                                <th mat-sort-header="subject">Subject</th>
+                                <th mat-sort-header="name">Nom</th>
+                                <th mat-sort-header="class">Classe</th>
+                                <th mat-sort-header="subject">Matière</th>
                                 <th mat-sort-header="email">Email</th>
-                                <th mat-sort-header="phone">Phone</th>
-                                <th mat-sort-header="dateOfJoin">Date of Join</th>
-                                <th mat-sort-header="status">Status</th>
-                                <th>Action</th>
+                                <th mat-sort-header="phone">Téléphone</th>
+                                <th mat-sort-header="dateOfJoin">Date d'inscription</th>
+                                <th mat-sort-header="status">Statut</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -176,13 +170,13 @@
                                         <input class="form-check-input" type="checkbox" [(ngModel)]="data.isSelected">
                                     </div>
                                 </td>
-                                <td><a [routerLink] = "routes.teacherDetails" class="link-primary">{{data.ids}}</a></td>
+                                <td><a [routerLink]="['/peoples/teachers/teacher-details', data.ids]" class="link-primary">{{data.ids}}</a></td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <a [routerLink] = "routes.teacherDetails" class="avatar avatar-md"><img [src]="data.img"
+                                        <a [routerLink]="['/peoples/teachers/teacher-details', data.ids]" class="avatar avatar-md"><img [src]="data.img"
                                                 class="img-fluid rounded-circle" alt="img"></a>
                                         <div class="ms-2">
-                                            <p class="text-dark mb-0"><a [routerLink] = "routes.teacherDetails">{{data.name}}</a>
+                                            <p class="text-dark mb-0"><a [routerLink]="['/peoples/teachers/teacher-details', data.ids]">{{data.name}}</a>
                                             </p>
                                         </div>
                                     </div>
@@ -199,36 +193,33 @@
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <div class="dropdown">
-                                            <a href="javascript:void(0);"
-                                                class="btn btn-white btn-icon btn-sm d-flex align-items-center justify-content-center rounded-circle p-0"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="ti ti-dots-vertical fs-14"></i>
+                                        <div class="dropdown dropdown-action">
+                                            <a href="javascript:void(0);" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fa fa-ellipsis-v"></i>
                                             </a>
-                                            <ul class="dropdown-menu dropdown-menu-right p-3">
-                                                <li>
-                                                    <a class="dropdown-item rounded-1" [routerLink] = "routes.teacherDetails"><i
-                                                            class="ti ti-menu me-2"></i>View Teacher</a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item rounded-1" [routerLink] = "routes.editTeacher"><i
-                                                            class="ti ti-edit-circle me-2"></i>Edit</a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item rounded-1" href="javascript:void(0);"
-                                                        data-bs-toggle="modal" data-bs-target="#login_detail"><i
-                                                            class="ti ti-lock me-2"></i>Login Details</a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item rounded-1" href="javascript:void(0);"><i
-                                                            class="ti ti-toggle-right me-2"></i>Disable</a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item rounded-1" href="javascript:void(0);" data-bs-toggle="modal"
-                                                        data-bs-target="#delete-modal"><i
-                                                            class="ti ti-trash-x me-2"></i>Delete</a>
-                                                </li>
-                                            </ul>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a class="dropdown-item" [routerLink]="['/peoples/teachers/teacher-details', data.ids]">
+                                                    <i class="fa fa-user me-2"></i> Détails
+                                                </a>
+                                                <a class="dropdown-item" [routerLink]="['/peoples/teachers/edit-teacher', data.ids]">
+                                                    <i class="fa fa-pencil me-2"></i> Modifier
+                                                </a>
+                                                <a class="dropdown-item" [routerLink]="['/peoples/teachers/teachers-routine', data.ids]">
+                                                    <i class="fa fa-calendar me-2"></i> Emploi du temps
+                                                </a>
+                                                <a class="dropdown-item" [routerLink]="['/peoples/teachers/teacher-leaves', data.ids]">
+                                                    <i class="fa fa-calendar-minus-o me-2"></i> Congés
+                                                </a>
+                                                <a class="dropdown-item" [routerLink]="['/peoples/teachers/teacher-salary', data.ids]">
+                                                    <i class="fa fa-money me-2"></i> Salaire
+                                                </a>
+                                                <a class="dropdown-item" [routerLink]="['/peoples/teachers/teacher-library', data.ids]">
+                                                    <i class="fa fa-book me-2"></i> Bibliothèque
+                                                </a>
+                                                <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal">
+                                                    <i class="fa fa-trash-o me-2"></i> Supprimer
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </td>

@@ -1,0 +1,303 @@
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+  <div class="content">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a [routerLink]="routes.adminDashboard">Dashboard </a>
+            </li>
+            <li class="breadcrumb-item">
+              <a [routerLink]="routes.studentsList">Élèves</a>
+            </li>
+            <li class="breadcrumb-item active">Bulletin de notes</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row" *ngIf="!selectedReport">
+      <div class="col-md-12">
+        <div class="card bg-white">
+          <div class="card-header">
+            <h5 class="card-title">Rechercher un bulletin de notes</h5>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="searchForm" (ngSubmit)="searchReport()">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group mb-3">
+                    <label class="form-label">ID Élève <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" formControlName="studentId">
+                    <div *ngIf="searchForm.get('studentId')?.invalid && searchForm.get('studentId')?.touched" class="text-danger mt-1">
+                      L'ID Élève est requis
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group mb-3">
+                    <label class="form-label">Année académique <span class="text-danger">*</span></label>
+                    <select class="form-select" formControlName="academicYear">
+                      <option value="">Sélectionner</option>
+                      <option value="2023-2024">2023-2024</option>
+                      <option value="2022-2023">2022-2023</option>
+                      <option value="2021-2022">2021-2022</option>
+                    </select>
+                    <div *ngIf="searchForm.get('academicYear')?.invalid && searchForm.get('academicYear')?.touched" class="text-danger mt-1">
+                      L'année académique est requise
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group mb-3">
+                    <label class="form-label">Type d'examen <span class="text-danger">*</span></label>
+                    <select class="form-select" formControlName="examType">
+                      <option value="">Sélectionner</option>
+                      <option value="Trimestre 1">Trimestre 1</option>
+                      <option value="Trimestre 2">Trimestre 2</option>
+                      <option value="Trimestre 3">Trimestre 3</option>
+                      <option value="Annuel">Annuel</option>
+                    </select>
+                    <div *ngIf="searchForm.get('examType')?.invalid && searchForm.get('examType')?.touched" class="text-danger mt-1">
+                      Le type d'examen est requis
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12 text-end">
+                  <button type="submit" class="btn btn-primary">Rechercher</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-12 mt-4">
+        <div class="card bg-white">
+          <div class="card-header">
+            <h5 class="card-title">Bulletins disponibles</h5>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>ID Élève</th>
+                    <th>Année académique</th>
+                    <th>Classe</th>
+                    <th>Type d'examen</th>
+                    <th>Moyenne</th>
+                    <th>Grade</th>
+                    <th>Date d'émission</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let report of reportCards">
+                    <td>{{ report.studentId }}</td>
+                    <td>{{ report.academicYear }}</td>
+                    <td>{{ report.class }} {{ report.section }}</td>
+                    <td>{{ report.examType }}</td>
+                    <td>{{ report.percentage }}%</td>
+                    <td>{{ report.grade }}</td>
+                    <td>{{ report.issuedDate }}</td>
+                    <td>
+                      <button class="btn btn-sm btn-primary" (click)="selectedReport = report">
+                        <i class="ti ti-eye me-1"></i> Voir
+                      </button>
+                    </td>
+                  </tr>
+                  <tr *ngIf="reportCards.length === 0">
+                    <td colspan="8" class="text-center">Aucun bulletin trouvé</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rapport de notes -->
+    <div class="report-card" *ngIf="selectedReport" [ngClass]="{'printing': isPrinting}">
+      <div class="row">
+        <div class="col-12 mb-3 d-print-none">
+          <div class="d-flex justify-content-end">
+            <button class="btn btn-secondary me-2" (click)="closeReport()">
+              <i class="ti ti-x me-1"></i> Fermer
+            </button>
+            <button class="btn btn-primary" (click)="printReport()">
+              <i class="ti ti-printer me-1"></i> Imprimer
+            </button>
+          </div>
+        </div>
+        
+        <div class="col-12">
+          <div class="card bg-white">
+            <div class="card-body report-content">
+              <!-- En-tête du bulletin -->
+              <div class="report-header text-center mb-4">
+                <h2 class="school-name">ÉTABLISSEMENT SCOLAIRE EXEMPLE</h2>
+                <div class="school-address">123 Rue de l'Éducation, Ville Exemple</div>
+                <div class="school-contact">Tél: 01 23 45 67 89 | Email: contact&#64;exemple.edu</div>
+                <h3 class="report-title mt-3">BULLETIN DE NOTES</h3>
+                <div class="report-period mb-2">{{ selectedReport.examType }} - Année scolaire {{ selectedReport.academicYear }}</div>
+              </div>
+              
+              <!-- Informations de l'Élève -->
+              <div class="student-info mb-4">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="info-group">
+                      <div class="info-label">Numéro d'Élève:</div>
+                      <div class="info-value">{{ selectedReport.studentId }}</div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="info-group">
+                      <div class="info-label">Classe:</div>
+                      <div class="info-value">{{ selectedReport.class }} {{ selectedReport.section }}</div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="info-group">
+                      <div class="info-label">Date d'émission:</div>
+                      <div class="info-value">{{ selectedReport.issuedDate }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Tableau des notes -->
+              <div class="marks-table mb-4">
+                <table class="table table-bordered">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Matière</th>
+                      <th class="text-center">Note obtenue</th>
+                      <th class="text-center">Note maximale</th>
+                      <th class="text-center">Grade</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let subject of selectedReport.subjects">
+                      <td>{{ subject.subject }}</td>
+                      <td class="text-center">{{ subject.marksObtained }}</td>
+                      <td class="text-center">{{ subject.maxMarks }}</td>
+                      <td class="text-center">{{ subject.grade }}</td>
+                    </tr>
+                  </tbody>
+                  <tfoot class="table-light">
+                    <tr>
+                      <th>Total</th>
+                      <th class="text-center">{{ selectedReport.totalMarks }}</th>
+                      <th class="text-center">{{ selectedReport.subjects.length * 100 }}</th>
+                      <th class="text-center">{{ selectedReport.grade }}</th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+              
+              <!-- Informations supplémentaires -->
+              <div class="additional-info mb-4">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="card border">
+                      <div class="card-header bg-light">
+                        <h6 class="card-title mb-0">Résumé des performances</h6>
+                      </div>
+                      <div class="card-body">
+                        <div class="info-item">
+                          <span class="info-label">Pourcentage:</span>
+                          <span class="info-value">{{ selectedReport.percentage }}%</span>
+                        </div>
+                        <div class="info-item">
+                          <span class="info-label">Grade:</span>
+                          <span class="info-value">{{ selectedReport.grade }}</span>
+                        </div>
+                        <div class="info-item">
+                          <span class="info-label">Classement:</span>
+                          <span class="info-value">{{ selectedReport.rank }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="card border">
+                      <div class="card-header bg-light">
+                        <h6 class="card-title mb-0">Assiduité</h6>
+                      </div>
+                      <div class="card-body">
+                        <div class="info-item">
+                          <span class="info-label">Jours de présence:</span>
+                          <span class="info-value">{{ selectedReport.attendanceRecord.daysPresent }}/{{ selectedReport.attendanceRecord.totalDays }}</span>
+                        </div>
+                        <div class="info-item">
+                          <span class="info-label">Jours d'absence:</span>
+                          <span class="info-value">{{ selectedReport.attendanceRecord.daysAbsent }}</span>
+                        </div>
+                        <div class="info-item">
+                          <span class="info-label">Pourcentage de présence:</span>
+                          <span class="info-value">{{ selectedReport.attendanceRecord.percentage }}%</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Remarques -->
+              <div class="remarks mb-4">
+                <div class="card border">
+                  <div class="card-header bg-light">
+                    <h6 class="card-title mb-0">Remarques</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="remark-item mb-3">
+                      <div class="remark-label">Remarques du professeur principal:</div>
+                      <div class="remark-text">{{ selectedReport.teacherRemarks }}</div>
+                    </div>
+                    <div class="remark-item">
+                      <div class="remark-label">Remarques du directeur:</div>
+                      <div class="remark-text">{{ selectedReport.principalRemarks }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Signatures -->
+              <div class="signatures mt-5">
+                <div class="row text-center">
+                  <div class="col-md-4">
+                    <div class="signature-box">
+                      <div class="signature-line"></div>
+                      <div class="signature-title">Professeur principal</div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="signature-box">
+                      <div class="signature-line"></div>
+                      <div class="signature-title">Parent/Tuteur</div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="signature-box">
+                      <div class="signature-line"></div>
+                      <div class="signature-title">Directeur</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /Rapport de notes -->
+
+  </div>
+</div>
+<!-- /Page Wrapper --> 

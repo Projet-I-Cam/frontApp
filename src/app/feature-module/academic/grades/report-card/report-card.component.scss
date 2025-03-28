@@ -1,0 +1,222 @@
+// Styles pour le bulletin scolaire
+.bulletin-title {
+  font-weight: bold;
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+// Styles pour la photo de l'Élève
+.student-photo {
+  max-width: 120px;
+  border: 1px solid #ddd;
+}
+
+// Styles pour les lignes de signature
+.signature-line {
+  border-bottom: 1px solid #000;
+  width: 80%;
+  margin: 0 auto 10px;
+}
+
+// Styles pour les notes
+.grade-a-plus {
+  background-color: #28a745;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-weight: bold;
+}
+
+.grade-a {
+  background-color: #5cb85c;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 15px;
+}
+
+.grade-b {
+  background-color: #5bc0de;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 15px;
+}
+
+.grade-c {
+  background-color: #f0ad4e;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 15px;
+}
+
+.grade-d {
+  background-color: #ff9800;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 15px;
+}
+
+.grade-f {
+  background-color: #dc3545;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-weight: bold;
+}
+
+// Styles pour les résultats
+.text-success {
+  color: #28a745 !important;
+  font-weight: bold;
+}
+
+.text-danger {
+  color: #dc3545 !important;
+  font-weight: bold;
+}
+
+// Styles pour les titres de formulaire
+.form-title {
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+}
+
+// Styles pour l'impression
+@media print {
+  .btn, .breadcrumb, .page-header {
+    display: none !important;
+  }
+  
+  .card {
+    border: none !important;
+    box-shadow: none !important;
+  }
+  
+  .card-body {
+    padding: 0 !important;
+  }
+  
+  body {
+    background-color: white !important;
+  }
+  
+  .container-fluid {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+  
+  .report-card-printable {
+    margin: 0 !important;
+    width: 100% !important;
+  }
+}
+
+.bulletin-container {
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+  background-color: #fff;
+}
+
+.bulletin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30px;
+}
+
+.school-info {
+  flex: 1;
+}
+
+.school-info h2 {
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.school-info h3 {
+  color: #0d6efd;
+  text-align: center;
+  margin: 20px 0;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.student-photo {
+  width: 120px;
+  height: 150px;
+  overflow: hidden;
+  border: 1px solid #ccc;
+}
+
+.student-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.student-info {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.grades-table {
+  margin-bottom: 30px;
+}
+
+.grades-table h4 {
+  margin-bottom: 15px;
+  color: #0d6efd;
+}
+
+.additional-info {
+  margin-bottom: 20px;
+}
+
+.remarks {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 30px;
+}
+
+.remarks h5 {
+  color: #0d6efd;
+  margin-bottom: 10px;
+}
+
+.signature-line {
+  height: 1px;
+  background-color: #000;
+  margin: 40px auto 10px;
+  width: 80%;
+}
+
+/* Styles d'impression */
+@media print {
+  .btn, .page-header {
+    display: none !important;
+  }
+  
+  .card {
+    border: none !important;
+    box-shadow: none !important;
+  }
+  
+  .card-body {
+    padding: 0 !important;
+  }
+  
+  .bulletin-container {
+    padding: 0;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+  }
+} 

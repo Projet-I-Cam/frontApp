@@ -1,0 +1,244 @@
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">Calcul des Moyennes</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a [routerLink]="routes.adminDashboard">Tableau de bord</a>
+            </li>
+            <li class="breadcrumb-item"><a>Notes</a></li>
+            <li class="breadcrumb-item active">Calcul des Moyennes</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card card-table comman-shadow">
+          <div class="card-body">
+            <!-- Filters -->
+            <div class="row mb-4">
+              <div class="col-12">
+                <h5 class="form-title"><span>Paramètres de calcul</span></h5>
+              </div>
+              
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Classe <span class="text-danger">*</span></label>
+                  <p-dropdown 
+                    [options]="classes" 
+                    [(ngModel)]="selectedClass" 
+                    optionLabel="name" 
+                    [filter]="true" 
+                    filterBy="name" 
+                    [showClear]="true"
+                    placeholder="Sélectionner une classe"
+                    styleClass="w-100"
+                    [disabled]="hasCalculated"
+                  ></p-dropdown>
+                </div>
+              </div>
+              
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Section <span class="text-danger">*</span></label>
+                  <p-dropdown 
+                    [options]="sections" 
+                    [(ngModel)]="selectedSection" 
+                    optionLabel="name" 
+                    [filter]="true" 
+                    filterBy="name" 
+                    [showClear]="true"
+                    placeholder="Sélectionner une section"
+                    styleClass="w-100"
+                    [disabled]="hasCalculated"
+                  ></p-dropdown>
+                </div>
+              </div>
+              
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Examen <span class="text-danger">*</span></label>
+                  <p-dropdown 
+                    [options]="exams" 
+                    [(ngModel)]="selectedExam" 
+                    optionLabel="name" 
+                    [filter]="true" 
+                    filterBy="name" 
+                    [showClear]="true"
+                    placeholder="Sélectionner un examen"
+                    styleClass="w-100"
+                    [disabled]="hasCalculated"
+                  ></p-dropdown>
+                </div>
+              </div>
+              
+              <div class="col-12 text-end mt-3">
+                <button 
+                  *ngIf="!hasCalculated" 
+                  class="btn btn-primary" 
+                  (click)="calculateGrades()" 
+                  [disabled]="!selectedClass || !selectedSection || !selectedExam || isLoading"
+                >
+                  <i class="fas fa-calculator" *ngIf="!isLoading"></i>
+                  <i class="fas fa-spinner fa-spin" *ngIf="isLoading"></i>
+                  Calculer les moyennes
+                </button>
+                
+                <button 
+                  *ngIf="hasCalculated" 
+                  class="btn btn-danger" 
+                  (click)="resetCalculation()"
+                >
+                  <i class="fas fa-redo"></i>
+                  Réinitialiser
+                </button>
+              </div>
+            </div>
+            <!-- /Filters -->
+
+            <!-- Results Table -->
+            <div *ngIf="hasCalculated && students.length > 0">
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <h5>
+                    Résultats: {{ selectedClass?.name }} {{ selectedSection?.name }} - {{ selectedExam?.name }}
+                  </h5>
+                </div>
+                <div class="col-md-6 text-end">
+                  <button class="btn btn-outline-primary me-2" (click)="exportAsPDF()">
+                    <i class="fas fa-file-pdf"></i> Export PDF
+                  </button>
+                  <button class="btn btn-outline-success" (click)="exportAsExcel()">
+                    <i class="fas fa-file-excel"></i> Export Excel
+                  </button>
+                </div>
+              </div>
+              
+              <div class="table-responsive">
+                <table class="table border-0 star-student table-hover table-center mb-0 table-striped">
+                  <thead class="student-thread">
+                    <tr>
+                      <th>Rang</th>
+                      <th>Numéro</th>
+                      <th>Nom</th>
+                      <th>Total des points</th>
+                      <th>Pourcentage</th>
+                      <th>Résultat</th>
+                      <th>Détails</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let student of students">
+                      <td>{{ student.rank }}</td>
+                      <td>{{ student.rollNo }}</td>
+                      <td class="student-name">{{ student.name }}</td>
+                      <td>{{ student.totalMarks }}/{{ student.subjects.length * 20 }}</td>
+                      <td>{{ student.percentage }}%</td>
+                      <td>
+                        <span 
+                          [ngClass]="getResultClass(student.result)"
+                        >
+                          {{ student.result }}
+                        </span>
+                      </td>
+                      <td>
+                        <button class="btn btn-sm btn-info" data-bs-toggle="modal" [attr.data-bs-target]="'#student-details-' + student.id">
+                          <i class="fas fa-eye"></i> Voir
+                        </button>
+                        
+                        <!-- Modal for Student Details -->
+                        <div class="modal fade" [id]="'student-details-' + student.id" tabindex="-1" aria-hidden="true">
+                          <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title">Détails des notes - <span class="student-name">{{ student.name }}</span></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                <h6>Notes par matière</h6>
+                                <div class="table-responsive">
+                                  <table class="table table-bordered">
+                                    <thead>
+                                      <tr>
+                                        <th>Matière</th>
+                                        <th>Note</th>
+                                        <th>Maximum</th>
+                                        <th>Grade</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr *ngFor="let subject of student.subjects">
+                                        <td>{{ subject.name }}</td>
+                                        <td>{{ subject.marks }}</td>
+                                        <td>{{ subject.maxMarks }}</td>
+                                        <td>
+                                          <span [ngClass]="getGradeClass(subject.grade)">
+                                            {{ subject.grade }}
+                                          </span>
+                                        </td>
+                                      </tr>
+                                      <tr class="table-active">
+                                        <td colspan="2"><strong>Total</strong></td>
+                                        <td><strong>{{ student.totalMarks }}/{{ student.subjects.length * 20 }}</strong></td>
+                                        <td><strong>{{ student.percentage }}%</strong></td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <div class="mt-3">
+                                  <h6>Résultat: <span [ngClass]="getResultClass(student.result)">{{ student.result }}</span></h6>
+                                  <h6>Rang: {{ student.rank }}</h6>
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- /Modal for Student Details -->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- /Results Table -->
+            
+            <!-- Empty State -->
+            <div *ngIf="!hasCalculated && !isLoading" class="row justify-content-center mt-4">
+              <div class="col-md-6 text-center">
+                <div class="alert alert-info">
+                  <i class="fas fa-info-circle fa-3x mb-3"></i>
+                  <h4>Aucun calcul effectué</h4>
+                  <p>Veuillez sélectionner une classe, une section et un examen, puis cliquer sur "Calculer les moyennes" pour commencer le calcul des notes.</p>
+                </div>
+              </div>
+            </div>
+            <!-- /Empty State -->
+            
+            <!-- Loading State -->
+            <div *ngIf="isLoading" class="row justify-content-center mt-4">
+              <div class="col-md-6 text-center">
+                <div class="alert alert-info">
+                  <i class="fas fa-spinner fa-spin fa-3x mb-3"></i>
+                  <h4>Calcul en cours...</h4>
+                  <p>Veuillez patienter pendant le calcul des moyennes.</p>
+                </div>
+              </div>
+            </div>
+            <!-- /Loading State -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Page Wrapper --> 

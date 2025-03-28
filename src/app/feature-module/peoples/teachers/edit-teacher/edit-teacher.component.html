@@ -6,17 +6,17 @@
       class="d-md-flex d-block align-items-center justify-content-between mb-3"
     >
       <div class="my-auto mb-2">
-        <h3 class="mb-1">Edit Teacher</h3>
+        <h3 class="mb-1">Modifier Enseignant</h3>
         <nav>
           <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item">
-              <a [routerLink]="routes.adminDashboard">Dashboard</a>
+              <a [routerLink]="routes.adminDashboard">Tableau de bord</a>
             </li>
             <li class="breadcrumb-item">
-              <a [routerLink]="routes.teachersList">Teachers</a>
+              <a [routerLink]="routes.teachersList">Enseignants</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-              Edit Teacher
+              Modifier Enseignant
             </li>
           </ol>
         </nav>
@@ -36,7 +36,7 @@
                 >
                   <i class="ti ti-info-square-rounded fs-16"></i>
                 </span>
-                <h4 class="text-dark">Personal Information</h4>
+                <h4 class="text-dark">Information Personnelle</h4>
               </div>
             </div>
             <div class="card-body pb-1">
@@ -76,63 +76,63 @@
               <div class="row row-cols-xxl-5 row-cols-md-6">
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Teacher ID</label>
+                    <label class="form-label">ID Enseignant</label>
                     <input type="text" class="form-control" value="T849126" />
                   </div>
                 </div>
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">First Name</label>
+                    <label class="form-label">Prénom</label>
                     <input type="text" class="form-control" value="Teresa" />
                   </div>
                 </div>
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Last Name</label>
+                    <label class="form-label">Nom</label>
                     <input type="text" class="form-control" />
                   </div>
                 </div>
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Class</label>
+                    <label class="form-label">Classe</label>
                     <p-dropdown
                       [options]="[
-                        { label: 'Select', value: '' },
-                        { label: 'Physics', value: 'Physics' },
-                        { label: 'Computer', value: 'Computer' },
-                        { label: 'English', value: 'English' },
-                        { label: 'Spanish', value: 'Spanish' }
+                        { label: 'Sélectionner', value: '' },
+                        { label: 'Physique', value: 'Physics' },
+                        { label: 'Informatique', value: 'Computer' },
+                        { label: 'Anglais', value: 'English' },
+                        { label: 'Espagnol', value: 'Spanish' }
                       ]"
-                      placeholder="Physics"
+                      placeholder="Physique"
                       class="select"
                     ></p-dropdown>
                   </div>
                 </div>
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Subject</label>
+                    <label class="form-label">Matière</label>
                     <p-dropdown
                       [options]="[
-                        { label: 'Select', value: '' },
-                        { label: 'Physics', value: 'Physics' },
-                        { label: 'Computer', value: 'Computer' },
-                        { label: 'English', value: 'English' },
-                        { label: 'Spanish', value: 'Spanish' }
+                        { label: 'Sélectionner', value: '' },
+                        { label: 'Physique', value: 'Physics' },
+                        { label: 'Informatique', value: 'Computer' },
+                        { label: 'Anglais', value: 'English' },
+                        { label: 'Espagnol', value: 'Spanish' }
                       ]"
-                      placeholder="Physics"
+                      placeholder="Physique"
                     ></p-dropdown>
                   </div>
                 </div>
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Gender</label>
+                    <label class="form-label">Genre</label>
                     <p-dropdown
                       [options]="[
-                        { label: 'Select', value: '' },
-                        { label: 'Male', value: 'Male' },
-                        { label: 'Female', value: 'Female' }
+                        { label: 'Sélectionner', value: '' },
+                        { label: 'Homme', value: 'Male' },
+                        { label: 'Femme', value: 'Female' }
                       ]"
-                      placeholder="Female"
+                      placeholder="Femme"
                       class="select"
                     ></p-dropdown>
                   </div>
@@ -182,13 +182,13 @@
                 </div>
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Father’s Name</label>
+                    <label class="form-label">Father's Name</label>
                     <input type="text" class="form-control" />
                   </div>
                 </div>
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Mother’s Name</label>
+                    <label class="form-label">Mother's Name</label>
                     <input type="text" class="form-control" />
                   </div>
                 </div>
