@@ -6,14 +6,14 @@
       class="d-md-flex d-block align-items-center justify-content-between mb-3"
     >
       <div class="my-auto mb-2">
-        <h3 class="page-title mb-1">Student Dashboard</h3>
+        <h3 class="page-title mb-1">Tableau de Bord Elève</h3>
         <nav>
           <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item">
-              <a [routerLink]="routes.adminDashboard">Dashboard</a>
+              <a [routerLink]="routes.adminDashboard">Tabeau de Bord</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-              Student Dashboard
+              Tableau de Bord Elève
             </li>
           </ol>
         </nav>
@@ -39,13 +39,13 @@
                         >#ST1234546</span
                       >
                       <h3 class="text-truncate text-white mb-1">
-                        Angelo Riana
+                        MANGA PELAGIE
                       </h3>
                       <div
                         class="d-flex align-items-center flex-wrap row-gap-2 text-gray-2"
                       >
-                        <span class="border-end me-2 pe-2">Class : III, C</span>
-                        <span>Roll No : 36545</span>
+                        <span class="border-end me-2 pe-2">Classe : CM2, A</span>
+                        <span>Matricule No : 36545</span>
                       </div>
                     </div>
                   </div>
@@ -53,14 +53,14 @@
                     class="d-flex align-items-center justify-content-between profile-footer flex-wrap row-gap-3 pt-4"
                   >
                     <div class="d-flex align-items-center">
-                      <h6 class="text-white">1st Quarterly</h6>
+                      <h6 class="text-white">1er Trimestre</h6>
                       <span
                         class="badge bg-success d-inline-flex align-items-center ms-2"
-                        ><i class="ti ti-circle-filled fs-5 me-1"></i>Pass</span
+                        ><i class="ti ti-circle-filled fs-5 me-1"></i>Admis</span
                       >
                     </div>
                     <a [routerLink]="routes.editStudent" class="btn btn-primary"
-                      >Edit Profile</a
+                      >Modifier Profil</a
                     >
                   </div>
                   <div class="student-card-bg">
@@ -75,7 +75,7 @@
                 <div
                   class="card-header d-flex align-items-center justify-content-between"
                 >
-                  <h4 class="card-title">Today’s Class</h4>
+                  <h4 class="card-title">Cours du Jour</h4>
                   <div class="d-inline-flex align-items-center class-datepick">
                     <span class="icon"
                       ><i class="ti ti-chevron-left me-2"></i
@@ -106,17 +106,17 @@
                         </span>
                         <div>
                           <h6 class="mb-1 text-decoration-line-through">
-                            English
+                            Anglais
                           </h6>
                           <span
                             ><i class="ti ti-clock me-2"></i>09:00 - 09:45
-                            AM</span
+                            </span
                           >
                         </div>
                       </div>
                       <span class="badge badge-soft-success shadow-none mb-2"
                         ><i class="ti ti-circle-filled fs-8 me-1"></i
-                        >Completed</span
+                        >Terminé</span
                       >
                     </div>
                   </div>
@@ -135,17 +135,17 @@
                         </span>
                         <div>
                           <h6 class="mb-1 text-decoration-line-through">
-                            Chemistry
+                            CHIMIE
                           </h6>
                           <span
                             ><i class="ti ti-clock me-2"></i>10:45 - 11:30
-                            AM</span
+                            </span
                           >
                         </div>
                       </div>
                       <span class="badge badge-soft-success shadow-none mb-2"
                         ><i class="ti ti-circle-filled fs-8 me-1"></i
-                        >Completed</span
+                        >Terminé</span
                       >
                     </div>
                   </div>
@@ -163,16 +163,16 @@
                           />
                         </span>
                         <div>
-                          <h6 class="mb-1">Physics</h6>
+                          <h6 class="mb-1">Physique</h6>
                           <span
                             ><i class="ti ti-clock me-2"></i>11:30 - 12:15
-                            AM</span
+                            </span
                           >
                         </div>
                       </div>
                       <span class="badge badge-soft-warning shadow-none mb-2"
                         ><i class="ti ti-circle-filled fs-8 me-1"></i
-                        >Inprogress</span
+                        >En cours</span
                       >
                     </div>
                   </div>
@@ -188,7 +188,7 @@
               <div
                 class="card-header d-flex align-items-center justify-content-between"
               >
-                <h4 class="card-title">Attendance</h4>
+                <h4 class="card-title">Présence</h4>
                 <div class="card-dropdown">
                   <a
                     href="javascript:void(0);"
@@ -196,18 +196,18 @@
                     data-bs-toggle="dropdown"
                   >
                     <span><i class="ti ti-calendar-due"></i></span>
-                    This Week
+                    Cette Semaine
                   </a>
                   <div class="dropdown-menu dropdown-menu-end">
                     <ul>
                       <li>
-                        <a href="javascript:void(0);">This Week</a>
+                        <a href="javascript:void(0);">Ce semaine</a>
                       </li>
                       <li>
-                        <a href="javascript:void(0);">Last Week</a>
+                        <a href="javascript:void(0);">Semaine passée</a>
                       </li>
                       <li>
-                        <a href="javascript:void(0);">Last Month</a>
+                        <a href="javascript:void(0);">Mois dernier</a>
                       </li>
                     </ul>
                   </div>
@@ -216,14 +216,13 @@
               <div class="card-body">
                 <div class="attendance-chart">
                   <p class="mb-3">
-                    <i class="ti ti-calendar-heart text-primary me-2"></i>No of
-                    total working days
+                    <i class="ti ti-calendar-heart text-primary me-2"></i>No total de jours travaillé
                     <span class="fw-medium text-dark"> 28 Days</span>
                   </p>
                   <div class="border rounded p-3">
                     <div class="row">
                       <div class="col text-center border-end">
-                        <p class="mb-1">Present</p>
+                        <p class="mb-1">Présent</p>
                         <h5>25</h5>
                       </div>
                       <div class="col text-center border-end">
@@ -231,7 +230,7 @@
                         <h5>2</h5>
                       </div>
                       <div class="col text-center">
-                        <p class="mb-1">Halfday</p>
+                        <p class="mb-1">Demi-journée</p>
                         <h5>0</h5>
                       </div>
                     </div>
@@ -254,8 +253,8 @@
                     <div
                       class="d-flex align-items-center justify-content-between flex-wrap mb-1"
                     >
-                      <h6 class="mb-2">Last 7 Days</h6>
-                      <p class="fs-12 mb-2">14 May 2024 - 21 May 2024</p>
+                      <h6 class="mb-2">7 derniers jours</h6>
+                      <p class="fs-12 mb-2">14 Mai 2024 - 21 Mai 2024</p>
                     </div>
                     <div
                       class="d-flex align-items-center rounded gap-1 flex-wrap"
@@ -316,7 +315,7 @@
                       <span class="avatar avatar-md rounded bg-primary me-2"
                         ><i class="ti ti-report-money fs-16"></i
                       ></span>
-                      <h6>Pay Fees</h6>
+                      <h6>Payer les frais</h6>
                     </div>
                   </div>
                 </a>
@@ -331,7 +330,7 @@
                       <span class="avatar avatar-md rounded bg-success me-2"
                         ><i class="ti ti-hexagonal-prism-plus fs-16"></i
                       ></span>
-                      <h6>Exam Result</h6>
+                      <h6>Résultat de l'examen</h6>
                     </div>
                   </div>
                 </a>
@@ -346,7 +345,7 @@
                       <span class="avatar avatar-md rounded bg-warning me-2"
                         ><i class="ti ti-calendar fs-16"></i
                       ></span>
-                      <h6>Calendar</h6>
+                      <h6>Calendrier</h6>
                     </div>
                   </div>
                 </a>
@@ -361,7 +360,7 @@
                       <span class="avatar avatar-md rounded bg-dark me-2"
                         ><i class="ti ti-calendar-share fs-16"></i
                       ></span>
-                      <h6>Attendance</h6>
+                      <h6>Présences</h6>
                     </div>
                   </div>
                 </a>
@@ -378,13 +377,13 @@
           <div
             class="card-header d-flex align-items-center justify-content-between"
           >
-            <h4 class="card-title">Schedules</h4>
+            <h4 class="card-title">Calendrier</h4>
             <a
               href="javascript:void(0);"
               class="link-primary fw-medium me-2"
               data-bs-toggle="modal"
               data-bs-target="#add_exam_schedule"
-              ><i class="ti ti-square-plus me-1"></i>Add New</a
+              ><i class="ti ti-square-plus me-1"></i>Nouveau</a
             >
           </div>
           <div class="card-body pb-0">
@@ -394,46 +393,46 @@
                 inline="true"
               ></p-calendar>
             </div>
-            <h5 class="mb-3">Exams</h5>
+            <h5 class="mb-3">Examens</h5>
             <div class="p-3 pb-0 mb-3 border rounded">
               <div class="d-flex align-items-center justify-content-between">
-                <h5 class="mb-3">1st Quarterly</h5>
+                <h5 class="mb-3">1er Trimestre</h5>
                 <span
                   class="badge badge-soft-danger d-inline-flex align-items-center mb-3"
-                  ><i class="ti ti-clock me-1"></i>19 Days More</span
+                  ><i class="ti ti-clock me-1"></i>Depuis 19 Jours</span
                 >
               </div>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="mb-3">
-                  <h6 class="mb-1">Mathematics</h6>
-                  <p><i class="ti ti-clock me-1"></i>01:30 - 02:15 PM</p>
+                  <h6 class="mb-1">Mathematique</h6>
+                  <p><i class="ti ti-clock me-1"></i>13:30 - 14:15</p>
                 </div>
                 <div class="mb-3 text-end">
                   <p class="mb-1">
-                    <i class="ti ti-calendar-bolt me-1"></i>06 May 2024
+                    <i class="ti ti-calendar-bolt me-1"></i>06 Mai 2024
                   </p>
-                  <p class="text-primary">Room No : 15</p>
+                  <p class="text-primary">Cours No : 15</p>
                 </div>
               </div>
             </div>
             <div class="p-3 pb-0 mb-3 border rounded">
               <div class="d-flex align-items-center justify-content-between">
-                <h5 class="mb-3">2nd Quarterly</h5>
+                <h5 class="mb-3">2e Trimestre</h5>
                 <span
                   class="badge badge-soft-danger d-inline-flex align-items-center mb-3"
-                  ><i class="ti ti-clock me-1"></i>20 Days More</span
+                  ><i class="ti ti-clock me-1"></i>Depuis 20 jours</span
                 >
               </div>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="mb-3">
-                  <h6 class="mb-1">Physics</h6>
-                  <p><i class="ti ti-clock me-1"></i>01:30 - 02:15 PM</p>
+                  <h6 class="mb-1">Physique</h6>
+                  <p><i class="ti ti-clock me-1"></i>13:30 - 14:15</p>
                 </div>
                 <div class="mb-3 text-end">
                   <p class="mb-1">
-                    <i class="ti ti-calendar-bolt me-1"></i>07 May 2024
+                    <i class="ti ti-calendar-bolt me-1"></i>07 Mai 2024
                   </p>
-                  <p class="text-primary">Room No : 15</p>
+                  <p class="text-primary">Cours No : 15</p>
                 </div>
               </div>
             </div>
@@ -498,23 +497,23 @@
           <div
             class="card-header d-flex align-items-center justify-content-between"
           >
-            <h4 class="card-titile">Home Works</h4>
+            <h4 class="card-titile">Devoirs</h4>
             <div class="dropdown">
               <a
                 href="javascript:void(0);"
                 class="bg-white dropdown-toggle"
                 data-bs-toggle="dropdown"
-                ><i class="ti ti-book-2 me-2"></i>All Subject
+                ><i class="ti ti-book-2 me-2"></i>Toute les matières
               </a>
               <ul class="dropdown-menu mt-2 p-3">
                 <li>
                   <a href="javascript:void(0);" class="dropdown-item rounded-1">
-                    Physics
+                    Physique
                   </a>
                 </li>
                 <li>
                   <a href="javascript:void(0);" class="dropdown-item rounded-1">
-                    Chemistry
+                    Chimie
                   </a>
                 </li>
                 <li>
@@ -543,11 +542,11 @@
                     </a>
                     <div class="overflow-hidden">
                       <p class="d-flex align-items-center text-info mb-1">
-                        <i class="ti ti-tag me-2"></i>Physics
+                        <i class="ti ti-tag me-2"></i>Histoire
                       </p>
                       <h6 class="text-truncate mb-1">
                         <a [routerLink]="routes.classHomeWork"
-                          >Write about Theory of Pendulum</a
+                          >Les leaders de l'indépendance du Cameroun</a
                         >
                       </h6>
                       <div class="d-flex align-items-center flex-wrap">
@@ -564,9 +563,9 @@
                               alt="teacher"
                             />
                           </a>
-                          <p class="text-dark">Aaron</p>
+                          <p class="text-dark">AMBASSA HORTENSE</p>
                         </div>
-                        <p>Due by : 16 Jun 2024</p>
+                        <p>Le 16 Juin 2024</p>
                       </div>
                     </div>
                   </div>
@@ -597,11 +596,11 @@
                     </a>
                     <div class="overflow-hidden">
                       <p class="d-flex align-items-center text-success mb-1">
-                        <i class="ti ti-tag me-2"></i>Chemistry
+                        <i class="ti ti-tag me-2"></i>Chimie
                       </p>
                       <h6 class="text-truncate mb-1">
                         <a [routerLink]="routes.classHomeWork"
-                          >Chemistry - Change of Elements</a
+                          >Chimie - Changement d'élements</a
                         >
                       </h6>
                       <div class="d-flex align-items-center flex-wrap">
@@ -618,9 +617,9 @@
                               alt="teacher"
                             />
                           </a>
-                          <p class="text-dark">Hellana</p>
+                          <p class="text-dark">AMBASSA HORTENSE</p>
                         </div>
-                        <p>Due by : 16 Jun 2024</p>
+                        <p>Le 16 Juin 2024</p>
                       </div>
                     </div>
                   </div>
@@ -656,7 +655,7 @@
                       </p>
                       <h6 class="text-truncate mb-1">
                         <a [routerLink]="routes.classHomeWork"
-                          >Maths - Problems to Solve Page 21</a
+                          >Maths - Résolution problème Page 21</a
                         >
                       </h6>
                       <div class="d-flex align-items-center flex-wrap">
@@ -673,9 +672,9 @@
                               alt="teacher"
                             />
                           </a>
-                          <p class="text-dark">Morgan</p>
+                          <p class="text-dark">AMBASSA HORTENSE</p>
                         </div>
-                        <p>Due by : 21 Jun 2024</p>
+                        <p>Le 21 Juin 2024</p>
                       </div>
                     </div>
                   </div>
@@ -707,11 +706,11 @@
                     </a>
                     <div class="overflow-hidden">
                       <p class="d-flex align-items-center text-skyblue mb-1">
-                        <i class="ti ti-tag me-2"></i>Engish
+                        <i class="ti ti-tag me-2"></i>Anglais
                       </p>
                       <h6 class="text-truncate mb-1">
                         <a [routerLink]="routes.classHomeWork"
-                          >English - Vocabulary Introduction</a
+                          >Anglais - Introduction au Vocabulaire</a
                         >
                       </h6>
                       <div class="d-flex align-items-center flex-wrap">
@@ -728,9 +727,9 @@
                               alt="teacher"
                             />
                           </a>
-                          <p class="text-dark">Daniel Josua</p>
+                          <p class="text-dark">GODWIN Josua</p>
                         </div>
-                        <p>Due by : 21 Jun 2024</p>
+                        <p>Le 21 Juin 2024</p>
                       </div>
                     </div>
                   </div>
@@ -761,7 +760,7 @@
           <div
             class="card-header d-flex align-items-center justify-content-between"
           >
-            <h4 class="card-title">Class Faculties</h4>
+            <h4 class="card-title">Enseignants</h4>
             <div class="owl-nav slide-nav text-end nav-control"></div>
           </div>
           <div class="card-body">
@@ -782,9 +781,9 @@
                         </a>
                         <div class="overflow-hidden">
                           <h6 class="mb-1 text-truncate">
-                            <a [routerLink]="routes.teacherDetails">Aaron</a>
+                            <a [routerLink]="routes.teacherDetails">AMBASSA HORTENSE</a>
                           </h6>
-                          <p>Chemistry</p>
+                          <p>Principal</p>
                         </div>
                       </div>
                       <div class="row gx-2">
@@ -821,9 +820,9 @@
                         </a>
                         <div>
                           <h6 class="mb-1 text-truncate">
-                            <a [routerLink]="routes.teacherDetails">Hellana</a>
+                            <a [routerLink]="routes.teacherDetails">GODWIN Josua</a>
                           </h6>
-                          <p>English</p>
+                          <p>Anglais</p>
                         </div>
                       </div>
                       <div class="row gx-2">
@@ -860,9 +859,9 @@
                         </a>
                         <div>
                           <h6 class="mb-1 text-truncate">
-                            <a [routerLink]="routes.teacherDetails">Morgan</a>
+                            <a [routerLink]="routes.teacherDetails">KAMDEM DANIEL</a>
                           </h6>
-                          <p>Physics</p>
+                          <p>Sports</p>
                         </div>
                       </div>
                       <div class="row gx-2">
@@ -884,6 +883,7 @@
                     </div>
                   </div>
                 </ng-template>
+                <!--
                 <ng-template carouselSlide>
                   <div class="card bg-light-100 mb-0">
                     <div class="card-body">
@@ -1005,6 +1005,7 @@
                     </div>
                   </div>
                 </ng-template>
+              -->
               </owl-carousel-o>
             </div>
           </div>
@@ -1015,6 +1016,7 @@
 
     <div class="row">
       <!-- Leave Status -->
+      <!--
       <div class="col-xxl-4 col-xl-6 d-flex">
         <div class="card flex-fill">
           <div
@@ -1123,6 +1125,7 @@
           </div>
         </div>
       </div>
+    -->
       <!-- /Leave Status -->
 
       <!-- Exam Result -->
@@ -1131,23 +1134,23 @@
           <div
             class="card-header d-flex align-items-center justify-content-between"
           >
-            <h4 class="card-title">Exam Result</h4>
+            <h4 class="card-title">Résultat Examens</h4>
             <div class="dropdown">
               <a
                 href="javascript:void(0);"
                 class="bg-white dropdown-toggle"
                 data-bs-toggle="dropdown"
-                ><i class="ti ti-calendar me-2"></i>1st Quarter
+                ><i class="ti ti-calendar me-2"></i>1er Trimestre
               </a>
               <ul class="dropdown-menu mt-2 p-3">
                 <li>
                   <a href="javascript:void(0);" class="dropdown-item rounded-1">
-                    1st Quarter
+                    1er Trimestre
                   </a>
                 </li>
                 <li>
                   <a href="javascript:void(0);" class="dropdown-item rounded-1">
-                    2nd Quarter
+                    2e Trimestre
                   </a>
                 </li>
               </ul>
@@ -1162,10 +1165,10 @@
                 >Phy: 92</span
               >
               <span class="badge badge-soft-warning badge-md me-1 mb-3"
-                >Che : 90</span
+                >Chi : 90</span
               >
               <span class="badge badge-soft-danger badge-md mb-3"
-                >Eng : 80</span
+                >Ang : 80</span
               >
             </div>
             <div id="exam-result-chart">
@@ -1188,15 +1191,173 @@
       </div>
       <!-- /Exam Result -->
 
+           <!-- Syllabus -->
+           <div class="col-xxl-4 col-xl-6 d-flex">
+            <div class="card flex-fill">
+              <div
+                class="card-header d-flex align-items-center justify-content-between"
+              >
+                <h4 class="card-title">Programme</h4>
+              </div>
+              <div class="card-body">
+                <div
+                  class="alert alert-success d-flex align-items-center mb-24"
+                  role="alert"
+                >
+                  <i class="ti ti-info-square-rounded me-2 fs-14"></i>
+                  <div class="fs-14">
+                    Ces résultats sont obtenus à partir de l'état d'avancement du programme scolaire de la classe concernée.
+                  </div>
+                </div>
+                <ul class="list-group">
+                  <li class="list-group-item">
+                    <div class="row align-items-center">
+                      <div class="col-sm-4">
+                        <p class="text-dark">Maths</p>
+                      </div>
+                      <div class="col-sm-8">
+                        <div class="progress progress-xs flex-grow-1">
+                          <div
+                            class="progress-bar bg-primary rounded"
+                            role="progressbar"
+                            style="width: 20%"
+                            aria-valuenow="30"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row align-items-center">
+                      <div class="col-sm-4">
+                        <p class="text-dark">Physique</p>
+                      </div>
+                      <div class="col-sm-8">
+                        <div class="progress progress-xs flex-grow-1">
+                          <div
+                            class="progress-bar bg-secondary rounded"
+                            role="progressbar"
+                            style="width: 30%"
+                            aria-valuenow="30"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row align-items-center">
+                      <div class="col-sm-4">
+                        <p class="text-dark">Chimie</p>
+                      </div>
+                      <div class="col-sm-8">
+                        <div class="progress progress-xs flex-grow-1">
+                          <div
+                            class="progress-bar bg-info rounded"
+                            role="progressbar"
+                            style="width: 40%"
+                            aria-valuenow="30"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row align-items-center">
+                      <div class="col-sm-4">
+                        <p class="text-dark">Science</p>
+                      </div>
+                      <div class="col-sm-8">
+                        <div class="progress progress-xs flex-grow-1">
+                          <div
+                            class="progress-bar bg-success rounded"
+                            role="progressbar"
+                            style="width: 50%"
+                            aria-valuenow="30"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row align-items-center">
+                      <div class="col-sm-4">
+                        <p class="text-dark">Anglais</p>
+                      </div>
+                      <div class="col-sm-8">
+                        <div class="progress progress-xs flex-grow-1">
+                          <div
+                            class="progress-bar bg-warning rounded"
+                            role="progressbar"
+                            style="width: 70%"
+                            aria-valuenow="30"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row align-items-center">
+                      <div class="col-sm-4">
+                        <p class="text-dark">Histoire</p>
+                      </div>
+                      <div class="col-sm-8">
+                        <div class="progress progress-xs flex-grow-1">
+                          <div
+                            class="progress-bar bg-danger rounded"
+                            role="progressbar"
+                            style="width: 80%"
+                            aria-valuenow="30"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row align-items-center">
+                      <div class="col-sm-4">
+                        <p class="text-dark">Langue maternelle</p>
+                      </div>
+                      <div class="col-sm-8">
+                        <div class="progress progress-xs flex-grow-1">
+                          <div
+                            class="progress-bar bg-primary rounded"
+                            role="progressbar"
+                            style="width: 85%"
+                            aria-valuenow="30"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- /Syllabus -->
+
       <!-- Fees Reminder -->
       <div class="col-xxl-4 d-flex">
         <div class="card flex-fill">
           <div
             class="card-header d-flex align-items-center justify-content-between"
           >
-            <h4 class="card-titile">Fees Reminder</h4>
+            <h4 class="card-titile">Historique des paiements</h4>
             <a [routerLink]="routes.feesAssign" class="link-primary fw-medium"
-              >View All</a
+              >Afficher tout</a
             >
           </div>
           <div class="card-body py-1">
@@ -1208,13 +1369,13 @@
                   <i class="ti ti-bus-stop fs-16"></i>
                 </span>
                 <div class="overflow-hidden">
-                  <h6 class="text-truncate mb-1">Transport Fees</h6>
-                  <p>$2500</p>
+                  <h6 class="text-truncate mb-1">Transport</h6>
+                  <p>2.500 XAF</p>
                 </div>
               </div>
               <div class="text-end">
-                <h6 class="mb-1">Last Date</h6>
-                <p>25 May 2024</p>
+                <h6 class="mb-1">Dernier paiement</h6>
+                <p>25 Mai 2024</p>
               </div>
             </div>
             <div class="d-flex align-items-center justify-content-between py-3">
@@ -1225,13 +1386,13 @@
                   <i class="ti ti-books fs-16"></i>
                 </span>
                 <div class="overflow-hidden">
-                  <h6 class="text-truncate mb-1">Book Fees</h6>
-                  <p>$2500</p>
+                  <h6 class="text-truncate mb-1">Livres</h6>
+                  <p>2.500 XAF</p>
                 </div>
               </div>
               <div class="text-end">
-                <h6 class="mb-1">Last Date</h6>
-                <p>25 May 2024</p>
+                <h6 class="mb-1">Dernier paiement</h6>
+                <p>25 Mai 2024</p>
               </div>
             </div>
             <div class="d-flex align-items-center justify-content-between py-3">
@@ -1242,13 +1403,13 @@
                   <i class="ti ti-report-money fs-16"></i>
                 </span>
                 <div class="overflow-hidden">
-                  <h6 class="text-truncate mb-1">Exam Fees</h6>
-                  <p>$2500</p>
+                  <h6 class="text-truncate mb-1">Frais de concours</h6>
+                  <p>10.000 XAF</p>
                 </div>
               </div>
               <div class="text-end">
-                <h6 class="mb-1">Last Date</h6>
-                <p>25 May 2024</p>
+                <h6 class="mb-1">Dernier paiement</h6>
+                <p>25 Mai 2024</p>
               </div>
             </div>
             <div class="d-flex align-items-center justify-content-between py-3">
@@ -1260,20 +1421,21 @@
                 </span>
                 <div class="overflow-hidden">
                   <h6 class="text-truncate mb-1">
-                    Mess Fees
+                    Repas
                     <span
                       class="d-inline-flex align-items-center badge badge-soft-danger"
-                      ><i class="ti ti-circle-filled me-1 fs-5"></i>Due</span
+                      ><i class="ti ti-circle-filled me-1 fs-5"></i>Impayé</span
                     >
                   </h6>
-                  <p class="text-danger">$2500 + $150</p>
+                  <p class="text-danger">2.500 XAF + 150 XAF</p>
                 </div>
               </div>
               <div class="text-end">
-                <h6 class="mb-1">Last Date</h6>
-                <p>27 May 2024</p>
+                <h6 class="mb-1">Dernier paiement</h6>
+                <p>27 Mai 2024</p>
               </div>
             </div>
+            <!--
             <div class="d-flex align-items-center justify-content-between py-3">
               <div class="d-flex align-items-center overflow-hidden me-2">
                 <span
@@ -1291,14 +1453,19 @@
                 <p>25 May 2024</p>
               </div>
             </div>
+          -->
           </div>
         </div>
       </div>
       <!-- Fees Reminder -->
+
+      
+
     </div>
 
     <div class="row">
       <!-- Notice Board -->
+       <!--
       <div class="col-xxl-4 col-xl-6 d-flex">
         <div class="card flex-fill">
           <div
@@ -1441,9 +1608,11 @@
           </div>
         </div>
       </div>
+    -->
       <!-- /Notice Board -->
 
       <!-- Syllabus -->
+       <!--
       <div class="col-xxl-4 col-xl-6 d-flex">
         <div class="card flex-fill">
           <div
@@ -1600,9 +1769,11 @@
           </div>
         </div>
       </div>
+    -->
       <!-- /Syllabus -->
 
       <!-- Todo -->
+       <!--
       <div class="col-xxl-4 col-xl-12 d-flex">
         <div class="card flex-fill">
           <div
@@ -1662,6 +1833,7 @@
           </div>
         </div>
       </div>
+    -->
       <!-- /Todo -->
     </div>
   </div>
