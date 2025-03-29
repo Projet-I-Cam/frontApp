@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, SimpleChange } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AuthRoutingModule } from './auth-routing.module';
@@ -26,6 +26,7 @@ import { TwoStepVerificationComponent } from './two-step-verification/two-step-v
 import { TwoStepVerification2Component } from './two-step-verification/two-step-verification-2/two-step-verification-2.component';
 import { TwoStepVerification3Component } from './two-step-verification/two-step-verification-3/two-step-verification-3.component';
 import { LockScreenComponent } from './lock-screen/lock-screen.component';
+import { SiteModule } from '../site/site.module';
 
 
 @NgModule({
@@ -57,7 +58,8 @@ import { LockScreenComponent } from './lock-screen/lock-screen.component';
   imports: [
     CommonModule,
     AuthRoutingModule,
-    SharedModule
+    SharedModule,
+    SiteModule
   ]
 })
 export class AuthModule { }
