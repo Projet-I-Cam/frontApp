@@ -6,12 +6,22 @@ import { Router } from '@angular/router';
 import { PaginationService, tablePageSize } from '../../../../shared/custom-pagination/pagination.service';
 import { DataService } from '../../../../shared/data/data.service';
 import { teachersList, apiResultFormat, pageSelection } from '../../../../shared/model/pages.model';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { CustomPaginationModule } from '../../../../shared/custom-pagination/custom-pagination.module';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { DropdownModule } from 'primeng/dropdown';
+import { SharedModule } from '../../../../shared/shared.module';
 
 @Component({
     selector: 'app-teachers-list',
     templateUrl: './teachers-list.component.html',
     styleUrl: './teachers-list.component.scss',
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, RouterModule, FormsModule, MatSortModule, MatTableModule, CustomPaginationModule, BsDatepickerModule, DropdownModule, SharedModule]
 })
 export class TeachersListComponent {
   public routes = routes;
@@ -36,7 +46,7 @@ export class TeachersListComponent {
     this.data.getTeachersList().subscribe((apiRes: apiResultFormat) => {
       this.actualData = apiRes.data;
       this.pagination.tablePageSize.subscribe((res: tablePageSize) => {
-        if (this.router.url == this.routes.teachersList) {
+        if (this.router.url.includes('/teachers/teachers-list')) {
           this.getTableData({ skip: res.skip, limit: res.limit });
           this.pageSize = res.pageSize;
         }
@@ -82,6 +92,7 @@ export class TeachersListComponent {
       });
     }
   }
+  
   public searchData(value: string): void {
     if (value == '') {
       this.tableData = this.tableDataCopy;
@@ -90,6 +101,7 @@ export class TeachersListComponent {
       this.tableData = this.dataSource.filteredData;
     }
   }
+  
   selectAll(initChecked: boolean) {
     if (!initChecked) {
       this.tableData.forEach((f) => {
@@ -102,4 +114,27 @@ export class TeachersListComponent {
     }
   }
 
+  navigateToDetails(teacherId: string) {
+    this.router.navigate(['/peoples/teachers/teacher-details', teacherId]);
+  }
+
+  navigateToEdit(teacherId: string) {
+    this.router.navigate(['/peoples/teachers/edit-teacher', teacherId]);
+  }
+
+  navigateToRoutine(teacherId: string) {
+    this.router.navigate(['/peoples/teachers/teachers-routine', teacherId]);
+  }
+
+  navigateToLeaves(teacherId: string) {
+    this.router.navigate(['/peoples/teachers/teacher-leaves', teacherId]);
+  }
+
+  navigateToSalary(teacherId: string) {
+    this.router.navigate(['/peoples/teachers/teacher-salary', teacherId]);
+  }
+
+  navigateToLibrary(teacherId: string) {
+    this.router.navigate(['/peoples/teachers/teacher-library', teacherId]);
+  }
 }

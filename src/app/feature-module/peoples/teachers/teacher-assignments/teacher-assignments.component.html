@@ -1,0 +1,340 @@
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+  <div class="content content-two">
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="page-sub-header">
+            <h3 class="page-title">Affectation des Enseignants</h3>
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item">
+                <a [routerLink]="routes.teachersList">Enseignants</a>
+              </li>
+              <li class="breadcrumb-item active">Affectation aux Classes</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card card-table comman-shadow">
+          <div class="card-body pb-0">
+            <div class="page-header">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h3 class="page-title">Affectations</h3>
+                </div>
+                <div class="col-auto text-end float-end ms-auto">
+                  <a
+                    href="javascript:void(0);"
+                    class="btn btn-outline-primary me-2"
+                    ><i class="fas fa-download"></i> Télécharger</a
+                  >
+                  <a
+                    href="javascript:void(0);"
+                    class="btn btn-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#assignmentModal"
+                    ><i class="fas fa-plus"></i> Nouvelle Affectation</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="card comman-shadow">
+                  <div class="card-body p-0">
+                    <div class="card-header">
+                      <h5 class="card-title">Filtres d'affectation</h5>
+                    </div>
+                    <div class="student-group-form mb-0 pb-2">
+                      <div class="row">
+                        <div class="col-lg-3 col-md-6">
+                          <div class="form-group local-forms mb-2">
+                            <label>Classe <span class="login-danger">*</span></label>
+                            <p-dropdown
+                              [options]="classes"
+                              [(ngModel)]="selectedClass"
+                              optionLabel="name"
+                              [filter]="true"
+                              filterBy="name"
+                              [showClear]="true"
+                              placeholder="Sélectionner une classe"
+                            ></p-dropdown>
+                          </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                          <div class="form-group local-forms mb-2">
+                            <label>Section <span class="login-danger">*</span></label>
+                            <p-dropdown
+                              [options]="sections"
+                              [(ngModel)]="selectedSection"
+                              optionLabel="name"
+                              [filter]="true"
+                              filterBy="name"
+                              [showClear]="true"
+                              placeholder="Sélectionner une section"
+                            ></p-dropdown>
+                          </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                          <div class="form-group local-forms mb-2">
+                            <label>Matière <span class="login-danger">*</span></label>
+                            <p-dropdown
+                              [options]="subjects"
+                              [(ngModel)]="selectedSubject"
+                              optionLabel="name"
+                              [filter]="true"
+                              filterBy="name"
+                              [showClear]="true"
+                              placeholder="Sélectionner une matière"
+                            ></p-dropdown>
+                          </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                          <div class="row align-items-center student-worksapce justify-content-end">
+                            <div class="form-group search-box search-filter">
+                              <div class="search-form">
+                                <input type="text" name="search" [(ngModel)]="searchDataValue" (keyup)="searchData(searchDataValue)" class="form-control" placeholder="Rechercher...">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table
+                class="table border-0 star-student table-hover table-center mb-0 datatable table-striped"
+              >
+                <thead class="student-thread">
+                  <tr>
+                    <th>
+                      <div class="form-check check-tables">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          [checked]="initChecked"
+                          (click)="selectAll(initChecked); initChecked = !initChecked"
+                        />
+                      </div>
+                    </th>
+                    <th>ID</th>
+                    <th>Enseignant</th>
+                    <th>Classe</th>
+                    <th>Section</th>
+                    <th>Matière</th>
+                    <th>Date Début</th>
+                    <th>Date Fin</th>
+                    <th>Statut</th>
+                    <th class="text-end">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of tableData">
+                    <td>
+                      <div class="form-check check-tables">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          [checked]="item.isSelected"
+                        />
+                      </div>
+                    </td>
+                    <td class="id-column">T-{{ item.id }}</td>
+                    <td>
+                      <h2 class="table-avatar">
+                        <a href="javascript:void(0);" class="avatar avatar-sm me-2">
+                          <img
+                            class="avatar-img rounded-circle"
+                            [src]="item.teacherImg"
+                            alt="Enseignant"
+                          />
+                        </a>
+                        <a href="javascript:void(0);" class="normal-text">{{ item.teacherName }}</a>
+                      </h2>
+                    </td>
+                    <td>{{ item.className }}</td>
+                    <td>{{ item.section }}</td>
+                    <td>{{ item.subject }}</td>
+                    <td>{{ item.startDate }}</td>
+                    <td>{{ item.endDate }}</td>
+                    <td>
+                      <span [ngClass]="{'badge badge-success': item.status === 'Actif', 'badge badge-danger': item.status === 'Inactif'}">
+                        {{ item.status }}
+                      </span>
+                    </td>
+                    <td class="text-end">
+                      <div class="actions">
+                        <a
+                          href="javascript:void(0);"
+                          class="btn btn-sm bg-success-light me-2"
+                          data-bs-toggle="modal"
+                          data-bs-target="#assignmentModal"
+                          title="Modifier"
+                        >
+                          <i class="feather-edit"></i>
+                        </a>
+                        <a
+                          href="javascript:void(0);"
+                          class="btn btn-sm bg-danger-light"
+                          data-bs-toggle="modal"
+                          data-bs-target="#deleteModal"
+                          title="Supprimer"
+                        >
+                          <i class="feather-trash"></i>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Page Wrapper -->
+
+<!-- Modal Ajout/Modification d'affectation -->
+<div class="modal fade" id="assignmentModal" tabindex="-1" role="dialog" aria-labelledby="assignmentModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="assignmentModalLabel">Ajouter/Modifier une affectation</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Fermer">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row">
+            <div class="col-12">
+              <h5 class="form-title"><span>Informations d'affectation</span></h5>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="form-group local-forms">
+                <label>Enseignant <span class="login-danger">*</span></label>
+                <select class="form-select form-control" required>
+                  <option value="">Sélectionner un enseignant</option>
+                  <option value="1">Julien Vossard</option>
+                  <option value="2">Sophie Laurent</option>
+                  <option value="3">Marc Dupont</option>
+                  <option value="4">Claire Morin</option>
+                  <option value="5">Pierre Martin</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="form-group local-forms">
+                <label>Matière <span class="login-danger">*</span></label>
+                <p-dropdown
+                  [options]="subjects"
+                  optionLabel="name"
+                  [filter]="true"
+                  filterBy="name"
+                  [showClear]="true"
+                  placeholder="Sélectionner une matière"
+                ></p-dropdown>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="form-group local-forms">
+                <label>Classe <span class="login-danger">*</span></label>
+                <p-dropdown
+                  [options]="classes"
+                  optionLabel="name"
+                  [filter]="true"
+                  filterBy="name"
+                  [showClear]="true"
+                  placeholder="Sélectionner une classe"
+                ></p-dropdown>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="form-group local-forms">
+                <label>Section <span class="login-danger">*</span></label>
+                <p-dropdown
+                  [options]="sections"
+                  optionLabel="name"
+                  [filter]="true"
+                  filterBy="name"
+                  [showClear]="true"
+                  placeholder="Sélectionner une section"
+                ></p-dropdown>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="form-group local-forms calendar-icon">
+                <label>Date de début <span class="login-danger">*</span></label>
+                <input class="form-control datetimepicker" type="text" bsDatepicker [bsConfig]="{ adaptivePosition: true }" placeholder="DD-MM-YYYY">
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="form-group local-forms calendar-icon">
+                <label>Date de fin <span class="login-danger">*</span></label>
+                <input class="form-control datetimepicker" type="text" bsDatepicker [bsConfig]="{ adaptivePosition: true }" placeholder="DD-MM-YYYY">
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="form-group local-forms">
+                <label>Statut <span class="login-danger">*</span></label>
+                <select class="form-select form-control" required>
+                  <option value="">Sélectionner un statut</option>
+                  <option value="Actif">Actif</option>
+                  <option value="Inactif">Inactif</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="form-group local-forms">
+                <label>Heures par semaine <span class="login-danger">*</span></label>
+                <input type="number" class="form-control" min="1" max="20" placeholder="Nombre d'heures par semaine">
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-group local-forms">
+                <label>Description</label>
+                <textarea class="form-control" rows="3" placeholder="Notes ou instructions supplémentaires"></textarea>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary me-3" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Suppression -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Confirmer la suppression</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Fermer">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Voulez-vous vraiment supprimer cette affectation ? Cette action ne peut pas être annulée.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-danger">Oui, Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div> 

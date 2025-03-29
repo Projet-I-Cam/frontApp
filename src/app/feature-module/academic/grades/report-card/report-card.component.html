@@ -1,0 +1,188 @@
+<div class="page-wrapper">
+    <!-- Barre de navigation avec titre -->
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Bulletins Scolaires</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a [routerLink]="routes.adminDashboard">Tableau de bord</a>
+                        </li>
+                        <li class="breadcrumb-item"><a>Notes</a></li>
+                        <li class="breadcrumb-item active">Bulletins Scolaires</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="!showBulletin">
+            <div class="col-sm-12">
+                <div class="card card-table comman-shadow">
+                    <div class="card-body">
+                        <!-- Filters -->
+                        <div class="row filter-row">
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group">
+                                    <label>Classe</label>
+                                    <p-dropdown [options]="classes" [(ngModel)]="selectedClass" optionLabel="name" placeholder="Sélectionner une classe" styleClass="w-100"></p-dropdown>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group">
+                                    <label>Élève</label>
+                                    <p-dropdown [options]="students" [(ngModel)]="selectedStudent" optionLabel="name" placeholder="Sélectionner un élève" styleClass="w-100"></p-dropdown>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group">
+                                    <label>Période</label>
+                                    <p-dropdown [options]="terms" [(ngModel)]="selectedTerm" optionLabel="name" placeholder="Sélectionner une période" styleClass="w-100"></p-dropdown>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Filters -->
+
+                        <!-- Button Row -->
+                        <div class="row mt-4">
+                            <div class="col-12 text-center">
+                                <button class="btn btn-primary" [disabled]="!selectedClass || !selectedStudent || !selectedTerm" (click)="generateBulletin()">Générer le Bulletin</button>
+                            </div>
+                        </div>
+                        <!-- /Button Row -->
+
+                        <!-- No Selection Warning -->
+                        <div class="row mt-4" *ngIf="!selectedClass || !selectedStudent || !selectedTerm">
+                            <div class="col-12 text-center">
+                                <div class="alert alert-info">
+                                    Veuillez sélectionner une classe, un élève et une période pour générer le bulletin.
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /No Selection Warning -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Report Card -->
+        <div class="row" *ngIf="showBulletin">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 text-end mb-3">
+                                <button class="btn btn-primary me-2" (click)="showBulletin = false">Retour</button>
+                                <button class="btn btn-success" (click)="printBulletin()">Imprimer</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Bulletin Content -->
+                        <div class="bulletin-container">
+                            <!-- Header -->
+                            <div class="bulletin-header">
+                                <div class="school-info">
+                                    <h2>{{ studentData?.schoolName }}</h2>
+                                    <p>Année scolaire: {{ studentData?.schoolYear }}</p>
+                                    <h3>BULLETIN DE NOTES</h3>
+                                    <p>{{ studentData?.term }}</p>
+                                </div>
+                                <div class="student-photo">
+                                    <img [src]="studentData?.image" alt="Photo de l'élève">
+                                </div>
+                            </div>
+                            
+                            <!-- Student Info -->
+                            <div class="student-info">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong>Nom de l'élève:</strong> {{ studentData?.name }}</p>
+                                        <p><strong>Numéro d'admission:</strong> {{ studentData?.admissionNo }}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>Classe:</strong> {{ studentData?.class }}</p>
+                                        <p><strong>Classement:</strong> {{ studentData?.rank }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Grades Table -->
+                            <div class="grades-table">
+                                <h4>Résultats</h4>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Matière</th>
+                                            <th>Note /20</th>
+                                            <th>Appréciation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let subject of studentData?.subjects">
+                                            <td>{{ subject.name }}</td>
+                                            <td>{{ subject.grade }}</td>
+                                            <td>{{ subject.appreciation }}</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="table-primary">
+                                            <td><strong>Moyenne générale</strong></td>
+                                            <td><strong>{{ studentData?.average }}/20</strong></td>
+                                            <td><strong>Moyenne de classe: {{ studentData?.classAverage }}/20</strong></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            
+                            <!-- Additional Info -->
+                            <div class="additional-info">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong>Assiduité:</strong> {{ studentData?.attendance }}</p>
+                                        <p><strong>Conduite:</strong> {{ studentData?.conduct }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Remarks -->
+                            <div class="remarks">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h5>Remarques du professeur principal:</h5>
+                                        <p>{{ studentData?.teacherRemarks }}</p>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-12">
+                                        <h5>Observations du directeur:</h5>
+                                        <p>{{ studentData?.principalRemarks }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Signatures -->
+                            <div class="signatures">
+                                <div class="row">
+                                    <div class="col-md-4 text-center">
+                                        <div class="signature-line"></div>
+                                        <p>Professeur principal</p>
+                                    </div>
+                                    <div class="col-md-4 text-center">
+                                        <div class="signature-line"></div>
+                                        <p>Parent / Tuteur</p>
+                                    </div>
+                                    <div class="col-md-4 text-center">
+                                        <div class="signature-line"></div>
+                                        <p>Directeur</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Bulletin Content -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Report Card -->
+    </div>
+</div> 

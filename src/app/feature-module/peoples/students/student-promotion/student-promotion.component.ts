@@ -6,6 +6,16 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { PaginationService, tablePageSize } from '../../../../shared/custom-pagination/pagination.service';
 import { DataService } from '../../../../shared/data/data.service';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { CustomPaginationModule } from '../../../../shared/custom-pagination/custom-pagination.module';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { DropdownModule } from 'primeng/dropdown';
+import { SharedModule } from '../../../../shared/shared.module';
+
 interface data {
   name: string;
   code: string;
@@ -14,7 +24,8 @@ interface data {
     selector: 'app-student-promotion',
     templateUrl: './student-promotion.component.html',
     styleUrl: './student-promotion.component.scss',
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, RouterModule, FormsModule, MatSortModule, MatTableModule, CustomPaginationModule, BsDatepickerModule, DropdownModule, SharedModule]
 })
 export class StudentPromotionComponent {
   public routes = routes;
