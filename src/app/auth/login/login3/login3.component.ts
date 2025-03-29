@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 import { AuthService } from '../../../services/auth.service';
 import { routes } from '../../../shared/routes/routes';
+import { LoginService } from '../../services/login.service';
 
 @Component({
     selector: 'app-login3',
@@ -20,7 +21,8 @@ export class Login3Component {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private loginService: LoginService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -32,8 +34,18 @@ export class Login3Component {
     this.passwordVisible = !this.passwordVisible;
   }
 
-  public navigate() {
-    this.router.navigate([routes.adminDashboard]);
+  public navigate(role: string): void {
+    if (role === 'regional' || role === 'departemental' || role === 'arrondissement' ||
+        role === 'administration' || role === 'etablissement') {
+      this.router.navigate([routes.adminDashboard]);
+    } else if (role === 'enseignant') {
+      this.router.navigate([routes.teacherDashboard]);
+    } else if (role === 'parent') {
+      console.log('Parent role detected. Navigating to parent dashboard.');
+      this.router.navigate([routes.parentDashboard]);
+    } else {
+      this.router.navigate([routes.studentDashboard]); // Only navigate here if none of the above roles match
+    }
   }
   public password : boolean[] = [false];
 
@@ -53,9 +65,8 @@ export class Login3Component {
       if(user?.error){
         throw user.error
       }
-      console.log(' USER FINAL ', user)
-      localStorage.setItem('user', JSON.stringify(user)); 
-      return this.navigate();
+      this.loginService.setUser(user);
+      return this.navigate(user.role?.task_name);
     } catch (error: any) {
       console.error('Error Form login submited ', error?.message)
       this.errorMessage = error?.message || 'Login failed. Please check your credentials and try again.';

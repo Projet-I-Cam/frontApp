@@ -319,7 +319,7 @@
                             <a class="dropdown-item d-inline-flex align-items-center p-2"
                                 [routerLink] = "routes.profileSettings"><i class="ti ti-settings me-2"></i>Settings</a>
                             <hr class="m-0">
-                            <a class="dropdown-item d-inline-flex align-items-center p-2" [routerLink] = "routes.login"><i
+                            <a class="dropdown-item d-inline-flex align-items-center p-2" (click)="logout()"><i
                                     class="ti ti-login me-2"></i>Logout</a>
                         </div>
                     </div>
