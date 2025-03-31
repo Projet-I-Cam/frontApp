@@ -32,4 +32,4 @@ jobs:
       run: | 
         echo Start app deployment here !
         docker rm -f icam-front ||  docker kill icam-front  ||  echo "Nothing to kill"
-        docker run --detach --name icam-front --restart=always -p 1338:80 -dit --pull=always xmael123/icam-front
+        docker run --detach --name front1 --restart=always -p 1338:80 -dit --pull=always xmael123/icam-front
