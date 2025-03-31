@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../../../services/auth.service';
+import { getRegion } from '../../../services/statefull/localisation';
 import { routes } from '../../../shared/routes/routes';
 import { LoginService } from '../../services/login.service';
 
@@ -61,11 +62,14 @@ export class Login3Component {
 
     const { email, password } = this.loginForm.value;
     try {
+      console.log('Before user loged')
       const user: any = await this.authService.login(email, password);
+      console.log('After user loged')
+      getRegion()
       if(user?.error){
         throw user.error
       }
-      this.loginService.setUser(user);
+      //this.loginService.setUser(user);
       return this.navigate(user.role?.task_name);
     } catch (error: any) {
       console.error('Error Form login submited ', error?.message)
