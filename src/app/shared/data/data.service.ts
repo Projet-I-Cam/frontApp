@@ -753,16 +753,21 @@ export class DataService {
     if(this.loginService.isLoggedIn()){
       const user = this.loginService.getUser();
       const role = user.role.task_name;
-      if((role === 'regional' || role === 'departemental' || role === 'arrondissement' || role === 'administration' || role === 'etablissement')){
+      console.log( 'the user role is' , role);
+      if((role === 'etablissement')){
         return this.AdminSchoolSidebarData;
       }else if(role === 'enseignant'){
         return this.TeacherSidebarData;
       }else if(role === 'parent'){
         return this.ParentSidebarData;
       }
+      else if(role === 'regional' || role === 'departemental' || role === 'arrondissement' || role === 'administration'){
+        return this.AdminSidebarData;
+      }
     }
     return this.sidebarData1;
   }
+
   public sidebarData1 = [
     {
       tittle: 'Main',
@@ -785,21 +790,6 @@ export class DataService {
               menuValue: 'Admin Dashboard',
               route: routes.adminDashboard,
               page: 'index',
-            },
-            {
-              menuValue: 'Teacher Dashboard',
-              route: routes.teacherDashboard,
-              page: 'teacher-dashboard',
-            },
-            {
-              menuValue: 'Tableau de bord Elève',
-              route: routes.studentDashboard,
-              page: 'student-dashboard',
-            },
-            {
-              menuValue: 'Parent Dashboard',
-              route: routes.parentDashboard,
-              page: 'parent-dashboard',
             },
           ],
         },
@@ -3222,6 +3212,189 @@ export class DataService {
       ],
     },
   ];
+
+  public AdminSidebarData = [
+    {
+
+      tittle: 'Main',
+      showAsTab: false,
+      separateRoute: false,
+      hasSubRoute: false,
+      showSubRoute: false,
+      base: '',
+      page: '99',
+      menu: [
+        {
+          menuValue: 'Dashboard',
+          icon: 'layout-2',
+          base: 'dashboard',
+          hasSubRoute: false,
+          showSubRoute: false,
+          route: routes.adminDashboard,
+          base2: "",
+          base3: "",
+          base4: "",
+          base5: "",
+          base6: "",
+          base7: "",
+          base8: "",
+          base9: "",
+          customSubmenuTwo: false,
+          subRoutes: [],
+        },
+      ],
+    },
+    {
+      tittle: 'Peoples',
+      showAsTab: false,
+      separateRoute: false,
+      hasSubRoute: false,
+      showSubRoute: true,
+      base: 'Administration Centrale',
+      menu: [
+        {
+          menuValue: 'Division Administratif',
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'school',
+          page: '',
+
+          subMenus: [
+            {
+              menuValue: 'Regions',
+              route: routes.regionsList,
+            },
+            {
+              menuValue: 'Departements',
+              route: routes.departementsList,
+            },
+            {
+              menuValue: 'Arrondissements',
+              route: routes.municipalitiesList,
+            },
+          ],
+        },
+        {
+          menuValue: 'Parents',
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'user-bolt',
+          page: 'parents',
+          subMenus: [
+            {
+              menuValue: 'All Parents',
+              route: routes.parentGrid,
+              hasSubRoute: false,
+              showSubRoute: false,
+              customSubmenuTwo: false,
+            },
+            {
+              menuValue: 'Parent List',
+              route: routes.parentList,
+              customSubmenuTwo: false,
+              hasSubRoute: false,
+              showSubRoute: false,
+            },
+          ],
+        },
+        {
+          menuValue: 'Guardians',
+          hasSubRoute: true,
+          showSubRoute: false,
+          page: 'guardians',
+          icon: 'user-shield',
+          subMenus: [
+            {
+              menuValue: 'All Guardians',
+              route: routes.guardiansGrid,
+              hasSubRoute: false,
+              showSubRoute: false,
+              customSubmenuTwo: false,
+            },
+            {
+              menuValue: 'Guardian List',
+              route: routes.guardiansList,
+              hasSubRoute: false,
+              showSubRoute: false,
+              customSubmenuTwo: false,
+            },
+          ],
+        },
+        {
+          menuValue: 'Teachers',
+          hasSubRoute: true,
+          showSubRoute: false,
+          page: 'teachers',
+          icon: 'fas fa-chalkboard-teacher',
+          subMenus: [
+            {
+              menuValue: 'Teachers List',
+              route: routes.teachersList,
+              parentMenuValue: 'Teachers',
+            },
+            {
+              menuValue: 'Add Teacher',
+              route: routes.addTeacher,
+              parentMenuValue: 'Teachers',
+            },
+            {
+              menuValue: 'Teachers Assignments',
+              route: routes.teacherAssignments,
+              parentMenuValue: 'Teachers',
+            }
+          ],
+        },
+        {
+          menuValue: 'Paramétres',
+          base: 'website-settings',
+          icon: 'world-cog',
+          hasSubRoute: true,
+          showSubRoute: false,
+          page: '22',
+          subMenus: [
+            {
+              menuValue: 'Company Settings',
+              route: routes.companySettings,
+              hasSubRoute: false,
+              showSubRoute: false,
+            },
+            {
+              menuValue: 'Localization',
+              route: routes.localization,
+              hasSubRoute: false,
+              showSubRoute: false,
+            },
+            {
+              menuValue: 'Prefixes',
+              route: routes.prefixes,
+              hasSubRoute: false,
+              showSubRoute: false,
+            },
+            {
+              menuValue: 'Preference',
+              route: routes.preferences,
+              hasSubRoute: false,
+              showSubRoute: false,
+            },
+            {
+              menuValue: 'Social Authentication',
+              route: routes.socialAuthentication,
+              hasSubRoute: false,
+              showSubRoute: false,
+            },
+            {
+              menuValue: 'Language',
+              route: routes.language,
+              hasSubRoute: false,
+              showSubRoute: false,
+            },
+          ],
+        },
+
+      ],
+    },
+  ];
+
   public AdminSchoolSidebarData = [
     {
 
@@ -3723,7 +3896,7 @@ export class DataService {
           base: 'dashboard',
           hasSubRoute: false,
           showSubRoute: false,
-          route: routes.parentDashboard,
+          route: routes.adminDashboard,
           base2: "",
           base3: "",
           base4: "",
@@ -3900,7 +4073,7 @@ export class DataService {
           base: 'dashboard',
           hasSubRoute: false,
           showSubRoute: false,
-          route: routes.teacherDashboard,
+          route: routes.adminDashboard,
           base2: "",
           base3: "",
           base4: "",

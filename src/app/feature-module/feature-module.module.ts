@@ -25,7 +25,6 @@ import { LayoutComponent } from './common/layout/layout.component';
     SharedModule,
   ],
   exports: [
-
   ],
 })
 export class FeatureModuleModule {}

@@ -36,17 +36,7 @@ export class Login3Component {
   }
 
   public navigate(role: string): void {
-    if (role === 'regional' || role === 'departemental' || role === 'arrondissement' ||
-        role === 'administration' || role === 'etablissement') {
-      this.router.navigate([routes.adminDashboard]);
-    } else if (role === 'enseignant') {
-      this.router.navigate([routes.teacherDashboard]);
-    } else if (role === 'parent') {
-      console.log('Parent role detected. Navigating to parent dashboard.');
-      this.router.navigate([routes.parentDashboard]);
-    } else {
-      this.router.navigate([routes.studentDashboard]); // Only navigate here if none of the above roles match
-    }
+     this.router.navigate([routes.adminDashboard]);
   }
   public password : boolean[] = [false];
 
@@ -69,7 +59,7 @@ export class Login3Component {
       if(user?.error){
         throw user.error
       }
-      //this.loginService.setUser(user);
+      this.loginService.setUser(user);
       return this.navigate(user.role?.task_name);
     } catch (error: any) {
       console.error('Error Form login submited ', error?.message)

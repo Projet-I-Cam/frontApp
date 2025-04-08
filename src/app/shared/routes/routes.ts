@@ -400,17 +400,17 @@ export class routes {
   public static get studentTimeTable(): string {
     return this.peoples + '/students/student-time-table';
   }
-  
+
   public static get studentTransfer(): string {
     return this.peoples + '/students/student-transfer';
   }
-  
+
   public static get studentReportCard(): string {
     return this.peoples + '/students/student-report-card';
   }
 
- 
-  
+
+
 
   //hrm routes
   public static get hrm(): string {
@@ -789,17 +789,29 @@ export class routes {
     return this.baseUrl + '/dashboard';
   }
   public static get adminDashboard(): string {
-    return this.dashboard + '/index';
+    return this.dashboard;
   }
-  public static get parentDashboard(): string {
-    return this.dashboard + '/parent-dashboard';
+
+  //administratif division
+  public static get administratifDivision(): string {
+    return this.baseUrl + '/administratif-division';
   }
-  public static get teacherDashboard(): string {
-    return this.dashboard + '/teacher-dashboard';
+
+  public static get regionsList(): string {
+    return this.administratifDivision + '/regions';
   }
-  public static get studentDashboard(): string {
-    return this.dashboard + '/student-dashboard';
+
+  public static get departementsList(): string {
+    return this.administratifDivision + '/departements';
   }
+  
+  public static get municipalitiesList(): string {
+    return this.administratifDivision + '/municipalities';
+  }
+  
+
+
+
   // application
   public static get application(): string {
     return this.baseUrl + '/application';
@@ -846,7 +858,7 @@ export class routes {
   public static get fileShared(): string {
     return this.application + '/file-shared';
   }
- 
+
   public static get calendar(): string {
     return this.application + '/calendar';
   }
@@ -980,7 +992,7 @@ export class routes {
   public static get layoutDark(): string {
     return this.baseUrl + '/layout-dark';
   }
- 
+
   // Pupil Management Routes
   public static get pupilManagement(): string {
     return this.baseUrl + '/pupil-management';

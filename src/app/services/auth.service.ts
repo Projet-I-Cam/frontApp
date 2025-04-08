@@ -12,9 +12,9 @@ export class AuthService {
   async login(username: string, password: string) {
     try {
       const user: any =  await Parse.User.logIn(username, password);
-      console.log('User loged here => Parse Object ', user)
-      console.log('User fulldata ', user.toJSON())
-      console.log('Or user one attribute ', user.get('email'))
+      // console.log('User loged here => Parse Object ', user)
+      // console.log('User fulldata ', user.toJSON())
+      // console.log('Or user one attribute ', user.get('email'))
 
       const query = new Parse.Query(Parse.User);
       query.include("role");
