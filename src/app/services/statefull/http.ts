@@ -1,8 +1,5 @@
 import Parse from 'parse';
 
-import { Arrondissement, Departement, Region } from '../../parseClass';
-import { departments } from './../../shared/model/pages.model';
-
 export interface BaseGetIO {
     T: any;
     filters?: {};

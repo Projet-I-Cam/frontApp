@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { Arrondissement } from '../../../parseClass';
-import { globalGet } from '../../../services/statefull/localisation';
+import { globalGet } from '../../../services/statefull/http';
 
 @Component({
   selector: 'app-municipalities',
