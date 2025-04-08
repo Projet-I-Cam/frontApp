@@ -1,13 +1,13 @@
 import Parse from 'parse';
 
 export interface BaseGetIO {
-    T: any;
-    filters?: {};
-    includes?: Array<String>;
-    curentPage?: number; 
-    size?: number; 
-    selects?: Array<String>;
-    isOne?: Boolean 
+    T: any; // la classe par de base. vous pouvez regarder app/parseClass.ts
+    filters?: {}; //les contrainte 
+    includes?: Array<String>; // les jointure
+    curentPage?: number; // pour la pagination. le currentpage peu etre 1 ou 2 pour la page 1 et 2
+    size?: number; // le size le nombre max a recuperer par exemple je veux une pagination 10 par 10
+    selects?: Array<String>; // les champs a selection. laissez vide si on veux tous prendre
+    isOne?: Boolean // prendre seulelent 1 ou bien un array. est false si on veut one
 } 
 
 export interface BasePostIO {
