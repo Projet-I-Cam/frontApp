@@ -30,11 +30,11 @@ export class SidebarComponent {
     private router: Router,
     private common: CommonService
   ) {
-    
+
     this.sidebar.expandSideBar.subscribe((res: boolean) => {
       this.expandMenu = res;
     });
-    this.side_bar_data = this.data.sidebarData1;
+    this.side_bar_data = this.data.getSideBarData();
     this.common.base.subscribe((res: string) => {
       this.base = res;
     });

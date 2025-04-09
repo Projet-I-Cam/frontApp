@@ -3,7 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../../../services/auth.service';
+import { getRegion } from '../../../services/statefull/localisation';
 import { routes } from '../../../shared/routes/routes';
+import { LoginService } from '../../services/login.service';
 
 @Component({
     selector: 'app-login3',
@@ -20,7 +22,8 @@ export class Login3Component {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private loginService: LoginService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -32,8 +35,8 @@ export class Login3Component {
     this.passwordVisible = !this.passwordVisible;
   }
 
-  public navigate() {
-    this.router.navigate([routes.adminDashboard]);
+  public navigate(role: string): void {
+     this.router.navigate([routes.adminDashboard]);
   }
   public password : boolean[] = [false];
 
@@ -49,13 +52,15 @@ export class Login3Component {
 
     const { email, password } = this.loginForm.value;
     try {
+      console.log('Before user loged')
       const user: any = await this.authService.login(email, password);
+      console.log('After user loged')
+      getRegion()
       if(user?.error){
         throw user.error
       }
-      console.log(' USER FINAL ', user)
-      localStorage.setItem('user', JSON.stringify(user)); 
-      return this.navigate();
+      this.loginService.setUser(user);
+      return this.navigate(user.role?.task_name);
     } catch (error: any) {
       console.error('Error Form login submited ', error?.message)
       this.errorMessage = error?.message || 'Login failed. Please check your credentials and try again.';

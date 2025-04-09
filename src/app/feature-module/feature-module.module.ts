@@ -10,18 +10,21 @@ import { LayoutComponent } from './common/layout/layout.component';
 
 
 
+
 @NgModule({
   declarations: [
     FeatureModuleComponent,
     HeaderComponent,
     SidebarComponent,
     LayoutComponent,
-      
+
   ],
   imports: [
     CommonModule,
     FeatureModuleRoutingModule,
     SharedModule,
   ],
+  exports: [
+  ],
 })
-export class FeatureModuleModule {} 
+export class FeatureModuleModule {}

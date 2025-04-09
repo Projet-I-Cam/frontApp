@@ -3,8 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { FeatureModuleComponent } from './feature-module.component';
 import { AdminDashboardComponent } from './main/dashboard/admin-dashboard/admin-dashboard.component';
 
+
 const routes: Routes = [
- 
+
   {
     path: '',
     component: FeatureModuleComponent,
@@ -17,6 +18,13 @@ const routes: Routes = [
       {
         path: 'dashboard/index',
         component: AdminDashboardComponent,
+      },
+      {
+        path: 'administratif-division',
+        loadChildren: () =>
+          import('../feature-module/administratif-division/administratif-division.module').then(
+            (m) => m.AdministratifDivisionModule
+          ),
       },
       {
         path: 'base-ui',
@@ -206,15 +214,15 @@ const routes: Routes = [
             (m) => m.AcademicSettingsModule
           ),
       },
-      
+
       { path: 'layout-mini', component: AdminDashboardComponent },
       { path: 'layout-default', component: AdminDashboardComponent },
-      
+
       { path: 'layout-box', component: AdminDashboardComponent },
       { path: 'layout-dark', component: AdminDashboardComponent },
 
-      
-     
+
+
     ],
   },
 ];

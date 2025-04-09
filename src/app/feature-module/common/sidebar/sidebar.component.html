@@ -19,14 +19,14 @@
               <!-- <h6 class="submenu-hdr"><span>{{ mainTittle.tittle }}</span></h6> -->
               <ul>
                 @for (menu of mainTittle?.menu; track menu) {
-                <!-- @if (menu?.hasSubRoute === false) {
+                @if (menu?.hasSubRoute === false) {
                 <li [class.active]="base === menu.base || page === menu.base || page === menu.base2 || page === menu.base3 || page === menu.base4 || page === menu.base5
                 || page === menu.base6 || page === menu.base7 || page === menu.base8 || page === menu.base9">
                   <a   (click)="expandSubMenus(menu)"  [routerLink]="menu?.route" ><i class="ti" [class]="'ti-' + menu.icon"></i>
                     <span>{{ menu?.menuValue }}</span>
                   </a>
                 </li>
-                } -->
+                }
                 @if (menu.hasSubRoute === true) {
                 <li class="submenu">
                   <a  href="javascript:void(0)" (click)="expandSubMenus(menu)"

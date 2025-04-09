@@ -4,6 +4,7 @@ import { DataService } from '../../../shared/data/data.service';
 import { CommonService } from '../../../shared/common/common.service';
 import { Router } from '@angular/router';
 import { routes } from '../../../shared/routes/routes';
+import { LoginService } from '../../../auth/services/login.service';
 
 @Component({
     selector: 'app-header',
@@ -32,7 +33,7 @@ export class HeaderComponent {
   themeMode: string = 'light_mode';
   public miniSidebar = false;
   public routes = routes;
-  constructor(private common: CommonService, private sidebar: SidebarService) {
+  constructor(private common: CommonService, private sidebar: SidebarService, private loginService: LoginService, private router: Router,) {
     this.common.base.subscribe((base: string) => {
       this.base = base;
     });
@@ -80,5 +81,9 @@ export class HeaderComponent {
   public themeChange(): void {
     this.sidebar.themeColor();
   }
-  
+  public logout(){
+    this.loginService.logout();
+    this.router.navigate([this.routes.login]);
+  }
+
 }

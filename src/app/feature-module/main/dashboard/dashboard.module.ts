@@ -9,6 +9,8 @@ import { TeacherDashboardComponent } from './teacher-dashboard/teacher-dashboard
 import { ParentDashboardComponent } from './parent-dashboard/parent-dashboard.component';
 import { StudentDashboardComponent } from './student-dashboard/student-dashboard.component';
 import { NgCircleProgressModule } from 'ng-circle-progress';
+import { DashboardMainComponent } from './dashboard-main/dashboard-main.component';
+import { DashboardMinedubComponent } from './dashboard-minedub/dashboard-minedub.component';
 
 
 @NgModule({
@@ -17,7 +19,9 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
     AdminDashboardComponent,
     ParentDashboardComponent,
     TeacherDashboardComponent,
-    StudentDashboardComponent
+    StudentDashboardComponent,
+    DashboardMainComponent,
+    DashboardMinedubComponent
   ],
   imports: [
     CommonModule,
@@ -43,6 +47,10 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
         "startFromZero": false,
         "lazy": true})
   
+  ],
+  exports: [
+    DashboardMainComponent,
+    DashboardMinedubComponent
   ]
 })
 export class DashboardModule { }
