@@ -1,1 +1,9 @@
-<p>region works!</p>
+<!-- academic-reasons.component.html -->
+<app-generic-table 
+  [tableConfig]="tableConfig"
+  [tableData]="tableData"
+  (sortChanged)="onSort($event)"
+  (searchChanged)="onSearch($event)"
+  (filterApplied)="onFilter($event)"
+  (rowSelected)="onRowSelect($event)">
+</app-generic-table>

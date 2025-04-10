@@ -32,15 +32,21 @@ import { CountUpModule } from 'ngx-countup';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 
+
 import {
   BsDatepickerModule,
   BsDatepickerConfig,
 } from 'ngx-bootstrap/datepicker';
+import { GenericTableComponent } from './generic-table/generic-table.component';
+import { Router, RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    GenericTableComponent
+  ],
   imports: [
     CommonModule,
+    RouterModule,
     FormsModule,
     ReactiveFormsModule,
     CarouselModule,
@@ -76,6 +82,7 @@ import {
   ],
   exports: [
     CommonModule,
+    RouterModule,
     FormsModule,
     ReactiveFormsModule,
     CarouselModule,
@@ -106,7 +113,9 @@ import {
     NgApexchartsModule,
     CountUpModule,
     MultiSelectModule,
-    NgCircleProgressModule
+    NgCircleProgressModule,
+    GenericTableComponent
+    
   ],
   providers: [
     provideNgxMask(),

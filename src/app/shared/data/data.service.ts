@@ -3275,7 +3275,7 @@ export class DataService {
           ],
         },
         {
-          menuValue: 'Parents',
+          menuValue: 'Gestion du personelle',
           hasSubRoute: true,
           showSubRoute: false,
           icon: 'user-bolt',
@@ -3298,7 +3298,7 @@ export class DataService {
           ],
         },
         {
-          menuValue: 'Guardians',
+          menuValue: 'Structure Educatif',
           hasSubRoute: true,
           showSubRoute: false,
           page: 'guardians',
@@ -3321,7 +3321,79 @@ export class DataService {
           ],
         },
         {
-          menuValue: 'Teachers',
+          menuValue: 'Gestion des ultilisateurs',
+          hasSubRoute: true,
+          showSubRoute: false,
+          page: 'teachers',
+          icon: 'fas fa-chalkboard-teacher',
+          subMenus: [
+            {
+              menuValue: 'Teachers List',
+              route: routes.teachersList,
+              parentMenuValue: 'Teachers',
+            },
+            {
+              menuValue: 'Add Teacher',
+              route: routes.addTeacher,
+              parentMenuValue: 'Teachers',
+            },
+            {
+              menuValue: 'Teachers Assignments',
+              route: routes.teacherAssignments,
+              parentMenuValue: 'Teachers',
+            }
+          ],
+        },
+        {
+          menuValue: 'Gestion des Examens',
+          hasSubRoute: true,
+          showSubRoute: false,
+          page: 'teachers',
+          icon: 'fas fa-chalkboard-teacher',
+          subMenus: [
+            {
+              menuValue: 'Teachers List',
+              route: routes.teachersList,
+              parentMenuValue: 'Teachers',
+            },
+            {
+              menuValue: 'Add Teacher',
+              route: routes.addTeacher,
+              parentMenuValue: 'Teachers',
+            },
+            {
+              menuValue: 'Teachers Assignments',
+              route: routes.teacherAssignments,
+              parentMenuValue: 'Teachers',
+            }
+          ],
+        },
+        {
+          menuValue: 'Curriculum scolaire',
+          hasSubRoute: true,
+          showSubRoute: false,
+          page: 'teachers',
+          icon: 'fas fa-chalkboard-teacher',
+          subMenus: [
+            {
+              menuValue: 'Teachers List',
+              route: routes.teachersList,
+              parentMenuValue: 'Teachers',
+            },
+            {
+              menuValue: 'Add Teacher',
+              route: routes.addTeacher,
+              parentMenuValue: 'Teachers',
+            },
+            {
+              menuValue: 'Teachers Assignments',
+              route: routes.teacherAssignments,
+              parentMenuValue: 'Teachers',
+            }
+          ],
+        },
+        {
+          menuValue: 'Conges scolaire et autres',
           hasSubRoute: true,
           showSubRoute: false,
           page: 'teachers',

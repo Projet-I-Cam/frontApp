@@ -1,0 +1,80 @@
+<!-- generic-table.component.html -->
+<div class="page-wrapper">
+  <div class="content">
+    <div class="d-md-flex d-block align-items-center justify-content-between mb-3">
+      <div class="my-auto mb-2">
+        <h3 class="page-title mb-1">{{ tableConfig.title }}</h3>
+        <nav>
+          <ol class="breadcrumb mb-0">
+            <li *ngFor="let breadcrumb of tableConfig.breadcrumbs" class="breadcrumb-item" 
+                [class.active]="!breadcrumb.link" aria-current="page">
+              <a [routerLink]="breadcrumb.link" *ngIf="breadcrumb.link">{{ breadcrumb.label }}</a>
+              <span *ngIf="!breadcrumb.link">{{ breadcrumb.label }}</span>
+            </li>
+          </ol>
+        </nav>
+      </div>
+      <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
+        <!-- Action buttons -->
+        <div class="mb-2">
+          <button *ngFor="let action of tableConfig.actions" 
+                  class="btn btn-primary" 
+                  (click)="action.handler(null)">
+            <i [class]="action.icon"></i>{{ action.name }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header d-flex align-items-center justify-content-between flex-wrap pb-0">
+        <h4>{{ tableConfig.title }}</h4>
+        <!-- Filters and sorting -->
+      </div>
+
+      <div class="card-body p-0 py-3">
+        <div class="table-responsive">
+          <table matSort (matSortChange)="onSortChange($event)" class="table datatable">
+            <thead class="thead-light">
+              <tr>
+                <th class="no-sort">
+                  <mat-checkbox (change)="selectAll($event)"></mat-checkbox>
+                </th>
+                <th *ngFor="let column of tableConfig.columns" 
+                    [mat-sort-header]="column.sortable ? column.name || '' : ''">
+                  {{ column.header }}
+                </th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of dataSource.filteredData">
+                <td>
+                  <mat-checkbox (change)="selectRow($event, row)"></mat-checkbox>
+                </td>
+                <td *ngFor="let column of tableConfig.columns">
+                  {{ getDisplayValue(row, column) }}
+                </td>
+                <td>
+                  <div class="dropdown">
+                    <button class="btn btn-white btn-icon btn-sm rounded-circle">
+                      <i class="ti ti-dots-vertical fs-14"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li *ngFor="let action of tableConfig.actions">
+                        <a class="dropdown-item" (click)="action.handler(row)">
+                          <i [class]="action.icon"></i>{{ action.name }}
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <app-custom-pagination></app-custom-pagination>
+      </div>
+    </div>
+  </div>
+</div>
