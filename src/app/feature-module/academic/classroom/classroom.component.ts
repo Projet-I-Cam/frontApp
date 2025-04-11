@@ -140,4 +140,11 @@ export class ClassroomComponent {
       });
     }
   }
+
+  onSave() {
+    // Ajoutez ici la logique à exécuter lors du clic
+    console.log('Bouton Enregistrer cliqué !');
+    // Exemple : sauvegarder des données, appeler un service, etc.
+  }
+
 }
