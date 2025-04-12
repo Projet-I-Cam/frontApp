@@ -1,5 +1,9 @@
 import Parse from 'parse';
 
+import ParseClass from '../../parseClass';
+
+const CLASS: any = ParseClass
+
 export interface BaseGetIO {
     T: any; // la classe par de base. vous pouvez regarder app/parseClass.ts
     filters?: {}; //les contrainte 
@@ -28,7 +32,7 @@ export interface BaseDeleteIO {
 
 export const globalGet = async({T, filters, includes, curentPage, size, selects, isOne} : BaseGetIO): Promise<any> => {
     try {
-        const query = new Parse.Query(T)
+        const query = new Parse.Query(CLASS?.[T])
         if(filters){
             Object.entries(filters).forEach(([key, value]: any) => {
                 if(typeof value === "string"){
@@ -38,7 +42,7 @@ export const globalGet = async({T, filters, includes, curentPage, size, selects,
                 }
             });
         }
-        if(includes){
+        if(includes && includes.length){
             includes.forEach(key => {
                 query.include(String(key))
             });
@@ -74,7 +78,7 @@ export const globalGet = async({T, filters, includes, curentPage, size, selects,
 
 export const globalPost = async({T, dataObject} : BasePostIO): Promise<any> => {
     try {
-        const query = new T()
+        const query = new CLASS[T]()
         Object.entries(dataObject).forEach(([key, value]: any) => {
             if(typeof value === "string"){
                 query.set(key, value)
@@ -98,7 +102,7 @@ export const globalPost = async({T, dataObject} : BasePostIO): Promise<any> => {
 
 export const globalPut = async({T, dataObject, objectId} : BasePutIO): Promise<any> => {
     try {
-        const query = new Parse.Query(T)
+        const query = new Parse.Query(CLASS?.[T])
         const toUpdate = await query.get(objectId)
         Object.entries(dataObject).forEach(([key, value]: any) => {
             if(typeof value === "string"){
@@ -123,7 +127,7 @@ export const globalPut = async({T, dataObject, objectId} : BasePutIO): Promise<a
 
 export const globalDelete = async({T, objectId} : BaseDeleteIO): Promise<any> => {
     try {
-        const query = new Parse.Query(T)
+        const query = new Parse.Query(CLASS?.[T])
         const toDelete = await query.get(objectId)
         await toDelete.destroy();
         return {
