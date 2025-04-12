@@ -3282,14 +3282,21 @@ export class DataService {
           page: 'parents',
           subMenus: [
             {
-              menuValue: 'All Parents',
+              menuValue: 'Personelle',
               route: routes.parentGrid,
               hasSubRoute: false,
               showSubRoute: false,
               customSubmenuTwo: false,
             },
             {
-              menuValue: 'Parent List',
+              menuValue: 'Poste',
+              route: routes.parentList,
+              customSubmenuTwo: false,
+              hasSubRoute: false,
+              showSubRoute: false,
+            },
+            {
+              menuValue: 'Affectations',
               route: routes.parentList,
               customSubmenuTwo: false,
               hasSubRoute: false,
@@ -3305,14 +3312,21 @@ export class DataService {
           icon: 'user-shield',
           subMenus: [
             {
-              menuValue: 'All Guardians',
-              route: routes.guardiansGrid,
+              menuValue: 'Sections',
+              route: routes.classSection,
               hasSubRoute: false,
               showSubRoute: false,
               customSubmenuTwo: false,
             },
             {
-              menuValue: 'Guardian List',
+              menuValue: 'Etablissements',
+              route: routes.guardiansList,
+              hasSubRoute: false,
+              showSubRoute: false,
+              customSubmenuTwo: false,
+            },
+            {
+              menuValue: 'Directions',
               route: routes.guardiansList,
               hasSubRoute: false,
               showSubRoute: false,
@@ -3328,20 +3342,22 @@ export class DataService {
           icon: 'fas fa-chalkboard-teacher',
           subMenus: [
             {
-              menuValue: 'Teachers List',
-              route: routes.teachersList,
-              parentMenuValue: 'Teachers',
+              menuValue: 'Ultilisateurs',
+              icon: 'users',
+              route: routes.users,
+
             },
             {
-              menuValue: 'Add Teacher',
-              route: routes.addTeacher,
-              parentMenuValue: 'Teachers',
+              menuValue: 'Roles & Permissions',
+              icon: 'navigation-cog',
+              route: routes.rolesPermision,
+
             },
             {
-              menuValue: 'Teachers Assignments',
-              route: routes.teacherAssignments,
-              parentMenuValue: 'Teachers',
-            }
+              menuValue: 'Demande de suppression de compte',
+              icon: 'flag-question',
+              route: routes.deleteAccount,
+            },
           ],
         },
         {
@@ -3351,21 +3367,7 @@ export class DataService {
           page: 'teachers',
           icon: 'fas fa-chalkboard-teacher',
           subMenus: [
-            {
-              menuValue: 'Teachers List',
-              route: routes.teachersList,
-              parentMenuValue: 'Teachers',
-            },
-            {
-              menuValue: 'Add Teacher',
-              route: routes.addTeacher,
-              parentMenuValue: 'Teachers',
-            },
-            {
-              menuValue: 'Teachers Assignments',
-              route: routes.teacherAssignments,
-              parentMenuValue: 'Teachers',
-            }
+
           ],
         },
         {
@@ -3375,21 +3377,7 @@ export class DataService {
           page: 'teachers',
           icon: 'fas fa-chalkboard-teacher',
           subMenus: [
-            {
-              menuValue: 'Teachers List',
-              route: routes.teachersList,
-              parentMenuValue: 'Teachers',
-            },
-            {
-              menuValue: 'Add Teacher',
-              route: routes.addTeacher,
-              parentMenuValue: 'Teachers',
-            },
-            {
-              menuValue: 'Teachers Assignments',
-              route: routes.teacherAssignments,
-              parentMenuValue: 'Teachers',
-            }
+
           ],
         },
         {
@@ -3399,21 +3387,7 @@ export class DataService {
           page: 'teachers',
           icon: 'fas fa-chalkboard-teacher',
           subMenus: [
-            {
-              menuValue: 'Teachers List',
-              route: routes.teachersList,
-              parentMenuValue: 'Teachers',
-            },
-            {
-              menuValue: 'Add Teacher',
-              route: routes.addTeacher,
-              parentMenuValue: 'Teachers',
-            },
-            {
-              menuValue: 'Teachers Assignments',
-              route: routes.teacherAssignments,
-              parentMenuValue: 'Teachers',
-            }
+
           ],
         },
         {
