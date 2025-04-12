@@ -1615,9 +1615,9 @@ export class DataService {
           base9: "",
         },
         {
-          menuValue: 'Departments',
+          menuValue: 'Departements',
           icon: 'layout-distribute-horizontal',
-          route: routes.departments,
+          route: routes.departmentsList,
           hasSubRoute: false,
           showSubRoute: false,
           base: 'departments',
@@ -3265,11 +3265,11 @@ export class DataService {
               route: routes.regionsList,
             },
             {
-              menuValue: 'Departements',
-              route: routes.departementsList,
+              menuValue: 'Departments',
+              route: routes.departmentsList,
             },
             {
-              menuValue: 'Arrondissements',
+              menuValue: 'Municipalities',
               route: routes.municipalitiesList,
             },
           ],

@@ -792,21 +792,21 @@ export class routes {
     return this.dashboard;
   }
 
-  //administratif division
-  public static get administratifDivision(): string {
-    return this.baseUrl + '/administratif-division';
+  //administrative division
+  public static get administrativeDivision(): string {
+    return this.baseUrl + '/administrative-division';
   }
 
   public static get regionsList(): string {
-    return this.administratifDivision + '/regions';
+    return this.administrativeDivision + '/regions';
   }
 
-  public static get departementsList(): string {
-    return this.administratifDivision + '/departements';
+  public static get departmentsList(): string {
+    return this.administrativeDivision + '/departments';
   }
   
   public static get municipalitiesList(): string {
-    return this.administratifDivision + '/municipalities';
+    return this.administrativeDivision + '/municipalities';
   }
   
 

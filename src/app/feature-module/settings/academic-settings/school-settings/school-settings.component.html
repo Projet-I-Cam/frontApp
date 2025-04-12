@@ -1,16 +1,28 @@
 <div class="border-start ps-3">
-    <form >
+    <form [formGroup]="institutionForm" (ngSubmit)="saveInstitution()">
         <div
             class="d-flex align-items-center justify-content-between flex-wrap border-bottom pt-3 mb-3">
             <div class="mb-3">
-                <h5 class="mb-1">School Settings</h5>
-                <p>School Settings Configuration</p>
+                <h5 class="mb-1">Institution Settings</h5>
+                <p>Configure your institution information</p>
             </div>
             <div class="mb-3">
-                <button class="btn btn-light me-2" type="button">Cancel</button>
-                <button class="btn btn-primary" type="button">Save</button>
+                <button class="btn btn-light me-2" type="button" (click)="resetForm()">Cancel</button>
+                <button class="btn btn-primary" type="submit" [disabled]="institutionForm.invalid || isSubmitting">Save</button>
             </div>
         </div>
+        
+        <!-- Loading and error messages -->
+        <div *ngIf="isLoading" class="alert alert-info mb-3">
+            Loading institution data...
+        </div>
+        <div *ngIf="errorMessage" class="alert alert-danger mb-3">
+            {{ errorMessage }}
+        </div>
+        <div *ngIf="successMessage" class="alert alert-success mb-3">
+            {{ successMessage }}
+        </div>
+        
         <div class="d-md-flex">
             <div class="row flex-fill">
                 <div class="col-xl-10">
@@ -19,82 +31,191 @@
                         <div class="row align-items-center flex-fill">
                             <div class="col-xxl-8 col-lg-6">
                                 <div class="mb-3">
-                                    <h6>School Name</h6>
-                                    <p>Shows name of your school</p>
+                                    <h6>Institution Name</h6>
+                                    <p>Official name of your institution</p>
                                 </div>
                             </div>
                             <div class="col-xxl-4 col-lg-6">
                                 <div class="mb-3">
                                     <input type="text" class="form-control"
-                                        placeholder="Enter School Name">
+                                        placeholder="Enter Institution Name" formControlName="name">
+                                    <div *ngIf="institutionForm.get('name')?.invalid && institutionForm.get('name')?.touched" class="text-danger mt-1">
+                                        Institution name is required
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    
                     <div
                         class="d-flex align-items-center justify-content-between flex-wrap border mb-3 p-3 pb-0 rounded">
                         <div class="row align-items-center flex-fill">
                             <div class="col-xxl-8 col-lg-6">
                                 <div class="mb-3">
-                                    <h6>Phone Number</h6>
-                                    <p>Shows phone number of your school</p>
+                                    <h6>Registration Number</h6>
+                                    <p>Official registration number of your institution</p>
                                 </div>
                             </div>
                             <div class="col-xxl-4 col-lg-6">
                                 <div class="mb-3">
                                     <input type="text" class="form-control"
-                                        placeholder="Enter Phone Number">
+                                        placeholder="Enter Registration Number" formControlName="registrationNumber">
+                                    <div *ngIf="institutionForm.get('registrationNumber')?.invalid && institutionForm.get('registrationNumber')?.touched" class="text-danger mt-1">
+                                        Registration number is required
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    
                     <div
                         class="d-flex align-items-center justify-content-between flex-wrap border mb-3 p-3 pb-0 rounded">
                         <div class="row align-items-center flex-fill">
                             <div class="col-xxl-8 col-lg-6">
                                 <div class="mb-3">
-                                    <h6>Email</h6>
-                                    <p>Shows email of your school</p>
-                                </div>
-                            </div>
-                            <div class="col-xxl-4 col-lg-6">
-                                <div class="mb-3">
-                                    <input type="email" class="form-control"
-                                        placeholder="Enter Email">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                        class="d-flex align-items-center justify-content-between flex-wrap border mb-3 p-3 pb-0 rounded">
-                        <div class="row align-items-center flex-fill">
-                            <div class="col-xxl-8 col-lg-6">
-                                <div class="mb-3">
-                                    <h6>Fax</h6>
-                                    <p>Shows fax of your school</p>
+                                    <h6>Motto</h6>
+                                    <p>Motto or slogan of your institution</p>
                                 </div>
                             </div>
                             <div class="col-xxl-4 col-lg-6">
                                 <div class="mb-3">
                                     <input type="text" class="form-control"
-                                        placeholder="Enter Fax">
+                                        placeholder="Enter Motto" formControlName="motto">
                                 </div>
                             </div>
                         </div>
                     </div>
+                    
                     <div
                         class="d-flex align-items-center justify-content-between flex-wrap border mb-3 p-3 pb-0 rounded">
                         <div class="row align-items-center flex-fill">
                             <div class="col-xxl-8 col-lg-6">
                                 <div class="mb-3">
-                                    <h6>Address</h6>
-                                    <p>Shows address of your school</p>
+                                    <h6>Phone Numbers</h6>
+                                    <p>Contact phone numbers of your institution</p>
+                                </div>
+                            </div>
+                            <div class="col-xxl-4 col-lg-6">
+                                <div class="mb-3">
+                                    <div formArrayName="phones">
+                                        <div *ngFor="let _ of phonesArray.controls; let i = index" class="mb-2 d-flex">
+                                            <input type="text" class="form-control" 
+                                                [formControlName]="i" placeholder="Enter Phone Number">
+                                            <button type="button" class="btn btn-sm btn-light ms-2" (click)="removePhone(i)">
+                                                <i class="ti ti-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-sm btn-outline-primary mt-2" (click)="addPhone()">
+                                        <i class="ti ti-plus me-1"></i> Add Phone
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div
+                        class="d-flex align-items-center justify-content-between flex-wrap border mb-3 p-3 pb-0 rounded">
+                        <div class="row align-items-center flex-fill">
+                            <div class="col-xxl-8 col-lg-6">
+                                <div class="mb-3">
+                                    <h6>Email Addresses</h6>
+                                    <p>Contact email addresses of your institution</p>
+                                </div>
+                            </div>
+                            <div class="col-xxl-4 col-lg-6">
+                                <div class="mb-3">
+                                    <div formArrayName="emails">
+                                        <div *ngFor="let _ of emailsArray.controls; let i = index" class="mb-2 d-flex">
+                                            <input type="email" class="form-control" 
+                                                [formControlName]="i" placeholder="Enter Email Address">
+                                            <button type="button" class="btn btn-sm btn-light ms-2" (click)="removeEmail(i)">
+                                                <i class="ti ti-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-sm btn-outline-primary mt-2" (click)="addEmail()">
+                                        <i class="ti ti-plus me-1"></i> Add Email
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div
+                        class="d-flex align-items-center justify-content-between flex-wrap border mb-3 p-3 pb-0 rounded">
+                        <div class="row align-items-center flex-fill">
+                            <div class="col-xxl-8 col-lg-6">
+                                <div class="mb-3">
+                                    <h6>P.O. Box</h6>
+                                    <p>P.O. Box of your institution</p>
+                                </div>
+                            </div>
+                            <div class="col-xxl-4 col-lg-6">
+                                <div class="mb-3">
+                                    <input type="text" class="form-control"
+                                        placeholder="Enter P.O. Box" formControlName="poBox">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div
+                        class="d-flex align-items-center justify-content-between flex-wrap border mb-3 p-3 pb-0 rounded">
+                        <div class="row align-items-center flex-fill">
+                            <div class="col-xxl-8 col-lg-6">
+                                <div class="mb-3">
+                                    <h6>Description</h6>
+                                    <p>Brief description of your institution</p>
                                 </div>
                             </div>
                             <div class="col-xxl-4 col-lg-6">
                                 <div class="mb-3">
                                     <textarea rows="4" class="form-control"
-                                        placeholder="Add Comment"></textarea>
+                                        placeholder="Enter Description" formControlName="description"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div
+                        class="d-flex align-items-center justify-content-between flex-wrap border mb-3 p-3 pb-0 rounded">
+                        <div class="row align-items-center flex-fill">
+                            <div class="col-xxl-8 col-lg-6">
+                                <div class="mb-3">
+                                    <h6>Status</h6>
+                                    <p>Institution active status</p>
+                                </div>
+                            </div>
+                            <div class="col-xxl-4 col-lg-6">
+                                <div class="mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                               id="isActiveSwitch" formControlName="isActive">
+                                        <label class="form-check-label" for="isActiveSwitch">
+                                            {{ institutionForm.get('isActive')?.value ? 'Active' : 'Inactive' }}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div
+                        class="d-flex align-items-center justify-content-between flex-wrap border mb-3 p-3 pb-0 rounded">
+                        <div class="row align-items-center flex-fill">
+                            <div class="col-xxl-8 col-lg-6">
+                                <div class="mb-3">
+                                    <h6>Institution Logo</h6>
+                                    <p>Upload the logo of your institution</p>
+                                </div>
+                            </div>
+                            <div class="col-xxl-4 col-lg-6">
+                                <div class="mb-3">
+                                    <input type="file" class="form-control" (change)="onLogoSelected($event)">
+                                    <div *ngIf="logoPreview" class="mt-2">
+                                        <img [src]="logoPreview" alt="Institution Logo" class="img-thumbnail" style="max-height: 100px;">
+                                    </div>
                                 </div>
                             </div>
                         </div>

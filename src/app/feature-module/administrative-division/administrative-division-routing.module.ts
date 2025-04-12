@@ -1,22 +1,22 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AdministratifDivisionComponent } from './administratif-division.component';
+import { AdministrativeDivisionComponent } from './administrative-division.component';
 import { RegionComponent } from './region/region.component';
-import { DepartementComponent } from './departement/departement.component';
+import { DepartmentComponent } from './department/department.component';
 import { MunicipalitiesComponent } from './municipalities/municipalities.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: AdministratifDivisionComponent,
+    component: AdministrativeDivisionComponent,
     children: [
       {
         path: 'regions',
         component: RegionComponent,
       },
       {
-        path: 'departements',
-        component: DepartementComponent,
+        path: 'departments',
+        component: DepartmentComponent,
       },
       {
         path: 'municipalities',
@@ -31,4 +31,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class AdministratifDivisionRoutingModule { }
+export class AdministrativeDivisionRoutingModule { } 

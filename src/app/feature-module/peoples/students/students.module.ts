@@ -1,47 +1,42 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 import { StudentsRoutingModule } from './students-routing.module';
 import { StudentsComponent } from './students.component';
-import { EditStudentComponent } from './edit-student/edit-student.component';
 import { SharedModule } from '../../../shared/shared.module';
+import { DropdownModule } from 'primeng/dropdown';
+import { CalendarModule } from 'primeng/calendar';
+import { ChipsModule } from 'primeng/chips';
 
-import { AddStudentComponent } from './add-student/add-student.component';
-import { StudentsListComponent } from './students-list/students-list.component';
-import { StudentDetailsComponent } from './student-details/student-details.component';
-import { StudentPromotionComponent } from './student-promotion/student-promotion.component';
-import { StudentTimeTableComponent } from './student-time-table/student-time-table.component';
-import { StudentLeavesComponent } from './student-leaves/student-leaves.component';
-import { StudentFeesComponent } from './student-fees/student-fees.component';
-import { StudentLibraryComponent } from './student-library/student-library.component';
-import { StudentTransferComponent } from './student-transfer/student-transfer.component';
-import { StudentReportCardComponent } from './student-report-card/student-report-card.component';
-
+import { StudentService } from '../../../services/student.service';
+import { PersonService } from '../../../services/person.service';
+import { ClassService } from '../../../services/class.service';
+import { EditStudentModule } from './edit-student/edit-student.module';
+import { AddStudentModule } from './add-student/add-student.module';
 
 @NgModule({
   declarations: [
-    StudentsComponent,
-    EditStudentComponent,
-    AddStudentComponent
+    StudentsComponent
   ],
   imports: [
     CommonModule,
-    RouterModule,
-    StudentsRoutingModule,
-    SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    StudentTimeTableComponent,
-    StudentLeavesComponent,
-    StudentFeesComponent,
-    StudentLibraryComponent,
-    StudentTransferComponent,
-    StudentReportCardComponent,
-    StudentDetailsComponent,
-    StudentPromotionComponent,
-    StudentsListComponent
+    StudentsRoutingModule,
+    SharedModule,
+    DropdownModule,
+    CalendarModule,
+    ChipsModule,
+    HttpClientModule,
+    EditStudentModule,
+    AddStudentModule
+  ],
+  providers: [
+    StudentService,
+    PersonService,
+    ClassService
   ]
 })
 export class StudentsModule { }

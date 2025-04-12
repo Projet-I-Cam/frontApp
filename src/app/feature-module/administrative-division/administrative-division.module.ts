@@ -1,25 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { AdministratifDivisionRoutingModule } from './administratif-division-routing.module';
+import { AdministrativeDivisionRoutingModule } from './administrative-division-routing.module';
 import { RegionComponent } from './region/region.component';
-import { DepartementComponent } from './departement/departement.component';
+import { DepartmentComponent } from './department/department.component';
 import { MunicipalitiesComponent } from './municipalities/municipalities.component';
 import { SharedModule } from '../../shared/shared.module';
-import { AdministratifDivisionComponent } from './administratif-division.component';
+import { AdministrativeDivisionComponent } from './administrative-division.component';
 
 
 @NgModule({
   declarations: [
     RegionComponent,
-    DepartementComponent,
+    DepartmentComponent,
     MunicipalitiesComponent,
-    AdministratifDivisionComponent
+    AdministrativeDivisionComponent
   ],
   imports: [
     CommonModule,
-    AdministratifDivisionRoutingModule,
+    AdministrativeDivisionRoutingModule,
     SharedModule
   ]
 })
-export class AdministratifDivisionModule { }
+export class AdministrativeDivisionModule { } 

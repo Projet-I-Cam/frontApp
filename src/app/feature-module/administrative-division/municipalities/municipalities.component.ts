@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { Arrondissement } from '../../../parseClass';
+import { Municipality } from '../../../parseClass';
 import { globalGet } from '../../../services/statefull/http';
 
 @Component({
@@ -11,24 +11,23 @@ import { globalGet } from '../../../services/statefull/http';
 })
 export class MunicipalitiesComponent {
   constructor() {
-      this.getArrond()
+      this.getMunicipality()
   }
 
-  async  getArrond(){
-    const arrond = await globalGet(
+  async getMunicipality() {
+    const municipality = await globalGet(
       {
-        T: Arrondissement,
+        T: Municipality,
         filters: {
-          //departement: {className: 'Departement', objectId: 'msQcMieHZf'}, //si je veux lire tous les arrondissement qui ont pour departement d'id msQcMieHZf vue que departement est une classe jointe alors j'utilise cette syntax
-          nom: "Yakokombo" // ici je veux prendre l'arrondissement qui a le nom Yakokombo
+          //department: {className: 'Department', objectId: 'msQcMieHZf'}, //si je veux lire tous les arrondissement qui ont pour departement d'id msQcMieHZf vue que departement est une classe jointe alors j'utilise cette syntax
+          name: "Yakokombo" // ici je veux prendre l'arrondissement qui a le nom Yakokombo
           //Ici je passe autant de filtre que je souhaite et ceci en accord avec les attribut de la classe tous visible dans le dashboard de par se server
         },
         isOne: true, // je veux 1 seule si non je le laisse a null ou undefined
-        includes: ['departement',] // les includes
+        includes: ['department'] // les includes
       },
       
     )
-    console.log(' arrond arrond arrond ', arrond)
+    console.log(' municipality municipality municipality ', municipality)
   }
-}
- 
+} 

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { StudentsComponent } from './students.component';
-import { EditStudentComponent } from './edit-student/edit-student.component';
 import { AddStudentComponent } from './add-student/add-student.component';
 import { StudentsListComponent } from './students-list/students-list.component';
 import { StudentPromotionComponent } from './student-promotion/student-promotion.component';
@@ -12,6 +11,7 @@ import { StudentTimeTableComponent } from './student-time-table/student-time-tab
 import { StudentLeavesComponent } from './student-leaves/student-leaves.component';
 import { StudentFeesComponent } from './student-fees/student-fees.component';
 import { StudentLibraryComponent } from './student-library/student-library.component';
+import { EditStudentComponent } from './edit-student/edit-student.component';
 
 const routes: Routes = [
   {

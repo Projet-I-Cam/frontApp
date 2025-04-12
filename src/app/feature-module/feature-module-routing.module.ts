@@ -20,10 +20,10 @@ const routes: Routes = [
         component: AdminDashboardComponent,
       },
       {
-        path: 'administratif-division',
+        path: 'administrative-division',
         loadChildren: () =>
-          import('../feature-module/administratif-division/administratif-division.module').then(
-            (m) => m.AdministratifDivisionModule
+          import('../feature-module/administrative-division/administrative-division.module').then(
+            (m) => m.AdministrativeDivisionModule
           ),
       },
       {

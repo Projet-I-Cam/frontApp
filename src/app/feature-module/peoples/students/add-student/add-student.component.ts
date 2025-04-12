@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { routes } from '../../../../shared/routes/routes';
-import { studentComplete, DisciplinaryRecord, ParentGuardianInfo } from '../../../../shared/model/pages.model';
-
-interface data {
-  name: string | undefined;
-  code: string | undefined;
-}
+import { StudentService } from '../../../../services/student.service';
+import { PersonService } from '../../../../services/person.service';
+import { ClassService } from '../../../../services/class.service';
+import { Student, Person, Class } from '../../../../shared/model/student.model';
+import { finalize } from 'rxjs/operators';
 
 @Component({
     selector: 'app-add-student',
@@ -19,48 +18,57 @@ export class AddStudentComponent implements OnInit {
   public routes = routes;
   values: string[] = ['English', 'Spanish'];
   studentForm: FormGroup;
-  formData: { selectedClass: data | undefined }[] = [];
+  formData: any[] = [];
   values2: string[] = ['Allergy', 'Skin Allergy'];
   values3: string[] = ['Medecine Name'];
   bloodGroups: string[] = ['O +ve', 'O -ve', 'A +ve', 'A -ve', 'B +ve', 'B -ve', 'AB +ve', 'AB -ve'];
   
+  // Add new properties
+  classes: Class[] = [];
+  isLoading = false;
+  isSubmitting = false;
+  errorMessage = '';
+  
   constructor(
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private studentService: StudentService,
+    private personService: PersonService,
+    private classService: ClassService
   ) {
     this.studentForm = this.fb.group({
+      // Person information
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
-      academicYear: ['', [Validators.required]],
-      admissionNumber: ['', [Validators.required]],
-      admissionDate: ['', [Validators.required]],
-      rollNumber: ['', [Validators.required]],
-      status: ['Active', [Validators.required]],
-      class: ['', [Validators.required]],
-      section: ['', [Validators.required]],
       gender: ['', [Validators.required]],
       dateOfBirth: ['', [Validators.required]],
-      bloodGroup: [''],
-      house: [''],
-      religion: [''],
-      category: [''],
-      language: [''],
-      nationality: [''],
+      placeOfBirth: [''],
+      email: ['', [Validators.email]],
+      phoneNumber: [''],
       address: [''],
+      
+      // Student information
+      registrationNumber: ['', [Validators.required]],
+      joinDate: ['', [Validators.required]],
+      status: ['Active', [Validators.required]],
+      classId: ['', [Validators.required]],
+      
+      // Additional information
+      bloodGroup: [''],
+      religion: [''],
+      nationality: [''],
       city: [''],
       state: [''],
       country: [''],
       zipCode: [''],
-      phoneNumber: [''],
-      email: ['', [Validators.email]],
       
-      // Informations académiques
+      // Academic information
       previousSchool: [''],
       previousSchoolAddress: [''],
       transferCertificateNumber: [''],
       transferDate: [''],
       
-      // Informations médicales
+      // Medical information
       medicalConditions: [''],
       allergies: this.fb.array([]),
       medications: this.fb.array([]),
@@ -68,17 +76,43 @@ export class AddStudentComponent implements OnInit {
       emergencyContactPhone: [''],
       emergencyContactRelation: [''],
       
-      // Parents/Tuteurs
+      // Parent/Guardian information
       parentGuardianInfo: this.fb.array([this.createParentGroup()])
     });
   }
 
   ngOnInit(): void {
-    // Générer un numéro d'admission auto-incrémenté avec préfixe
+    // Generate a registration number
+    this.generateRegistrationNumber();
+    
+    // Load active classes
+    this.loadClasses();
+  }
+  
+  loadClasses(): void {
+    this.isLoading = true;
+    this.classService.getActiveClasses()
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+        })
+      )
+      .subscribe(
+        (classes) => {
+          this.classes = classes;
+        },
+        (error) => {
+          console.error('Error loading classes:', error);
+          this.errorMessage = 'Failed to load classes. Please try again.';
+        }
+      );
+  }
+
+  generateRegistrationNumber(): void {
     const date = new Date();
     const year = date.getFullYear().toString().substr(-2);
     const randomID = Math.floor(1000 + Math.random() * 9000);
-    this.studentForm.get('admissionNumber')?.setValue(`ADM-${year}-${randomID}`);
+    this.studentForm.get('registrationNumber')?.setValue(`ST-${year}-${randomID}`);
   }
 
   createParentGroup(): FormGroup {
@@ -132,33 +166,94 @@ export class AddStudentComponent implements OnInit {
     }
   }
 
-  generateStudentID(): string {
-    // Format: ST-YEAR-RANDOM4DIGIT-HASH
-    const date = new Date();
-    const year = date.getFullYear().toString().substr(-2);
-    const randomID = Math.floor(1000 + Math.random() * 9000);
-    const hash = Math.random().toString(36).substr(2, 5).toUpperCase();
-    
-    return `ST-${year}-${randomID}-${hash}`;
-  }
-
   public onSubmit() {
     if (this.studentForm.valid) {
-      // Créer un objet student avec les données du formulaire
-      const studentData: studentComplete = {
-        ...this.studentForm.value,
-        isSelected: false,
-        studentIdNumber: this.generateStudentID(),
-        img: 'assets/img/students/student-01.jpg', // Image par défaut
-      };
-
-      // Ici, vous enverriez normalement les données au service pour les sauvegarder
-      console.log('Données de l\'Élève à enregistrer :', studentData);
+      this.isSubmitting = true;
+      this.errorMessage = '';
       
-      // Rediriger vers la liste des Élèves
-      this.router.navigate([routes.studentsList]);
+      // Extract form values
+      const formValues = this.studentForm.value;
+      
+      // Create person data
+      const personData: Partial<Person> = {
+        firstName: formValues.firstName,
+        lastName: formValues.lastName,
+        gender: formValues.gender,
+        dateOfBirth: formValues.dateOfBirth,
+        placeOfBirth: formValues.placeOfBirth,
+        email: formValues.email,
+        phone: formValues.phoneNumber,
+        address: formValues.address
+      };
+      
+      // First create the person
+      this.personService.createPerson(personData)
+        .pipe(
+          finalize(() => {
+            this.isSubmitting = false;
+          })
+        )
+        .subscribe(
+          (person) => {
+            // Now create the student with the person reference
+            const studentData: any = {
+              registrationNumber: formValues.registrationNumber,
+              status: formValues.status,
+              joinDate: formValues.joinDate,
+              additionalInfo: JSON.stringify({
+                bloodGroup: formValues.bloodGroup,
+                religion: formValues.religion,
+                nationality: formValues.nationality,
+                academicInfo: {
+                  previousSchool: formValues.previousSchool,
+                  previousSchoolAddress: formValues.previousSchoolAddress,
+                  transferCertificateNumber: formValues.transferCertificateNumber,
+                  transferDate: formValues.transferDate
+                },
+                medicalInfo: {
+                  medicalConditions: formValues.medicalConditions,
+                  allergies: formValues.allergies,
+                  medications: formValues.medications,
+                  emergencyContact: {
+                    name: formValues.emergencyContactName,
+                    phone: formValues.emergencyContactPhone,
+                    relation: formValues.emergencyContactRelation
+                  }
+                },
+                parentGuardianInfo: formValues.parentGuardianInfo
+              }),
+              person: {
+                objectId: person.id
+              }
+            };
+            
+            // Add class reference if selected
+            if (formValues.classId) {
+              studentData.class = {
+                objectId: formValues.classId
+              };
+            }
+            
+            // Create the student
+            this.studentService.createStudent(studentData)
+              .subscribe(
+                (student) => {
+                  console.log('Student created successfully:', student);
+                  this.router.navigate([routes.studentsList]);
+                },
+                (error) => {
+                  console.error('Error creating student:', error);
+                  this.errorMessage = 'Failed to create student. Please try again.';
+                }
+              );
+          },
+          (error) => {
+            console.error('Error creating person:', error);
+            this.errorMessage = 'Failed to create person. Please try again.';
+          }
+        );
     } else {
-      // Marquer tous les champs comme touchés pour afficher les validations
+      // Mark all fields as touched to display validations
       Object.keys(this.studentForm.controls).forEach(key => {
         const control = this.studentForm.get(key);
         control?.markAsTouched();
@@ -166,11 +261,8 @@ export class AddStudentComponent implements OnInit {
     }
   }
 
-  addNewRow() {
-    this.formData.push({ selectedClass: {name: undefined, code:undefined}});
-  }
-  
-  removeRow(index: number) {
-    this.formData.splice(index, 1);
+  // Helper method to get a class by ID
+  getClassById(classId: string): Class | undefined {
+    return this.classes.find(c => c.id === classId);
   }
 }

@@ -20,4 +20,4 @@ describe('RegionComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-});
+}); 
