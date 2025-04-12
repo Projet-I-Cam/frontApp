@@ -42,7 +42,8 @@ import { Router, RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
-    GenericTableComponent
+    GenericTableComponent,
+
   ],
   imports: [
     CommonModule,
@@ -78,7 +79,7 @@ import { Router, RouterModule } from '@angular/router';
     CountUpModule,
     MultiSelectModule,
     NgCircleProgressModule,
-   
+
   ],
   exports: [
     CommonModule,
@@ -114,8 +115,9 @@ import { Router, RouterModule } from '@angular/router';
     CountUpModule,
     MultiSelectModule,
     NgCircleProgressModule,
-    GenericTableComponent
-    
+    GenericTableComponent,
+
+
   ],
   providers: [
     provideNgxMask(),

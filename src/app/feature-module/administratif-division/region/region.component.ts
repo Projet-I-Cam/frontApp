@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { TableConfig } from '../../../shared/model/table.model';
+import { TableConfig, FilterConfig, SortOption } from '../../../shared/model/table.model';
+import { routes } from '../../../shared/routes/routes';
 
 @Component({
   selector: 'app-region',
@@ -8,14 +9,9 @@ import { TableConfig } from '../../../shared/model/table.model';
   styleUrl: './region.component.scss'
 })
 export class RegionComponent {
-// academic-reasons.component.ts
+public routes = routes;
 tableConfig: TableConfig = {
   title: 'Academic Reasons',
-  breadcrumbs: [
-    { label: 'Dashboard', link: '/dashboard' },
-    { label: 'Academic', link: '' },
-    { label: 'Reasons', link: '' }
-  ],
   columns: [
     { name: 'role', header: 'Role', sortable: true },
     { name: 'reason', header: 'Reason', sortable: true },
@@ -25,20 +21,37 @@ tableConfig: TableConfig = {
     {
       name: 'Add Reason',
       icon: 'ti ti-square-rounded-plus-filled me-2',
-      handler: () => this.openAddModal()
+      handler: () => this.openModal()
     }
   ],
-  filters: [
-    {
-      name: 'role',
-      label: 'Role',
-      options: ['Teacher', 'Student', 'Staff']
-    }
-  ]
+
 };
+
+filters:FilterConfig[] = [
+  {
+    label: 'Role',
+    key: 'role',
+    options: ['admin', 'user', 'guest'],
+    optionLabel: 'name'
+  },
+  {
+    label: 'Reason',
+    key: 'reason',
+    options: ['good', 'bad', 'average'],
+    optionLabel: 'name'
+  }
+];
+
+sortOptions:  SortOption[] = [
+  { label: 'Ascending', value: 'asc' },
+  { label: 'Descending', value: 'desc' },
+  { label: 'Recently Viewed', value: 'recent_view' },
+  { label: 'Recently Added', value: 'recent_add' }
+];
+
 tableData = [];
 
-openAddModal(){}
+openModal(){}
 
 onFilter(event: any): void {
   console.log('Filter applied:', event);
@@ -53,7 +66,23 @@ onSearch(event: any): void {
   console.log('Search applied:', event);
 }
 
-onRowSelect(selectedRows: any[]): void {
-  console.log('Selected rows:', selectedRows);}
+onRowSelect(selectedRows: any): void {
+  console.log('Selected rows:', selectedRows);
+}
+
+  handleTableAction(event: {type: string, item: any}) {
+    switch(event.type) {
+      case 'edit':
+        this.openModal();
+        break;
+      case 'delete':
+        this.openModal();
+        break;
+    }
+  }
+
+  handleDateRangeChange(range: any) {
+    // Handle date range change
+  }
 
 }

@@ -1,80 +1,118 @@
-<!-- generic-table.component.html -->
-<div class="page-wrapper">
-  <div class="content">
-    <div class="d-md-flex d-block align-items-center justify-content-between mb-3">
-      <div class="my-auto mb-2">
-        <h3 class="page-title mb-1">{{ tableConfig.title }}</h3>
-        <nav>
-          <ol class="breadcrumb mb-0">
-            <li *ngFor="let breadcrumb of tableConfig.breadcrumbs" class="breadcrumb-item" 
-                [class.active]="!breadcrumb.link" aria-current="page">
-              <a [routerLink]="breadcrumb.link" *ngIf="breadcrumb.link">{{ breadcrumb.label }}</a>
-              <span *ngIf="!breadcrumb.link">{{ breadcrumb.label }}</span>
-            </li>
-          </ol>
-        </nav>
+<div class="card">
+  <div class="card-header d-flex align-items-center justify-content-between flex-wrap pb-0">
+    <h4 class="mb-3">{{ tableConfig.title }}</h4>
+    <div class="d-flex align-items-center flex-wrap">
+      <!-- Date Range Picker -->
+      <div class="input-icon-start mb-3 me-2 position-relative">
+        <span class="icon-addon">
+          <i class="ti ti-calendar"></i>
+        </span>
+        <input type="text" class="form-control date-range bookingrange" [placeholder]="dateRangeLabel" bsDaterangepicker
+          (bsValueChange)="dateRangeChange.emit($event)" />
       </div>
-      <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
-        <!-- Action buttons -->
-        <div class="mb-2">
-          <button *ngFor="let action of tableConfig.actions" 
-                  class="btn btn-primary" 
-                  (click)="action.handler(null)">
-            <i [class]="action.icon"></i>{{ action.name }}
-          </button>
+
+      <!-- Filters -->
+      <div *ngFor="let filter of filterConfig" class="dropdown mb-3 me-2">
+        <a href="javascript:void(0);" class="btn btn-outline-light bg-white dropdown-toggle" data-bs-toggle="dropdown"
+          data-bs-auto-close="outside">
+          <i class="ti ti-filter me-2"></i>{{ filter.label }}
+        </a>
+        <div class="dropdown-menu drop-width">
+          <form>
+            <div class="d-flex align-items-center border-bottom p-3">
+              <h4>Filter</h4>
+            </div>
+            <div class="p-3 border-bottom pb-0">
+              <div class="mb-3">
+                <p-dropdown [options]="filter.options" [(ngModel)]="selectedFilters[filter.key]"
+                  [optionLabel]="filter.optionLabel || 'name'" [ngModelOptions]="{ standalone: true }"
+                  placeholder="Select" />
+              </div>
+            </div>
+            <div class="p-3 d-flex align-items-center justify-content-end">
+              <button type="button" class="btn btn-light me-3" (click)="resetFilters()">Reset</button>
+              <button type="button" class="btn btn-primary" (click)="applyFilters()">Apply</button>
+            </div>
+          </form>
         </div>
+      </div>
+
+      <!-- Sort -->
+      <div class="dropdown mb-3">
+        <a href="javascript:void(0);" class="btn btn-outline-light bg-white dropdown-toggle" data-bs-toggle="dropdown">
+          <i class="ti ti-sort-ascending-2 me-2"></i>Sort by
+        </a>
+        <ul class="dropdown-menu p-3">
+          <li *ngFor="let option of sortOptions">
+            <a href="javascript:void(0);" class="dropdown-item rounded-1" [class.active]="currentSort === option.value"
+              (click)="onSortChange(option.value)">
+              {{ option.label }}
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-header d-flex align-items-center justify-content-between flex-wrap pb-0">
-        <h4>{{ tableConfig.title }}</h4>
-        <!-- Filters and sorting -->
+  </div>
+
+  <div class="card-body p-0 py-3">
+    <div class="table-responsive">
+      <div class="table-top px-3">
+        <div class="row">
+          <div class="col-sm-12 col-md-6"></div>
+          <div class="col-sm-12 col-md-6">
+            <div id="DataTables_Table_0_filter" class="dataTables_filter">
+              <label>
+                <input [(ngModel)]="searchDataValue" [ngModelOptions]="{ standalone: true }"
+                  (ngModelChange)="onSearchChange(searchDataValue)" type="search" class="form-control"
+                  placeholder="Search..." /></label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="custom-datatable-filter table-responsive">
+        <table matSort matSortActive="Sno" matSortDirection="asc" matSortDisableClear
+          (matSortChange)="onSortChange($event)" class="table datatable">
+          <thead class="thead-light">
+            <tr>
+              <th class="no-sort">
+                <mat-checkbox (change)="selectAll($event)"></mat-checkbox>
+              </th>
+              <th *ngFor="let column of tableConfig.columns"
+                [mat-sort-header]="column.sortable ? column.name || '' : ''">
+                {{ column.header }}
+              </th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of dataSource.filteredData">
+              <td>
+                <mat-checkbox (change)="selectRow($event, row)"></mat-checkbox>
+              </td>
+              <td *ngFor="let column of tableConfig.columns">
+                {{ getDisplayValue(row, column) }}
+              </td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn btn-white btn-icon btn-sm rounded-circle">
+                    <i class="ti ti-dots-vertical fs-14"></i>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li *ngFor="let action of tableConfig.actions">
+                      <a class="dropdown-item" (click)="action.handler(row)">
+                        <i [class]="action.icon"></i>{{ action.name }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <div class="card-body p-0 py-3">
-        <div class="table-responsive">
-          <table matSort (matSortChange)="onSortChange($event)" class="table datatable">
-            <thead class="thead-light">
-              <tr>
-                <th class="no-sort">
-                  <mat-checkbox (change)="selectAll($event)"></mat-checkbox>
-                </th>
-                <th *ngFor="let column of tableConfig.columns" 
-                    [mat-sort-header]="column.sortable ? column.name || '' : ''">
-                  {{ column.header }}
-                </th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let row of dataSource.filteredData">
-                <td>
-                  <mat-checkbox (change)="selectRow($event, row)"></mat-checkbox>
-                </td>
-                <td *ngFor="let column of tableConfig.columns">
-                  {{ getDisplayValue(row, column) }}
-                </td>
-                <td>
-                  <div class="dropdown">
-                    <button class="btn btn-white btn-icon btn-sm rounded-circle">
-                      <i class="ti ti-dots-vertical fs-14"></i>
-                    </button>
-                    <ul class="dropdown-menu">
-                      <li *ngFor="let action of tableConfig.actions">
-                        <a class="dropdown-item" (click)="action.handler(row)">
-                          <i [class]="action.icon"></i>{{ action.name }}
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <app-custom-pagination></app-custom-pagination>
-      </div>
     </div>
+    <app-custom-pagination></app-custom-pagination>
   </div>
 </div>

@@ -1,9 +1,40 @@
-<!-- academic-reasons.component.html -->
-<app-generic-table 
-  [tableConfig]="tableConfig"
-  [tableData]="tableData"
-  (sortChanged)="onSort($event)"
-  (searchChanged)="onSearch($event)"
-  (filterApplied)="onFilter($event)"
-  (rowSelected)="onRowSelect($event)">
-</app-generic-table>
+<div class="page-wrapper">
+  <div class="content">
+    <div
+class="d-md-flex d-block align-items-center justify-content-between mb-3">
+        <div class="my-auto mb-2">
+          <h3 class="page-title mb-1">Regions</h3>
+          <nav>
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item">
+                <a [routerLink] = "routes.adminDashboard">Dashboard</a>
+              </li>
+              <li class="breadcrumb-item">
+                <a href="javascript:void(0);">Division Administratif</a>
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">
+                Regions
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
+          <app-tooltip-content></app-tooltip-content>
+          <div class="mb-2">
+            <a
+              href="javascript:void(0);"
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#add_region"
+              ><i class="ti ti-square-rounded-plus-filled me-2"></i>Ajouter une region</a>
+          </div>
+        </div>
+      </div>
+    <app-generic-table [tableConfig]="tableConfig" [tableData]="tableData" (sortChanged)="onSort($event)"
+      (searchChanged)="onSearch($event)" (filterApplied)="onFilter($event)" (rowSelected)="onRowSelect($event)"
+      [filterConfig]="filters"
+      [sortOptions]="sortOptions"
+      (dateRangeChange)="handleDateRangeChange($event)">
+    </app-generic-table>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { TableConfig, TableColumn } from '../model/table.model';
+import { TableConfig, TableColumn, FilterConfig } from '../model/table.model';
 
 @Component({
   selector: 'app-generic-table',
@@ -12,32 +12,47 @@ import { TableConfig, TableColumn } from '../model/table.model';
 export class GenericTableComponent implements OnInit {
   @Input() tableConfig!: TableConfig;
   @Input() tableData: any[] = [];
-  @Output() rowSelected = new EventEmitter<any[]>();
-  @Output() sortChanged = new EventEmitter<Sort>();
-  @Output() searchChanged = new EventEmitter<string>();
-  @Output() filterApplied = new EventEmitter<any>();
+  @Input() filterConfig: FilterConfig[] = [];
+  @Input() sortOptions: any[] = [];
+  @Input() dateRangeLabel = 'Select Date Range';
+
+   @Output() dateRangeChange = new EventEmitter<any>();
+  @Output() filterChange = new EventEmitter<any>();
+  @Output() sortChange = new EventEmitter<string>();
+  @Output() searchChange = new EventEmitter<string>();
+  @Output() action = new EventEmitter<{type: string, item: any}>();
+
 
   public dataSource = new MatTableDataSource<any>();
   public displayedColumns: string[] = [];
   public searchDataValue = '';
   public selectedFilters: { [key: string]: any } = {};
   public selectedItems: any[] = [];
+  public rowSelected: any;
+  public currentSort: string='';
 
   ngOnInit() {
     this.displayedColumns = ['select', ...this.tableConfig.columns.map(c => c.name), 'actions'];
   }
 
-  onSortChange(sort: Sort) {
-    this.sortChanged.emit(sort);
+  applyFilters() {
+    this.filterChange.emit(this.selectedFilters);
   }
+
+  resetFilters() {
+    this.selectedFilters = {};
+    this.filterChange.emit({});
+  }
+
+  onSortChange(sort: any) {
+    this.sortChange.emit(sort);
+  }
+
 
   onSearchChange(value: string) {
-    this.searchChanged.emit(value);
+    this.searchChange.emit(value);
   }
 
-  applyFilter() {
-    this.filterApplied.emit(this.selectedFilters);
-  }
 
   selectAll(event: any) {
     if (event.checked) {
@@ -55,6 +70,10 @@ export class GenericTableComponent implements OnInit {
       this.selectedItems = this.selectedItems.filter(item => item !== row);
     }
     this.rowSelected.emit(this.selectedItems);
+  }
+
+  triggerAction(actionType: string, item: any) {
+    this.action.emit({type: actionType, item});
   }
 
   getDisplayValue(row: any, column: TableColumn): string {

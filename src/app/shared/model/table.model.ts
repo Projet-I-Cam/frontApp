@@ -7,18 +7,12 @@ export interface TableColumn {
 
 export interface TableConfig {
   title: string;
-  breadcrumbs: BreadcrumbItem[];
   columns: TableColumn[];
   pageSize?: number;
   pageSizeOptions?: number[];
   actions?: TableAction[];
-  filters?: FilterOption[];
 }
 
-export interface BreadcrumbItem {
-  label: string;
-  link?: string;
-}
 
 export interface TableAction {
   name: string;
@@ -26,8 +20,15 @@ export interface TableAction {
   handler: (item: any) => void;
 }
 
-export interface FilterOption {
-  name: string;
+export interface FilterConfig {
+  key: string;
   label: string;
-  options: any[];
+  options?: any[];
+  value?:string;
+  optionLabel: string;
+}
+
+export interface SortOption{
+  label: string;
+  value:string;
 }
