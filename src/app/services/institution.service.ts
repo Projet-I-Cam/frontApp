@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable, from } from 'rxjs';
-import { map } from 'rxjs/operators';
 import * as Parse from 'parse';
+import { from, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +17,12 @@ export class InstitutionService {
    */
   getAllInstitutions(): Observable<any[]> {
     const query = new Parse.Query(this.INSTITUTION_CLASS);
-    query.include('campus');
+    query.include('campuses');
     query.descending('createdAt');
     return from(query.find()).pipe(
-      map(results => results.map(institution => this.parseInstitutionObject(institution)))
+      map((results: any) => {
+        return results.map((r: any) => r?.toJSON())
+      })
     );
   }
 
@@ -30,11 +32,11 @@ export class InstitutionService {
    */
   getActiveInstitutions(): Observable<any[]> {
     const query = new Parse.Query(this.INSTITUTION_CLASS);
-    query.include('campus');
+    query.include('campuses');
     query.equalTo('isActive', true);
     query.descending('createdAt');
     return from(query.find()).pipe(
-      map(results => results.map(institution => this.parseInstitutionObject(institution)))
+      map(results => results.map((r: any) => r?.toJSON()))
     );
   }
 
@@ -44,10 +46,14 @@ export class InstitutionService {
    * @returns Observable with institution details
    */
   getInstitutionById(id: string): Observable<any> {
+    console.log(' id id ', id)
     const query = new Parse.Query(this.INSTITUTION_CLASS);
-    query.include('campus');
+    query.include('campuses');
     return from(query.get(id)).pipe(
-      map(institution => this.parseInstitutionObject(institution))
+      map(institution => {
+        console.log(' institution institution', institution)
+        return institution.toJSON()
+      })
     );
   }
 
@@ -94,7 +100,7 @@ export class InstitutionService {
         className: 'Campus',
         objectId: institutionData.campus.objectId
       };
-      institution.set('campus', campusPointer);
+      institution.set('campuses', [campusPointer]);
     }
 
     return from(institution.save()).pipe(
@@ -161,7 +167,7 @@ export class InstitutionService {
             className: 'Campus',
             objectId: institutionData.campus.objectId
           };
-          institution.set('campus', campusPointer);
+          institution.set('campuses', [campusPointer]);
         }
 
         console.log('About to save updated institution');
