@@ -1,0 +1,96 @@
+/* Styles spécifiques pour la liste des institutions */
+.page-table-header {
+  margin-bottom: 1.5rem;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+
+  a {
+    cursor: pointer;
+  }
+}
+
+.doctor-laptop-btn {
+  cursor: pointer;
+}
+
+/* Styles pour le modal de visualisation des détails */
+.form-control-static {
+  padding: 0.375rem 0.75rem;
+  background-color: #f8f9fa;
+  border-radius: 0.25rem;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+  font-size: 0.9rem;
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.form-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-heading h4 {
+  margin-bottom: 0;
+  font-size: 1.2rem;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 0.4em 0.6em;
+}
+
+.modal-body .card {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e9edf4;
+}
+
+.local-forms label {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  color: #5e5873;
+  font-size: 0.85rem;
+}
+
+/* Styles spécifiques au modal de taille réduite */
+.modal-md {
+  max-width: 600px;
+}
+
+.modal-body {
+  padding: 1rem;
+}
+
+.card-body.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.card-header.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.modal-footer {
+  padding: 0.5rem 1rem;
+  border-top: 1px solid #e9edf4;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+/* Pour les actions sur la liste des institutions */
+.actions .btn {
+  cursor: pointer;
+} 

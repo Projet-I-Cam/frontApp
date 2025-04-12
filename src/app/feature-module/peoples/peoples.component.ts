@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-peoples',
     templateUrl: './peoples.component.html',
-    styleUrl: './peoples.component.scss',
-    standalone: false
+    styleUrls: ['./peoples.component.scss'],
+    standalone: true,
+    imports: [RouterModule]
 })
 export class PeoplesComponent {
 

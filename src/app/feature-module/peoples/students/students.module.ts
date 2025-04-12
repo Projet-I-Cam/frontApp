@@ -1,42 +1,49 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { StudentsRoutingModule } from './students-routing.module';
 import { StudentsComponent } from './students.component';
+import { StudentGridComponent } from './student-grid/student-grid.component';
 import { SharedModule } from '../../../shared/shared.module';
 import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { ChipsModule } from 'primeng/chips';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 import { StudentService } from '../../../services/student.service';
 import { PersonService } from '../../../services/person.service';
-import { ClassService } from '../../../services/class.service';
 import { EditStudentModule } from './edit-student/edit-student.module';
-import { AddStudentModule } from './add-student/add-student.module';
+import { AddStudentComponent } from './add-student/add-student.component';
 
 @NgModule({
-  declarations: [
-    StudentsComponent
-  ],
+  declarations: [],
   imports: [
     CommonModule,
+    RouterModule,
+    StudentsRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    StudentsRoutingModule,
     SharedModule,
     DropdownModule,
     CalendarModule,
     ChipsModule,
     HttpClientModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
     EditStudentModule,
-    AddStudentModule
+    AddStudentComponent,
+    StudentsComponent,
+    StudentGridComponent
   ],
   providers: [
     StudentService,
-    PersonService,
-    ClassService
-  ]
+    PersonService
+  ],
 })
 export class StudentsModule { }

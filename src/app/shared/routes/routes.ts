@@ -371,7 +371,7 @@ export class routes {
     return this.peoples + '/teachers/teacher-details';
   }
   public static get studentsList(): string {
-    return this.peoples + '/students/students-list';
+    return this.peoples + '/students/student-grid';
   }
   public static get studentsGrid(): string {
     return this.peoples + '/students/student-grid';
@@ -386,7 +386,7 @@ export class routes {
     return this.peoples + '/students/student-leaves';
   }
   public static get studentList(): string {
-    return this.peoples + '/students/students-list';
+    return this.peoples + '/students/student-grid';
   }
   public static get teacherLibrary(): string {
     return this.peoples + '/teachers/teacher-library';

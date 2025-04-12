@@ -110,15 +110,16 @@ export class InstitutionService {
    */
   updateInstitution(id: string, institutionData: any): Observable<any> {
     const query = new Parse.Query(this.INSTITUTION_CLASS);
+    console.log('Updating institution with data:', institutionData);
     
     return from(query.get(id)).pipe(
       map(institution => {
-        // Update properties if provided
-        if (institutionData.name) {
+        // Always update all fields that are included in the data
+        if (institutionData.name !== undefined) {
           institution.set('name', institutionData.name);
         }
         
-        if (institutionData.registrationNumber) {
+        if (institutionData.registrationNumber !== undefined) {
           institution.set('registrationNumber', institutionData.registrationNumber);
         }
         
@@ -138,13 +139,13 @@ export class InstitutionService {
           institution.set('isActive', institutionData.isActive);
         }
         
-        // Update emails and phones if provided
-        if (institutionData.emails && Array.isArray(institutionData.emails)) {
-          institution.set('emails', institutionData.emails);
+        // Update emails and phones
+        if (institutionData.emails !== undefined) {
+          institution.set('emails', Array.isArray(institutionData.emails) ? institutionData.emails : []);
         }
         
-        if (institutionData.phones && Array.isArray(institutionData.phones)) {
-          institution.set('phones', institutionData.phones);
+        if (institutionData.phones !== undefined) {
+          institution.set('phones', Array.isArray(institutionData.phones) ? institutionData.phones : []);
         }
         
         // Update logo if provided
@@ -163,9 +164,13 @@ export class InstitutionService {
           institution.set('campus', campusPointer);
         }
 
+        console.log('About to save updated institution');
         // Save and return the updated institution
         return from(institution.save()).pipe(
-          map(result => this.parseInstitutionObject(result))
+          map(result => {
+            console.log('Institution saved successfully');
+            return this.parseInstitutionObject(result);
+          })
         );
       }),
       // Flatten the observable

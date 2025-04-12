@@ -1,0 +1,17 @@
+<!-- Pagination -->
+<div class="pagination-section page-section">
+    <div class="row align-items-center">
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <p>Affichage des résultats {{ length * currentPage + 1 }} - {{ (totalItems > length * (currentPage + 1)) ? length * (currentPage + 1) : totalItems }} sur {{ totalItems }} entrées</p>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <mat-paginator 
+                [length]="totalItems"
+                [pageSize]="length"
+                (page)="changePage($event.pageIndex)"
+                [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+        </div>
+    </div>
+</div>
+<!-- /Pagination --> 

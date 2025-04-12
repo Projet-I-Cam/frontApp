@@ -1,18 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { routes } from '../../../../shared/routes/routes';
 import { StudentService } from '../../../../services/student.service';
 import { PersonService } from '../../../../services/person.service';
 import { ClassService } from '../../../../services/class.service';
 import { Student, Person, Class } from '../../../../shared/model/student.model';
 import { finalize } from 'rxjs/operators';
+import { SharedModule } from '../../../../shared/shared.module';
 
 @Component({
     selector: 'app-add-student',
     templateUrl: './add-student.component.html',
     styleUrl: './add-student.component.scss',
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, ReactiveFormsModule, RouterModule, SharedModule]
 })
 export class AddStudentComponent implements OnInit {
   public routes = routes;

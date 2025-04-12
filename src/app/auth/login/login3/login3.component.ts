@@ -58,7 +58,7 @@ export class Login3Component {
         throw user.error
       }
       this.loginService.setUser(user);
-      return this.navigate(user.role?.task_name);
+      return this.navigate(user?.role?.task_name || 'admin');
     } catch (error: any) {
       console.error('Error Form login submited ', error?.message)
       this.errorMessage = error?.message || 'Login failed. Please check your credentials and try again.';
