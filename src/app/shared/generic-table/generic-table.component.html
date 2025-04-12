@@ -79,9 +79,11 @@
                 <mat-checkbox (change)="selectAll($event)"></mat-checkbox>
               </th>
               <th *ngFor="let column of tableConfig.columns"
-                [mat-sort-header]="column.sortable ? column.name || '' : ''">
-                {{ column.header }}
-              </th>
+              [mat-sort-header]="column.sortable ? column.name : ''">
+            {{ column.header }}
+          </th>
+
+
               <th>Actions</th>
             </tr>
           </thead>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   pageSelection,
   pageSize,
@@ -13,16 +13,18 @@ import {
     standalone: false
 })
 export class CustomPaginationComponent {
-  public pageSize = 10;
+  @Input() pageSize = 10;
+  @Input() totalData = 0;
+  @Input() currentPage = 1;
+  @Output() onPageChange = new EventEmitter<number>();
+  
   public tableData: string[] = [];
   // pagination variables
   public lastIndex = 0;
-  public totalData = 0;
   public skip = 0;
   public limit: number = this.pageSize;
   public pageIndex = 0;
   public serialNumberArray: number[] = [];
-  public currentPage = 1;
   public pageNumberArray: number[] = [];
   public pageSelection: pageSelection[] = [];
   public totalPages = 0;
@@ -43,8 +45,6 @@ export class CustomPaginationComponent {
       this.changePageSize(res.pageSize);
     });
   }
-
-   
 
   public getMoreData(event: string): void {
     if (event == 'next') {
@@ -100,6 +100,9 @@ export class CustomPaginationComponent {
       limit: this.limit,
       pageSize: this.pageSize,
     });
+    
+    // Émettre l'événement pour notifier le composant parent
+    this.onPageChange.emit(pageSize);
   }
 
   public calculateTotalPages(

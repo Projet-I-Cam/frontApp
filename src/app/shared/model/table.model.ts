@@ -17,6 +17,7 @@ export interface TableConfig {
 export interface TableAction {
   name: string;
   icon: string;
+  data?: any;
   handler: (item: any) => void;
 }
 

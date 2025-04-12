@@ -6,7 +6,7 @@ import { LoginService } from '../../../../auth/services/login.service';
   selector: 'app-dashboard-main',
   standalone: false,
   templateUrl: './dashboard-main.component.html',
-  styleUrl: './dashboard-main.component.scss'
+  styleUrls: ['./dashboard-main.component.scss']
 })
 export class DashboardMainComponent implements OnInit {
   role: string = '';
@@ -16,9 +16,10 @@ export class DashboardMainComponent implements OnInit {
   public getDashBoard(){
     if(this.loginService.isLoggedIn()){
       const user = this.loginService.getUser();
-      const role = user.role.task_name;
+      const role = user?.role?.task_name || 'admin';
       return role;
     }
+    return 'admin';
   }
    ngOnInit(): void {
      this.role = this.getDashBoard();

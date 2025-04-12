@@ -1,0 +1,178 @@
+<div class="page-wrapper">
+  <div class="content">
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a [routerLink]="routes.adminDashboard">Dashboard </a>
+            </li>
+            <li class="breadcrumb-item"><i class="feather-chevron-right"></i></li>
+            <li class="breadcrumb-item">
+              <a [routerLink]="'/peoples/institutions/institutions-list'">Institutions</a>
+            </li>
+            <li class="breadcrumb-item"><i class="feather-chevron-right"></i></li>
+            <li class="breadcrumb-item active">{{ pageTitle }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12">
+                <div class="form-heading">
+                  <h4>{{ pageTitle }}</h4>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="loading" class="text-center py-4">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-2">Chargement des données...</p>
+            </div>
+
+            <div *ngIf="errorMessage" class="col-12 mb-3">
+              <div class="alert alert-danger" role="alert">
+                {{ errorMessage }}
+              </div>
+            </div>
+
+            <div class="col-12" *ngIf="!loading">
+              <form [formGroup]="institutionForm" (ngSubmit)="onSubmit()">
+                <div class="row">
+                  <div class="col-12 col-md-6 col-xl-6">
+                    <div class="form-group local-forms">
+                      <label>Institution Name <span class="login-danger">*</span></label>
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        placeholder="Enter institution name"
+                        formControlName="name"
+                        [ngClass]="{'is-invalid': institutionForm.get('name')?.invalid && institutionForm.get('name')?.touched}"
+                      >
+                      <div class="invalid-feedback" *ngIf="institutionForm.get('name')?.invalid && institutionForm.get('name')?.touched">
+                        Institution name is required
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-6 col-xl-6">
+                    <div class="form-group local-forms">
+                      <label>Registration Number <span class="login-danger">*</span></label>
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        placeholder="Enter registration number"
+                        formControlName="registrationNumber"
+                        [ngClass]="{'is-invalid': institutionForm.get('registrationNumber')?.invalid && institutionForm.get('registrationNumber')?.touched}"
+                      >
+                      <div class="invalid-feedback" *ngIf="institutionForm.get('registrationNumber')?.invalid && institutionForm.get('registrationNumber')?.touched">
+                        Registration number is required
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-6 col-xl-6">
+                    <div class="form-group local-forms">
+                      <label>Motto</label>
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        placeholder="Enter institution motto"
+                        formControlName="motto"
+                      >
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-6 col-xl-6">
+                    <div class="form-group local-forms">
+                      <label>P.O. Box</label>
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        placeholder="Enter P.O. Box"
+                        formControlName="poBox"
+                      >
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-6 col-xl-6">
+                    <div class="form-group local-forms">
+                      <label>Email</label>
+                      <input 
+                        type="email" 
+                        class="form-control" 
+                        placeholder="Enter email address"
+                        formControlName="emails"
+                        [ngClass]="{'is-invalid': institutionForm.get('emails')?.invalid && institutionForm.get('emails')?.touched}"
+                      >
+                      <div class="invalid-feedback" *ngIf="institutionForm.get('emails')?.invalid && institutionForm.get('emails')?.touched">
+                        <span *ngIf="institutionForm.get('emails')?.errors?.['email']">Enter a valid email address</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-6 col-xl-6">
+                    <div class="form-group local-forms">
+                      <label>Phone Number</label>
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        placeholder="Enter phone number"
+                        formControlName="phones"
+                      >
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <div class="form-group local-forms">
+                      <label>Description</label>
+                      <textarea 
+                        class="form-control" 
+                        rows="4" 
+                        placeholder="Enter description of the institution"
+                        formControlName="description"
+                      ></textarea>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-6">
+                    <div class="form-group">
+                      <div class="form-check form-switch">
+                        <input 
+                          class="form-check-input" 
+                          type="checkbox" 
+                          id="isActiveSwitch"
+                          formControlName="isActive"
+                        >
+                        <label class="form-check-label" for="isActiveSwitch">Active</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <div class="doctor-submit text-end">
+                      <button type="button" class="btn btn-secondary me-2" (click)="cancel()">
+                        Annuler
+                      </button>
+                      <button type="submit" class="btn btn-primary" [disabled]="submitting">
+                        <span *ngIf="submitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        {{ submitting ? 'Enregistrement...' : (isEditMode ? 'Mettre à jour' : 'Enregistrer') }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

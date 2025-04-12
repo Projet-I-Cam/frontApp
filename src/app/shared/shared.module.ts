@@ -29,8 +29,15 @@ import { DropdownModule } from 'primeng/dropdown';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CountUpModule } from 'ngx-countup';
-import { MultiSelectModule } from 'primeng/multiselect';
 import { NgCircleProgressModule } from 'ng-circle-progress';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { Tag } from 'primeng/tag';
+import { InputIcon } from 'primeng/inputicon';
+import { IconField } from 'primeng/iconfield';
+import { Slider } from 'primeng/slider';
+import { ProgressBar } from 'primeng/progressbar';
 
 
 import {
@@ -79,6 +86,9 @@ import { Router, RouterModule } from '@angular/router';
     CountUpModule,
     MultiSelectModule,
     NgCircleProgressModule,
+    TableModule,
+    ButtonModule,
+
 
   ],
   exports: [
@@ -116,8 +126,8 @@ import { Router, RouterModule } from '@angular/router';
     MultiSelectModule,
     NgCircleProgressModule,
     GenericTableComponent,
-
-
+    TableModule,
+    ButtonModule,
   ],
   providers: [
     provideNgxMask(),

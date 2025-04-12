@@ -1,0 +1,243 @@
+<div class="page-wrapper">
+  <div class="content">
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12"> 
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a [routerLink]="routes.adminDashboard">Dashboard </a>
+            </li>
+            <li class="breadcrumb-item"><i class="feather-chevron-right"></i></li>
+            <li class="breadcrumb-item active">Institutions</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-table">
+      <div class="card-body">
+        <div class="page-table-header mb-2">
+          <div class="row align-items-center">
+            <div class="col">
+              <div class="doctor-table-blk">
+                <h3>Institutions List</h3>
+                <div class="doctor-search-blk">
+                  <div class="add-group">
+                    <a (click)="addInstitution()" class="btn btn-primary doctor-laptop-btn">
+                      <i class="fas fa-plus me-2"></i>Add Institution
+                    </a>
+                    <button (click)="loadInstitutions()" class="btn btn-outline-primary ms-2">
+                      <i class="fas fa-sync-alt me-2"></i>Rafraîchir
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-auto text-end float-end ms-auto download-grp">
+              <div class="top-nav-search table-search-blk">
+                <form>
+                  <input type="text" class="form-control" placeholder="Search here" />
+                  <a class="btn"><img src="assets/img/icons/search-normal.svg" alt=""></a>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading spinner -->
+        <div *ngIf="loading" class="text-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+
+        <!-- Error message -->
+        <div *ngIf="!loading && error" class="alert alert-danger" role="alert">
+          {{ error }}
+        </div>
+
+        <!-- Institutions list -->
+        <div *ngIf="!loading && !error && institutions.length > 0" class="table-responsive">
+          <table class="table border-0 custom-table comman-table datatable mb-0">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Registration Number</th>
+                <th>Status</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let institution of institutions">
+                <td>{{ institution.name }}</td>
+                <td>{{ institution.registrationNumber || 'N/A' }}</td>
+                <td>
+                  <span [ngClass]="institution.isActive ? 'badge bg-success-light' : 'badge bg-danger-light'">
+                    {{ institution.isActive ? 'Active' : 'Inactive' }}
+                  </span>
+                </td>
+                <td>{{ institution.emails && institution.emails.length > 0 ? institution.emails[0] : 'N/A' }}</td>
+                <td>{{ institution.phones && institution.phones.length > 0 ? institution.phones[0] : 'N/A' }}</td>
+                <td class="text-end">
+                  <div class="actions">
+                    <a (click)="viewDetails(institution.objectId)" class="btn btn-sm bg-success-light me-2">
+                      <i class="far fa-eye me-1"></i> View
+                    </a>
+                    <a (click)="editInstitution(institution.objectId)" class="btn btn-sm bg-primary-light me-2">
+                      <i class="feather-edit me-1"></i> Edit
+                    </a>
+                    <a (click)="deleteInstitution(institution.objectId)" class="btn btn-sm bg-danger-light">
+                      <i class="feather-trash-2 me-1"></i> Delete
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- No institutions message -->
+        <div *ngIf="!loading && !error && institutions.length === 0" class="text-center py-5">
+          <p>No institutions found. Click "Add Institution" to create one.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal pour les détails de l'institution -->
+<div class="modal fade" id="view-details" tabindex="-1" aria-labelledby="view-details-label" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="view-details-label">Détails de l'Institution</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" *ngIf="selectedInstitution">
+        <div class="row">
+          <div class="col-12">
+            <div class="form-heading mb-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <h4 class="m-0">{{ selectedInstitution.name }}</h4>
+                <span [ngClass]="selectedInstitution.isActive ? 'badge bg-success-light' : 'badge bg-danger-light'">
+                  {{ selectedInstitution.isActive ? 'Actif' : 'Inactif' }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="card mb-3">
+              <div class="card-header py-2">
+                <h6 class="card-title mb-0">Informations de base</h6>
+              </div>
+              <div class="card-body py-2">
+                <div class="row g-2">
+                  <div class="col-md-6">
+                    <div class="form-group local-forms mb-2">
+                      <label class="mb-1">Nom</label>
+                      <p class="form-control-static">{{ selectedInstitution.name }}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group local-forms mb-2">
+                      <label class="mb-1">N° d'enregistrement</label>
+                      <p class="form-control-static">{{ selectedInstitution.registrationNumber || 'Non renseigné' }}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group local-forms mb-2">
+                      <label class="mb-1">Devise</label>
+                      <p class="form-control-static">{{ selectedInstitution.motto || 'Non renseigné' }}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group local-forms mb-2">
+                      <label class="mb-1">Boîte Postale</label>
+                      <p class="form-control-static">{{ selectedInstitution.poBox || 'Non renseigné' }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="card mb-3">
+              <div class="card-header py-2">
+                <h6 class="card-title mb-0">Informations de contact</h6>
+              </div>
+              <div class="card-body py-2">
+                <div class="row g-2">
+                  <div class="col-md-6">
+                    <div class="form-group local-forms mb-2">
+                      <label class="mb-1">Email</label>
+                      <div *ngIf="selectedInstitution.emails && selectedInstitution.emails.length > 0">
+                        <p class="form-control-static mb-0" *ngFor="let email of selectedInstitution.emails">{{ email }}</p>
+                      </div>
+                      <p class="form-control-static mb-0" *ngIf="!selectedInstitution.emails || selectedInstitution.emails.length === 0">Non renseigné</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group local-forms mb-2">
+                      <label class="mb-1">Téléphone</label>
+                      <div *ngIf="selectedInstitution.phones && selectedInstitution.phones.length > 0">
+                        <p class="form-control-static mb-0" *ngFor="let phone of selectedInstitution.phones">{{ phone }}</p>
+                      </div>
+                      <p class="form-control-static mb-0" *ngIf="!selectedInstitution.phones || selectedInstitution.phones.length === 0">Non renseigné</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="card mb-3">
+              <div class="card-header py-2">
+                <h6 class="card-title mb-0">Description</h6>
+              </div>
+              <div class="card-body py-2">
+                <p class="form-control-static mb-0">{{ selectedInstitution.description || 'Aucune description disponible.' }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header py-2">
+                <h6 class="card-title mb-0">Informations système</h6>
+              </div>
+              <div class="card-body py-2">
+                <div class="row g-2">
+                  <div class="col-md-6">
+                    <div class="form-group local-forms mb-2">
+                      <label class="mb-1">Créé le</label>
+                      <p class="form-control-static mb-0">{{ selectedInstitution.createdAt | date:'short' }}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group local-forms mb-2">
+                      <label class="mb-1">Dernière mise à jour</label>
+                      <p class="form-control-static mb-0">{{ selectedInstitution.updatedAt | date:'short' }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="feather-x-circle me-1"></i> Fermer
+        </button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="editSelectedInstitution()" data-bs-dismiss="modal">
+          <i class="feather-edit me-1"></i> Modifier
+        </button>
+      </div>
+    </div>
+  </div>
+</div> 

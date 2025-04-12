@@ -1,7 +1,8 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit,  OnChanges, SimpleChanges } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { TableConfig, TableColumn, FilterConfig } from '../model/table.model';
+
 
 @Component({
   selector: 'app-generic-table',
@@ -11,7 +12,7 @@ import { TableConfig, TableColumn, FilterConfig } from '../model/table.model';
 })
 export class GenericTableComponent implements OnInit {
   @Input() tableConfig!: TableConfig;
-  @Input() tableData: any[] = [];
+  @Input() tableData: any = [];
   @Input() filterConfig: FilterConfig[] = [];
   @Input() sortOptions: any[] = [];
   @Input() dateRangeLabel = 'Select Date Range';
@@ -32,7 +33,15 @@ export class GenericTableComponent implements OnInit {
   public currentSort: string='';
 
   ngOnInit() {
+    console.log('tableData', this.tableData);
     this.displayedColumns = ['select', ...this.tableConfig.columns.map(c => c.name), 'actions'];
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['tableData']) {
+      // React to the new tableData, such as updating a local variable, re-computing derived properties, etc.
+      console.log('tableData changed:', this.tableData);
+    }
   }
 
   applyFilters() {
