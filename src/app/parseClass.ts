@@ -1,21 +1,31 @@
 import Parse from 'parse';
 
-export const User = Parse.Object.extend("_User") 
-export const Role = Parse.Object.extend("_Role")
-export const Municipality = Parse.Object.extend("Municipality")
-export const Department = Parse.Object.extend("Department")
-export const Region = Parse.Object.extend("Region") 
-export const Person = Parse.Object.extend("Person")
-export const Teaching = Parse.Object.extend("Teaching")
-export const EmailAddress = Parse.Object.extend("EmailAddress")
-export const PhoneNumber = Parse.Object.extend("PhoneNumber")
-export const Transfer = Parse.Object.extend("Transfer")
-export const Enrollment = Parse.Object.extend("Enrollment")
-export const CourseEnrollment = Parse.Object.extend("CourseEnrollment")
-export const EducationType = Parse.Object.extend("EducationType")
-export const Section = Parse.Object.extend("Section")
-export const Class = Parse.Object.extend("Class")
-export const Institution = Parse.Object.extend("Institution")
-export const Campus = Parse.Object.extend("Campus")
-export const InstitutionSection = Parse.Object.extend("InstitutionSection")
-export const EducationOffering = Parse.Object.extend("EducationOffering")
+export default {
+    User: Parse.Object.extend("_User"), 
+    Role: Parse.Object.extend("_Role"),
+    Gender: Parse.Object.extend("Gender"), 
+    UserProfile: Parse.Object.extend("UserProfile"), 
+    Authorization: Parse.Object.extend("_RoAuthorizationle"), 
+    UserProfile_Authorization: Parse.Object.extend("UserProfile_Authorization"), 
+    Parent: Parse.Object.extend("Parent"), 
+    Student: Parse.Object.extend("Student"), 
+    Teacher: Parse.Object.extend("Teacher"), 
+    TechAccount: Parse.Object.extend("TechAccount"), 
+    Person: Parse.Object.extend("Person"), 
+    AcademicYear: Parse.Object.extend("AcademicYear"), 
+    Teaching: Parse.Object.extend("Teaching"), 
+    EmailAddress: Parse.Object.extend("EmailAddress"), 
+    PhoneNumber: Parse.Object.extend("PhoneNumber"), 
+    Transfer: Parse.Object.extend("Transfer"), 
+    Enrollment: Parse.Object.extend("Enrollment"), 
+    EducationType: Parse.Object.extend("EducationType"), 
+    Section: Parse.Object.extend("Section"), 
+    Class: Parse.Object.extend("Class"), 
+    Institution: Parse.Object.extend("Institution"), 
+    Campus: Parse.Object.extend("Campus"), 
+    InstitutionSection: Parse.Object.extend("InstitutionSection"), 
+    EducationOffering: Parse.Object.extend("EducationOffering"), 
+    Municipality: Parse.Object.extend("Municipality"), 
+    Department: Parse.Object.extend("Department"), 
+    Region: Parse.Object.extend("Region")
+}
