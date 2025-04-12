@@ -40,7 +40,7 @@ export const createPersonne = async (data: any): Promise<any> => {
     try {
         const pQuery = new Personne()
         pQuery.set('nom', data?.nom)
-        pQuery.set('nom', data?.prenom)
+        pQuery.set('prenom', data?.prenom)
         pQuery.set('lieuNaissance', data?.lieuNaissance)
         pQuery.set('dateNaissance', data?.dateNaissance) // should be a javascript Date object eg: new Date(dateString)
         pQuery.set('etablissements', [await new Parse.Query(Etablissement).get(data?.etablissementId)])

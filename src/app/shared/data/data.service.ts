@@ -1113,7 +1113,7 @@ export class DataService {
           ],
         },
         {
-          menuValue: 'Class Room',
+          menuValue: 'Salle de Classe',
           hasSubRoute: false,
           showSubRoute: false,
           icon: 'building',
