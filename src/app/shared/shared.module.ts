@@ -29,18 +29,32 @@ import { DropdownModule } from 'primeng/dropdown';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CountUpModule } from 'ngx-countup';
-import { MultiSelectModule } from 'primeng/multiselect';
 import { NgCircleProgressModule } from 'ng-circle-progress';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { Tag } from 'primeng/tag';
+import { InputIcon } from 'primeng/inputicon';
+import { IconField } from 'primeng/iconfield';
+import { Slider } from 'primeng/slider';
+import { ProgressBar } from 'primeng/progressbar';
+
 
 import {
   BsDatepickerModule,
   BsDatepickerConfig,
 } from 'ngx-bootstrap/datepicker';
+import { GenericTableComponent } from './generic-table/generic-table.component';
+import { Router, RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    GenericTableComponent,
+
+  ],
   imports: [
     CommonModule,
+    RouterModule,
     FormsModule,
     ReactiveFormsModule,
     CarouselModule,
@@ -72,10 +86,14 @@ import {
     CountUpModule,
     MultiSelectModule,
     NgCircleProgressModule,
-   
+    TableModule,
+    ButtonModule,
+
+
   ],
   exports: [
     CommonModule,
+    RouterModule,
     FormsModule,
     ReactiveFormsModule,
     CarouselModule,
@@ -106,7 +124,10 @@ import {
     NgApexchartsModule,
     CountUpModule,
     MultiSelectModule,
-    NgCircleProgressModule
+    NgCircleProgressModule,
+    GenericTableComponent,
+    TableModule,
+    ButtonModule,
   ],
   providers: [
     provideNgxMask(),

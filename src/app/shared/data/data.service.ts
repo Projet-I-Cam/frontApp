@@ -1250,7 +1250,7 @@ export class DataService {
           ],
         },
         {
-          menuValue: 'Enseignant',
+          menuValue: 'Gestion du personelle',
           hasSubRoute: true,
           showSubRoute: false,
           icon: 'user-bolt',
@@ -1308,10 +1308,15 @@ export class DataService {
               parentMenuValue: 'Teachers',
             },
             {
-              menuValue: 'Correspondance au Directeur',
+              menuValue: 'Add Teacher',
               route: routes.addTeacher,
               parentMenuValue: 'Teachers',
             },
+            {
+              menuValue: 'Teachers Assignments',
+              route: routes.teacherAssignments,
+              parentMenuValue: 'Teachers',
+            }
           ],
         },
         {
@@ -1651,15 +1656,15 @@ export class DataService {
           page: 'institutions',
           subMenus: [
             {
-              menuValue: 'All Institutions',
+              menuValue: 'Institutions',
               route: '/peoples/institutions/institutions-list',
               hasSubRoute: false,
               showSubRoute: false,
               customSubmenuTwo: false,
             },
             {
-              menuValue: 'Add Institution',
-              route: '/peoples/institutions/add-institution',
+              menuValue: 'Sections',
+              route: routes.classSection,
               customSubmenuTwo: false,
               hasSubRoute: false,
               showSubRoute: false,
@@ -1667,87 +1672,41 @@ export class DataService {
           ],
         },
         {
-          menuValue: 'Students',
-          hasSubRoute: true,
-          showSubRoute: false,
-          icon: 'users',
-          page: 'students',
-          subMenus: [
-            // Commented out All Students entry
-            /* {
-              menuValue: 'All Students',
-              route: '/peoples/students/student-grid',
-              hasSubRoute: false,
-              showSubRoute: false,
-              customSubmenuTwo: false,
-            }, */
-            {
-              menuValue: 'Students List',
-              route: '/peoples/students/student-grid',
-              customSubmenuTwo: false,
-              hasSubRoute: false,
-              showSubRoute: false,
-            },
-            {
-              menuValue: 'Add Student',
-              route: '/peoples/students/add-student',
-              customSubmenuTwo: false,
-              hasSubRoute: false,
-              showSubRoute: false,
-            },
-          ],
-        },
-        {
-          menuValue: 'Parents',
+          menuValue: 'Staffs',
           hasSubRoute: true,
           showSubRoute: false,
           icon: 'user-bolt',
           page: 'parents',
           subMenus: [
             {
-              menuValue: 'All Parents',
+              menuValue: 'Staffs',
               route: routes.parentGrid,
               hasSubRoute: false,
               showSubRoute: false,
               customSubmenuTwo: false,
             },
             {
-              menuValue: 'Parent List',
+              menuValue: 'Function',
               route: routes.parentList,
               customSubmenuTwo: false,
               hasSubRoute: false,
               showSubRoute: false,
             },
+            {
+              menuValue: 'Assignments',
+              route: routes.parentList,
+              customSubmenuTwo: false,
+              hasSubRoute: false,
+              showSubRoute: false,
+            },
+
           ],
         },
-        {
-          menuValue: 'Teachers',
-          hasSubRoute: true,
-          showSubRoute: false,
-          page: 'teachers',
-          icon: 'fas fa-chalkboard-teacher',
-          subMenus: [
-            {
-              menuValue: 'Teachers List',
-              route: routes.teachersList,
-              parentMenuValue: 'Teachers',
-            },
-            {
-              menuValue: 'Add Teacher',
-              route: routes.addTeacher,
-              parentMenuValue: 'Teachers',
-            },
-            {
-              menuValue: 'Teachers Assignments',
-              route: routes.teacherAssignments,
-              parentMenuValue: 'Teachers',
-            }
-          ],
-        },
+
       ],
     },
   ];
-  
+
   public AdminSchoolSidebarData: Array<any> = [
     {
       tittle: 'Main',
@@ -1811,8 +1770,88 @@ export class DataService {
               route: routes.studentReportCard,
             },
           ],
+        },
+        {
+          menuValue: 'Teachers',
+          hasSubRoute: true,
+          showSubRoute: false,
+          page: 'teachers',
+          icon: 'fas fa-chalkboard-teacher',
+          subMenus: [
+            {
+              menuValue: 'Teachers List',
+              route: routes.teachersList,
+              parentMenuValue: 'Teachers',
+            },
+            {
+              menuValue: 'Add Teacher',
+              route: routes.addTeacher,
+              parentMenuValue: 'Teachers',
+            },
+            {
+              menuValue: 'Teachers Assignments',
+              route: routes.teacherAssignments,
+              parentMenuValue: 'Teachers',
+            }
+          ],
+        },
+        {
+          menuValue: 'Parents',
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'user-bolt',
+          page: 'parents',
+          subMenus: [
+            {
+              menuValue: 'All Parents',
+              route: routes.parentGrid,
+              hasSubRoute: false,
+              showSubRoute: false,
+              customSubmenuTwo: false,
+            },
+            {
+              menuValue: 'Parent List',
+              route: routes.parentList,
+              customSubmenuTwo: false,
+              hasSubRoute: false,
+              showSubRoute: false,
             },
           ],
         },
+        {
+          menuValue: 'Students',
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'users',
+          page: 'students',
+          subMenus: [
+            // Commented out All Students entry
+            /* {
+              menuValue: 'All Students',
+              route: '/peoples/students/student-grid',
+              hasSubRoute: false,
+              showSubRoute: false,
+              customSubmenuTwo: false,
+            }, */
+            {
+              menuValue: 'Students List',
+              route: '/peoples/students/student-grid',
+              customSubmenuTwo: false,
+              hasSubRoute: false,
+              showSubRoute: false,
+            },
+            {
+              menuValue: 'Add Student',
+              route: '/peoples/students/add-student',
+              customSubmenuTwo: false,
+              hasSubRoute: false,
+              showSubRoute: false,
+            },
+          ],
+        },
+
+      ],
+    },
+
   ];
 }

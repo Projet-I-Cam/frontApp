@@ -6,13 +6,13 @@ const CLASS: any = ParseClass
 
 export interface BaseGetIO {
     T: any; // la classe par de base. vous pouvez regarder app/parseClass.ts
-    filters?: {}; //les contrainte 
+    filters?: {}; //les contrainte
     includes?: Array<String>; // les jointure
     curentPage?: number; // pour la pagination. le currentpage peu etre 1 ou 2 pour la page 1 et 2
     size?: number; // le size le nombre max a recuperer par exemple je veux une pagination 10 par 10
     selects?: Array<String>; // les champs a selection. laissez vide si on veux tous prendre
     isOne?: Boolean // prendre seulelent 1 ou bien un array. est false si on veut one
-} 
+}
 
 export interface BasePostIO {
     T: any;
@@ -23,12 +23,12 @@ export interface BasePutIO {
     T: any;
     objectId: string,
     dataObject: {}
-} 
+}
 
 export interface BaseDeleteIO {
     T: any;
     objectId: string
-} 
+}
 
 export const globalGet = async({T, filters, includes, curentPage, size, selects, isOne} : BaseGetIO): Promise<any> => {
     try {
@@ -38,7 +38,7 @@ export const globalGet = async({T, filters, includes, curentPage, size, selects,
                 if(typeof value === "string"){
                     query.equalTo(key, value)
                 }else{
-                    query.equalTo(key, {"__type": "Pointer", "className": value?.className , "objectId": value?.objectId}) 
+                    query.equalTo(key, {"__type": "Pointer", "className": value?.className , "objectId": value?.objectId})
                 }
             });
         }
@@ -51,7 +51,7 @@ export const globalGet = async({T, filters, includes, curentPage, size, selects,
         if(selects?.length){
             query.select([...selects.map(k => String(k))])
         }
-        
+
 
         if(curentPage && size){
             query.skip((curentPage - 1) * size)
@@ -83,7 +83,7 @@ export const globalPost = async({T, dataObject} : BasePostIO): Promise<any> => {
             if(typeof value === "string" || Array.isArray(value)){
                 query.set(key, value)
             }else{
-                query.set(key, {"__type": "Pointer", "className": value?.className , "objectId": value?.objectId}) 
+                query.set(key, {"__type": "Pointer", "className": value?.className , "objectId": value?.objectId})
             }
         });
         const r = await query.save()
@@ -109,7 +109,7 @@ export const globalPut = async({T, dataObject, objectId} : BasePutIO): Promise<a
             if(typeof value === "string" || Array.isArray(value)){
                 toUpdate.set(key, value)
             }else{
-                toUpdate.set(key, {"__type": "Pointer", "className": value?.className , "objectId": value?.objectId}) 
+                toUpdate.set(key, {"__type": "Pointer", "className": value?.className , "objectId": value?.objectId})
             }
         });
         const r =  await toUpdate.save()
