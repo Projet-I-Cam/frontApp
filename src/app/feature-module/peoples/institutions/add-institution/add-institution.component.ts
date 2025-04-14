@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { routes } from '../../../../shared/routes/routes';
 import { CommonModule } from '@angular/common';
@@ -37,7 +37,9 @@ export class AddInstitutionComponent implements OnInit {
       poBox: [''],
       emails: ['', [Validators.email]],
       phones: [''],
-      isActive: [true]
+      isActive: [true],
+      owners: this.fb.array([]),
+      // campus: this.fb.array([]),
     });
   }
 
@@ -62,6 +64,46 @@ export class AddInstitutionComponent implements OnInit {
         }
       }
     });
+    // this.addCampus();
+    this.addOwner();
+  }
+
+  get campus(): FormArray {
+    return this.institutionForm.get('campus') as FormArray;
+  }
+  
+  get owners(): FormArray {
+    return this.institutionForm.get('owners') as FormArray;
+  }
+
+  addCampus(): void {
+    const campusGroup = this.fb.group({
+      name: ['', Validators.required],
+      latitude: ['', Validators.required],
+      longitude: ['', Validators.required],
+      address: ['', Validators.required],
+      municipality: ['', Validators.required],
+      classes: ['', Validators.required],
+      educationOfferings: ['', Validators.required],
+    });
+    this.campus.push(campusGroup);
+  }
+  addOwner(): void {
+    const onwnerGroup = this.fb.group({
+      // emails: ['', Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      phones: ['', Validators.required],
+    });
+    this.owners.push(onwnerGroup);
+  }
+
+  removeOwner(index: number): void {
+    this.owners.removeAt(index);
+  }
+
+  removeCampus(index: number): void {
+    this.owners.removeAt(index);
   }
 
   loadInstitutionData(id: string): void {
@@ -99,7 +141,8 @@ export class AddInstitutionComponent implements OnInit {
             poBox: institution.poBox || '',
             emails: emailForForm,
             phones: phoneForForm,
-            isActive: institution.isActive
+            isActive: institution.isActive,
+            owners: institution?.owners || []
           });
           
           // Vérifier que le formulaire a été correctement rempli
@@ -136,7 +179,7 @@ export class AddInstitutionComponent implements OnInit {
 
       console.log('Form data prepared for API:', formData);
       console.log('Is edit mode:', this.isEditMode, 'Edit ID:', this.editId);
-
+     
       if (this.isEditMode && this.editId) {
         // Appeler le service pour mettre à jour l'institution
         console.log('Updating institution with ID:', this.editId);
@@ -188,6 +231,13 @@ export class AddInstitutionComponent implements OnInit {
       
       if (control instanceof FormGroup) {
         this.markFormGroupTouched(control);
+      }else if (control instanceof FormArray) {
+        control.controls.forEach((ctrl) => {
+          ctrl.markAsTouched(); // Marquer chaque contrôle dans le FormArray comme touché
+          if (ctrl instanceof FormGroup) {
+            this.markFormGroupTouched(ctrl); // Appel récursif pour les FormGroup dans le FormArray
+          }
+        });
       }
     });
   }

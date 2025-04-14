@@ -228,6 +228,30 @@
               </div>
             </div>
           </div>
+          
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header py-2">
+                <h6 class="card-title mb-0">Responsable de l'institution</h6>
+              </div>
+              <div class="card-body py-2">
+                <div class="row g-2" *ngFor="let owner of selectedInstitution.owners; let i = index" >
+                  <div class="col-md-6">
+                    <div class="form-group local-forms mb-2">
+                      <label class="mb-1">Nom complet</label>
+                      <p class="form-control-static mb-0">{{ owner.lastName }} {{ owner.lastName }}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group local-forms mb-2">
+                      <label class="mb-1">Telephones</label>
+                      <p class="form-control-static mb-0">{{ owner.phones?.join(' - ') }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="modal-footer justify-content-between">
