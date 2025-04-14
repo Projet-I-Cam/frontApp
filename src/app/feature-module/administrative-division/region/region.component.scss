@@ -1,1 +1,23 @@
- 
+::ng-deep .custom-p-table .p-datatable-thead > tr > th {
+  background-color: #a0bd9b !important;
+
+
+}
+
+::ng-deep .custom-p-table .p-datatable-tbody > tr > td {
+  font-size: 14px !important;
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
+
+
+::ng-deep .custom-p-table .p-datatable-tbody > tr:nth-child(odd) {
+  background-color: #f9f9f9 !important;
+}
+
+::ng-deep .custom-p-table .p-datatable-tbody > tr:nth-child(even) {
+  background-color: white !important;
+}
+
+
+

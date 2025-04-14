@@ -1,1 +1,144 @@
-<p>region works!</p> 
+<div class="page-wrapper">
+  <div class="content">
+    <!-- Page Header -->
+    <div class="d-md-flex d-block align-items-center justify-content-between mb-3">
+      <div class="my-auto mb-2">
+        <h3 class="page-title mb-1">Regions</h3>
+        <nav>
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+              <a [routerLink]="routes.adminDashboard">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="javascript:void(0);">Division Administratif </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              Regions
+            </li>
+          </ol>
+        </nav>
+      </div>
+      <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
+        <div class="mb-2">
+          <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal"
+            (click)="openModal('create','create-region-modal')"><i class="ti ti-square-rounded-plus-filled me-2"></i>Add
+            Region</a>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="error" class="alert alert-danger text-center mt-2">
+      {{ error }}
+    </div>
+    <div *ngIf="loading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <div class="card" *ngIf="!loading && !error">
+      <p-table
+      #dt
+      [value]="tableData"
+      dataKey="objectId"
+      [paginator]="true"
+      [rows]="pageSize"
+      [rowsPerPageOptions]="pageSizeOptions"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [globalFilterFields]="['name_fr', 'name_en', 'slug', 'createdAt']"
+      class="custom-p-table">
+
+      <ng-template pTemplate="caption">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+          <app-tooltip-content></app-tooltip-content>
+          <div>
+            <span class="p-input-icon-left me-3">
+              <i class="ti ti-search"></i>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search region"
+                [(ngModel)]="searchValue"
+                (input)="dt.filterGlobal(searchValue, 'contains')" />
+            </span>
+            <!-- Clear button (only visible when a filter is applied) -->
+            <button *ngIf="searchValue && searchValue.trim().length > 0"
+                    (click)="dt.clear(); searchValue='';"
+                    class="btn btn-primary btn-sm me-2">
+              <i class="ti ti-x me-2"></i>Clear
+            </button>
+          </div>
+        </div>
+      </ng-template>
+
+        <!-- Table Header -->
+        <ng-template pTemplate="header">
+          <tr>
+            <th >
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th pSortableColumn="name_fr">
+              <div class="flex justify-between items-center">
+                region (Fr)
+                <p-sortIcon field="name_fr"></p-sortIcon>
+              </div>
+            </th>
+            <th pSortableColumn="name_en">
+              <div class="flex justify-between items-center">
+                region (En)
+                <p-sortIcon field="name_en"></p-sortIcon>
+              </div>
+            </th>
+            <th pSortableColumn="createdAt">
+              <div class="flex justify-between items-center">
+                Created Date
+                <p-sortIcon field="createdAt"></p-sortIcon>
+              </div>
+            </th>
+            <th style="text-align:center">
+              Actions
+            </th>
+          </tr>
+        </ng-template>
+
+        <!-- Table Body -->
+        <ng-template pTemplate="body" let-region>
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="region"></p-tableCheckbox>
+            </td>
+            <td>{{ region.name_fr }}</td>
+            <td>{{ region.name_en }}</td>
+            <td>{{ region.createdAt | date:'MM/dd/yyyy' }}</td>
+            <td style="text-align: center">
+              <p-button
+                (click)="openModal('view_departments',null,region.objectId)"
+                styleClass="p-button-text"
+                tooltip="view departments"
+              >
+              <i class="ti ti-eye-bolt h-100 w-100 bg-body-tertiary"></i>
+            </p-button>
+            <p-button
+            (click)="openModal('view_districts',null,region.objectId)"
+            styleClass="p-button-text"
+            tooltip="view districts"
+          >
+          <i class="ti ti-eye-bolt h-100 w-100 bg-body-secondary"></i>
+        </p-button>
+        </td>
+          </tr>
+        </ng-template>
+
+
+
+        <!-- Empty Message -->
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="6">No regions found.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+  </div>
+</div>

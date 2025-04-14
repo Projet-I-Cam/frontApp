@@ -10,19 +10,13 @@ const routes: Routes = [
     path: '',
     component: AdministrativeDivisionComponent,
     children: [
-      {
-        path: 'regions',
-        component: RegionComponent,
-      },
-      {
-        path: 'departments',
-        component: DepartmentComponent,
-      },
-      {
-        path: 'municipalities',
-        component: MunicipalitiesComponent,
+      { path: 'regions', component: RegionComponent },
+      { path: 'region/:id', component: DepartmentComponent },
 
-      },
+      { path: 'departments', component: DepartmentComponent },
+      { path: 'department/:id', component: MunicipalitiesComponent },
+
+      { path: 'municipalities', component: MunicipalitiesComponent },
     ],
   },
 ];
@@ -31,4 +25,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class AdministrativeDivisionRoutingModule { } 
+export class AdministrativeDivisionRoutingModule { }

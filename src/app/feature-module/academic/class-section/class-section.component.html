@@ -20,7 +20,6 @@
         </nav>
       </div>
       <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
-        <app-tooltip-content></app-tooltip-content>
         <div class="mb-2">
           <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal"
             (click)="openModal('create')"><i class="ti ti-square-rounded-plus-filled me-2"></i>Add
@@ -42,29 +41,31 @@
         [globalFilterFields]="['name_fr', 'name_en', 'slug', 'createdAt']"
       >
       <ng-template pTemplate="caption">
-        <div class="d-flex align-items-center">
-          <span class="p-input-icon-left me-3">
-            <i class="ti ti-search"></i>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Search Section"
-              [(ngModel)]="searchValue"
-              (input)="dt.filterGlobal(searchValue, 'contains')" />
-          </span>
-          <!-- Clear button (only visible when a filter is applied) -->
-          <button *ngIf="searchValue && searchValue.trim().length > 0"
-                  (click)="dt.clear(); searchValue='';"
-                  class="btn btn-primary btn-sm me-2">
-            <i class="ti ti-x me-2"></i>Clear
-          </button>
-
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+          <app-tooltip-content></app-tooltip-content>
+          <div>
+            <span class="p-input-icon-left me-3">
+              <i class="ti ti-search"></i>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search Section"
+                [(ngModel)]="searchValue"
+                (input)="dt.filterGlobal(searchValue, 'contains')" />
+            </span>
+            <!-- Clear button (only visible when a filter is applied) -->
+            <button *ngIf="searchValue && searchValue.trim().length > 0"
+                    (click)="dt.clear(); searchValue='';"
+                    class="btn btn-primary btn-sm me-2">
+              <i class="ti ti-x me-2"></i>Clear
+            </button>
+          </div>
         </div>
       </ng-template>
 
         <!-- Table Header -->
         <ng-template pTemplate="header">
-          <tr>
+          <tr class="custom-header-bg">
             <th >
               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th>
@@ -100,7 +101,21 @@
 
         <!-- Table Body -->
         <ng-template pTemplate="body" let-section>
-          <tr>
+          <tr *ngIf="loading == true">
+            <td colspan="6" class="text-center">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="loading == false && error">
+            <td colspan="6">
+              <div class="alert alert-danger text-center" role="alert">
+                {{ error }}
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="loading == false && !error && tableData.length > 0">
             <td>
               <p-tableCheckbox [value]="section"></p-tableCheckbox>
             </td>
@@ -121,11 +136,13 @@
                 styleClass="p-button-text"
                 tooltip="Delete"
               >
-            <i class="ti ti-trash-filled h-100 w-100"></i>
+            <i class="ti ti-trash-filled h-50 w-50"></i>
           </p-button>
             </td>
           </tr>
         </ng-template>
+
+
 
         <!-- Empty Message -->
         <ng-template pTemplate="emptymessage">

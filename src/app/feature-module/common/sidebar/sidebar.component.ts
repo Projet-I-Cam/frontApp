@@ -4,7 +4,7 @@ import { SidebarService } from '../../../shared/sidebar/sidebar.service';
 import { DataService } from '../../../shared/data/data.service';
 import { NavigationStart, Router,Event as RouterEvent } from '@angular/router';
 import { CommonService } from '../../../shared/common/common.service';
-import { MenuItem, SubMenu, subMenus, url } from '../../../shared/model/sidebar.model';
+import { MenuItem, SubMenu, subMenus, url, sidebarData } from '../../../shared/model/sidebar.model';
 
 
 @Component({
@@ -34,7 +34,8 @@ export class SidebarComponent {
     this.sidebar.expandSideBar.subscribe((res: boolean) => {
       this.expandMenu = res;
     });
-    this.side_bar_data = this.data.getSideBarData();
+    // this.side_bar_data = this.data.getSideBarData();
+    this.side_bar_data = this.data.AdminSidebarData;
     this.common.base.subscribe((res: string) => {
       this.base = res;
     });
@@ -45,10 +46,7 @@ export class SidebarComponent {
       this.last = res;
     });
   }
-
-
-
-
+  
   public miniSideBarMouseHover(position: string): void {
     if (position == 'over') {
       this.sidebar.expandSideBar.next(true);
