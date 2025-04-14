@@ -80,15 +80,16 @@ export const globalPost = async({T, dataObject} : BasePostIO): Promise<any> => {
     try {
         const query = new CLASS[T]()
         Object.entries(dataObject).forEach(([key, value]: any) => {
-            if(typeof value === "string"){
+            if(typeof value === "string" || Array.isArray(value)){
                 query.set(key, value)
             }else{
                 query.set(key, {"__type": "Pointer", "className": value?.className , "objectId": value?.objectId})
             }
         });
-        await query.save()
+        const r = await query.save()
         return {
-            message: "Objet sauvegardé"
+            message: "Objet sauvegardé",
+            object: r
         }
     } catch (error: any) {
         console.error('Error  ', error?.message)
@@ -105,15 +106,16 @@ export const globalPut = async({T, dataObject, objectId} : BasePutIO): Promise<a
         const query = new Parse.Query(CLASS?.[T])
         const toUpdate = await query.get(objectId)
         Object.entries(dataObject).forEach(([key, value]: any) => {
-            if(typeof value === "string"){
+            if(typeof value === "string" || Array.isArray(value)){
                 toUpdate.set(key, value)
             }else{
                 toUpdate.set(key, {"__type": "Pointer", "className": value?.className , "objectId": value?.objectId})
             }
         });
-        await toUpdate.save()
+        const r =  await toUpdate.save()
         return {
-            message: "Objet mise a jour"
+            message: "Objet mise a jour",
+            object: r
         }
     } catch (error: any) {
         console.error('Error  ', error?.message)

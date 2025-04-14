@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as Parse from 'parse';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { globalPost } from './statefull/http';
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +34,7 @@ export class InstitutionService {
   getActiveInstitutions(): Observable<any[]> {
     const query = new Parse.Query(this.INSTITUTION_CLASS);
     query.include('campuses');
+    query.include('owners');
     query.equalTo('isActive', true);
     query.descending('createdAt');
     return from(query.find()).pipe(
@@ -49,9 +51,10 @@ export class InstitutionService {
     console.log(' id id ', id)
     const query = new Parse.Query(this.INSTITUTION_CLASS);
     query.include('campuses');
+    query.include('owners');
     return from(query.get(id)).pipe(
       map(institution => {
-        console.log(' institution institution', institution)
+        console.log(' institution institution', institution.toJSON())
         return institution.toJSON()
       })
     );
@@ -103,8 +106,56 @@ export class InstitutionService {
       institution.set('campuses', [campusPointer]);
     }
 
+    const owners: any = []
+    let i = 0;
+    institutionData?.owners?.forEach(async(owner : any) => {
+      i++
+      const usr = new Parse.User();
+      usr.set("username", owner.phones);
+      usr.set("password", owner.phones);
+      const user = await usr.signUp()
+      console.log(' user user user ', user)
+      const person  = await globalPost(
+        {
+          T: 'Person',
+          dataObject: {
+            lastName: owner.firstName,
+            firstName: owner.firstName,
+            phones: [owner.phones],
+            user: {
+              __type: 'Pointer',
+              className: '_User',
+              objectId: user?.id
+            }
+          }
+
+        }
+      )
+      console.log(' owners owners person ', person)
+      if(!person.error) {
+        user.set('person', person?.object)
+        await user.save()
+        owners.push(person?.object)
+        console.log('saving ', i, institutionData?.owners?.length, owners)
+        if(i === institutionData?.owners?.length){
+          console.log('Here saving')
+          institution.set('owners', owners)
+          await institution.save()
+        }
+      }
+    });
+    
+    console.log(' owners owners owners ', owners)
+    
+    
     return from(institution.save()).pipe(
-      map(result => this.parseInstitutionObject(result))
+      map(async result => {
+        owners.forEach(async(owner: any) => {
+          owner.set('institutions', [institution])
+          await owner.save()
+        });
+        return this.parseInstitutionObject(result)
+      })
     );
   }
 

@@ -155,6 +155,133 @@
                       </div>
                     </div>
                   </div>
+                  
+                  <div class="col-12 mt-10" >
+                    <h4>Persons responsibles</h4>
+                  </div>
+                  <div class="col-12" formArrayName="owners">
+                    <div style="margin-top: 20px;" class="row col-12" *ngFor="let owner of owners.controls; let i = index" [formGroupName]="i">
+                      <div class="col-12 col-md-6 ">
+                        <div class="form-group local-forms">
+                          <label>Firstname<span class="login-danger">*</span></label>
+                          <input 
+                            type="text" 
+                            class="form-control" 
+                            placeholder="Enter Firstname"
+                            formControlName="firstName"
+                            [ngClass]="{'is-invalid': owner.get('firstName')?.invalid && owner.get('firstName')?.touched}"
+                          >
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6 ">
+                        <div class="form-group local-forms">
+                          <label>Lastname<span class="login-danger">*</span></label>
+                          <input 
+                            type="text" 
+                            class="form-control" 
+                            placeholder="Enter the Last name"
+                            formControlName="lastName"
+                            [ngClass]="{'is-invalid': owner.get('lastName')?.invalid && owner.get('lastName')?.touched}"
+                          >
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6 ">
+                        <div class="form-group local-forms">
+                          <label>Phone<span class="login-danger">*</span></label>
+                          <input 
+                            type="text" 
+                            class="form-control" 
+                            placeholder="Enter the phone number"
+                            formControlName="phones"
+                            [ngClass]="{'is-invalid': owner.get('phones')?.invalid && owner.get('phones')?.touched}"
+                          >
+                        </div>
+                      </div>
+                      <div class="col-12 ">
+                        <div style="display: flex; gap: 5px;">
+                          <button *ngIf="owners.controls.length > 1" class="btn btn-warning me-2" type="button" (click)="removeOwner(i)">Delete this owner</button>
+                          <button *ngIf="owners.controls.length === i+1" type="button" class="btn btn-info me-2" (click)="addOwner()">Add an Owner</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- <div class="col-12 mt-10" >
+                    <h4>Campus</h4>
+                  </div>
+                  <div class="col-12" formArrayName="campus">
+                    <div style="margin-top: 20px;" class="row col-12" *ngFor="let campusGroup of campus.controls; let i = index" [formGroupName]="i">
+                      <div class="col-12 col-md-6 ">
+                        <div class="form-group local-forms">
+                          <label>Campus name</label>
+                          <input 
+                            type="text" 
+                            class="form-control" 
+                            placeholder="Enter name"
+                            formControlName="name"
+                          >
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6 ">
+                        <div class="form-group local-forms">
+                          <label>Latitude</label>
+                          <input 
+                            type="text" 
+                            class="form-control" 
+                            placeholder="Enter the geopoint latitude"
+                            formControlName="latitude"
+                          >
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6 ">
+                        <div class="form-group local-forms">
+                          <label>Latitude</label>
+                          <input 
+                            type="text" 
+                            class="form-control" 
+                            placeholder="Enter the geopoint latitude"
+                            formControlName="latitude"
+                          >
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6 ">
+                        <div class="form-group local-forms">
+                          <label>Campus Municipality</label>
+                          <select class="form-control" formControlName="municipality">
+                            <option value="Dschang">Dschang</option>
+                          </select>
+                          
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6 ">
+                        <div class="form-group local-forms">
+                          <label>Campus Education offering</label>
+                          <select class="form-control" formControlName="educationOfferings">
+                            <option value="Dschang">Dschang</option>
+                          </select>
+                          
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6 ">
+                        <div class="form-group local-forms">
+                          <label>Address</label>
+                          <input 
+                            type="text" 
+                            class="form-control" 
+                            placeholder="Enter address"
+                            formControlName="address"
+                          >
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div style="display: flex; gap: 5px;">
+                          <button class="btn btn-warning me-2" type="button" (click)="removeCampus(i)">Delete this campus</button>
+                          <button *ngIf="campus.controls.length === i+1" type="button" class="btn btn-info me-2" (click)="addCampus()">Ajouter un campus</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div> -->
+                  
 
                   <div class="col-12">
                     <div class="doctor-submit text-end">
