@@ -1167,6 +1167,7 @@ export class DataService {
 
 
   ];
+  
   public ParentSidebarData = [
     {
 
@@ -1663,7 +1664,22 @@ export class DataService {
               customSubmenuTwo: false,
             },
             {
+              menuValue: 'Institutions Types',
+              route: routes.classSection,
+              customSubmenuTwo: false,
+              hasSubRoute: false,
+              showSubRoute: false,
+            },
+            {
               menuValue: 'Sections',
+              route: routes.classSection,
+              customSubmenuTwo: false,
+              hasSubRoute: false,
+              showSubRoute: false,
+            },
+
+            {
+              menuValue: 'Director',
               route: routes.classSection,
               customSubmenuTwo: false,
               hasSubRoute: false,

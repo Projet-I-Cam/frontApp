@@ -1,15 +1,8 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { routes } from '../../../shared/routes/routes';
-import { Sort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { globalPost, globalGet, globalPut, globalDelete } from '../../../services/statefull/http';
-import { DataService } from '../../../shared/data/data.service';
-import {
-  pageSelection,
-  PaginationService,
-  tablePageSize,
-} from '../../../shared/custom-pagination/pagination.service';
+
 import { classSectionData, apiResultFormat } from '../../../shared/model/pages.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { filter } from 'rxjs/operators';
@@ -39,7 +32,7 @@ export class ClassSectionComponent {
   public pageSize = 10;
   public currentPage = 1;
   public mode = 'create';
-  public loading: boolean = false;
+  public loading: boolean = true;
   public error: string | null = null;
   public searchValue: string = '';
   public currentObjectId: string = '';
@@ -79,6 +72,7 @@ export class ClassSectionComponent {
    * Fetches table data from the server using the globalGet method.
    */
   async getTableData(curentPage: number, size: number, filters?: any, includes?: any): Promise<void> {
+    this.loading = true;
     try {
       const res: any = await globalGet({
         T: 'Section',
@@ -91,10 +85,13 @@ export class ClassSectionComponent {
       if (!res.error) {
         // Assign a new array reference for change detection.
         this.tableData = res ? [...res] : [];
+        this.loading = false;
       } else {
         console.error('Error:', res.message);
       }
     } catch (error) {
+      this.loading = false;
+      this.error = 'Error fetching data. Please try again later.';
       console.error('Error fetching section data:', error);
     }
   }

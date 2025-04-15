@@ -1,88 +1,106 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TableConfig, FilterConfig, SortOption } from '../../../shared/model/table.model';
 import { routes } from '../../../shared/routes/routes';
+import { Router } from '@angular/router';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { globalPost, globalGet, globalPut, globalDelete } from '../../../services/statefull/http';
 
+
+
+declare var bootstrap: any;
 @Component({
   selector: 'app-region',
   standalone: false,
   templateUrl: './region.component.html',
   styleUrl: './region.component.scss'
 })
-export class RegionComponent {
+
+export class RegionComponent  implements OnInit{
 public routes = routes;
-tableConfig: TableConfig = {
-  title: 'Academic Reasons',
-  columns: [
-    { name: 'role', header: 'Role', sortable: true },
-    { name: 'reason', header: 'Reason', sortable: true },
-    { name: 'createdDate', header: 'Created Date', sortable: true }
-  ],
-  actions: [
-    {
-      name: 'Add Reason',
-      icon: 'ti ti-square-rounded-plus-filled me-2',
-      handler: () => this.openModal()
-    }
-  ],
+mode = 'create';
+public regionForm: any;
+public currentRegionId = '';
+public loading: boolean = true;
+public error: string | null = null;
+public searchValue: string = '';
+public pageSize = 10;
+public currentPage = 1;
+public tableData: any[] = [];
+public  pageSizeOptions = [10, 25, 50];
 
-};
-
-filters:FilterConfig[] = [
-  {
-    label: 'Role',
-    key: 'role',
-    options: ['admin', 'user', 'guest'],
-    optionLabel: 'name'
-  },
-  {
-    label: 'Reason',
-    key: 'reason',
-    options: ['good', 'bad', 'average'],
-    optionLabel: 'name'
-  }
-];
-
-sortOptions:  SortOption[] = [
-  { label: 'Ascending', value: 'asc' },
-  { label: 'Descending', value: 'desc' },
-  { label: 'Recently Viewed', value: 'recent_view' },
-  { label: 'Recently Added', value: 'recent_add' }
-];
-
-tableData = [];
-
-openModal(){}
-
-onFilter(event: any): void {
-  console.log('Filter applied:', event);
+constructor(private fb: FormBuilder, private router: Router) {
+  this.regionForm = this.fb.group({
+    objectId: [''],
+    regionNameFr: [''],
+    regionNameEn: [''],
+  });
 }
+ ngOnInit() {
+  this.loadData();
+ }
+ openModal(mode: string, modalId: any, data?: any): void {
+  this.mode = mode;
 
-onSort(event: any): void {
-  console.log('Sort applied:', event);
-
-}
-
-onSearch(event: any): void {
-  console.log('Search applied:', event);
-}
-
-onRowSelect(selectedRows: any): void {
-  console.log('Selected rows:', selectedRows);
-}
-
-  handleTableAction(event: {type: string, item: any}) {
-    switch(event.type) {
-      case 'edit':
-        this.openModal();
-        break;
-      case 'delete':
-        this.openModal();
-        break;
-    }
+  if (mode === 'view_departments' && data) {
+    this.router.navigate(['administrative-division/region', data]);
+    return;
   }
 
-  handleDateRangeChange(range: any) {
-    // Handle date range change
+  if (mode === 'view_districts' && data) {
+    this.router.navigate(['administrative-division/department', data]);
+    return;
   }
 
-} 
+  if (mode === 'edit' && data) {
+    this.regionForm.patchValue({
+      objectId: data.objectId,
+      sectionNameFr: data.name_fr,
+      sectionNameEn: data.name_en,
+    });
+  } else if (mode === 'delete') {
+    this.currentRegionId = data;
+  }
+
+  const modalElement = document.getElementById(modalId);
+  if (!modalElement) {
+    console.error(`Modal with ID "${modalId}" not found`);
+    return;
+  }
+
+  const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+  modalInstance.show();
+}
+
+
+async loadData(): Promise<void> {
+  this.loading = true;
+  this.error = null;
+  try {
+    await this.getTableData(this.currentPage, this.pageSize);
+  } catch (err) {
+    this.error = 'Une erreur est survenue lors du chargement des données.';
+  } finally {
+    this.loading = false;
+  }
+}
+
+async getTableData(currentPage: number, size: number, filters?: any, includes?: any): Promise<void> {
+  const res: any = await globalGet({
+    T: 'Region',
+    filters: filters || {},
+    includes: includes || ['departement'],
+    curentPage: currentPage,
+    size: size,
+  });
+
+  console.log('Fetched data:', res);
+
+  if (!res.error) {
+    this.tableData = res ? [...res] : [];
+  } else {
+    console.error('Error:', res.message);
+    throw new Error(res.message);
+  }
+}
+
+}

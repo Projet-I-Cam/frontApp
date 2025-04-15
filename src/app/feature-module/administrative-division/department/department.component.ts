@@ -1,4 +1,12 @@
-import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { TableConfig, FilterConfig, SortOption } from '../../../shared/model/table.model';
+import { routes } from '../../../shared/routes/routes';
+import { Router } from '@angular/router';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { globalPost, globalGet, globalPut, globalDelete } from '../../../services/statefull/http';
+
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-department',
@@ -7,5 +15,103 @@ import { Component } from '@angular/core';
   styleUrl: './department.component.scss'
 })
 export class DepartmentComponent {
+  idParam: string = '';
+  public routes = routes;
+  mode = 'create';
+  public departmentForm: any;
+  public currentdepartmentId = '';
+  public loading: boolean = true;
+  public error: string | null = null;
+  public searchValue: string = '';
+  public pageSize = 10;
+  public currentPage = 1;
+  public tableData: any[] = [];
+  public  pageSizeOptions = [10, 25, 50];
 
-} 
+  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute) {
+    this.departmentForm = this.fb.group({
+      objectId: [''],
+       name: [''],
+      region: []
+    });
+  }
+   ngOnInit() {
+    this.loadData();
+   }
+  openModal(mode:string,modal:any, data?:any){
+    this.mode = mode;
+    if(mode === 'edit'){
+      this.departmentForm.patchValue({
+        objectId: data.objectId,
+        name: data.name,
+        region: data.region
+      });
+    }
+    else if(mode == 'delete'){
+      this.currentdepartmentId = data;
+    }
+    else if(mode == 'view_districts'){
+      this.router.navigate(['administrative-division/department', data]);
+    }
+    const modalElement = document.getElementById(modal);
+    const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+    modalInstance.show();
+  }
+
+  async loadData(): Promise<void> {
+    this.loading = true;
+    this.error = null;
+    try {
+      await this.getTableData(this.currentPage, this.pageSize);
+    } catch (err) {
+      this.error = 'Une erreur est survenue lors du chargement des données.';
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  async getTableData(currentPage: number, size: number, filters?: any, includes?: any): Promise<void> {
+    this.idParam = this.route.snapshot.paramMap.get('id') || '';
+    if (this.idParam == ''){
+      const res: any = await globalGet({
+        T: 'Department',
+        filters: filters || {},
+        includes: includes || ['region, municipalities'],
+        curentPage: currentPage,
+        size: size,
+      });
+
+      console.log('Fetched data:', res);
+
+      if (!res.error) {
+        this.tableData = res ? [...res] : [];
+      } else {
+        console.error('Error:', res.message);
+        throw new Error(res.message);
+      }
+    }else{
+      console.log(this.idParam);
+      const res: any = await globalGet({
+        T: 'Department',
+        filters: filters || {
+          region: {className: 'Region', objectId: this.idParam},
+          ...filters
+        },
+        includes: includes || ['region, municipalities'],
+        curentPage: currentPage,
+        size: size,
+      });
+
+      console.log('Fetched data:', res);
+
+      if (!res.error) {
+        this.tableData = res ? [...res] : [];
+      } else {
+        console.error('Error:', res.message);
+        throw new Error(res.message);
+      }
+
+    }
+    }
+
+}
