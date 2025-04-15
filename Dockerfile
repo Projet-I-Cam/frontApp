@@ -11,7 +11,9 @@ WORKDIR /usr/local/app
 COPY ./ /usr/local/app/
 
 # Install all the dependencies
-RUN npm install -f
+# Utilise package-lock.json exactement
+RUN npm ci  
+# RUN npm install -f
 
 # Generate the build of the application
 #RUN npm install -g sass
@@ -19,7 +21,7 @@ RUN npm install -f
 
 RUN npm cache clean --force
 
-RUN npm run build 
+RUN ng build --verbose
 RUN npm install -g serve
 EXPOSE 80
 # RUN ls
