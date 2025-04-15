@@ -27,6 +27,7 @@ public pageSize = 10;
 public currentPage = 1;
 public tableData: any[] = [];
 public  pageSizeOptions = [10, 25, 50];
+public totalRecords: number = 0;
 
 constructor(private fb: FormBuilder, private router: Router) {
   this.regionForm = this.fb.group({
@@ -76,7 +77,7 @@ async loadData(): Promise<void> {
   this.loading = true;
   this.error = null;
   try {
-    await this.getTableData(this.currentPage, this.pageSize);
+    await this.getTableData(this.currentPage);
   } catch (err) {
     this.error = 'Une erreur est survenue lors du chargement des données.';
   } finally {
@@ -84,13 +85,12 @@ async loadData(): Promise<void> {
   }
 }
 
-async getTableData(currentPage: number, size: number, filters?: any, includes?: any): Promise<void> {
+async getTableData(currentPage: number, filters?: any, includes?: any): Promise<void> {
   const res: any = await globalGet({
     T: 'Region',
     filters: filters || {},
     includes: includes || ['departement'],
     curentPage: currentPage,
-    size: size,
   });
 
   console.log('Fetched data:', res);
@@ -101,6 +101,11 @@ async getTableData(currentPage: number, size: number, filters?: any, includes?: 
     console.error('Error:', res.message);
     throw new Error(res.message);
   }
+}
+onPageChange(event: any) {
+  this.pageSize = event.rows;
+  this.currentPage = (event.first / event.rows) + 1;
+  this.loadData();
 }
 
 }
