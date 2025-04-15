@@ -8,7 +8,6 @@ WORKDIR /usr/local/app
 # Copy only package files first (for better caching)
 COPY package.json package-lock.json ./
 
-RUN node -v && npm -v && npx ng version
 # Install dependencies
 RUN npm i -f
 
