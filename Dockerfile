@@ -12,7 +12,8 @@ COPY ./ /usr/local/app/
 
 # Install all the dependencies
 # Utilise package-lock.json exactement
-RUN npm ci  
+RUN npm ci -f 
+RUN npm list @angular/compiler @angular/compiler-cli typescript
 # RUN npm install -f
 
 # Generate the build of the application
