@@ -1,38 +1,30 @@
 # Stage 1: Compile and Build angular codebase
-
-# Use official node image as the base image
 FROM node:18.20.4 as build
-LABEL Ismael Foletia alias XmaelXD <xmael@keepsec.ca>
+LABEL maintainer="Ismael Foletia alias XmaelXD <xmael@keepsec.ca>"
 
 # Set the working directory
 WORKDIR /usr/local/app
 
-# Add the source code to app
-COPY ./ /usr/local/app/
+# Copy only package files first (for better caching)
+COPY package.json package-lock.json ./
 
-# Install all the dependencies
-RUN npm install -f
+# Install dependencies
+RUN npm i -f
 
-# Generate the build of the application
-#RUN npm install -g sass
-#RUN sass  src/assets:src/assets --no-source-map
+# Copy the rest of the application
+COPY . .
 
-RUN npm cache clean --force
+# Optional: add sass if you need it before the build
+# RUN npm install -g sass && sass src/assets:src/assets --no-source-map
 
-RUN npm run build 
+# Build the app
+RUN npm run build
+
+# Install serve globally
 RUN npm install -g serve
+
+# Expose the app port
 EXPOSE 80
-# RUN ls
 
-RUN ls -a dist
+# Run the app
 CMD ["serve", "-s", "dist/template/browser", "-l", "80"]
-# # Stage 2: Serve app with nginx server
-
-# # Use official nginx image as the base image
-# FROM nginx:latest
-
-# # Copy the build output to replace the default nginx contents.
-# COPY --from=build /usr/local/app/dist/template/browser /usr/share/nginx/html
-
-# # Expose port 80
-# EXPOSE 80
