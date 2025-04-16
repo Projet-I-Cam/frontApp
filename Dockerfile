@@ -6,7 +6,7 @@ LABEL maintainer="Ismael Foletia alias XmaelXD <xmael@keepsec.ca>"
 WORKDIR /usr/local/app
 
 # Copy only package files first (for better caching)
-COPY package.json package-lock.json ./
+COPY package.json  ./
 
 # Install dependencies
 RUN npm i -f
