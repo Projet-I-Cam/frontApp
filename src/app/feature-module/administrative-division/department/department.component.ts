@@ -1,6 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { TableConfig, FilterConfig, SortOption } from '../../../shared/model/table.model';
 import { routes } from '../../../shared/routes/routes';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -27,6 +26,8 @@ export class DepartmentComponent {
   public currentPage = 1;
   public tableData: any[] = [];
   public  pageSizeOptions = [10, 25, 50];
+  public totalRecords: number = 0;
+
 
   constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute) {
     this.departmentForm = this.fb.group({
@@ -62,7 +63,7 @@ export class DepartmentComponent {
     this.loading = true;
     this.error = null;
     try {
-      await this.getTableData(this.currentPage, this.pageSize);
+      await this.getTableData(this.currentPage);
     } catch (err) {
       this.error = 'Une erreur est survenue lors du chargement des données.';
     } finally {
@@ -70,7 +71,7 @@ export class DepartmentComponent {
     }
   }
 
-  async getTableData(currentPage: number, size: number, filters?: any, includes?: any): Promise<void> {
+  async getTableData(currentPage: number, filters?: any, includes?: any): Promise<void> {
     this.idParam = this.route.snapshot.paramMap.get('id') || '';
     if (this.idParam == ''){
       const res: any = await globalGet({
@@ -78,13 +79,14 @@ export class DepartmentComponent {
         filters: filters || {},
         includes: includes || ['region, municipalities'],
         curentPage: currentPage,
-        size: size,
+
       });
 
       console.log('Fetched data:', res);
 
       if (!res.error) {
         this.tableData = res ? [...res] : [];
+        this.totalRecords = res?.count || res?.total || res?.length || 0;
       } else {
         console.error('Error:', res.message);
         throw new Error(res.message);
@@ -99,7 +101,6 @@ export class DepartmentComponent {
         },
         includes: includes || ['region, municipalities'],
         curentPage: currentPage,
-        size: size,
       });
 
       console.log('Fetched data:', res);
@@ -113,5 +114,12 @@ export class DepartmentComponent {
 
     }
     }
+
+    onPageChange(event: any) {
+      this.pageSize = event.rows;
+      this.currentPage = (event.first / event.rows) + 1;
+      this.loadData();
+  }
+
 
 }

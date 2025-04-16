@@ -44,6 +44,11 @@
       [paginator]="true"
       [rows]="pageSize"
       [rowsPerPageOptions]="pageSizeOptions"
+      [totalRecords]="totalRecords"
+      [lazy]="true"
+      (onPage)="onPageChange($event)"
+      [rowsPerPageOptions]="pageSizeOptions"
+      [first]="(currentPage - 1) * pageSize"
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
       [globalFilterFields]="['name_fr', 'name_en', 'slug', 'createdAt']"
       class="custom-p-table">
