@@ -47,12 +47,24 @@ export class PersonService {
     // Set basic person properties
     person.set('firstName', personData.firstName);
     person.set('lastName', personData.lastName);
-    person.set('gender', personData.gender);
-    person.set('dateOfBirth', personData.dateOfBirth ? new Date(personData.dateOfBirth) : null);
-    person.set('placeOfBirth', personData.placeOfBirth);
+    person.set('gender', {"__type": "Pointer", "className": "Gender" , "objectId": personData.gender});
+    person.set('section', {"__type": "Pointer", "className": "Section" , "objectId": personData.section});
+
+    person.set('birthDate', personData.dateOfBirth ? new Date(personData.dateOfBirth) : null);
+    person.set('birthPlace', personData.placeOfBirth);
     person.set('email', personData.email);
     person.set('phone', personData.phone);
-    person.set('address', personData.address);
+    person.set('registrationNumber', personData.registrationNumber);
+    // person.set('address', personData.address);
+    if(personData?.isStudent){
+      person.set('isStudent', true);
+    }
+    if(personData?.isParent){
+      person.set('isParent', true);
+    }
+    if(personData?.isStaff){
+      person.set('isStaff', true);
+    }
     
     // Handle file upload if photo is provided
     if (personData.photo && personData.photo instanceof File) {
@@ -61,7 +73,19 @@ export class PersonService {
     }
 
     return from(person.save()).pipe(
-      map(result => this.parsePersonObject(result))
+      map(result => { 
+        const usr = new Parse.User();
+        usr.set("username", personData.phone);
+        usr.set("password", personData.phone);
+        usr.set("person", person);
+        if(personData.roleId){
+          usr.set("role", {"__type": "Pointer", "className": "_Role" , "objectId": personData.roleId});
+        }
+        return  usr.signUp().then(user => {
+          person.set("user", usr)
+          return this.parsePersonObject(result)
+        })
+      })
     );
   }
 
@@ -185,7 +209,8 @@ export class PersonService {
       address: person.get('address'),
       photo: person.get('photo') ? person.get('photo').url() : null,
       createdAt: person.get('createdAt'),
-      updatedAt: person.get('updatedAt')
+      updatedAt: person.get('updatedAt'),
+      ...person.toJSON()
     };
   }
 } 
