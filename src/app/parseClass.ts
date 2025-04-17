@@ -20,7 +20,7 @@ export default {
     Enrollment: Parse.Object.extend("Enrollment"),
     EducationType: Parse.Object.extend("EducationType"),
     Section: Parse.Object.extend("Section"),
-    Class: Parse.Object.extend("Class"),
+    ClassRoom: Parse.Object.extend("ClassRoom"),
     Institution: Parse.Object.extend("Institution"),
     Campus: Parse.Object.extend("Campus"),
     InstitutionSection: Parse.Object.extend("InstitutionSection"),
@@ -28,5 +28,14 @@ export default {
     Municipality: Parse.Object.extend("Municipality"),
     Department: Parse.Object.extend("Department"),
     Region: Parse.Object.extend("Region"),
+    Skill: Parse.Object.extend("Skill"),
+    Assessment: Parse.Object.extend("Assessment"),
+    LearningUnit: Parse.Object.extend("LearningUnit"),
+    Module: Parse.Object.extend("Module"),
+    Student_Assessment: Parse.Object.extend("Student_Assessment"),
+    LearningUnit_Module: Parse.Object.extend("LearningUnit_Module"),
+    QuarterDivision: Parse.Object.extend("QuarterDivision"),
+    UA_PeriodAssessment: Parse.Object.extend("UA_PeriodAssessment"),
+    Cote:  Parse.Object.extend("Cote"),
     
 }
