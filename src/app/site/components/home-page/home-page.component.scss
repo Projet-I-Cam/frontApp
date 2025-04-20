@@ -7,14 +7,48 @@
   margin: 10vh;
 }
 
-.card {
+.card-feature {
   border: none;
   transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
   overflow: hidden;
   border-radius: 20px;
-  min-height: 300px;
+  min-height: 220px;
   box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.2);
 }
+
+.highlight-text {
+  font-family: 'Georgia', serif;
+  font-size: 1.5em;
+  line-height: 1.4;
+  font-weight: 500;
+  color: #2a775a;
+}
+
+.carousel-inner {
+  min-height: 50vh;
+}
+
+.carousel-indicators [data-bs-target] {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #e1e6ee;
+}
+
+.carousel-item {
+  transition: transform 0.8s ease, opacity 0.8s ease-in-out;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  width: 5%;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(1);
+}
+
 
 @media (max-width: 768px) {
   .card {
@@ -59,8 +93,7 @@
 
 .card.card-has-bg:hover .card-img-overlay {
   transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
-
-  background: #97e778;
+  background: #819977;
   background: linear-gradient(0deg, rgba(209, 192, 36, 0.342) 0%, rgb(240, 236, 12) 100%);
 }
 
@@ -98,8 +131,7 @@
 
 .card .card-img-overlay {
   transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
-  background: #97e778;
-  background: linear-gradient(0deg, rgba(89, 241, 13, 0.379) 0%, rgb(159, 233, 75) 100%);
+  background: #f3f5f2;
 }
 
 .hero-buttons .btn {
@@ -120,8 +152,6 @@
   width: 100%;
   margin-bottom: 20px;
 }
-
-
 
 .about-us img {
   transition: transform 0.3s ease-in-out;
@@ -223,18 +253,6 @@
   justify-content: center;
 }
 
-.cta-section {
-  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-}
-
-.cta-section .btn-light {
-  color: #6a11cb;
-}
-
-.cta-section .btn-outline-light:hover {
-  color: #6a11cb;
-}
-
 .cta-section .card {
   border-radius: 15px;
 }
@@ -245,12 +263,21 @@
   background-color: #f8f9fa;
 }
 
-.cta-section .btn-primary {
-  background-color: #6a11cb;
-  border-color: #6a11cb;
+.card .card-body {
+  padding: 4px;
 }
 
-.cta-section .btn-primary:hover {
-  background-color: #5a0cb1;
-  border-color: #5a0cb1;
+.card .card-title {
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  color: #f3f4f6;
 }
+
+.card-text{
+
+  font-family:Bookman old style;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+

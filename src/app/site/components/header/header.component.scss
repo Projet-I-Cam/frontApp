@@ -1,8 +1,16 @@
 .nav-item {
   font: 1em sans-serif;
   font-weight: 600;
-  color: #74756f;
+  color: #2a775a;
 }
+
+.navbar-nav .nav-link.active {
+  color: #ebe6e6 !important;
+  background-color: #2a775a !important;
+  border-radius: 4px;
+}
+
+
 .navbar-icon-top .navbar-nav .nav-link > .fa {
   top: 3px;
   line-height: 12px;
@@ -11,6 +19,8 @@
 .navbar-icon-top .navbar-nav .nav-link > .fa > .badge {
   top: -10px;
 }
+
+
 
 @media (min-width: 576px) {
   .navbar-icon-top.navbar-expand-sm .navbar-nav .nav-link {
