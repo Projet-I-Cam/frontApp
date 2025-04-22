@@ -1,58 +1,35 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { routes } from '../../../shared/routes/routes';
 import { Router } from '@angular/router';
-import { globalPost, globalGet, globalPut, globalDelete } from '../../../services/statefull/http';
-
-import { classSectionData, apiResultFormat } from '../../../shared/model/pages.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { filter } from 'rxjs/operators';
+import { globalPost, globalGet, globalPut, globalDelete } from '../../../services/statefull/http';
 import { Validators } from 'ngx-editor';
 
 declare var bootstrap: any;
 
-
-interface data {
-  name: string;
-  code: string;
-}
-
 @Component({
-    selector: 'app-class-section',
-    templateUrl: './class-section.component.html',
-    styleUrl: './class-section.component.scss',
-    standalone: false
+  selector: 'app-class-section',
+  templateUrl: './class-section.component.html',
+  styleUrl: './class-section.component.scss',
+  standalone: false
 })
-export class ClassSectionComponent {
+export class ClassSectionComponent implements OnInit {
   public routes = routes;
-
-  public sectionForm: FormGroup;
-
-  // Table configuration and data
-  public tableData: classSectionData[] = [];
-  public pageSize = 10;
-  public currentPage = 1;
   public mode = 'create';
+  public sectionForm: FormGroup;
+  public currentObjectId = '';
   public loading: boolean = true;
   public error: string | null = null;
   public searchValue: string = '';
-  public currentObjectId: string = '';
-
-  // Table config (for your generic table if needed)
-  public tableConfig: any = {
-    title: 'Class Section',
-    columns: [
-      { name: 'name_fr', header: 'Name of section Fr', sortable: true },
-      { name: 'name_en', header: 'Name of section En', sortable: true },
-      { name: 'slug', header: 'Slug', sortable: false },
-      { name: 'createdAt', header: 'Created Date', sortable: true },
-    ],
-    pageSizeOptions: [10, 25, 50],
-    pageSize: this.pageSize,
-
-  };
+  public pageSize = 10;
+  public currentPage = 1;
+  public tableData: any[] = [];
+  public pageSizeOptions = [10, 25, 50];
+  public totalRecords: number = 0;
 
   constructor(
     private fb: FormBuilder,
+    private router: Router
   ) {
     this.sectionForm = this.fb.group({
       objectId: [''],
@@ -62,49 +39,56 @@ export class ClassSectionComponent {
   }
 
   ngOnInit(): void {
-    // Initial data load (page 1)
-    this.getTableData(this.currentPage, this.pageSize);
-
-
+    this.loadData();
   }
 
-  /**
-   * Fetches table data from the server using the globalGet method.
-   */
-  async getTableData(curentPage: number, size: number, filters?: any, includes?: any): Promise<void> {
+  async loadData(): Promise<void> {
     this.loading = true;
+    this.error = null;
+    try {
+      await this.getTableData(this.currentPage, this.pageSize);
+    } catch (err) {
+      this.error = 'An error occurred while loading data.';
+      console.error('Error loading data:', err);
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  async getTableData(currentPage: number, size: number, filters?: any, includes?: any): Promise<void> {
     try {
       const res: any = await globalGet({
         T: 'Section',
         filters: filters || {},
         includes: includes || [],
-        curentPage: curentPage,
+        curentPage: currentPage,
         size: size
       });
-      console.log('Fetched data:', res);
+
       if (!res.error) {
-        // Assign a new array reference for change detection.
         this.tableData = res ? [...res] : [];
-        this.loading = false;
       } else {
-        console.error('Error:', res.message);
+        throw new Error(res.message);
       }
     } catch (error) {
-      this.loading = false;
-      this.error = 'Error fetching data. Please try again later.';
       console.error('Error fetching section data:', error);
+      throw error;
     }
   }
 
-  /**
-   * Handles the form submission using the globalPost method.
-   */
+  onPageChange(event: any): void {
+    this.pageSize = event.rows;
+    this.currentPage = (event.first / event.rows) + 1;
+    this.loadData();
+  }
+
   async onSubmit(): Promise<void> {
     if (this.sectionForm.invalid) {
       return;
     }
-    if (this.mode === 'create') {
-      try {
+
+    try {
+      if (this.mode === 'create') {
         await globalPost({
           T: 'Section',
           dataObject: {
@@ -112,16 +96,7 @@ export class ClassSectionComponent {
             name_en: this.sectionForm.value.sectionNameEn,
           },
         });
-        this.sectionForm.reset();
-        // Reload page 1 data after successful submission.
-        this.getTableData(1, this.pageSize);
-        this.closeAddModal();
-      } catch (error) {
-        console.error('Error during submission:', error);
-      }
-    }
-    else{
-      try {
+      } else {
         await globalPut({
           T: 'Section',
           dataObject: {
@@ -130,13 +105,13 @@ export class ClassSectionComponent {
           },
           objectId: this.sectionForm.value.objectId
         });
-        this.sectionForm.reset();
-        // Reload page 1 data after successful submission.
-        this.getTableData(1, this.pageSize);
-        this.closeAddModal();
-      } catch (error) {
-        console.error('Error during submission:', error);
       }
+
+      this.sectionForm.reset();
+      this.getTableData(1, this.pageSize);
+      this.closeAddModal();
+    } catch (error) {
+      console.error('Error during submission:', error);
     }
   }
 
@@ -144,58 +119,50 @@ export class ClassSectionComponent {
     try {
       await globalDelete({
         T: 'Section',
-       objectId: this.currentObjectId
+        objectId: this.currentObjectId
       });
-      // Reload page 1 data after successful deletion.
       this.getTableData(1, this.pageSize);
+      this.closeDeleteModal();
     } catch (error) {
       console.error('Error during deletion:', error);
     }
   }
 
-  /**
-   * Cancels form editing/adding and closes the modal.
-   */
-  onCancel(): void {
-    this.sectionForm.reset();
-    this.closeAddModal();
-  }
-
-  /**
-   * Closes the "add section" modal using Bootstrap's modal API.
-   */
-  openModal(mode:string, data?:any){
+  openModal(mode: string, data?: any): void {
     this.mode = mode;
-    if(mode === 'edit'){
+
+    if (mode === 'edit' && data) {
       this.sectionForm.patchValue({
         objectId: data.objectId,
         sectionNameFr: data.name_fr,
         sectionNameEn: data.name_en,
       });
-    }else{
+    } else {
       this.sectionForm.reset();
     }
+
     const modalElement = document.getElementById('add_class_section');
     const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
     modalInstance.show();
   }
+
   openDeleteModal(objectId: string): void {
+    this.currentObjectId = objectId;
     const modalElement = document.getElementById('delete-modal');
     const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
     modalInstance.show();
-    this.currentObjectId= objectId;
-
   }
+
   closeDeleteModal(): void {
     const modalElement = document.getElementById('delete-modal');
     const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
     modalInstance.hide();
     this.currentObjectId = '';
   }
+
   closeAddModal(): void {
     const modalElement = document.getElementById('add_class_section');
     const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
     modalInstance.hide();
   }
-
 }

@@ -1,17 +1,16 @@
-<!-- Page Wrapper -->
 <div class="page-wrapper">
   <div class="content">
     <!-- Page Header -->
     <div class="d-md-flex d-block align-items-center justify-content-between mb-3">
       <div class="my-auto mb-2">
-        <h3 class="page-title mb-1">Sections</h3>
+        <h3 class="page-title mb-1">Class Sections</h3>
         <nav>
           <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item">
               <a [routerLink]="routes.adminDashboard">Dashboard</a>
             </li>
             <li class="breadcrumb-item">
-              <a href="javascript:void(0);">Academic </a>
+              <a href="javascript:void(0);">Academic</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
               Class Sections
@@ -23,68 +22,76 @@
         <div class="mb-2">
           <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal"
             (click)="openModal('create')"><i class="ti ti-square-rounded-plus-filled me-2"></i>Add
-            Sections</a>
+            Section</a>
         </div>
       </div>
     </div>
 
-    <div class="card">
+    <div *ngIf="error" class="alert alert-danger text-center mt-2">
+      {{ error }}
+    </div>
+    <div *ngIf="loading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <div class="card" *ngIf="!loading && !error">
       <p-table
         #dt
         [value]="tableData"
         dataKey="objectId"
         [paginator]="true"
         [rows]="pageSize"
-        [rowsPerPageOptions]="tableConfig.pageSizeOptions"
-        [loading]="loading"
+        [rowsPerPageOptions]="pageSizeOptions"
+        [totalRecords]="totalRecords"
+        [lazy]="true"
+        (onPage)="onPageChange($event)"
+        [rowsPerPageOptions]="pageSizeOptions"
+        [first]="(currentPage - 1) * pageSize"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [globalFilterFields]="['name_fr', 'name_en', 'slug', 'createdAt']"
-      >
-      <ng-template pTemplate="caption">
-        <div class="container-fluid d-flex justify-content-between align-items-center">
-          <app-tooltip-content></app-tooltip-content>
-          <div>
-            <span class="p-input-icon-left me-3">
-              <i class="ti ti-search"></i>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Search Section"
-                [(ngModel)]="searchValue"
-                (input)="dt.filterGlobal(searchValue, 'contains')" />
-            </span>
-            <!-- Clear button (only visible when a filter is applied) -->
-            <button *ngIf="searchValue && searchValue.trim().length > 0"
-                    (click)="dt.clear(); searchValue='';"
-                    class="btn btn-primary btn-sm me-2">
-              <i class="ti ti-x me-2"></i>Clear
-            </button>
+        [globalFilterFields]="['name_fr', 'name_en', 'createdAt']"
+        class="custom-p-table">
+
+        <ng-template pTemplate="caption">
+          <div class="container-fluid d-flex justify-content-between align-items-center">
+            <app-tooltip-content></app-tooltip-content>
+            <div>
+              <span class="p-input-icon-left me-3">
+                <i class="ti ti-search"></i>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Search sections"
+                  [(ngModel)]="searchValue"
+                  (input)="dt.filterGlobal(searchValue, 'contains')" />
+              </span>
+              <!-- Clear button (only visible when a filter is applied) -->
+              <button *ngIf="searchValue && searchValue.trim().length > 0"
+                      (click)="dt.clear(); searchValue='';"
+                      class="btn btn-primary btn-sm me-2">
+                <i class="ti ti-x me-2"></i>Clear
+              </button>
+            </div>
           </div>
-        </div>
-      </ng-template>
+        </ng-template>
 
         <!-- Table Header -->
         <ng-template pTemplate="header">
-          <tr class="custom-header-bg">
-            <th >
+          <tr>
+            <th>
               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th>
             <th pSortableColumn="name_fr">
               <div class="flex justify-between items-center">
-                Section (Fr)
+                Section Name (Fr)
                 <p-sortIcon field="name_fr"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="name_en">
               <div class="flex justify-between items-center">
-                Section (En)
+                Section Name (En)
                 <p-sortIcon field="name_en"></p-sortIcon>
-              </div>
-            </th>
-            <th pSortableColumn="slug">
-              <div class="flex justify-between items-center">
-                Slug
-                <p-sortIcon field="slug"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="createdAt">
@@ -101,136 +108,88 @@
 
         <!-- Table Body -->
         <ng-template pTemplate="body" let-section>
-          <tr *ngIf="loading == true">
-            <td colspan="6" class="text-center">
-              <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-            </td>
-          </tr>
-          <tr *ngIf="loading == false && error">
-            <td colspan="6">
-              <div class="alert alert-danger text-center" role="alert">
-                {{ error }}
-              </div>
-            </td>
-          </tr>
-          <tr *ngIf="loading == false && !error && tableData.length > 0">
+          <tr>
             <td>
               <p-tableCheckbox [value]="section"></p-tableCheckbox>
             </td>
             <td>{{ section.name_fr }}</td>
             <td>{{ section.name_en }}</td>
-            <td>{{ section.slug }}</td>
             <td>{{ section.createdAt | date:'MM/dd/yyyy' }}</td>
             <td style="text-align: center">
               <p-button
-                (click)="openModal('edit',section)"
+                (click)="openModal('edit', section)"
                 styleClass="p-button-text"
-                tooltip="Edit"
+                tooltip="Edit section"
               >
-              <i class="ti ti-edit h-100 w-100"></i>
-            </p-button>
+                <i class="ti ti-edit h-100 w-100"></i>
+              </p-button>
               <p-button
                 (click)="openDeleteModal(section.objectId)"
                 styleClass="p-button-text"
-                tooltip="Delete"
+                tooltip="Delete section"
               >
-            <i class="ti ti-trash-filled h-50 w-50"></i>
-          </p-button>
+                <i class="ti ti-trash h-100 w-100 text-danger"></i>
+              </p-button>
             </td>
           </tr>
         </ng-template>
 
-
-
         <!-- Empty Message -->
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td colspan="6">No Sections found.</td>
+            <td colspan="5">No sections found.</td>
           </tr>
         </ng-template>
       </p-table>
     </div>
-
   </div>
 </div>
-<!-- /Page Wrapper -->
 
-
-<!-- Add Class Section -->
-<div class="modal fade" id="add_class_section">
+<!-- Add/Edit Modal -->
+<div class="modal fade" id="add_class_section" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">
-          <span *ngIf="mode =='create'">
-            Add a Section
-          </span>
-          <span *ngIf="mode != 'create'">
-            Edit Section
-          </span>
-        </h4>
-        <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" aria-label="Close">
-          <i class="ti ti-x"></i>
-        </button>
+        <h5 class="modal-title">{{ mode === 'create' ? 'Add New Section' : 'Edit Section' }}</h5>
+        <button type="button" class="btn-close" (click)="closeAddModal()" aria-label="Close"></button>
       </div>
-      <form [formGroup]="sectionForm" (ngSubmit)="onSubmit()">
-        <mat-dialog-content class="modal-body ">
-          <input *ngIf="mode != 'create'" type="hidden" formControlName="objectId">
-          <div class="p-4">
-            <mat-form-field appearance="fill" class="w-100">
-              <mat-label>Section name French</mat-label>
-              <input matInput formControlName="sectionNameFr" required>
-            </mat-form-field>
+      <div class="modal-body">
+        <form [formGroup]="sectionForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label class="form-label">Section Name (French)</label>
+            <input type="text" class="form-control" formControlName="sectionNameFr" required>
           </div>
-          <div class="p-4">
-            <mat-form-field appearance="fill" class="w-100">
-              <mat-label>Section name English</mat-label>
-              <input matInput formControlName="sectionNameEn" required>
-            </mat-form-field>
+          <div class="mb-3">
+            <label class="form-label">Section Name (English)</label>
+            <input type="text" class="form-control" formControlName="sectionNameEn" required>
           </div>
-
-        </mat-dialog-content>
-
-        <mat-dialog-actions align="end" class="modal-footer">
-          <button mat-button type="button" (click)="onCancel()">Cancel</button>
-          <button mat-flat-button color="primary" type="submit">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-            <span *ngIf="mode === 'create'">
-              <i class="ti ti-check"></i> Save
-            </span>
-            <span *ngIf="mode !== 'create'">
-              <i class="ti ti-edit-circle"></i> Update
-            </span>
-          </button>
-        </mat-dialog-actions>
-
-      </form>
-
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeAddModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary" [disabled]="sectionForm.invalid">
+              {{ mode === 'create' ? 'Create' : 'Update' }}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>
 
-
-<!-- Delete Modal -->
-<div class="modal fade" id="delete-modal">
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="delete-modal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <form>
-        <div class="modal-body text-center">
-          <span class="delete-icon">
-            <i class="ti ti-trash-x"></i>
-          </span>
-          <h4>Confirm Deletion</h4>
-          <p>Are you sure you want to delete this section?</p>
-          <div class="d-flex justify-content-center">
-            <a (click)="closeDeleteModal()" class="btn btn-light me-3" data-bs-dismiss="modal">Cancel</a>
-            <a (click)="deleteSection()" class="btn btn-danger" data-bs-dismiss="modal">Yes, Delete</a>
-          </div>
-        </div>
-      </form>
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Deletion</h5>
+        <button type="button" class="btn-close" (click)="closeDeleteModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete this section? This action cannot be undone.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">Cancel</button>
+        <button type="button" class="btn btn-danger" (click)="deleteSection()">Delete</button>
+      </div>
     </div>
   </div>
 </div>
-<!-- /Delete Modal -->

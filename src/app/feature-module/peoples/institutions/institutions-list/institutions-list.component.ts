@@ -1,10 +1,8 @@
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { Router, RouterModule, NavigationEnd } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { routes } from '../../../../shared/routes/routes';
-import { CommonModule } from '@angular/common';
-import { InstitutionService } from '../../../../services/institution.service';
-import { filter } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { globalPost, globalGet, globalPut, globalDelete } from './../../../../services/statefull/http'
 
 declare var bootstrap: any;
 
@@ -12,221 +10,238 @@ declare var bootstrap: any;
   selector: 'app-institutions-list',
   templateUrl: './institutions-list.component.html',
   styleUrls: ['./institutions-list.component.scss'],
-  standalone: true,
-  imports: [CommonModule, RouterModule]
+  standalone: false
 })
-export class InstitutionsListComponent implements OnInit, AfterViewInit, OnDestroy {
+export class InstitutionsListComponent implements OnInit {
   public routes = routes;
-  // Attributs pour gérer la liste des institutions
-  public institutions: any[] = [];
-  public loading = true;
+  public mode = 'create';
+  public institutionForm: FormGroup;
+  public currentInstitutionId = '';
+  public loading: boolean = true;
   public error: string | null = null;
+  public searchValue: string = '';
+  public pageSize = 10;
+  public currentPage = 1;
+  public tableData: any[] = [];
+  public pageSizeOptions = [10, 25, 50];
+  public totalRecords: number = 0;
   public selectedInstitution: any = null;
-  private modalInstance: any = null;
-  private routerSubscription: Subscription | null = null;
 
   constructor(
-    private router: Router,
-    private institutionService: InstitutionService
-  ) { }
+    private fb: FormBuilder,
+    private router: Router
+  ) {
+    this.institutionForm = this.fb.group({
+      objectId: [''],
+      name: [''],
+      registrationNumber: [''],
+      isActive: [true]
+    });
+  }
 
   ngOnInit(): void {
-    this.loadInstitutions();
-    
-    // Souscrire aux événements de navigation pour savoir quand l'utilisateur revient à cette page
-    this.routerSubscription = this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: NavigationEnd | any) => {
-      // Si l'utilisateur revient vers cette page après avoir édité une institution
-      if (event.url.includes('/peoples/institutions/institutions-list')) {
-        console.log('Navigation detected back to institution list. Refreshing data.');
-        this.loadInstitutions();
-      }
-    });
+    this.loadData();
   }
 
-  ngAfterViewInit(): void {
-    // S'assurer que le modal est initialisé correctement
-    const modalElement = document.getElementById('view-details');
-    if (modalElement) {
-      try {
-        this.modalInstance = new bootstrap.Modal(modalElement);
-        console.log('Modal initialized successfully on component load');
-      } catch (error) {
-        console.error('Error initializing modal on component load:', error);
-      }
+  async loadData(): Promise<void> {
+    this.loading = true;
+    this.error = null;
+    try {
+      await this.getTableData(this.currentPage);
+    } catch (err) {
+      this.error = 'An error occurred while loading data.';
+    } finally {
+      this.loading = false;
     }
   }
 
-  ngOnDestroy(): void {
-    // Nettoyer les abonnements pour éviter les fuites de mémoire
-    if (this.routerSubscription) {
-      this.routerSubscription.unsubscribe();
+  async getTableData(currentPage: number, filters?: any, includes?: any): Promise<void> {
+    const res: any = await globalGet({
+      T: 'Institution',
+      filters: filters || {},
+      includes: includes || [],
+      curentPage: currentPage,
+    });
+
+    console.log('Fetched data:', res);
+
+    if (!res.error) {
+      this.tableData = res ? [...res] : [];
+      this.totalRecords = res.length;
+    } else {
+      console.error('Error:', res.message);
+      throw new Error(res.message);
     }
   }
 
-  loadInstitutions(): void {
-    this.loading = true;
-    this.institutionService.getAllInstitutions().subscribe({
-      next: (data) => {
-        console.log('Institutions data loaded:', data.length, 'items');
-        this.institutions = data;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Error fetching institutions:', err);
-        this.error = 'Une erreur est survenue lors du chargement des institutions.';
-        this.loading = false;
-      }
-    });
+  onPageChange(event: any): void {
+    this.pageSize = event.rows;
+    this.currentPage = (event.first / event.rows) + 1;
+    this.loadData();
   }
 
-  // Méthode pour ajouter une nouvelle institution
-  addInstitution(): void {
-    this.router.navigate(['/peoples/institutions/add-institution']);
+  openModal(mode: string, modalId?: string, data?: any): void {
+    this.mode = mode;
+    console.log(data);
+    switch (mode) {
+      case 'view':
+        if (data) {
+          this.router.navigate(['institution-details', data]);
+        } else {
+          console.error('No institution ID provided for view');
+        }
+        break;
+
+      case 'edit':
+        if (data) {
+          if (modalId) {
+            // Open edit modal
+            this.institutionForm.patchValue({
+              objectId: data.objectId,
+              name: data.name,
+              registrationNumber: data.registrationNumber,
+              isActive: data.isActive
+            });
+            this.showModal(modalId);
+          } else {
+
+            // this.router.navigate([routes.editInstitution, data.objectId]);
+          }
+        } else {
+          console.error('No institution data provided for edit');
+        }
+        break;
+
+      case 'delete':
+        if (data?.objectId) {
+          this.currentInstitutionId = data.objectId;
+          if (modalId) {
+            this.showModal(modalId);
+          } else {
+            // Direct deletion if no modal (with confirmation)
+            this.confirmAndDelete();
+          }
+        } else {
+          console.error('No institution ID provided for deletion');
+        }
+        break;
+
+      case 'create':
+        if (modalId) {
+          this.institutionForm.reset();
+          this.showModal(modalId);
+        } else {
+          this.router.navigate(['add-institution']);
+        }
+        break;
+
+      default:
+        console.error(`Unknown mode: ${mode}`);
+    }
   }
 
-  // Méthode pour voir les détails d'une institution
-  viewDetails(id: string): void {
-    this.loading = true;
-    console.log('Fetching institution details for ID:', id);
-    this.institutionService.getInstitutionById(id).subscribe({
-      next: (institution) => {
-        console.log('Institution details received:', institution);
-        this.selectedInstitution = institution;
-        this.loading = false;
-        
-        // Ouvrir le modal
-        this.openModal();
-      },
-      error: (err) => {
-        console.error('Error fetching institution details:', err);
-        this.loading = false;
-        alert('Erreur lors du chargement des détails de l\'institution.');
-      }
-    });
-  }
-
-  // Méthode pour ouvrir le modal
-  openModal(): void {
-    // Définir une méthode pour vérifier si Bootstrap est disponible
-    const isBootstrapAvailable = typeof bootstrap !== 'undefined';
-    console.log('Bootstrap available:', isBootstrapAvailable);
-    
-    // Réinitialiser le modal à chaque fois pour éviter les problèmes
-    const modalElement = document.querySelector('#view-details') as HTMLElement;
-    
+  private showModal(modalId: string): void {
+    const modalElement = document.getElementById(modalId);
     if (!modalElement) {
-      console.error('Modal element not found in DOM with querySelector');
-      alert('Erreur: Élément modal non trouvé dans le DOM.');
+      console.error(`Modal with ID "${modalId}" not found`);
       return;
     }
-    
-    console.log('Modal element found:', modalElement);
-    
-    if (isBootstrapAvailable) {
+
+    const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+    modalInstance.show();
+  }
+
+  private async confirmAndDelete(): Promise<void> {
+    if (confirm('Are you sure you want to delete this institution?')) {
       try {
-        // Essayons de repartir de zéro à chaque fois pour éviter les problèmes
-        this.modalInstance = null;
-        
-        // Créer une nouvelle instance
-        this.modalInstance = new bootstrap.Modal(modalElement);
-        console.log('New Modal instance created');
-        
-        // Montrer le modal
-        this.modalInstance.show();
-        console.log('Modal show() method called');
-        return;
-      } catch (error) {
-        console.error('Error with Bootstrap modal API:', error);
-      }
-    } else {
-      console.warn('Bootstrap is not defined, trying manual approach');
-    }
-    
-    // Méthode alternative: manipulation directe du DOM
-    try {
-      console.log('Using DOM manipulation as fallback');
-      
-      // Ajouter la classe 'show' au modal et afficher
-      modalElement.classList.add('show');
-      modalElement.style.display = 'block';
-      modalElement.setAttribute('aria-modal', 'true');
-      modalElement.removeAttribute('aria-hidden');
-      
-      // Ajouter modal-open à body
-      document.body.classList.add('modal-open');
-      
-      // Ajouter un backdrop manuellement
-      const backdropExists = document.querySelector('.modal-backdrop');
-      if (!backdropExists) {
-        const backdrop = document.createElement('div');
-        backdrop.className = 'modal-backdrop fade show';
-        document.body.appendChild(backdrop);
-      }
-      
-      // Ajouter un gestionnaire de clic pour fermer le modal
-      const closeButtons = modalElement.querySelectorAll('[data-bs-dismiss="modal"]');
-      closeButtons.forEach(button => {
-        button.addEventListener('click', () => {
-          this.closeModal(modalElement);
+        await globalDelete({
+          T: 'Institution',
+          objectId: this.currentInstitutionId
         });
+        this.loadData();
+      } catch (error) {
+        console.error('Error during deletion:', error);
+      }
+    }
+  }
+
+  async onSubmit(): Promise<void> {
+    if (this.institutionForm.invalid) {
+      return;
+    }
+
+    try {
+      if (this.mode === 'create') {
+        await globalPost({
+          T: 'Institution',
+          dataObject: {
+            name: this.institutionForm.value.name,
+            registrationNumber: this.institutionForm.value.registrationNumber,
+            isActive: this.institutionForm.value.isActive
+          }
+        });
+      } else {
+        await globalPut({
+          T: 'Institution',
+          dataObject: {
+            name: this.institutionForm.value.name,
+            registrationNumber: this.institutionForm.value.registrationNumber,
+            isActive: this.institutionForm.value.isActive
+          },
+          objectId: this.institutionForm.value.objectId
+        });
+      }
+
+      this.institutionForm.reset();
+      this.loadData();
+      this.closeModal('add_institution');
+    } catch (error) {
+      console.error('Error during submission:', error);
+    }
+  }
+
+  async deleteInstitution(): Promise<void> {
+    try {
+      await globalDelete({
+        T: 'Institution',
+        objectId: this.currentInstitutionId
       });
-      
-      console.log('Modal displayed with DOM manipulation');
-    } catch (domError) {
-      console.error('DOM manipulation failed:', domError);
-      alert('Erreur lors de l\'affichage du modal. Vérifiez la console pour plus de détails.');
+      this.loadData();
+      this.closeModal('delete_modal');
+    } catch (error) {
+      console.error('Error during deletion:', error);
     }
   }
 
-  // Méthode pour fermer le modal manuellement (utilisée quand bootstrap n'est pas disponible)
-  closeModal(modalElement: HTMLElement): void {
-    modalElement.classList.remove('show');
-    modalElement.style.display = 'none';
-    modalElement.setAttribute('aria-hidden', 'true');
-    modalElement.removeAttribute('aria-modal');
-    
-    document.body.classList.remove('modal-open');
-    
-    const backdrop = document.querySelector('.modal-backdrop');
-    if (backdrop) {
-      backdrop.parentNode?.removeChild(backdrop);
+  closeModal(modalId: string): void {
+    const modalElement = document.getElementById(modalId);
+    if (!modalElement) return;
+
+    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+    if (modalInstance) {
+      modalInstance.hide();
     }
   }
 
-  // Méthode pour modifier une institution
+  addInstitution(): void {
+    this.mode = 'create';
+    this.institutionForm.reset();
+    this.openModal('create', 'add_institution');
+  }
+
+  viewDetails(id: string): void {
+    const institution = this.tableData.find(i => i.objectId === id);
+    if (institution) {
+      this.selectedInstitution = institution;
+      this.openModal('view', 'view_details');
+    }
+  }
+
   editInstitution(id: string): void {
-    this.createEditForm(id);
-  }
-
-  // Méthode pour éditer l'institution actuellement sélectionnée dans le modal
-  editSelectedInstitution(): void {
-    if (this.selectedInstitution && this.selectedInstitution.id) {
-      this.createEditForm(this.selectedInstitution.id);
+    const institution = this.tableData.find(i => i.objectId === id);
+    if (institution) {
+      this.mode = 'edit';
+      this.openModal('edit', 'add_institution', institution);
     }
   }
-
-  // Créer un formulaire d'édition pour une institution
-  createEditForm(id: string): void {
-    // Nous stockerons l'ID dans le localStorage pour l'utiliser dans le composant d'édition
-    localStorage.setItem('editInstitutionId', id);
-    this.router.navigate(['/peoples/institutions/add-institution'], { queryParams: { edit: true, id: id } });
-  }
-
-  // Méthode pour supprimer une institution
-  deleteInstitution(id: string): void {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette institution ?')) {
-      this.institutionService.deleteInstitution(id).subscribe({
-        next: () => {
-          // Mettre à jour la liste après la suppression
-          this.institutions = this.institutions.filter(institution => institution.id !== id);
-        },
-        error: (err) => {
-          console.error('Error deleting institution:', err);
-          alert('Une erreur est survenue lors de la suppression de l\'institution.');
-        }
-      });
-    }
-  }
-} 
+}

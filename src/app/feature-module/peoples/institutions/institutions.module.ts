@@ -10,9 +10,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { InstitutionDetailsComponent } from './institution-details/institution-details.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    InstitutionsListComponent,
+    InstitutionDetailsComponent,
+  ],
   imports: [
     CommonModule,
     RouterModule,
@@ -24,8 +28,11 @@ import { MatSortModule } from '@angular/material/sort';
     MatPaginatorModule,
     MatSortModule,
     InstitutionsComponent,
-    InstitutionsListComponent,
     AddInstitutionComponent
+  ],
+  exports: [
+    InstitutionsListComponent,
+    InstitutionDetailsComponent,
   ]
 })
-export class InstitutionsModule { } 
+export class InstitutionsModule { }

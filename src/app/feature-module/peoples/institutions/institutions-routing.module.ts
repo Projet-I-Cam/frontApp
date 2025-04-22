@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { InstitutionsComponent } from './institutions.component';
 import { InstitutionsListComponent } from './institutions-list/institutions-list.component';
 import { AddInstitutionComponent } from './add-institution/add-institution.component';
+import { InstitutionDetailsComponent } from './institution-details/institution-details.component';
 
 const routes: Routes = [
   {
@@ -16,7 +17,11 @@ const routes: Routes = [
       {
         path: 'add-institution',
         component: AddInstitutionComponent
-      }
+      },
+      {
+        path: 'institution-details/:id',
+        component: InstitutionDetailsComponent
+      },
     ]
   }
 ];
@@ -25,4 +30,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class InstitutionsRoutingModule { } 
+export class InstitutionsRoutingModule { }

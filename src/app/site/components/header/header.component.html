@@ -8,12 +8,13 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <div class="navbar-nav ms-auto">
-        <a href="#" class="nav-item nav-link active">Accueil</a>
-        <a href="#" class="nav-item nav-link">A propos</a>
-        <a href="#" class="nav-item nav-link">Services</a>
-        <a href="#" class="nav-item nav-link">Aide</a>
-        <a routerLink="/login" class="nav-item nav-link">Se connecter</a>
-        <a routerLink="/register-3" class="nav-item nav-link">S'enregistrer</a>
+        <a routerLink="/home" routerLinkActive="active" class="nav-item nav-link"
+          [routerLinkActiveOptions]="{ exact: true }">Accueil</a>
+        <a routerLink="/about" routerLinkActive="active" class="nav-item nav-link">A propos</a>
+        <a routerLink="/services" routerLinkActive="active" class="nav-item nav-link">Services</a>
+        <a routerLink="/help" routerLinkActive="active" class="nav-item nav-link">Aide</a>
+        <a routerLink="/login" routerLinkActive="active" class="nav-item nav-link">Se connecter</a>
+        <a routerLink="/register-3" routerLinkActive="active" class="nav-item nav-link">S'enregistrer</a>
       </div>
     </div>
   </div>

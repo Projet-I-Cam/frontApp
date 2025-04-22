@@ -3,14 +3,14 @@
   <app-header></app-header>
 <div class="hero-container">
   <div class="container">
-    <div class="row justify-content-center">
+    <div class="row">
       <div class="col-md-5 mx-auto">
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <div class="d-flex flex-column justify-content-between">
-            <div class="mx-auto pt-4" routerLink="/home">
-              <img src="favicon.ico" style="height: 80px;" class="img-fluid" alt="Logo">
-            </div>
             <div class="card">
+              <div class="mx-auto pt-2" routerLink="/home">
+                <img src="favicon.ico" style="height: 50px;" class="img-fluid" alt="Logo">
+              </div>
               <div class="card-body p-4">
                 <div class="mb-2">
                   <h2 class="mb-2">Welcome</h2>
