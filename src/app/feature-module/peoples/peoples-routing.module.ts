@@ -38,6 +38,11 @@ const routes: Routes = [
         loadChildren: () =>
           import('./institutions/institutions.module').then((m) => m.InstitutionsModule),
       },
+      {
+        path: 'minebase',
+        loadChildren: () =>
+          import('./staffs-module/staffs-module.module').then((m) => m.StaffsModuleModule),
+      },
     ],
   },
 ];

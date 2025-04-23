@@ -113,8 +113,8 @@
             <td>{{ institution.emails && institution.emails.length > 0 ? institution.emails[0] : 'N/A' }}</td>
             <td>{{ institution.phones && institution.phones.length > 0 ? institution.phones[0] : 'N/A' }}</td>
             <td>
-              <p-button (click)="openModal('view','',institution)" styleClass="p-button-text"
-                tooltip="Edit institution">
+              <p-button [routerLink]="['/peoples/institutions/institution-details', institution.objectId]"
+                styleClass="p-button-text" tooltip="view institution">
                 <i class="ti ti-edit h-100 w-100"></i>
               </p-button>
               <p-button (click)="openModal('delete','open-delete-modal',institution.objectId)"

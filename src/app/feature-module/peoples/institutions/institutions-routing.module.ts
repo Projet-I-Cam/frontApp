@@ -11,16 +11,16 @@ const routes: Routes = [
     component: InstitutionsComponent,
     children: [
       {
+        path: 'institution-details/:id',
+        component: InstitutionDetailsComponent
+      },
+      {
         path: 'institutions-list',
         component: InstitutionsListComponent
       },
       {
         path: 'add-institution',
         component: AddInstitutionComponent
-      },
-      {
-        path: 'institution-details/:id',
-        component: InstitutionDetailsComponent
       },
     ]
   }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { routes } from '../../../../shared/routes/routes';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { globalPost, globalGet, globalPut, globalDelete } from './../../../../services/statefull/http'
 
@@ -29,7 +29,8 @@ export class InstitutionsListComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.institutionForm = this.fb.group({
       objectId: [''],
@@ -86,7 +87,7 @@ export class InstitutionsListComponent implements OnInit {
     switch (mode) {
       case 'view':
         if (data) {
-          this.router.navigate(['institution-details', data]);
+          this.router.navigate(['/peoples/institutions/institution-details', data]);
         } else {
           console.error('No institution ID provided for view');
         }

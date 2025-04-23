@@ -749,19 +749,19 @@ export class DataService {
       })
     );
   }
-  public getSideBarData(): Array<any>{
-    if(this.loginService.isLoggedIn()){
+  public getSideBarData(): Array<any> {
+    if (this.loginService.isLoggedIn()) {
       const user = this.loginService.getUser();
       const role = user?.role?.task_name || 'admin';
-      console.log( 'the user role is' , role);
-      if((role === 'etablissement')){
+      console.log('the user role is', role);
+      if ((role === 'etablissement')) {
         return this.AdminSchoolSidebarData;
-      }else if(role === 'enseignant'){
+      } else if (role === 'enseignant') {
         return this.TeacherSidebarData;
-      }else if(role === 'parent'){
+      } else if (role === 'parent') {
         return this.ParentSidebarData;
       }
-      else if(role === 'regional' || role === 'departemental' || role === 'arrondissement' || role === 'administration'){
+      else if (role === 'regional' || role === 'departemental' || role === 'arrondissement' || role === 'administration') {
         return this.AdminSidebarData;
       }
       return this.AdminSidebarData; // Par défaut, retourner le sidebar admin
@@ -1117,57 +1117,57 @@ export class DataService {
           subRoutes: [],
         },
 
-          ],
+      ],
+    },
+    {
+      menuValue: 'Fees Collection',
+      page: 'fees-collection',
+      icon: 'report-money',
+      hasSubRoute: true,
+      showSubRoute: false,
+      subMenus: [
+        {
+          menuValue: 'Fees Group',
+          icon: 'package',
+          route: routes.feesGroup,
+          hasSubRoute: false,
+          showSubRoute: false,
         },
         {
-          menuValue: 'Fees Collection',
-          page: 'fees-collection',
-          icon: 'report-money',
-          hasSubRoute: true,
+          menuValue: 'Fees Type',
+          icon: 'clipboard',
+          route: routes.feesType,
+          hasSubRoute: false,
           showSubRoute: false,
-          subMenus: [
-            {
-              menuValue: 'Fees Group',
-              icon: 'package',
-              route: routes.feesGroup,
-              hasSubRoute: false,
-              showSubRoute: false,
-            },
-            {
-              menuValue: 'Fees Type',
-              icon: 'clipboard',
-              route: routes.feesType,
-              hasSubRoute: false,
-              showSubRoute: false,
-            },
-            {
-              menuValue: 'Fees Master',
-              icon: 'truck',
-              route: routes.feesMaster,
-              hasSubRoute: false,
-              showSubRoute: false,
-            },
-            {
-              menuValue: 'Fees Assign',
-              icon: 'truck',
-              route: routes.feesAssign,
-              hasSubRoute: false,
-              showSubRoute: false,
-            },
-            {
-              menuValue: 'Collect Fees',
-              icon: 'truck',
-              route: routes.collectFees,
-              base: 'collect-fees',
-              hasSubRoute: false,
-              showSubRoute: false,
-            },
-          ],
         },
+        {
+          menuValue: 'Fees Master',
+          icon: 'truck',
+          route: routes.feesMaster,
+          hasSubRoute: false,
+          showSubRoute: false,
+        },
+        {
+          menuValue: 'Fees Assign',
+          icon: 'truck',
+          route: routes.feesAssign,
+          hasSubRoute: false,
+          showSubRoute: false,
+        },
+        {
+          menuValue: 'Collect Fees',
+          icon: 'truck',
+          route: routes.collectFees,
+          base: 'collect-fees',
+          hasSubRoute: false,
+          showSubRoute: false,
+        },
+      ],
+    },
 
 
   ];
-  
+
   public ParentSidebarData = [
     {
 
@@ -1441,7 +1441,7 @@ export class DataService {
             },
             {
               menuValue: 'Calcul des Moyennes',
-              route:routes.gradeCalculation,
+              route: routes.gradeCalculation,
               customSubmenuTwo: false,
               hasSubRoute: false,
               showSubRoute: false,
@@ -1563,12 +1563,12 @@ export class DataService {
       {
         menuValue: 'Teachers',
         route: routes.teachersList,
-      hasSubRoute: true,
-      showSubRoute: false,
+        hasSubRoute: true,
+        showSubRoute: false,
         page: 'teachers',
         icon: 'fas fa-chalkboard-teacher',
-      subMenus: [
-        {
+        subMenus: [
+          {
             menuValue: 'Teachers List',
             route: routes.teachersList,
             parentMenuValue: 'Teachers',
@@ -1620,7 +1620,7 @@ export class DataService {
       ],
     },
     {
-      tittle: 'Peoples',
+      tittle: 'Administration Centrale',
       showAsTab: false,
       separateRoute: false,
       hasSubRoute: false,
@@ -1646,6 +1646,40 @@ export class DataService {
             {
               menuValue: 'Municipalities',
               route: routes.municipalitiesList,
+            },
+            {
+              menuValue: 'Poste de fonction',
+              route: 'peoples/minebase/staffs/functions'
+            }
+          ],
+        },
+        {
+          menuValue: 'Staffs',
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'user-bolt',
+          page: 'parents',
+          subMenus: [
+            {
+              menuValue: 'Liste des personnel',
+              route: 'peoples/minebase/staffs',
+              customSubmenuTwo: false,
+              hasSubRoute: false,
+              showSubRoute: false,
+            },
+            {
+              menuValue: 'Affectation et Access',
+              route: routes.parentList,
+              customSubmenuTwo: false,
+              hasSubRoute: false,
+              showSubRoute: false,
+            },
+            {
+              menuValue: 'Organigramme',
+              route: routes.parentGrid,
+              hasSubRoute: false,
+              showSubRoute: false,
+              customSubmenuTwo: false,
             },
           ],
         },
@@ -1685,37 +1719,6 @@ export class DataService {
               hasSubRoute: false,
               showSubRoute: false,
             },
-          ],
-        },
-        {
-          menuValue: 'Staffs',
-          hasSubRoute: true,
-          showSubRoute: false,
-          icon: 'user-bolt',
-          page: 'parents',
-          subMenus: [
-            {
-              menuValue: 'Staffs',
-              route: routes.parentGrid,
-              hasSubRoute: false,
-              showSubRoute: false,
-              customSubmenuTwo: false,
-            },
-            {
-              menuValue: 'Function',
-              route: routes.parentList,
-              customSubmenuTwo: false,
-              hasSubRoute: false,
-              showSubRoute: false,
-            },
-            {
-              menuValue: 'Assignments',
-              route: routes.parentList,
-              customSubmenuTwo: false,
-              hasSubRoute: false,
-              showSubRoute: false,
-            },
-
           ],
         },
 
