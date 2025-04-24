@@ -9,12 +9,10 @@ export class AuthService {
     return Parse.User.current();
   }
 
+
   async login(username: string, password: string) {
     try {
       const user: any =  await Parse.User.logIn(username, password);
-      // console.log('User loged here => Parse Object ', user)
-      // console.log('User fulldata ', user.toJSON())
-      // console.log('Or user one attribute ', user.get('email'))
 
       const query = new Parse.Query(Parse.User);
       query.include("role");
@@ -36,19 +34,51 @@ export class AuthService {
 
 
 
-   async registerUser(fullname:string, username: string, password: string, email: string): Promise<any> {
+  async registerUser (
+    fullname: string,
+    username: string,
+    password: string,
+    email: string,
+    roleTaskName: string = ''
+): Promise<any> {
     const user = new Parse.User();
     user.set('username', username);
     user.set('password', password);
     user.set('email', email);
     user.set('fullname', fullname);
-    try {
-      const newUser = await user.signUp();
-      return newUser;
-    } catch (error) {
-      console.error("Error while registering user", error);
-      throw error;
+
+    if (roleTaskName) {
+      const result = await Parse.Cloud.run(
+          "getRole", 
+          {
+              task_name: roleTaskName
+          }
+      )
+      if(result.success){
+        const role : any = {
+          __type: "Pointer", 
+          className: "_Role", 
+          objectId: result.role.objectId
+        };
+        user.set('role', role);
+      }else{
+        console.error("Une erreur s'est produite pendant la recupération du rôle "+roleTaskName)
+        return ;
+      }
+      
     }
-  }
+
+    try {
+        const newUser  = await user.signUp();
+        return newUser ;
+    } catch (error: unknown) {
+        console.error("Error while registering user", error);
+        if (error instanceof Error) {
+            throw new Error(error.message); // Throw the error message if it's an instance of Error
+        } else {
+            throw new Error("An unknown error occurred during user registration."); // Fallback for unknown errors
+        }
+    }
+}
 
 }

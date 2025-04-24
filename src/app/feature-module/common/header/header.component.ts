@@ -5,6 +5,7 @@ import { CommonService } from '../../../shared/common/common.service';
 import { Router } from '@angular/router';
 import { routes } from '../../../shared/routes/routes';
 import { LoginService } from '../../../auth/services/login.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-header',
@@ -12,6 +13,7 @@ import { LoginService } from '../../../auth/services/login.service';
     styleUrl: './header.component.scss',
     standalone: false
 })
+
 export class HeaderComponent {
   isNotificationVisible = false;
   public showDark = false;

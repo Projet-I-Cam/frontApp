@@ -57,7 +57,6 @@ export const globalGet = async({T, filters, includes, curentPage, size, selects,
             query.skip((curentPage - 1) * size)
             query.limit(size);
         }
-        console.log('query query query ', query)
         let result
         if(!isOne){
             result = await query.find()
@@ -79,18 +78,42 @@ export const globalGet = async({T, filters, includes, curentPage, size, selects,
 export const globalPost = async({T, dataObject} : BasePostIO): Promise<any> => {
     try {
         const query = new CLASS[T]()
-        Object.entries(dataObject).forEach(([key, value]: any) => {
-            if(typeof value === "string" || Array.isArray(value)){
-                query.set(key, value)
-            }else{
-                query.set(key, {"__type": "Pointer", "className": value?.className , "objectId": value?.objectId})
+        // Object.entries(dataObject).forEach(([key, value]: any) => {
+        //     if(typeof value === "string" || Array.isArray(value)){
+        //         query.set(key, value)
+        //     }else{
+        //         query.set(key, {__type: "Pointer", className: value?.className , objectId: value?.objectId})
+        //     }
+        // });
+        Object.entries(dataObject).forEach(([key, value]: [string, any]) => {
+
+            if (typeof value === "string" || Array.isArray(value)) {
+        
+                query.set(key, value);
+        
+            } else if (value && typeof value === "object" && value.className && value.objectId) {
+        
+                // Ensure that value is an object and has the required properties
+        
+                query.set(key, {
+        
+                    __type: "Pointer",
+        
+                    className: value.className,
+        
+                    objectId: value.objectId
+        
+                });
+        
+            } else {
+        
+                console.warn(`Invalid value for key "${key}":`, value);
+                return;
             }
+        
         });
-        const r = await query.save()
-        return {
-            message: "Objet sauvegardé",
-            object: r
-        }
+        const r = await query.save();
+        return r;
     } catch (error: any) {
         console.error('Error  ', error?.message)
         console.error('Class triggered  ', T)

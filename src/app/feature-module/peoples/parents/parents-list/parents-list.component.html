@@ -12,7 +12,7 @@
                 <a [routerLink] = "routes.adminDashboard">Dashboard</a>
               </li>
               <li class="breadcrumb-item">
-                <a href="javascript:void(0);">People</a>
+                <a href="javascript:void(0);">Personnes</a>
               </li>
               <li class="breadcrumb-item active" aria-current="page">Parents</li>
             </ol>
@@ -22,23 +22,24 @@
           <app-tooltip-content /> 
           <div class="mb-2">
             <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_parent" class="btn btn-primary"><i
-                class="ti ti-square-rounded-plus me-2"></i>Add Parent</a>
+                class="ti ti-square-rounded-plus me-2"></i>Ajouter un parent</a>
           </div>
         </div>
       </div>
       <!-- /Page Header -->
 
+
       <!-- Parent List -->
       <div class="card">
         <div class="card-header d-flex align-items-center justify-content-between flex-wrap pb-0">
-          <h4 class="mb-3">Parents List</h4>
+          <h4 class="mb-3">Liste des parents</h4>
           <div class="d-flex align-items-center flex-wrap">
             <div class="input-icon-start mb-3 me-2 position-relative">
               <app-date-range-picker />
             </div>
             <div class="dropdown mb-3 me-2">
               <a href="javascript:void(0);" class="btn btn-outline-light bg-white dropdown-toggle"
-                data-bs-toggle="dropdown" data-bs-auto-close="outside"><i class="ti ti-filter me-2"></i>Filter</a>
+                data-bs-toggle="dropdown" data-bs-auto-close="outside"><i class="ti ti-filter me-2"></i>Filtre</a>
               <div class="dropdown-menu drop-width">
                 <form>
                   <div class="d-flex align-items-center border-bottom p-3">
@@ -171,10 +172,13 @@
                     </div>
                   </th>
                   <th mat-sort-header="id">ID</th>
-                  <th mat-sort-header="parentname">Parent Name</th>
-                  <th mat-sort-header="child">Child</th>
-                  <th mat-sort-header="phone">Phone </th>
-                  <th mat-sort-header="email">Email</th>
+                  <th>Noms du parent</th>
+                  <th>Genre</th>
+                  <th>Date Naissance</th>
+                  <th>Lieu Naissance</th>
+                  <th>Enfants</th>
+                  <th>Téléphone </th>
+                  <th>Email</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -183,34 +187,35 @@
                 <tr>
                   <td>
                     <div class="form-check form-check-md">
-                      <input class="form-check-input" type="checkbox"  [(ngModel)]="table.isSelected">
+                      <input class="form-check-input" type="checkbox">
                     </div>
                   </td>
                   <td><a href="javascript:void(0);" class="link-primary" data-bs-toggle="modal"
-                      data-bs-target="#view_details">{{table.id}}</a></td>
+                      data-bs-target="#view_details">{{table.parent.objectId}}</a>
+                  </td>
                   <td>
                     <div class="d-flex align-items-center">
-                      <a href="javascript:void(0);" class="avatar avatar-md" data-bs-toggle="modal" data-bs-target="#view_details"><img
-                          [src]="table.ParentImage" class="img-fluid rounded-circle" alt="img"></a>
                       <div class="ms-2">
                         <p class="text-dark mb-0"><a href="javascript:void(0);" data-bs-toggle="modal"
-                            data-bs-target="#view_details">{{table.name}}</a></p>
-                        <span class="fs-12">{{table.Addedon}}</span>
+                            data-bs-target="#view_details">{{table.parent.person.firstName}} {{table.parent.person.lastName}}</a></p>
+                        <span class="fs-12"></span>
                       </div>
                     </div>
                   </td>
+                  <td>{{table.parent.person.gender?.libelle_fr}}</td>
+                  <td>{{ table.parent.person.birthDate?.iso | date:'dd/MM/yyyy' }}</td>
+                  <td>{{table.parent.person.birthPlace}}</td>
                   <td>
                     <div class="d-flex align-items-center">
-                      <a [routerLink] = "routes.studentDetails" class="avatar avatar-md"><img
-                          [src]="table.ChildImage" class="img-fluid rounded-circle" alt="img"></a>
+                      <a [routerLink] = "routes.studentDetails" class="avatar avatar-md"></a>
                       <div class="ms-2">
-                        <p class="text-dark mb-0"><a href="javascript:void(0);">{{table.Child}}</a></p>
-                        <span class="fs-12">{{table.class}}</span>
+                        <p class="text-dark mb-0"><a href="javascript:void(0);"> {{table.parent.students.length}}</a></p>
+                        <span class="fs-12"></span>
                       </div>
                     </div>
                   </td>
-                  <td>{{table.phone}}</td>
-                  <td>{{table.email}}</td>
+                  <td>{{table.parent.person.phone}}</td>
+                  <td>{{table.parent.person.email}}</td>
                   <td>
                     <div class="d-flex align-items-center">
                       <div class="dropdown">
@@ -253,16 +258,16 @@
   <!-- /Page Wrapper -->
 
   <!-- Add Parent -->
-  <div class="modal fade" id="add_parent">
+  <!-- <div class="modal fade" id="add_parent">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Add Parent</h4>
+          <h4 class="modal-title">Nouveau parent</h4>
           <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" aria-label="Close">
             <i class="ti ti-x"></i>
           </button>
         </div>
-        <form>
+        <form (ngSubmit)="onSubmit()" #parentForm="ngForm">
           <div class="modal-body">
             <div class="row">
               <div class="col-md-12">
@@ -274,32 +279,55 @@
                   <div class="profile-upload">
                     <div class="profile-uploader d-flex align-items-center">
                       <div class="drag-upload-btn mb-3">
-                        Upload
+                        Charger
                         <input type="file" class="form-control image-sign" multiple>
                       </div>
-                      <a href="javascript:void(0);" class="btn btn-primary mb-3">Remove</a>
+                      <a href="javascript:void(0);" class="btn btn-primary mb-3">Retirer</a>
                     </div>
-                    <p>Upload image size 4MB, Format JPG, PNG, SVG</p>
+                    <p>Taille max image 4MB, Format JPG, PNG, SVG</p>
                   </div>
                 </div>
                 <div class="mb-3">
-                  <label class="form-label">Name</label>
-                  <input type="text" class="form-control">
+                  <label class="form-label">Nom</label>
+                  <input type="text" class="form-control" [(ngModel)]="parent.person.firstName" name="firstName" required>
                 </div>
                 <div class="mb-3">
-                  <label class="form-label">Phone Number</label>
-                  <input type="text" class="form-control">
+                  <label class="form-label">Prénom</label>
+                  <input type="text" class="form-control" [(ngModel)]="parent.person.lastName" name="lastName" required>
                 </div>
                 <div class="mb-3">
-                  <label class="form-label">Email Address</label>
-                  <input type="text" class="form-control">
+                  <label class="form-label">Téléphone</label>
+                  <input type="text" class="form-control" id="phone" [(ngModel)]="parent.person.phone" name="phone" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Adresse email</label>
+                  <input type="email" class="form-control" id="email" [(ngModel)]="parent.person.email" name="email">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="birthDate">Date de Naissance:</label>
+                  <input type="date" id="birthDate" class="form-control" [(ngModel)]="parent.person.birthDate" name="birthDate">
+                </div>
+                <div class="mb-3">
+                  <label for="birthPlace">Lieu de Naissance:</label>
+                  <input type="text" id="birthPlace" class="form-control" [(ngModel)]="parent.person.birthPlace" name="birthPlace">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Genre</label>        
+                  <div>        
+                    <label>        
+                      <input type="radio" [(ngModel)]="parent.person.gender" name="gender" value="Homme" required> Homme        
+                    </label>        
+                    <label class="ms-3">        
+                      <input type="radio" [(ngModel)]="parent.person.gender" name="gender" value="Femme" required> Femme        
+                    </label>        
+                  </div>        
                 </div>
                 <div class="mb-0">
-                  <label class="form-label">Child</label>
+                  <label class="form-label">Enfants</label>
                   <div class="flex justify-content-center">
                     <p-multiSelect 
                     [options]="cities" 
-                    [(ngModel)]="selectedCities2" 
+                    [(ngModel)]="parent.students" 
                     [ngModelOptions]="{standalone: true}"
                     class="select"
                     optionLabel="name" 
@@ -311,13 +339,139 @@
             </div>
           </div>
           <div class="modal-footer">
-            <a href="javascript:void(0);" class="btn btn-light me-2" data-bs-dismiss="modal">Cancel</a>
-            <button type="submit" class="btn btn-primary">Add Parent</button>
+            <a href="javascript:void(0);" class="btn btn-light me-2" data-bs-dismiss="modal" onclick="resetForm()">Fermer</a>
+            <button type="submit" class="btn btn-primary">{{ mode === 'edit' ? 'Mettre à jour' : 'Créer' }}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div> -->
+  
+  <div class="modal fade" id="add_parent">
+    <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Added modal-lg for larger width -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Nouveau parent</h4>
+          <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <i class="ti ti-x"></i>
+          </button>
+        </div>
+        <form (ngSubmit)="onSubmit(parentForm)" #parentForm="ngForm">
+          <div class="modal-body">
+            <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+            <div *ngIf="errorMessage" class="alert alert-success">{{ successMessage }}</div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="d-flex align-items-center upload-pic flex-wrap row-gap-3 mb-3">
+                  <div class="profile-upload">
+                    <div class="profile-uploader d-flex align-items-center">
+                      <div class="drag-upload-btn mb-3">
+                        Charger
+                        <input type="file" class="form-control image-sign" (change)="onFileSelected($event)" accept="image/*">
+                      </div>
+                      <a href="javascript:void(0);" class="btn btn-primary mb-3" (click)="removeImage()">Retirer</a>
+                    </div>
+                    <p>Taille max image 4MB, Format JPG, PNG, SVG</p>                    
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div *ngIf="imagePreview" class="image-preview">
+                  <h5>Aperçu de l'image :</h5>
+                  <img [src]="imagePreview" class="img-thumbnail" style="width: 100px; height: 100px;" />
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Nom</label>
+                  <input type="text" class="form-control" [(ngModel)]="parent.person.firstName" name="firstName" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Prénom</label>
+                  <input type="text" class="form-control" [(ngModel)]="parent.person.lastName" name="lastName" required>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label" for="birthDate">Date de Naissance:</label>
+                  <input type="date" id="birthDate" class="form-control" [(ngModel)]="parent.person.birthDate" name="birthDate" [max]="maxBirthDate"> 
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label" for="birthPlace">Lieu de Naissance:</label>
+                  <input type="text" id="birthPlace" class="form-control" [(ngModel)]="parent.person.birthPlace" name="birthPlace">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Téléphone</label>
+                  <div class="input-group">
+                    <select class="form-select" [(ngModel)]="parent.person.countryCode" name="countryCode" required>
+                      <option value="" disabled selected>Choisissez un code pays</option>
+                      <option *ngFor="let country of countryCodes" [value]="country.code">{{ country.name }} ({{ country.code }})</option>
+                    </select>
+                    <input type="text" class="form-control" id="phone" [(ngModel)]="parent.person.phone" name="phone" required placeholder="Numéro de téléphone">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Adresse email</label>
+                  <input type="email" class="form-control" id="email" [(ngModel)]="parent.person['email']" name="email" required 
+                         [ngClass]="{'is-invalid': parentForm.controls['email']?.invalid && (parentForm.controls['email']?.touched || parentForm.controls['email']?.dirty)}">
+                  <div *ngIf="parentForm.controls['email']?.invalid && (parentForm.controls['email']?.touched || parentForm.controls['email']?.dirty)" class="text-danger">
+                    <div *ngIf="parentForm.controls['email']?.errors?.['required']">L'adresse email est requise.</div>
+                    <div *ngIf="!validateEmail(parent.person['email'] || '')">Format d'email invalide.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Genre</label>
+                  <select class="form-select" [(ngModel)]="parent.person.gender" name="gender" required>
+                    <option value="" disabled selected>Choisissez un genre</option>
+                    <option *ngFor="let gender of genders" [value]="gender.objectId">{{ gender.libelle_fr }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Enfants</label>
+                  <div class="flex justify-content-center">
+                    <p-multiSelect 
+                      [options]="cities" 
+                      [(ngModel)]="parent.students" 
+                      [ngModelOptions]="{standalone: true}"
+                      class="select"
+                      optionLabel="name" 
+                      display="chip" 
+                      [showClear]="true" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a href="javascript:void(0);" class="btn btn-light me-2" data-bs-dismiss="modal" (onclick)="resetForm()">Fermer</a>
+            <button type="submit" class="btn btn-primary">{{ mode === 'edit' ? 'Mettre à jour' : 'Créer' }}</button>
           </div>
         </form>
       </div>
     </div>
   </div>
+ 
   <!-- /Add Parent -->
 
   <!-- Edit Parent -->
@@ -325,7 +479,7 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Edit Parent</h4>
+          <h4 class="modal-title">Modifier Parent</h4>
           <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" aria-label="Close">
             <i class="ti ti-x"></i>
           </button>
@@ -345,7 +499,7 @@
                         Upload
                         <input type="file" class="form-control image-sign" multiple>
                       </div>
-                      <a href="javascript:void(0);" class="btn btn-primary mb-3">Remove</a>
+                      <a href="javascript:void(0);" class="btn btn-primary mb-3">Retirer</a>
                     </div>
                     <p>Upload image size 4MB, Format JPG, PNG, SVG</p>
                   </div>
@@ -355,16 +509,16 @@
                   <input type="text" class="form-control" placeholder="Enter Name" value="Thomas">
                 </div>
                 <div class="mb-3">
-                  <label class="form-label">Phone Number</label>
-                  <input type="text" class="form-control" placeholder="Enter Phone Number" value="+1 65738 58937">
+                  <label class="form-label">Téléphone</label>
+                  <input type="text" class="form-control" placeholder="Entrer le numéro de téléphone" value="+237 691 17 86 25">
                 </div>
                 <div class="mb-3">
-                  <label class="form-label">Email Address</label>
-                  <input type="text" class="form-control" placeholder="Enter Email Address"
+                  <label class="form-label">Adresse email</label>
+                  <input type="text" class="form-control" placeholder="Entrer votre adresse email"
                     value="thomas&#64;example.com">
                 </div>
                 <div class="mb-0">
-                  <label class="form-label">Child</label>
+                  <label class="form-label">Enfants</label>
                   <div class="flex justify-content-center">
                     <p-multiSelect 
                     [options]="cities" 
@@ -380,8 +534,8 @@
             </div>
           </div>
           <div class="modal-footer">
-            <a href="javascript:void(0);" class="btn btn-light me-2" data-bs-dismiss="modal">Cancel</a>
-            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a href="javascript:void(0);" class="btn btn-light me-2" data-bs-dismiss="modal">Fermer</a>
+            <button type="submit" class="btn btn-primary">Mettre à jour</button>
           </div>
         </form>
       </div>
@@ -394,7 +548,7 @@
     <div class="modal-dialog modal-dialog-centered  modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">View Details</h4>
+          <h4 class="modal-title">Afficher les détails</h4>
           <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" aria-label="Close">
             <i class="ti ti-x"></i>
           </button>
@@ -459,7 +613,7 @@
               </ul>
               <div class="d-flex align-items-center">
                 <a href="javascript:void(0);" class="btn btn-light mb-3 me-3">Add Fees</a>
-                <a [routerLink] = "routes.studentDetails" class="btn btn-primary mb-3">View Details</a>
+                <a [routerLink] = "routes.studentDetails" class="btn btn-primary mb-3">Afficher les détails</a>
               </div>
             </div>
           </div>
