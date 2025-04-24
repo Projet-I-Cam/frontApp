@@ -459,9 +459,13 @@ export class ParentsListComponent {
   public editParent(selectedParent: Parent): void {
     this.parent = { ...selectedParent }; // Remplir le formulaire avec les données du parent sélectionné
     this.mode = 'edit'; // Changer le mode à 'edit'
+    console.log(selectedParent);
+    this.openModal()
   }
 
-  public resetForm(): void {
+  public resetForm(form: NgForm): void {
+    form.reset();
+    this.closeModal();
     this.parent = {
       objectId: '',
       person: {

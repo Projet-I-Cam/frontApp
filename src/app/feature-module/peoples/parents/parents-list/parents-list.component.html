@@ -207,7 +207,6 @@
                   <td>{{table.parent.person.birthPlace}}</td>
                   <td>
                     <div class="d-flex align-items-center">
-                      <a [routerLink] = "routes.studentDetails" class="avatar avatar-md"></a>
                       <div class="ms-2">
                         <p class="text-dark mb-0"><a href="javascript:void(0);"> {{table.parent.students.length}}</a></p>
                         <span class="fs-12"></span>
@@ -227,15 +226,14 @@
                         <ul class="dropdown-menu dropdown-menu-right p-3">
                           <li>
                             <a class="dropdown-item rounded-1" href="javascript:void(0);" data-bs-toggle="modal"
-                              data-bs-target="#view_details"><i class="ti ti-menu me-2"></i>View Parent</a>
+                              data-bs-target="#view_details"><i class="ti ti-menu me-2"></i>Détails</a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item rounded-1" (click)="editParent(table.parent)"><i class="ti ti-edit-circle me-2"></i>Editer</a>
                           </li>
                           <li>
                             <a class="dropdown-item rounded-1" href="javascript:void(0);" data-bs-toggle="modal"
-                              data-bs-target="#edit_parent"><i class="ti ti-edit-circle me-2"></i>Edit</a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item rounded-1" href="javascript:void(0);" data-bs-toggle="modal"
-                              data-bs-target="#delete-modal"><i class="ti ti-trash-x me-2"></i>Delete</a>
+                              data-bs-target="#delete-modal"><i class="ti ti-trash-x me-2"></i>Supprimer</a>
                           </li>
                         </ul>
                       </div>
@@ -464,7 +462,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <a href="javascript:void(0);" class="btn btn-light me-2" data-bs-dismiss="modal" (onclick)="resetForm()">Fermer</a>
+            <a href="javascript:void(0);" class="btn btn-light me-2" data-bs-dismiss="modal" (click)="resetForm(parentForm)">Fermer</a>
             <button type="submit" class="btn btn-primary">{{ mode === 'edit' ? 'Mettre à jour' : 'Créer' }}</button>
           </div>
         </form>
