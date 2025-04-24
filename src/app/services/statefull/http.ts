@@ -87,7 +87,7 @@ export const globalPost = async({T, dataObject} : BasePostIO): Promise<any> => {
         // });
         Object.entries(dataObject).forEach(([key, value]: [string, any]) => {
 
-            if (typeof value === "string" || Array.isArray(value)) {
+            if(typeof value === "string" || Array.isArray(value) || value instanceof Date && !isNaN(value.getTime())){
         
                 query.set(key, value);
         

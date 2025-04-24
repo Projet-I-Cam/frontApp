@@ -374,7 +374,7 @@ export class ParentsListComponent {
       try {
         userResponse = await this.authService.registerUser (
           this.parent.person.firstName + " " + this.parent.person.lastName,
-          this.parent.person.email + "0",
+          this.parent.person.email,
           'abc@1234',
           this.parent.person.email,
           'parent'
@@ -448,7 +448,8 @@ export class ParentsListComponent {
         return;
       }else{
         this.successMessage = "Parent enrégistré avec succès";
-       // this.ngOnInit();
+        form.reset();
+        this.ngOnInit();
       }      
     } else {
       console.log('Form is invalid');
