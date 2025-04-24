@@ -15,6 +15,7 @@ import { ServicesModule } from './services/services.module';
 
 
 import { environment } from '../environments/environment.local';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 
 
@@ -24,6 +25,7 @@ import { environment } from '../environments/environment.local';
   ],
   providers: [
     provideAnimationsAsync(),
+    MessageService, ConfirmationService
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent],
