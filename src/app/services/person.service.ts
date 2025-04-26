@@ -82,7 +82,7 @@ export class PersonService {
           usr.set("role", {"__type": "Pointer", "className": "_Role" , "objectId": personData.roleId});
         }
         return  usr.signUp().then(user => {
-          person.set("user", user)
+          person.set("user", usr)
           return this.parsePersonObject(result)
         })
       })
