@@ -15,7 +15,11 @@
             <li class="breadcrumb-item">
               <a [routerLink] = "routes.studentsList">Élèves</a>
             </li>
+<<<<<<< HEAD
             <li class="breadcrumb-item active" aria-current="page"> 
+=======
+            <li class="breadcrumb-item active" aria-current="page">
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
               Ajouter un Élève
             </li>
           </ol>
@@ -58,8 +62,11 @@
                             type="file"
                             class="form-control image-sign"
                             multiple=""
+<<<<<<< HEAD
                             (change)="onFileSelect($event)"
                             #fileInput
+=======
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
                           />
                         </div>
                         <a
@@ -91,15 +98,26 @@
                     ></p-dropdown>
                   </div>
                 </div>
+<<<<<<< HEAD
                 <!-- <div class="col-xxl col-xl-3 col-md-6">
+=======
+                <div class="col-xxl col-xl-3 col-md-6">
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
                   <div class="mb-3">
                     <label class="form-label">Numéro d'admission</label>
                     <input type="text" class="form-control" formControlName="admissionNumber" readonly />
                   </div>
+<<<<<<< HEAD
                 </div> -->
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
                     <label class="form-label">Date d'admission <span class="login-danger">*</span></label>
+=======
+                </div>
+                <div class="col-xxl col-xl-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Date d'admission</label>
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
                     <div class="input-icon position-relative">
                       <span class="input-icon-addon">
                         <i class="ti ti-calendar"></i>
@@ -110,20 +128,34 @@
                           placeholder="jj-mm-aaaa"
                           bsDatepicker
                           formControlName="admissionDate"
+<<<<<<< HEAD
                           [ngClass]="{'is-invalid': studentForm.get('admissionDate')?.invalid && studentForm.get('admissionDate')?.touched}"
+=======
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
                         />
                     </div>
                   </div>
                 </div>
+<<<<<<< HEAD
                 <!-- <div class="col-xxl col-xl-3 col-md-6">
+=======
+                <div class="col-xxl col-xl-3 col-md-6">
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
                   <div class="mb-3">
                     <label class="form-label">Numéro de rôle</label>
                     <input type="text" class="form-control" formControlName="rollNumber" />
                   </div>
+<<<<<<< HEAD
                 </div> -->
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
                     <label class="form-label">Statut <span class="login-danger">*</span></label>
+=======
+                </div>
+                <div class="col-xxl col-xl-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Statut</label>
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
                     <p-dropdown
                         [options]="[
                           { label: 'Actif', value: 'Active' },
@@ -131,21 +163,34 @@
                         ]"
                         placeholder="Sélectionner"
                         class="select"
+<<<<<<< HEAD
                         [ngClass]="{'is-invalid': studentForm.get('status')?.invalid && studentForm.get('status')?.touched}"
+=======
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
                         formControlName="status"
                       ></p-dropdown>
                   </div>
                 </div>
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
+<<<<<<< HEAD
                     <label class="form-label">Prénom<span class="login-danger">*</span></label>
                     <input type="text" class="form-control" formControlName="firstName" [ngClass]="{'is-invalid': studentForm.get('firstName')?.invalid && studentForm.get('firstName')?.touched}" />
+=======
+                    <label class="form-label">Prénom</label>
+                    <input type="text" class="form-control" formControlName="firstName" />
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
                   </div>
                 </div>
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
+<<<<<<< HEAD
                     <label class="form-label">Nom<span class="login-danger">*</span></label>
                     <input type="text" class="form-control" formControlName="lastName" [ngClass]="{'is-invalid': studentForm.get('lastName')?.invalid && studentForm.get('lastName')?.touched}" />
+=======
+                    <label class="form-label">Nom</label>
+                    <input type="text" class="form-control" formControlName="lastName" />
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
                   </div>
                 </div>
                 <div class="col-xxl col-xl-3 col-md-6">
@@ -162,12 +207,17 @@
                         ]"
                         placeholder="Sélectionner"
                         class="select"
+<<<<<<< HEAD
                         formControlName="classroom"
+=======
+                        formControlName="class"
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
                       ></p-dropdown>
                   </div>
                 </div>
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
+<<<<<<< HEAD
                     <label class="form-label">Section<span class="login-danger">*</span></label>
                    
                     <p-dropdown
@@ -175,32 +225,61 @@
                         placeholder="Sélectionner"
                         class="select"
                         [ngClass]="{'is-invalid': studentForm.get('section')?.invalid && studentForm.get('section')?.touched}"
+=======
+                    <label class="form-label">Section</label>
+                   
+                    <p-dropdown
+                        [options]="[
+                          { label: 'A', value: 'A' },
+                          { label: 'B', value: 'B' }
+                        ]"
+                        placeholder="Sélectionner"
+                        class="select"
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
                         formControlName="section"
                       ></p-dropdown>
                   </div>
                 </div>
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
+<<<<<<< HEAD
                     <label class="form-label">Genre<span class="login-danger">*</span></label>
                     <p-dropdown
                         [options]="sexes"
                         placeholder="Sélectionner"
                         class="select"
                         [ngClass]="{'is-invalid': studentForm.get('gender')?.invalid && studentForm.get('gender')?.touched}"
+=======
+                    <label class="form-label">Genre</label>
+                    <p-dropdown
+                        [options]="[
+                          { label: 'Masculin', value: 'Male' },
+                          { label: 'Féminin', value: 'Female' }
+                        ]"
+                        placeholder="Sélectionner"
+                        class="select"
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
                         formControlName="gender"
                       ></p-dropdown>
                   </div>
                 </div>
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
+<<<<<<< HEAD
                     <label class="form-label">Date de naissance<span class="login-danger">*</span></label>
+=======
+                    <label class="form-label">Date de naissance</label>
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
                     <div class="input-icon position-relative">
                       <span class="input-icon-addon">
                         <i class="ti ti-calendar"></i>
                       </span>
                       <input
                           type="text"
+<<<<<<< HEAD
                           [ngClass]="{'is-invalid': studentForm.get('dateOfBirth')?.invalid && studentForm.get('dateOfBirth')?.touched}"
+=======
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
                           class="form-control datetimepicker"
                           placeholder="jj-mm-aaaa"
                           bsDatepicker
@@ -218,7 +297,11 @@
                     </select>
                   </div>
                 </div>
+<<<<<<< HEAD
                 <!-- <div class="col-xxl col-xl-3 col-md-6">
+=======
+                <div class="col-xxl col-xl-3 col-md-6">
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
                   <div class="mb-3">
                     <label class="form-label">Domicile</label>
                     <p-dropdown
@@ -231,7 +314,11 @@
                         formControlName="house"
                       ></p-dropdown>
                   </div>
+<<<<<<< HEAD
                 </div> -->
+=======
+                </div>
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
                     <label class="form-label">Religion</label>
@@ -249,7 +336,11 @@
                       ></p-dropdown>
                   </div>
                 </div>
+<<<<<<< HEAD
                 <!-- <div class="col-xxl col-xl-3 col-md-6">
+=======
+                <div class="col-xxl col-xl-3 col-md-6">
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
                   <div class="mb-3">
                     <label class="form-label">Catégorie</label>
                     <p-dropdown
@@ -264,8 +355,13 @@
                         formControlName="category"
                       ></p-dropdown>
                   </div>
+<<<<<<< HEAD
                 </div> -->
                 <!-- <div class="col-xxl col-xl-3 col-md-6">
+=======
+                </div>
+                <div class="col-xxl col-xl-3 col-md-6">
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
                   <div class="mb-3">
                     <label class="form-label">Langue maternelle</label>
                     <p-dropdown
@@ -279,7 +375,11 @@
                         formControlName="language"
                       ></p-dropdown>
                   </div>
+<<<<<<< HEAD
                 </div> -->
+=======
+                </div>
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
                     <label class="form-label">Nationalité</label>
@@ -292,7 +392,11 @@
           <!-- /Personal Information -->
 
           <!-- Adresse -->
+<<<<<<< HEAD
           <div class="card" style="display: none;" >
+=======
+          <div class="card">
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
             <div class="card-header bg-light">
               <div class="d-flex align-items-center">
                 <span
@@ -341,7 +445,11 @@
           <!-- /Adresse -->
 
           <!-- Contact Information -->
+<<<<<<< HEAD
           <div class="card" >
+=======
+          <div class="card">
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
             <div class="card-header bg-light">
               <div class="d-flex align-items-center">
                 <span
@@ -356,8 +464,13 @@
               <div class="row row-cols-xxl-5 row-cols-md-6">
                 <div class="col-xxl col-xl-4 col-md-6">
                   <div class="mb-3">
+<<<<<<< HEAD
                     <label class="form-label">Téléphone<span class="login-danger">*</span></label>
                     <input type="text" class="form-control" formControlName="phoneNumber" [ngClass]="{'is-invalid': studentForm.get('phoneNumber')?.invalid && studentForm.get('phoneNumber')?.touched}" />
+=======
+                    <label class="form-label">Téléphone</label>
+                    <input type="text" class="form-control" formControlName="phoneNumber" />
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
                   </div>
                 </div>
                 <div class="col-xxl col-xl-4 col-md-6">
@@ -372,7 +485,11 @@
           <!-- /Contact Information -->
 
           <!-- Academic Information -->
+<<<<<<< HEAD
           <div class="card" style="display: none;" >
+=======
+          <div class="card">
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
             <div class="card-header bg-light">
               <div class="d-flex align-items-center">
                 <span
@@ -426,8 +543,12 @@
           <!-- /Academic Information -->
 
           <!-- Medical Information -->
+<<<<<<< HEAD
 
           <div class="card" style="display: none;" >
+=======
+          <div class="card">
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
             <div class="card-header bg-light">
               <div class="d-flex align-items-center">
                 <span
@@ -506,11 +627,18 @@
               </div>
             </div>
           </div>
+<<<<<<< HEAD
 
           <!-- /Medical Information -->
 
           <!-- Parent/Guardian Information -->
           <div class="card" style="display: none;" >
+=======
+          <!-- /Medical Information -->
+
+          <!-- Parent/Guardian Information -->
+          <div class="card">
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
             <div class="card-header bg-light">
               <div class="d-flex align-items-center">
                 <span

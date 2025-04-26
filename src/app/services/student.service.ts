@@ -1,27 +1,46 @@
 import { Injectable } from '@angular/core';
+<<<<<<< HEAD
 import * as Parse from 'parse';
 import { from, Observable } from 'rxjs'; 
 import { map } from 'rxjs/operators';
+=======
+import { Observable, from } from 'rxjs';
+import { map } from 'rxjs/operators';
+import * as Parse from 'parse';
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentService {
+<<<<<<< HEAD
   private readonly STUDENT_CLASS = 'Person';
 
   constructor() { }
 
   /** 
+=======
+  private readonly STUDENT_CLASS = 'Student';
+
+  constructor() { }
+
+  /**
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
    * Get all students
    * @returns Observable with list of students
    */
   getAllStudents(): Observable<any[]> {
     const query = new Parse.Query(this.STUDENT_CLASS);
+<<<<<<< HEAD
     query.equalTo('isStudent', true);
     // query.include('parents');
     query.include('class');
     query.include('gender');
     query.include('section');
+=======
+    query.include('person');
+    query.include('class');
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
     query.include('enrollment');
     query.descending('createdAt');
     return from(query.find()).pipe(
@@ -250,8 +269,12 @@ export class StudentService {
       joinDate: student.get('joinDate'),
       additionalInfo: student.get('additionalInfo'),
       createdAt: student.get('createdAt'),
+<<<<<<< HEAD
       updatedAt: student.get('updatedAt'),
       ...student?.toJSON()
+=======
+      updatedAt: student.get('updatedAt')
+>>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
     };
 
     // Add person data if available
