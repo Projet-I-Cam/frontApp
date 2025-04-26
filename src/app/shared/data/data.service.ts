@@ -1791,6 +1791,35 @@ export class DataService {
           ],
         },
         {
+          menuValue: 'Classes',
+          hasSubRoute: true,
+          showSubRoute: true,
+          icon: 'school-bell',
+          page: 'classes',
+          subMenus: [
+            {
+              menuValue: 'All Classes',
+              route: routes.classes,
+            },
+            {
+              menuValue: 'Schedule',
+              route: routes.scheduleClasses,
+            },
+          ],
+        },
+        {
+          menuValue: 'Salle de Classe',
+          hasSubRoute: true,
+          showSubRoute: true,
+          icon: 'building',
+          subMenus: [
+            {
+              menuValue: 'All Class rooms',
+              route: routes.classRoom,
+            },
+          ],
+        },
+        {
           menuValue: 'Teachers',
           hasSubRoute: true,
           showSubRoute: false,
