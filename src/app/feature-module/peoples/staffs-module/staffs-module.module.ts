@@ -8,11 +8,7 @@ import { StaffsDetailsComponent } from './staffs-details/staffs-details.componen
 import { StaffsFunctionComponent } from './staffs-function/staffs-function.component';
 import { StaffsAffectationComponent } from './staffs-affectation/staffs-affectation.component';
 import { StaffsModuleComponent } from './staffs-module.component';
-import { SharedModule } from 'primeng/api';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
+import { SharedModule } from '../../../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -27,20 +23,6 @@ import { MatSortModule } from '@angular/material/sort';
     CommonModule,
     StaffsModuleRoutingModule,
     SharedModule,
-    SharedModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-  ],
-  exports: [
-    StaffsListComponent,
-    StaffsCreateComponent,
-    StaffsDetailsComponent,
-    StaffsFunctionComponent,
-    StaffsAffectationComponent,
-    StaffsModuleComponent
   ]
 })
-export class StaffsModuleModule { }
+export class StaffsModule { }

@@ -1647,25 +1647,25 @@ export class DataService {
               menuValue: 'Municipalities',
               route: routes.municipalitiesList,
             },
-            {
-              menuValue: 'Poste de fonction',
-              route: 'peoples/minebase/staffs/functions'
-            }
           ],
         },
         {
-          menuValue: 'Staffs',
+          menuValue: 'Personelle Management',
           hasSubRoute: true,
           showSubRoute: false,
           icon: 'user-bolt',
           page: 'parents',
           subMenus: [
             {
-              menuValue: 'Liste des personnel',
+              menuValue: 'Personnel list',
               route: 'peoples/minebase/staffs',
               customSubmenuTwo: false,
               hasSubRoute: false,
               showSubRoute: false,
+            },
+            {
+              menuValue: 'Positions',
+              route: 'peoples/minebase/staffs/functions'
             },
             {
               menuValue: 'Affectation et Access',
