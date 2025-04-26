@@ -29,6 +29,7 @@ export interface Person {
   photo?: string;
   createdAt?: Date;
   updatedAt?: Date;
+  [key: string]: any;
 }
 
 export interface Class {

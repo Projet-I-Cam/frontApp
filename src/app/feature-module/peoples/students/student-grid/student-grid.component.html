@@ -176,16 +176,16 @@
 								<div class="bg-light-300 rounded-2 p-3 mb-3">
 									<div class="d-flex align-items-center">
 										<a href="javascript:void(0);" (click)="viewDetails(student.id)" class="avatar avatar-lg flex-shrink-0">
-											<img *ngIf="student.person?.photo" [src]="student.person.photo" class="img-fluid rounded-circle" alt="img">
-											<img *ngIf="!student.person?.photo" src="assets/img/profiles/avatar-01.jpg" class="img-fluid rounded-circle" alt="img">
+											<img *ngIf="student.photo?.url" [src]="student.photo?.url" class="img-fluid rounded-circle" alt="img">
+											<img *ngIf="!student.photo?.url" src="assets/img/profiles/avatar-01.jpg" class="img-fluid rounded-circle" alt="img">
 										</a> 
 										<div class="ms-2">
 											<h5 class="mb-0" class="text-dark text-truncate">
 												<a href="javascript:void(0);" (click)="viewDetails(student.id)">
-													{{ student.person?.firstName }} {{ student.person?.lastName }}
+													{{ student?.firstName }} {{ student?.lastName }}
 												</a>
 											</h5>
-											<p>{{ student.class?.name || 'N/A' }}</p>
+											<p>{{ student.classroom?.name || 'N/A' }}</p>
 										</div>
 									</div>	
 								</div>
@@ -196,12 +196,16 @@
 									</div>
 									<div>
 										<p class="mb-0">Genre</p>
-										<p class="text-dark">{{ student.person?.gender || 'N/A' }}</p>
+										<p class="text-dark">{{ student?.gender?.libelle_fr || 'N/A' }}</p>
 									</div>
 									<div>
+										<p class="mb-0">Section</p>
+										<p class="text-dark">{{ student?.section?.name_fr || 'N/A' }}</p>
+									</div>
+									<!-- <div>
 										<p class="mb-0">Inscription</p>
 										<p class="text-dark">{{ student.joinDate | date:'dd MMM yyyy' }}</p>
-									</div>
+									</div> -->
 								</div>
 							</div>
 							<div class="card-footer d-flex align-items-center justify-content-between">

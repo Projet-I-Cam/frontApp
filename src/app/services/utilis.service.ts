@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import ParseClass from '../parseClass';
+import Parse from 'parse';
 
 @Injectable({
   providedIn: 'root' // This makes the service available throughout the application
@@ -25,5 +27,14 @@ export class UtilsService {
 
   public emailRegex: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
+  static async getSection(){
+    return (await new Parse.Query(ParseClass.Section).find()) //?.map(section => section.toJSON())
+  }
+  static async getGender(){
+    return (await new Parse.Query(ParseClass.Gender).find()) //?.map(section => section.toJSON())
+  }
+  static getStudentMatricule(){
+    return "123456789"
+  }
 
 }

@@ -45,7 +45,7 @@ export class StudentGridComponent implements OnInit {
     this.loadStudents();
   }
 
-  loadStudents(): void {
+  loadStudents(): void { 
     this.isLoading = true;
     this.error = '';
     
