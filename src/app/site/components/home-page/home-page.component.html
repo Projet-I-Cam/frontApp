@@ -1,0 +1,284 @@
+<section class="container">
+  <div class="align-items-center">
+    <div class="row">
+        <div class="col text-center my-5">
+            <h1 class="display-6 font-weight-bolder" style="font-family:Bookman old style;">Bienvenue sur la plateforme <i style="font-weight: bold;"><span style="color: green;"><span style="font-size:66px">I</span>cam</span><span style="color:red">School</span></i></h1>
+            <p class="lead" style="font-family: Arial, Helvetica, sans-serif; color:rgb(85, 143, 9);font-size:large"> </p>
+        </div>
+    </div>
+    <div class="hero-buttons">
+      <a routerLink="/login" class="btn btn-primary me-3 mb-5">Nous Rejoindre</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-6 col-lg-4" *ngFor="let item of usages">
+      <div class="card card-feature text-dark card-has-bg click-col shadow border-0">
+        <div class="card-img-overlay d-flex flex-column justify-content-between">
+          <div class="card-body">
+            <i class="{{ item.icon }} fa-2x mb-2"></i>
+            <h4 class="card-title mt-1">
+              <a class="text-dark" href="https://creativemanner.com">{{ item.title }}</a>
+            </h4>
+            <div class="card-tex pb-3 highlight-text" style="font-size: 1rem;"><i>{{ item.description }}</i></div>
+            <div class="d-flex justify-content-between align-items-center">
+              <button class="btn" style="background-color: #3bac0e; color:aliceblue">
+                <i class="fa fa-arrow-right"></i> Voir plus
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="about-us py-5">
+  <div>
+    <div class="row align-items-center">
+      <h2 class="mb-4 fw-bold fs-3" style="font-family: 'Bookman Old Style', serif;">
+        Tout ce dont vous avez besoin pour votre établissement scolaire<br>
+        <span style="color: #497238;font-weight: bold;"><i>En une seule plateforme</i></span>
+      </h2>
+      <div class="col-md-6 my-4">
+        <h5 class="fw-semibold fs-4 mb-4">Notre Mission</h5>
+        <ul class="list-unstyled">
+          <li class="d-flex align-items-start mb-3">
+            <i class="fas fa-check-circle me-3 fs-4"></i>
+            <span class="highlight-text" style="font-size: 1.2rem;">Centraliser la gestion scolaire sur une seule
+              interface intuitive</span>
+          </li>
+          <li class="d-flex align-items-start mb-3">
+            <i class="fas fa-check-circle me-3 fs-4"></i>
+            <span class="highlight-text" style="font-size: 1.2rem;">Simplifier les processus administratifs et
+              académiques</span>
+          </li>
+          <li class="d-flex align-items-start mb-3">
+            <i class="fas fa-check-circle  me-3 fs-4"></i>
+            <span class="highlight-text" style="font-size: 1.2rem;">Renforcer la communication entre direction,
+              enseignants, élèves et parents</span>
+          </li>
+          <li class="d-flex align-items-start mb-3">
+            <i class="fas fa-check-circle me-3 fs-4"></i>
+            <span class="highlight-text" style="font-size: 1.2rem;">Offrir un suivi intelligent et personnalisé des
+              performances</span>
+          </li>
+          <li class="d-flex align-items-start mb-3">
+            <i class="fas fa-check-circle  me-3 fs-4"></i>
+            <span class="highlight-text" style="font-size: 1.2rem;">Moderniser l'expérience éducative à travers la
+              technologie</span>
+          </li>
+        </ul>
+        <button class="btn mt-4" style="background-color: #3bac0e; color:aliceblue">
+          En savoir plus
+        </button>
+      </div>
+      <div class="col-md-6">
+        <div id="featureCarousel" class="carousel slide shadow rounded overflow-hidden h-100" data-bs-ride="carousel"
+          data-bs-wrap="true">
+
+          <div class="carousel-indicators">
+            <button *ngFor="let feature of features; let i = index" type="button"
+              [attr.data-bs-target]="'#featureCarousel'" [attr.data-bs-slide-to]="i" [class.active]="i === 0"
+              [attr.aria-current]="i === 0 ? 'true' : null" [attr.aria-label]="'Diapositive ' + (i + 1)">
+            </button>
+          </div>
+
+          <!-- Slides -->
+          <div class="carousel-inner">
+            <div *ngFor="let feature of features; let i = index"
+              class="carousel-item bg-light p-4 d-flex flex-column text-center justify-content-center"
+              [class.active]="i === 0" style="min-height: 50vh;">
+              <i [class]="feature.icon + ' fa-3x mb-3 text-primary'"></i>
+              <h4 class="fw-bold mb-3">{{ feature.title }}</h4>
+              <p class="highlight-text mx-5" style="font-size: 1.2rem;">{{ feature.description }}</p>
+            </div>
+          </div>
+
+          <!-- Controls -->
+          <button class="carousel-control-prev mx-5" type="button" data-bs-target="#featureCarousel"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon bg-primary rounded-circle p-2" aria-hidden="true"></span>
+            <span class="visually-hidden">Précédent</span>
+          </button>
+          <button class="carousel-control-next mx-5" type="button" data-bs-target="#featureCarousel"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon bg-primary rounded-circle p-2" aria-hidden="true"></span>
+            <span class="visually-hidden">Suivant</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+    <div class="container py-5">
+      <h2 class="text-center fw-bold mb-5" style="font-family: 'Bookman Old Style', serif;">
+        Nos chiffres parlent pour nous
+      </h2>
+
+      <div class="row text-center">
+        <div class="col-md-3 col-6 mb-4">
+          <div class="p-4 shadow-sm rounded bg-white h-100">
+            <i class="bi bi-person-check fs-1 text-primary mb-2"></i>
+            <h2 class="fw-bold display-5 text-dark">10 000+</h2>
+            <p class="text-muted">Utilisateurs actifs</p>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-6 mb-4">
+          <div class="p-4 shadow-sm rounded bg-white h-100">
+            <i class="bi bi-activity fs-1 text-primary mb-2"></i>
+            <h2 class="fw-bold display-5 text-dark">1,5M+</h2>
+            <p class="text-muted">Actions enregistrées</p>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-6 mb-4">
+          <div class="p-4 shadow-sm rounded bg-white h-100">
+            <i class="bi bi-stars fs-1 text-primary mb-2"></i>
+            <h2 class="fw-bold display-5 text-dark">98%</h2>
+            <p class="text-muted">Satisfaction utilisateur</p>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-6 mb-4">
+          <div class="p-4 shadow-sm rounded bg-white h-100">
+            <i class="bi bi-cloud-check fs-1 text-primary mb-2"></i>
+            <h2 class="fw-bold display-5 text-dark">24h/24</h2>
+            <p class="text-muted">Disponibilité du service</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="py-5">
+  <div class="container">
+    <h2 class="text-center fw-bold mb-5" style="font-family: 'Bookman Old Style', serif;">
+      Une solution qui s'adapte à vos besoins
+    </h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card feature-card shadow-sm h-100 p-4">
+          <div class="icon-box bg-primary bg-opacity-10 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+              class="bi bi-lightning-charge text-primary" viewBox="0 0 16 16">
+              <path
+                d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z" />
+            </svg>
+          </div>
+          <h4 class="mb-3">Performance Rapide</h4>
+          <p class="text-muted">Optimisez votre site web pour des vitesses de chargement éclairs et une expérience utilisateur fluide.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card feature-card shadow-sm h-100 p-4">
+          <div class="icon-box bg-success bg-opacity-10 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+              class="bi bi-shield-check text-success" viewBox="0 0 16 16">
+              <path
+                d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z" />
+            </svg>
+          </div>
+          <h4 class="mb-3">Plateforme Sécurisée</h4>
+          <p class="text-muted">Des mesures de sécurité renforcées pour protéger vos données et garantir des transactions sûres.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card feature-card shadow-sm h-100 p-4">
+          <div class="icon-box bg-warning bg-opacity-10 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+              class="bi bi-gear text-warning" viewBox="0 0 16 16">
+              <path
+                d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+              <path
+                d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
+            </svg>
+          </div>
+          <h4 class="mb-3">Configuration Facile</h4>
+          <p class="text-muted">Des paramètres simples et intuitifs pour personnaliser votre expérience exactement comme vous le souhaitez.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <div class="container py-5">
+    <h2 class="text-center mb-5">Témoignages de nos clients</h2>
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item" *ngFor="let testimonial of testimonials; let i = index" [class.active]="i === 0">
+              <div class="testimonial-card p-4 p-md-5">
+                <i class="bi bi-quote quote-icon position-absolute top-0 start-0 mt-3 ms-3"></i>
+                <div class="text-center mb-4">
+                  <img [src]="testimonial.avatar" alt="Avatar" class="avatar mb-3">
+                  <h5 class="mb-1 fs-4">{{testimonial.name}}</h5>
+                  <p class="text-muted mb-0" style="color: #497238;font-weight: bold;">{{testimonial.position}}</p>
+                </div>
+                <p class="highlight-text text-center mb-0" style="font-size: 1rem;">"{{testimonial.text}}"</p>
+              </div>
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Précédent</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Suivant</span>
+          </button>
+          <div class="carousel-indicators">
+            <button *ngFor="let testimonial of testimonials; let i = index" type="button"
+              data-bs-target="#testimonialCarousel" [attr.data-bs-slide-to]="i"
+              [class.active]="i === 0" [attr.aria-label]="'Slide ' + (i+1)"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="py-4">
+  <div class="container">
+    <h2 class="text-center fw-bold mb-2" style="font-family: 'Bookman Old Style', serif;">
+      Découvrez comment notre solution peut automatiser vos processus administratifs et améliorer la communication avec les parents.
+    </h2>
+
+    <div class="row justify-content-center my-3">
+      <div class="highlight-text text-center">
+        Contacter nous pour une demo
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="d-flex justify-content-center align-items-center" style="min-height: 100%;">
+        <div class="col-md-6">
+          <form class="needs-validation" novalidate>
+            <div class="mb-3">
+              <input type="text" class="form-control" placeholder="Votre nom" required>
+            </div>
+            <div class="mb-3">
+              <input type="email" class="form-control" placeholder="Email professionnel" required>
+            </div>
+            <div class="mb-3">
+              <select class="form-select" required>
+                <option value="" disabled selected>Type d'établissement</option>
+                <option>École maternelle</option>
+                <option>École élémentaire</option>
+                <option>École primaire</option>
+              </select>
+            </div>
+            <button type="submit" class="btn w-100" style="background-color: #3bac0e; color:aliceblue">
+              Demander une démo
+            </button>
+          </form>
+          <p class="small text-muted mt-3 text-center">Nous ne partageons jamais vos informations.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>

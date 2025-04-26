@@ -1,0 +1,339 @@
+		<!-- Page Wrapper -->
+		<div class="page-wrapper">
+			<div class="content">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="d-md-flex d-block align-items-center justify-content-between mb-3">
+							<div class="my-auto mb-2">
+								<h3 class="page-title mb-1">Promotion d'Élèves</h3>
+								<nav>
+									<ol class="breadcrumb mb-0">
+										<li class="breadcrumb-item">
+											<a [routerLink]="routes.adminDashboard">Tableau de bord</a>
+										</li>
+										<li class="breadcrumb-item">
+											<a href="javascript:void(0);">Élèves</a>
+										</li>
+										<li class="breadcrumb-item active" aria-current="page">Promotion d'Élèves</li>
+									</ol>
+								</nav>
+							</div>
+							<div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
+								<app-tooltip-content></app-tooltip-content>
+							</div>
+						</div>
+						<div
+							class="alert alert-outline-primary bg-primary-transparent p-2 d-flex align-items-center flex-wrap row-gap-2 mb-4">
+							<i class="ti ti-info-circle me-1"></i><strong>Note :</strong> La promotion d'un Élève de la
+							classe actuelle à la prochaine classe créera une inscription de l'Élève pour la prochaine session
+						</div>
+						<div class="card">
+							<div class="card-header border-0 pb-0">
+								<div class="bg-light-gray p-3 rounded">
+									<h4>Promotion</h4>
+									<p>Sélectionnez une classe pour promouvoir l'Élève vers la prochaine session et nouvelle classe</p>
+								</div>
+							</div>
+							<div class="card-body">
+								<form >
+									<div class="d-md-flex align-items-center justify-content-between">
+										<div class="card flex-fill w-100">
+											<div class="card-body pb-1">
+												<div class="mb-3">
+													<label class="form-label">Session actuelle <span class="text-danger">
+															*</span></label>
+													<div class="form-control-plaintext p-0">2024 - 2025</div>
+												</div>
+												<div>
+													<label class="form-label mb-2">Promotion depuis la classe<span
+															class="text-danger"> *</span></label>
+													<div class="d-block d-md-flex">
+														<div class="mb-3 flex-fill me-md-3 me-0">
+															<label class="form-label">Classe</label>
+                                                            <p-dropdown [options]="[
+                                                            { label: 'Sélectionner', value: '' },
+                                                            { label: 'I', value: 'I' },
+                                                            { label: 'I', value: 'I' },
+                                                            { label: 'III', value: 'III' }
+                                                          ]" placeholder="Sélectionner" class="select"></p-dropdown>
+														</div>
+														<div class="mb-3 flex-fill">
+															<label class="form-label">Section</label>
+															<p-dropdown [options]="[
+                                                    { label: 'Sélectionner', value: '' },
+                                                    { label: 'A', value: 'A' },
+                                                    { label: 'B', value: 'B' },
+                                                    { label: 'C', value: 'C' }
+                                                  ]" placeholder="Sélectionner" class="select"></p-dropdown>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<a href="javascript:void(0);"
+											class="badge bg-primary badge-xl exchange-link text-white d-flex align-items-center justify-content-center mx-md-4 mx-auto my-md-0 my-4 flex-shrink-0">
+											<span><i class="ti ti-arrows-exchange fs-16"></i></span>
+										</a>
+										<div class="card flex-fill w-100">
+											<div class="card-body pb-1">
+												<div class="mb-3">
+													<label class="form-label">Promouvoir vers la session <span
+															class="text-danger"> *</span></label>
+												
+                                                    <p-dropdown [options]="[
+                                                    { label: 'Sélectionner', value: '' },
+                                                    { label: '2025 - 2026', value: 'A' }
+                                                  ]" placeholder="Sélectionner" class="select"></p-dropdown>
+												</div>
+												<div>
+													<label class="form-label mb-2">Promouvoir vers la classe<span
+															class="text-danger"> *</span></label>
+													<div class="d-block d-md-flex">
+														<div class="mb-3 flex-fill me-md-3 me-0">
+															<label class="form-label">Classe</label>
+                                                            <p-dropdown [options]="[
+                                                            { label: 'Sélectionner', value: '' },
+                                                            { label: 'I', value: 'I' },
+                                                            { label: 'I', value: 'I' },
+                                                            { label: 'III', value: 'III' }
+                                                          ]" placeholder="Sélectionner" class="select"></p-dropdown>
+														</div>
+														<div class="mb-3 flex-fill">
+															<label class="form-label">Section</label>
+															<p-dropdown [options]="[
+                                                    { label: 'Sélectionner', value: '' },
+                                                    { label: 'A', value: 'A' },
+                                                    { label: 'B', value: 'B' },
+                                                    { label: 'C', value: 'C' }
+                                                  ]" placeholder="Sélectionner" class="select"></p-dropdown>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-12">
+										<div
+											class="manage-promote-btn d-flex justify-content-center flex-wrap row-gap-2">
+											<button type="reset" class="btn btn-light reset-promote me-3">Réinitialiser
+												Promotion</button>
+											<button type="button" (click)="showOption()" class="btn btn-primary promote-students-btn">Gérer
+												Promotion</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div class="promote-card-main" [ngClass]="{ 'promote-card-main-show': show === true }">
+							<div class="card">
+								<div class="card-header border-0 pb-0">
+									<div class="bg-light-gray p-3 rounded">
+										<h4>Correspondance des sections</h4>
+										<p>Sélectionnez la correspondance des sections de l'ancienne à la nouvelle classe</p>
+									</div>
+								</div>
+								<div class="card-body pb-2">
+									<form >
+										<div class="d-flex align-items-center justify-content-between">
+											<div class="card w-100">
+												<div class="card-body">
+													<div class="mb-3">
+														<label class="form-label">Depuis la classe<span class="text-danger">
+																*</span></label>
+														<div class="form-control-plaintext p-0">III</div>
+													</div>
+													<div class="mb-3">
+														<label class="form-label d-block mb-3">Promotion depuis la
+															section<span class="text-danger"> *</span></label>
+														<label class="form-label d-block mb-2">Élèves de la section
+															<span class="text-danger"> *</span></label>
+														<div class="form-control-plaintext p-0">A</div>
+													</div>
+												</div>
+											</div>
+											<a href="javascript:void(0);"
+												class="badge bg-primary badge-xl exchange-link text-white d-flex align-items-center justify-content-center mx-md-4 mx-auto my-md-0 my-4 flex-shrink-0">
+												<span><i class="ti ti-arrows-exchange fs-16"></i></span>
+											</a>
+											<div class="card w-100">
+												<div class="card-body">
+													<div class="mb-3">
+														<label class="form-label">Promouvoir vers la session <span
+																class="text-danger"> *</span></label>
+														<div class="form-control-plaintext p-0">IV</div>
+													</div>
+													<div>
+														<label class="form-label mb-2">Assigner à la section<span
+																class="text-danger"> *</span></label>
+														<div class="d-block d-md-flex">
+															<div class="mb-3 flex-fill me-0">
+																<label class="form-label">Classe</label>
+																<p-dropdown [options]="[
+                                                    { label: 'Sélectionner', value: '' },
+                                                    { label: 'A', value: 'A' },
+                                                    { label: 'B', value: 'B' },
+                                                    { label: 'C', value: 'C' }
+                                                  ]" placeholder="Sélectionner" class="select"></p-dropdown>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+							<!-- Students List -->
+							<div class="card">
+								<div
+									class="card-header d-flex align-items-center justify-content-between flex-wrap pb-0">
+									<h4 class="mb-3">Liste des Élèves</h4>
+									<div class="d-flex align-items-center flex-wrap">
+										<div class="input-icon-start mb-3 me-2 position-relative">
+											<app-date-range-picker></app-date-range-picker>
+										</div>
+										<div class="dropdown mb-3">
+											<a href="javascript:void(0);"
+												class="btn btn-outline-light bg-white dropdown-toggle"
+												data-bs-toggle="dropdown"><i
+													class="ti ti-sort-ascending-2 me-2"></i>Trier par A-Z </a>
+											<ul class="dropdown-menu p-3">
+												<li>
+													<a href="javascript:void(0);" class="dropdown-item rounded-1 active">
+														Ascendant
+													</a>
+												</li>
+												<li>
+													<a href="javascript:void(0);" class="dropdown-item rounded-1">
+														Descendant
+													</a>
+												</li>
+												<li>
+													<a href="javascript:void(0);" class="dropdown-item rounded-1">
+														Vus récemment
+													</a>
+												</li>
+												<li>
+													<a href="javascript:void(0);" class="dropdown-item rounded-1">
+														Ajoutés récemment
+													</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="card-body table-responsive">
+									<table class="table datanew">
+										<thead class="thead-light">
+											<tr>
+												<th>
+													<div class="form-check form-check-sm">
+														<input class="form-check-input" type="checkbox" id="select-all">
+													</div>
+												</th>
+												<th>N° Admission</th>
+												<th>N° Matricule</th>
+												<th>Élève</th>
+												<th>Genre</th>
+												<th>Date d'admission</th>
+												<th>Résultat</th>
+												<th>Statut</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<div class="form-check form-check-sm">
+														<input class="form-check-input" type="checkbox"
+															id="select-student-1">
+													</div>
+												</td>
+												<td><a href="javascript:void(0);"
+														class="link-primary">AD124896</a></td>
+												<td>35013</td>
+												<td>
+													<div class="d-flex align-items-center">
+														<a href="javascript:void(0);" class="avatar avatar-md"><img
+																src="assets/img/students/student-01.jpg"
+																class="avatar-img rounded-circle" alt="img"></a>
+														<div class="ms-2">
+															<a [routerLink]="routes.studentDetails" class="mb-0">Janet
+																Daniel</a>
+														</div>
+													</div>
+												</td>
+												<td>Féminin</td>
+												<td>21 Sep 2020</td>
+												<td>
+													<a href="javascript:void(0);" class="link-info">Voir</a>
+												</td>
+												<td>
+													<div
+														class="badge badge-soft-success d-inline-flex align-items-center">
+														<i class="ti ti-circle-filled fs-5 me-1"></i>Actif
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<div class="form-check form-check-sm">
+														<input class="form-check-input" type="checkbox"
+															id="select-student-2">
+													</div>
+												</td>
+												<td><a href="javascript:void(0);"
+														class="link-primary">AD125896</a></td>
+												<td>40012</td>
+												<td>
+													<div class="d-flex align-items-center">
+														<a href="javascript:void(0);" class="avatar avatar-md"><img
+																src="assets/img/students/student-02.jpg"
+																class="avatar-img rounded-circle" alt="img"></a>
+														<div class="ms-2">
+															<a [routerLink]="routes.studentDetails" class="mb-0">Marlo
+																Lau</a>
+														</div>
+													</div>
+												</td>
+												<td>Féminin</td>
+												<td>27 Feb 2023</td>
+												<td>
+													<a href="javascript:void(0);" class="link-info">Voir</a>
+												</td>
+												<td>
+													<div
+														class="badge badge-soft-success d-inline-flex align-items-center">
+														<i class="ti ti-circle-filled fs-5 me-1"></i>Actif
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div
+									class="card-footer p-3 d-flex justify-content-center justify-content-sm-end flex-wrap row-gap-2 column-gap-3">
+									<button type="button" class="btn btn-light">Annuler</button>
+									<button type="button" class="btn btn-primary">Promouvoir</button>
+								</div>
+							</div>
+							<!-- /Students List -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Wrapper -->
+        <div class="modal fade" id="student_promote">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-body text-center">
+						<h4>Confirmer la promotion</h4>
+						<p>Êtes-vous sûr de vouloir promouvoir les 57 Élèves sélectionnés à la prochaine session académique ?</p>
+						<div class="d-flex justify-content-center">
+							<a href="javascript:void(0);" class="btn btn-light me-3" data-bs-dismiss="modal">Annuler</a>
+							<a href="javascript:void(0);" class="btn btn-danger" id="toprightToastBtn" data-bs-dismiss="modal">Promouvoir</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>

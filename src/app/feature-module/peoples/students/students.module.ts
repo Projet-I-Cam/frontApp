@@ -1,0 +1,49 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+
+import { StudentsRoutingModule } from './students-routing.module';
+import { StudentsComponent } from './students.component';
+import { StudentGridComponent } from './student-grid/student-grid.component';
+import { SharedModule } from '../../../shared/shared.module';
+import { DropdownModule } from 'primeng/dropdown';
+import { CalendarModule } from 'primeng/calendar';
+import { ChipsModule } from 'primeng/chips';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+
+import { StudentService } from '../../../services/student.service';
+import { PersonService } from '../../../services/person.service';
+import { EditStudentModule } from './edit-student/edit-student.module';
+import { AddStudentComponent } from './add-student/add-student.component';
+
+@NgModule({
+  declarations: [],
+  imports: [
+    CommonModule,
+    RouterModule,
+    StudentsRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SharedModule,
+    DropdownModule,
+    CalendarModule,
+    ChipsModule,
+    HttpClientModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    EditStudentModule,
+    AddStudentComponent,
+    StudentsComponent,
+    StudentGridComponent
+  ],
+  providers: [
+    StudentService,
+    PersonService
+  ],
+})
+export class StudentsModule { }

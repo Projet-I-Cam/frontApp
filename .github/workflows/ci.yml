@@ -1,0 +1,35 @@
+name: CI
+on:
+  push:
+    branches: [ testing ]
+jobs:
+  building:
+    runs-on: ubuntu-latest
+    container: docker:stable
+    steps: 
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username:  ${{ secrets.HUB_USERNAME }}
+        password: ${{ secrets.HUB_PASSWORD }}
+    - name: Check out
+      uses: actions/checkout@v3
+    - name: Building
+      run: |
+        echo Start app building here !
+        ls
+        docker -v
+        docker build -t icam-front .
+        docker tag icam-front xmael123/icam-front:latest
+        docker push xmael123/icam-front:latest
+
+  deployment:
+    needs: [building]
+    runs-on: self-hosted
+    # container: docker:stable
+    steps:
+    - name: Run deploy
+      run: | 
+        echo Start app deployment here !
+        docker rm -f front1 ||  docker kill front1  ||  echo "Nothing to kill"
+        docker run --detach --name front1 --restart=always -p 1338:80 -dit --pull=always xmael123/icam-front

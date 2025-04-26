@@ -1,0 +1,15 @@
+@if (role === 'etablissement') {
+  <app-admin-dashboard></app-admin-dashboard>
+}
+@else if (role === 'enseignant') {
+  <app-teacher-dashboard></app-teacher-dashboard>
+}
+@else if (role === 'parent') {
+  <app-parent-dashboard></app-parent-dashboard>
+}
+@else if (role === 'administration') {
+  <app-dashboard-minedub></app-dashboard-minedub>
+}
+@else{
+  <app-student-dashboard></app-student-dashboard>
+}

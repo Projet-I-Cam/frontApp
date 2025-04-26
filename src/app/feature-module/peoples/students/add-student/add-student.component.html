@@ -1,0 +1,609 @@
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+  <div class="content content-two">
+    <!-- Page Header -->
+    <div
+      class="d-md-flex d-block align-items-center justify-content-between mb-3"
+    >
+      <div class="my-auto mb-2">
+        <h3 class="mb-1">Ajouter un Élève</h3>
+        <nav>
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+              <a [routerLink] = "routes.adminDashboard">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a [routerLink] = "routes.studentsList">Élèves</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              Ajouter un Élève
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+      <div class="col-md-12">
+        <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
+          <!-- Personal Information -->
+          <div class="card">
+            <div class="card-header bg-light">
+              <div class="d-flex align-items-center">
+                <span
+                  class="bg-white avatar avatar-sm me-2 text-gray-7 flex-shrink-0"
+                >
+                  <i class="ti ti-info-square-rounded fs-16"></i>
+                </span>
+                <h4 class="text-dark">Informations personnelles</h4>
+              </div>
+            </div>
+            <div class="card-body pb-1">
+              <div class="row">
+                <div class="col-md-12">
+                  <div
+                    class="d-flex align-items-center flex-wrap row-gap-3 mb-3"
+                  >
+                    <div
+                      class="d-flex align-items-center justify-content-center avatar avatar-xxl border border-dashed me-2 flex-shrink-0 text-dark frames"
+                    >
+                      <i class="ti ti-photo-plus fs-16"></i>
+                    </div>
+                    <div class="profile-upload">
+                      <div class="profile-uploader d-flex align-items-center">
+                        <div class="drag-upload-btn mb-3">
+                          Upload
+                          <input
+                            type="file"
+                            class="form-control image-sign"
+                            multiple=""
+                          />
+                        </div>
+                        <a
+                          href="javascript:void(0);"
+                          class="btn btn-primary mb-3"
+                          >Supprimer</a
+                        >
+                      </div>
+                      <p class="fs-12">
+                        Taille de l'image max 4MB, Format JPG, PNG, SVG
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row row-cols-xxl-5 row-cols-md-6">
+                <div class="col-xxl col-xl-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Année académique</label>
+                    <p-dropdown
+                      [options]="[
+                        { label: 'Juin 2024/25', value: '2024/25' },
+                        { label: 'Juin 2023/24', value: '2023/24' },
+                        { label: 'Juin 2022/23', value: '2022/23' }
+                      ]"
+                      placeholder="Sélectionner"
+                      class="select"
+                      formControlName="academicYear"
+                    ></p-dropdown>
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Numéro d'admission</label>
+                    <input type="text" class="form-control" formControlName="admissionNumber" readonly />
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Date d'admission</label>
+                    <div class="input-icon position-relative">
+                      <span class="input-icon-addon">
+                        <i class="ti ti-calendar"></i>
+                      </span>
+                      <input
+                          type="text"
+                          class="form-control datetimepicker"
+                          placeholder="jj-mm-aaaa"
+                          bsDatepicker
+                          formControlName="admissionDate"
+                        />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Numéro de rôle</label>
+                    <input type="text" class="form-control" formControlName="rollNumber" />
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Statut</label>
+                    <p-dropdown
+                        [options]="[
+                          { label: 'Actif', value: 'Active' },
+                          { label: 'Inactif', value: 'Inactive' }
+                        ]"
+                        placeholder="Sélectionner"
+                        class="select"
+                        formControlName="status"
+                      ></p-dropdown>
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Prénom</label>
+                    <input type="text" class="form-control" formControlName="firstName" />
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Nom</label>
+                    <input type="text" class="form-control" formControlName="lastName" />
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Classe</label>
+                   
+                    <p-dropdown
+                        [options]="[
+                          { label: 'I', value: 'I' },
+                          { label: 'II', value: 'II' },
+                          { label: 'III', value: 'III' },
+                          { label: 'IV', value: 'IV' },
+                          { label: 'V', value: 'V' }
+                        ]"
+                        placeholder="Sélectionner"
+                        class="select"
+                        formControlName="class"
+                      ></p-dropdown>
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Section</label>
+                   
+                    <p-dropdown
+                        [options]="[
+                          { label: 'A', value: 'A' },
+                          { label: 'B', value: 'B' }
+                        ]"
+                        placeholder="Sélectionner"
+                        class="select"
+                        formControlName="section"
+                      ></p-dropdown>
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Genre</label>
+                    <p-dropdown
+                        [options]="[
+                          { label: 'Masculin', value: 'Male' },
+                          { label: 'Féminin', value: 'Female' }
+                        ]"
+                        placeholder="Sélectionner"
+                        class="select"
+                        formControlName="gender"
+                      ></p-dropdown>
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Date de naissance</label>
+                    <div class="input-icon position-relative">
+                      <span class="input-icon-addon">
+                        <i class="ti ti-calendar"></i>
+                      </span>
+                      <input
+                          type="text"
+                          class="form-control datetimepicker"
+                          placeholder="jj-mm-aaaa"
+                          bsDatepicker
+                          formControlName="dateOfBirth"
+                        />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Groupe sanguin</label>
+                    <select formControlName="bloodGroup" class="form-select">
+                      <option value="">Sélectionner</option>
+                      <option *ngFor="let bg of bloodGroups" [value]="bg">{{ bg }}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Domicile</label>
+                    <p-dropdown
+                        [options]="[
+                          { label: 'Location', value: 'Rent' },
+                          { label: 'Propriétaire', value: 'Own' }
+                        ]"
+                        placeholder="Sélectionner"
+                        class="select"
+                        formControlName="house"
+                      ></p-dropdown>
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Religion</label>
+                   
+                    <p-dropdown
+                        [options]="[
+                          { label: 'Christianisme', value: 'Christianity' },
+                          { label: 'Islam', value: 'Islam' },
+                          { label: 'Bouddhisme', value: 'Buddhism' },
+                          { label: 'Sans religion', value: 'None' }
+                        ]"
+                        placeholder="Sélectionner"
+                        class="select"
+                        formControlName="religion"
+                      ></p-dropdown>
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Catégorie</label>
+                    <p-dropdown
+                        [options]="[
+                          { label: 'OBC', value: 'OBC' },
+                          { label: 'Général', value: 'General' },
+                          { label: 'SC', value: 'SC' },
+                          { label: 'ST', value: 'ST' }
+                        ]"
+                        placeholder="Sélectionner"
+                        class="select"
+                        formControlName="category"
+                      ></p-dropdown>
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Langue maternelle</label>
+                    <p-dropdown
+                        [options]="[
+                          { label: 'Français', value: 'French' },
+                          { label: 'Anglais', value: 'English' },
+                          { label: 'Espagnol', value: 'Spanish' }
+                        ]"
+                        placeholder="Sélectionner"
+                        class="select"
+                        formControlName="language"
+                      ></p-dropdown>
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Nationalité</label>
+                    <input type="text" class="form-control" formControlName="nationality" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /Personal Information -->
+
+          <!-- Adresse -->
+          <div class="card">
+            <div class="card-header bg-light">
+              <div class="d-flex align-items-center">
+                <span
+                  class="bg-white avatar avatar-sm me-2 text-gray-7 flex-shrink-0"
+                >
+                  <i class="ti ti-map-pin fs-16"></i>
+                </span>
+                <h4 class="text-dark">Adresse</h4>
+              </div>
+            </div>
+            <div class="card-body pb-1">
+              <div class="row row-cols-xxl-5 row-cols-md-6">
+                <div class="col-xxl col-xl-4 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Adresse</label>
+                    <input type="text" class="form-control" formControlName="address" />
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-4 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Ville</label>
+                    <input type="text" class="form-control" formControlName="city" />
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-4 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">État/Région</label>
+                    <input type="text" class="form-control" formControlName="state" />
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-4 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Pays</label>
+                    <input type="text" class="form-control" formControlName="country" />
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-4 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Code postal</label>
+                    <input type="text" class="form-control" formControlName="zipCode" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /Adresse -->
+
+          <!-- Contact Information -->
+          <div class="card">
+            <div class="card-header bg-light">
+              <div class="d-flex align-items-center">
+                <span
+                  class="bg-white avatar avatar-sm me-2 text-gray-7 flex-shrink-0"
+                >
+                  <i class="ti ti-phone fs-16"></i>
+                </span>
+                <h4 class="text-dark">Informations de contact</h4>
+              </div>
+            </div>
+            <div class="card-body pb-1">
+              <div class="row row-cols-xxl-5 row-cols-md-6">
+                <div class="col-xxl col-xl-4 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Téléphone</label>
+                    <input type="text" class="form-control" formControlName="phoneNumber" />
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-4 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" formControlName="email" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /Contact Information -->
+
+          <!-- Academic Information -->
+          <div class="card">
+            <div class="card-header bg-light">
+              <div class="d-flex align-items-center">
+                <span
+                  class="bg-white avatar avatar-sm me-2 text-gray-7 flex-shrink-0"
+                >
+                  <i class="ti ti-school fs-16"></i>
+                </span>
+                <h4 class="text-dark">Informations académiques</h4>
+              </div>
+            </div>
+            <div class="card-body pb-1">
+              <div class="row row-cols-xxl-5 row-cols-md-6">
+                <div class="col-xxl col-xl-4 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">École précédente</label>
+                    <input type="text" class="form-control" formControlName="previousSchool" />
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-4 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Adresse de l'école précédente</label>
+                    <input type="text" class="form-control" formControlName="previousSchoolAddress" />
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-4 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Numéro du certificat de transfert</label>
+                    <input type="text" class="form-control" formControlName="transferCertificateNumber" />
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-4 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Date de transfert</label>
+                    <div class="input-icon position-relative">
+                      <span class="input-icon-addon">
+                        <i class="ti ti-calendar"></i>
+                      </span>
+                      <input
+                          type="text"
+                          class="form-control datetimepicker"
+                          placeholder="jj-mm-aaaa"
+                          bsDatepicker
+                          formControlName="transferDate"
+                        />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /Academic Information -->
+
+          <!-- Medical Information -->
+          <div class="card">
+            <div class="card-header bg-light">
+              <div class="d-flex align-items-center">
+                <span
+                  class="bg-white avatar avatar-sm me-2 text-gray-7 flex-shrink-0"
+                >
+                  <i class="ti ti-first-aid-kit fs-16"></i>
+                </span>
+                <h4 class="text-dark">Informations médicales</h4>
+              </div>
+            </div>
+            <div class="card-body pb-1">
+              <div class="row row-cols-xxl-5 row-cols-md-6">
+                <div class="col-12">
+                  <div class="mb-3">
+                    <label class="form-label">Conditions médicales</label>
+                    <textarea class="form-control" rows="3" formControlName="medicalConditions"></textarea>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Allergies</label>
+                    <div formArrayName="allergies">
+                      <div class="input-group mb-2" *ngFor="let control of allergiesArray.controls; let i = index">
+                        <input type="text" class="form-control" [formControlName]="i" placeholder="Allergie">
+                        <button type="button" class="btn btn-danger" (click)="removeAllergy(i)">
+                          <i class="ti ti-trash"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-sm" (click)="addAllergy()">
+                      <i class="ti ti-plus"></i> Ajouter une allergie
+                    </button>
+                  </div>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Médicaments</label>
+                    <div formArrayName="medications">
+                      <div class="input-group mb-2" *ngFor="let control of medicationsArray.controls; let i = index">
+                        <input type="text" class="form-control" [formControlName]="i" placeholder="Médicament">
+                        <button type="button" class="btn btn-danger" (click)="removeMedication(i)">
+                          <i class="ti ti-trash"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-sm" (click)="addMedication()">
+                      <i class="ti ti-plus"></i> Ajouter un médicament
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row row-cols-xxl-5 row-cols-md-6">
+                <div class="col-xxl col-xl-4 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Contact d'urgence (Nom)</label>
+                    <input type="text" class="form-control" formControlName="emergencyContactName" />
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-4 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Contact d'urgence (Téléphone)</label>
+                    <input type="text" class="form-control" formControlName="emergencyContactPhone" />
+                  </div>
+                </div>
+                <div class="col-xxl col-xl-4 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Relation avec l'Élève</label>
+                    <input type="text" class="form-control" formControlName="emergencyContactRelation" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /Medical Information -->
+
+          <!-- Parent/Guardian Information -->
+          <div class="card">
+            <div class="card-header bg-light">
+              <div class="d-flex align-items-center">
+                <span
+                  class="bg-white avatar avatar-sm me-2 text-gray-7 flex-shrink-0"
+                >
+                  <i class="ti ti-users fs-16"></i>
+                </span>
+                <h4 class="text-dark">Informations sur les parents/tuteurs</h4>
+              </div>
+            </div>
+
+            <div class="card-body" formArrayName="parentGuardianInfo">
+              <div *ngFor="let parentGroup of parentGuardianArray.controls; let i = index">
+                <div [formGroupName]="i" class="border p-3 mb-3 rounded">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0">Parent/Tuteur #{{ i + 1 }}</h5>
+                    <button *ngIf="parentGuardianArray.length > 1" type="button" class="btn btn-danger btn-sm" (click)="removeParentGuardian(i)">
+                      <i class="ti ti-trash"></i> Supprimer
+                    </button>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="mb-3">
+                        <label class="form-label">Relation</label>
+                        <select class="form-select" formControlName="relation">
+                          <option value="">Sélectionner</option>
+                          <option value="Father">Père</option>
+                          <option value="Mother">Mère</option>
+                          <option value="Guardian">Tuteur</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="mb-3">
+                        <label class="form-label">Prénom</label>
+                        <input type="text" class="form-control" formControlName="firstName" />
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="mb-3">
+                        <label class="form-label">Nom</label>
+                        <input type="text" class="form-control" formControlName="lastName" />
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="mb-3">
+                        <label class="form-label">Profession</label>
+                        <input type="text" class="form-control" formControlName="occupation" />
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="mb-3">
+                        <label class="form-label">Niveau d'éducation</label>
+                        <input type="text" class="form-control" formControlName="education" />
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" formControlName="email" />
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="mb-3">
+                        <label class="form-label">Téléphone</label>
+                        <input type="text" class="form-control" formControlName="phoneNumber" />
+                      </div>
+                    </div>
+                    <div class="col-md-8">
+                      <div class="mb-3">
+                        <label class="form-label">Adresse</label>
+                        <input type="text" class="form-control" formControlName="address" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="text-center">
+                <button type="button" class="btn btn-primary" (click)="addParentGuardian()">
+                  <i class="ti ti-plus"></i> Ajouter un parent/tuteur
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- /Parent/Guardian Information -->
+
+          <div class="col-12">
+            <div class="student-submit">
+              <button type="submit" class="btn btn-primary">Enregistrer</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Page Wrapper -->

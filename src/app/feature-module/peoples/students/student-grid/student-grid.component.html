@@ -1,0 +1,518 @@
+		<!-- Page Wrapper -->
+		<div class="page-wrapper">
+			<div class="content content-two">
+				
+				<!-- Page Header -->
+				<div class="d-md-flex d-block align-items-center justify-content-between mb-3">
+					<div class="my-auto mb-2">
+						<h3 class="page-title mb-1">Élèves</h3>
+                     	<nav>
+                       		<ol class="breadcrumb mb-0">
+                          		<li class="breadcrumb-item">
+                            		<a [routerLink]="routes.adminDashboard">Tableau de bord</a>
+                          		</li>
+                          		<li class="breadcrumb-item">
+                            		Personnes
+                          		</li>
+                          		<li class="breadcrumb-item active" aria-current="page">Grille des Élèves</li>
+                        	</ol>
+                      	</nav>
+                    </div>
+                    <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
+                        <app-tooltip-content></app-tooltip-content>                 
+                      	<div class="mb-2">
+							<a [routerLink]="routes.addStudent" class="btn btn-primary d-flex align-items-center"><i class="ti ti-square-rounded-plus me-2"></i>Ajouter un Élève</a>
+                      	</div>
+                    </div>
+                </div>
+				<!-- /Page Header -->
+				
+				<!-- Filter -->
+				<div class="bg-white p-3 border rounded-1 d-flex align-items-center justify-content-between flex-wrap mb-4 pb-0">
+					<h4 class="mb-3">Grille des Élèves</h4>
+					<div class="d-flex align-items-center flex-wrap">		
+						<div class="input-icon-start mb-3 me-2 position-relative">
+							<app-date-range-picker></app-date-range-picker>
+						</div>
+						<div class="dropdown mb-3 me-2">
+							<a href="javascript:void(0);" class="btn btn-outline-light bg-white dropdown-toggle"  data-bs-toggle="dropdown"  data-bs-auto-close="outside"><i class="ti ti-filter me-2"></i>Filtrer</a>
+							<div class="dropdown-menu drop-width">
+								<form>
+									<div class="d-flex align-items-center border-bottom p-3">
+										<h4>Filtrer</h4>
+									</div>
+									<div class="p-3 pb-0 border-bottom">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Classe</label>
+                                                 
+                                                    <select class="form-select">
+                                                        <option value="">Sélectionner</option>
+                                                        <option value="I">I</option>
+                                                        <option value="III">III</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Section</label>
+                                                   
+                                                    <select class="form-select">
+                                                        <option value="">Sélectionner</option>
+                                                        <option value="A">A</option>
+                                                        <option value="B">B</option>
+                                                        <option value="C">C</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Nom</label>
+                                                  
+                                                    <select class="form-select">
+                                                        <option value="">Sélectionner</option>
+                                                        <option value="Janet">Janet</option>
+                                                        <option value="Joann">Joann</option>
+                                                        <option value="Kathleen">Kathleen</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Genre</label>
+                                                   
+                                                    <select class="form-select">
+                                                        <option value="">Sélectionner</option>
+                                                        <option value="Male">Homme</option>
+                                                        <option value="Female">Femme</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Statut</label>
+                                                 
+                                                    <select class="form-select">
+                                                        <option value="">Sélectionner</option>
+                                                        <option value="Active">Actif</option>
+                                                        <option value="Inactive">Inactif</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+									</div>
+									<div class="p-3 d-flex align-items-center justify-content-end">
+										<a href="javascript:void(0);" class="btn btn-light me-3">Réinitialiser</a>
+										<button type="button" (click)="handleApplyClick()" class="btn btn-primary">Appliquer</button>
+									</div>
+								</form>									
+							</div>
+						</div>
+						<div class="d-flex align-items-center bg-white border rounded-2 p-1 mb-3 me-2">
+							<a [routerLink]="routes.studentList" class="btn btn-icon btn-sm me-1 bg-light primary-hover"><i class="ti ti-list-tree"></i></a>
+							<a [routerLink]="routes.studentsGrid" class="active btn btn-icon btn-sm primary-hover"><i class="ti ti-grid-dots"></i></a>
+						</div>
+						<div class="dropdown mb-3">
+							<a href="javascript:void(0);" class="btn btn-outline-light bg-white dropdown-toggle"  data-bs-toggle="dropdown"><i class="ti ti-sort-ascending-2 me-2"></i>Trier par A-Z </a>
+							<ul class="dropdown-menu p-3">
+								<li>
+									<a href="javascript:void(0);" class="dropdown-item rounded-1 active">
+										Ascendant
+									</a>
+								</li>
+								<li>
+									<a href="javascript:void(0);" class="dropdown-item rounded-1">
+										Descendant
+									</a>
+								</li>
+								<li>
+									<a href="javascript:void(0);" class="dropdown-item rounded-1">
+										Vus récemment
+									</a>
+								</li>
+								<li>
+									<a href="javascript:void(0);" class="dropdown-item rounded-1">
+										Ajoutés récemment
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>	
+				</div>
+				<!-- /Filter -->
+
+				<div class="row">
+					<!-- Student Grid -->
+					<div class="col-xxl-3 col-xl-4 col-md-6 d-flex" *ngFor="let student of students">
+						<div class="card flex-fill">
+							<div class="card-header d-flex align-items-center justify-content-between">
+								<a [routerLink]="routes.studentDetails" class="link-primary">{{ student.registrationNumber || 'N/A' }}</a>
+								<div class="d-flex align-items-center">
+									<span class="badge badge-soft-success d-inline-flex align-items-center me-1" *ngIf="student.status === 'Active'"><i class="ti ti-circle-filled fs-5 me-1"></i>Actif</span>
+									<span class="badge badge-soft-danger d-inline-flex align-items-center me-1" *ngIf="student.status === 'Inactive'"><i class="ti ti-circle-filled fs-5 me-1"></i>Inactif</span>
+									<div class="dropdown">
+										<a href="javascript:void(0);" class="btn btn-white btn-icon btn-sm d-flex align-items-center justify-content-center rounded-circle p-0" data-bs-toggle="dropdown" aria-expanded="false">
+											<i class="ti ti-dots-vertical fs-14"></i>
+										</a>
+										<ul class="dropdown-menu dropdown-menu-right p-3">
+											<li>
+												<a class="dropdown-item rounded-1" href="javascript:void(0);" (click)="viewDetails(student.id)"><i class="ti ti-menu me-2"></i>Voir l'Élève</a>
+											</li>
+											<li>
+												<a class="dropdown-item rounded-1" [routerLink]="routes.editStudent"><i class="ti ti-edit-circle me-2"></i>Modifier</a>
+											</li>
+											<li>
+												<a class="dropdown-item rounded-1" [routerLink]="routes.studentPromotion"><i class="ti ti-arrow-ramp-right-2 me-2"></i>Promouvoir l'Élève</a>
+											</li>
+											<li>
+												<a class="dropdown-item rounded-1" href="javascript:void(0);" (click)="deleteStudent(student.id)"><i class="ti ti-trash-x me-2"></i>Supprimer</a>
+											</li>
+										</ul>	
+									</div>
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="bg-light-300 rounded-2 p-3 mb-3">
+									<div class="d-flex align-items-center">
+										<a href="javascript:void(0);" (click)="viewDetails(student.id)" class="avatar avatar-lg flex-shrink-0">
+											<img *ngIf="student.person?.photo" [src]="student.person.photo" class="img-fluid rounded-circle" alt="img">
+											<img *ngIf="!student.person?.photo" src="assets/img/profiles/avatar-01.jpg" class="img-fluid rounded-circle" alt="img">
+										</a> 
+										<div class="ms-2">
+											<h5 class="mb-0" class="text-dark text-truncate">
+												<a href="javascript:void(0);" (click)="viewDetails(student.id)">
+													{{ student.person?.firstName }} {{ student.person?.lastName }}
+												</a>
+											</h5>
+											<p>{{ student.class?.name || 'N/A' }}</p>
+										</div>
+									</div>	
+								</div>
+								<div class="d-flex align-items-center justify-content-between gx-2">
+									<div>
+										<p class="mb-0">N° Matricule</p>
+										<p class="text-dark">{{ student.registrationNumber || 'N/A' }}</p>
+									</div>
+									<div>
+										<p class="mb-0">Genre</p>
+										<p class="text-dark">{{ student.person?.gender || 'N/A' }}</p>
+									</div>
+									<div>
+										<p class="mb-0">Inscription</p>
+										<p class="text-dark">{{ student.joinDate | date:'dd MMM yyyy' }}</p>
+									</div>
+								</div>
+							</div>
+							<div class="card-footer d-flex align-items-center justify-content-between">
+								<div class="d-flex align-items-center">
+									<a href="javascript:void(0);" class="btn btn-outline-light bg-white btn-icon d-flex align-items-center justify-content-center rounded-circle p-0 me-2"><i class="ti ti-brand-hipchat"></i></a>
+									<a href="javascript:void(0);" class="btn btn-outline-light bg-white btn-icon d-flex align-items-center justify-content-center rounded-circle p-0 me-2"><i class="ti ti-phone"></i></a>
+									<a href="javascript:void(0);" class="btn btn-outline-light bg-white btn-icon d-flex align-items-center justify-content-center rounded-circle p-0 me-3"><i class="ti ti-mail"></i></a>
+								</div>
+								<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_fees_collect" class="btn btn-light btn-sm fw-semibold">Add Fees</a>
+							</div>
+						</div>
+					</div>
+					<!-- /Student Grid -->
+
+					<div class="col-md-12 text-center" *ngIf="students.length === 0 && !isLoading">
+						<div class="alert alert-info">
+							Aucun élève trouvé.
+						</div>
+					</div>
+
+					<div class="col-md-12 text-center" *ngIf="isLoading">
+						<div class="spinner-border text-primary" role="status">
+							<span class="visually-hidden">Chargement...</span>
+						</div>
+						<p class="mt-2">Chargement des élèves...</p>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+		<!-- /Page Wrapper -->
+
+        <!-- Delete Modal -->
+		<div class="modal fade" id="delete-modal">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+				<div class="modal-header">
+					<button
+					type="button"
+					class="btn-close"
+					data-bs-dismiss="modal"
+					aria-label="Close"
+					>
+					<i class="ti ti-x"></i>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="text-center">
+						<h6 class="mb-3">Voulez-vous vraiment supprimer cet Élève ?</h6>
+						<div class="sub-text">
+							Attention ! Cette action ne peut pas être annulée.
+						</div>
+						<div class="modal-btn-group mt-4">
+							<button
+							type="button"
+							class="btn btn-light w-auto me-3"
+							data-bs-dismiss="modal"
+							>
+							Annuler
+							</button>
+							<button type="button" class="btn btn-danger w-auto" (click)="deleteData()">
+							Oui, Supprimer
+							</button>
+						</div>
+					</div>
+				</div>
+				</div>
+			</div>
+			</div>
+		<!-- /Delete Modal -->
+
+		<!-- Pagination -->
+		<div class="pagination-section page-section">
+			<div class="row align-items-center">
+				<div class="col-lg-6 col-md-6 col-sm-12">
+				<p>Affichage des résultats {{ length * currentPage + 1 }} - {{ (totalItems > length * (currentPage + 1)) ? length * (currentPage + 1) : totalItems }} sur {{ totalItems }} entrées</p>
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-12">
+				<app-custom-pagination 
+					[totalData]="totalItems" 
+					[currentPage]="currentPage+1" 
+					[pageSize]="length" 
+					(onPageChange)="changePage($event-1)"
+				></app-custom-pagination>
+				</div>
+			</div>
+		</div>
+		<!-- /Pagination -->
+
+        <!-- Add Fees Collect -->
+		<div class="modal fade" id="add_fees_collect">
+			<div class="modal-dialog modal-dialog-centered  modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<div class="d-flex align-items-center">
+							<h4 class="modal-title">Collect Fees</h4>
+							<span class="badge badge-sm bg-primary ms-2">AD124556</span>
+						</div>
+						<button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal"
+							aria-label="Close">
+							<i class="ti ti-x"></i>
+						</button>
+					</div>
+					<form >
+						<div class="modal-body">
+							<div class="bg-light-300 p-3 pb-0 rounded mb-4">
+								<div class="row align-items-center">
+									<div class="col-lg-3 col-md-6">
+										<div class="d-flex align-items-center mb-3">
+											<a [routerLink]="routes.studentDetails" class="avatar avatar-md me-2">
+												<img src="assets/img/students/student-01.jpg" alt="img">
+											</a>
+											<a [routerLink]="routes.studentDetails" class="d-flex flex-column"><span class="text-dark">Janet</span>III, A</a>
+										</div>
+									</div>
+									<div class="col-lg-3 col-md-6">
+										<div class="mb-3">
+											<span class="fs-12 mb-1">Total Outstanding</span>
+											<p class="text-dark">2000</p>
+										</div>
+									</div>
+									<div class="col-lg-3 col-md-6">
+										<div class="mb-3">
+											<span class="fs-12 mb-1">Last Date</span>
+											<p class="text-dark">25 May 2024</p>
+										</div>
+									</div>
+									<div class="col-lg-3 col-md-6">
+										<div class="mb-3">
+											<span class="badge badge-soft-danger"><i
+											class="ti ti-circle-filled me-2"></i>Unpaid</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="mb-3">
+										<label class="form-label">Fees Group</label>
+									  
+										<select class="form-select">
+											<option value="">Select</option>
+											<option value="Class 1 General">Class 1 General</option>
+											<option value="Monthly Fees">Monthly Fees</option>
+											<option value="Admission-Fees">Admission-Fees</option>
+											<option value="Class 1- I Installment">Class 1- I Installment</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="mb-3">
+										<label class="form-label">Fees Type</label>
+									  
+										<select class="form-select">
+											<option value="">Select</option>
+											<option value="Tuition Fees">Tuition Fees</option>
+											<option value="Monthly Fees">Monthly Fees</option>
+											<option value="Admission-Fees">Admission-Fees</option>
+											<option value="Bus Fees">Bus Fees</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="mb-3">
+										<label class="form-label">Amount</label>
+										<input type="text" class="form-control" placeholder="Enter Amout">
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="mb-3">
+										<label class="form-label">Collection Date</label>
+										<div class="date-pic">
+											<input type="text" class="form-control datetimepicker" bsDatepicker 
+											container=".date-pic" placeholder="Select">
+											<span class="cal-icon"><i class="ti ti-calendar"></i></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="mb-3">
+										<label class="form-label">Payment Type</label>
+									  
+										<select class="form-select">
+											<option value="">Select</option>
+											<option value="Paytm">Paytm</option>
+											<option value="Cash On Delivery">Cash On Delivery</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="mb-3">
+										<label class="form-label">Payment Reference No</label>
+										<input type="text" class="form-control"
+											placeholder="Enter Payment Reference No">
+									</div>
+								</div>
+								<div class="col-lg-12">
+									<div
+										class="modal-satus-toggle d-flex align-items-center justify-content-between mb-3">
+										<div class="status-title">
+											<h5>Status</h5>
+											<p>Change the Status by toggle </p>
+										</div>
+										<div class="status-toggle modal-status">
+											<input type="checkbox" id="user1" class="check">
+											<label for="user1" class="checktoggle"> </label>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-12">
+									<div class="mb-0">
+										<label class="form-label">Notes</label>
+										<textarea rows="4" class="form-control" placeholder="Add Notes"></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<a href="javascript:void(0);" class="btn btn-light me-2" data-bs-dismiss="modal">Cancel</a>
+							<button type="button" data-bs-dismiss="modal" class="btn btn-primary">Pay Fees</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<!-- Add Fees Collect -->
+
+		<!-- View Student Details Modal -->
+		<div class="modal fade" id="view-details">
+			<div class="modal-dialog modal-dialog-centered modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Détails de l'Élève</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div *ngIf="isLoading" class="text-center p-4">
+							<div class="spinner-border text-primary" role="status">
+								<span class="visually-hidden">Chargement...</span>
+							</div>
+							<p class="mt-2">Chargement des détails...</p>
+						</div>
+
+						<div *ngIf="!isLoading && selectedStudent">
+							<div class="card mb-3">
+								<div class="card-body">
+									<div class="row align-items-center">
+										<div class="col-md-4 text-center">
+											<img *ngIf="selectedStudent.person?.photo" [src]="selectedStudent.person.photo" class="img-fluid rounded-circle mb-3" style="max-width: 150px;" alt="Photo de l'élève">
+											<img *ngIf="!selectedStudent.person?.photo" src="assets/img/profiles/avatar-01.jpg" class="img-fluid rounded-circle mb-3" style="max-width: 150px;" alt="Avatar par défaut">
+											<h4>{{ selectedStudent.person?.firstName }} {{ selectedStudent.person?.lastName }}</h4>
+											<p class="text-muted">N° Matricule: {{ selectedStudent.registrationNumber }}</p>
+										</div>
+										<div class="col-md-8">
+											<div class="row g-3">
+												<div class="col-md-6">
+													<p class="mb-1"><strong>Classe:</strong></p>
+													<p>{{ selectedStudent.class?.name }}</p>
+												</div>
+												<div class="col-md-6">
+													<p class="mb-1"><strong>Date d'inscription:</strong></p>
+													<p>{{ selectedStudent.joinDate | date:'dd/MM/yyyy' }}</p>
+												</div>
+												<div class="col-md-6">
+													<p class="mb-1"><strong>Statut:</strong></p>
+													<p><span [ngClass]="{'badge badge-soft-success': selectedStudent.status === 'Active', 'badge badge-soft-danger': selectedStudent.status === 'Inactive'}">{{ selectedStudent.status }}</span></p>
+												</div>
+												<div class="col-md-6">
+													<p class="mb-1"><strong>Genre:</strong></p>
+													<p>{{ selectedStudent.person?.gender }}</p>
+												</div>
+												<div class="col-md-6">
+													<p class="mb-1"><strong>Date de naissance:</strong></p>
+													<p>{{ selectedStudent.person?.dateOfBirth | date:'dd/MM/yyyy' }}</p>
+												</div>
+												<div class="col-md-6">
+													<p class="mb-1"><strong>Email:</strong></p>
+													<p>{{ selectedStudent.person?.email }}</p>
+												</div>
+												<div class="col-md-6">
+													<p class="mb-1"><strong>Téléphone:</strong></p>
+													<p>{{ selectedStudent.person?.phone }}</p>
+												</div>
+												<div class="col-md-6">
+													<p class="mb-1"><strong>Adresse:</strong></p>
+													<p>{{ selectedStudent.person?.address }}</p>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<!-- Informations supplémentaires -->
+									<div *ngIf="selectedStudent.additionalInfo" class="mt-4">
+										<h5 class="border-bottom pb-2">Informations supplémentaires</h5>
+										<div class="row mt-3">
+											<div class="col-12">
+												<p class="mb-1"><strong>Notes:</strong></p>
+												<p>{{ selectedStudent.additionalInfo }}</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+						<button *ngIf="selectedStudent" type="button" class="btn btn-primary" [routerLink]="routes.editStudent">Modifier</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /View Student Details Modal -->
