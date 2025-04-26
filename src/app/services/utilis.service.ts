@@ -27,7 +27,6 @@ export class UtilsService {
 
   public emailRegex: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-<<<<<<< HEAD
   static async getSection(){
     return (await new Parse.Query(ParseClass.Section).find()) //?.map(section => section.toJSON())
   }
@@ -37,7 +36,5 @@ export class UtilsService {
   static getStudentMatricule(){
     return "123456789"
   }
-=======
->>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
 
 }

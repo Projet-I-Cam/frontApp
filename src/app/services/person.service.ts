@@ -73,7 +73,6 @@ export class PersonService {
     }
 
     return from(person.save()).pipe(
-<<<<<<< HEAD
       map(result => { 
         const usr = new Parse.User();
         usr.set("username", personData.phone);
@@ -87,9 +86,6 @@ export class PersonService {
           return this.parsePersonObject(result)
         })
       })
-=======
-      map(result => this.parsePersonObject(result))
->>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
     );
   }
 
@@ -213,12 +209,8 @@ export class PersonService {
       address: person.get('address'),
       photo: person.get('photo') ? person.get('photo').url() : null,
       createdAt: person.get('createdAt'),
-<<<<<<< HEAD
       updatedAt: person.get('updatedAt'),
       ...person.toJSON()
-=======
-      updatedAt: person.get('updatedAt')
->>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
     };
   }
 } 

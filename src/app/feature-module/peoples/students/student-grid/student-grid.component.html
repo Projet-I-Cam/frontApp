@@ -176,28 +176,16 @@
 								<div class="bg-light-300 rounded-2 p-3 mb-3">
 									<div class="d-flex align-items-center">
 										<a href="javascript:void(0);" (click)="viewDetails(student.id)" class="avatar avatar-lg flex-shrink-0">
-<<<<<<< HEAD
 											<img *ngIf="student.photo?.url" [src]="student.photo?.url" class="img-fluid rounded-circle" alt="img">
 											<img *ngIf="!student.photo?.url" src="assets/img/profiles/avatar-01.jpg" class="img-fluid rounded-circle" alt="img">
-=======
-											<img *ngIf="student.person?.photo" [src]="student.person.photo" class="img-fluid rounded-circle" alt="img">
-											<img *ngIf="!student.person?.photo" src="assets/img/profiles/avatar-01.jpg" class="img-fluid rounded-circle" alt="img">
->>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
 										</a> 
 										<div class="ms-2">
 											<h5 class="mb-0" class="text-dark text-truncate">
 												<a href="javascript:void(0);" (click)="viewDetails(student.id)">
-<<<<<<< HEAD
 													{{ student?.firstName }} {{ student?.lastName }}
 												</a>
 											</h5>
 											<p>{{ student.classroom?.name || 'N/A' }}</p>
-=======
-													{{ student.person?.firstName }} {{ student.person?.lastName }}
-												</a>
-											</h5>
-											<p>{{ student.class?.name || 'N/A' }}</p>
->>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
 										</div>
 									</div>	
 								</div>
@@ -208,7 +196,6 @@
 									</div>
 									<div>
 										<p class="mb-0">Genre</p>
-<<<<<<< HEAD
 										<p class="text-dark">{{ student?.gender?.libelle_fr || 'N/A' }}</p>
 									</div>
 									<div>
@@ -219,14 +206,6 @@
 										<p class="mb-0">Inscription</p>
 										<p class="text-dark">{{ student.joinDate | date:'dd MMM yyyy' }}</p>
 									</div> -->
-=======
-										<p class="text-dark">{{ student.person?.gender || 'N/A' }}</p>
-									</div>
-									<div>
-										<p class="mb-0">Inscription</p>
-										<p class="text-dark">{{ student.joinDate | date:'dd MMM yyyy' }}</p>
-									</div>
->>>>>>> 337f70a2e2d5e464434a51d3756e76fb96a4869f
 								</div>
 							</div>
 							<div class="card-footer d-flex align-items-center justify-content-between">
@@ -460,7 +439,7 @@
 			<div class="modal-dialog modal-dialog-centered modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h4 class="modal-title">Détails de l'Élève</h4>
+						<h4 class="modal-title">Détails de l'Élèved</h4>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
@@ -476,8 +455,8 @@
 								<div class="card-body">
 									<div class="row align-items-center">
 										<div class="col-md-4 text-center">
-											<img *ngIf="selectedStudent.person?.photo" [src]="selectedStudent.person.photo" class="img-fluid rounded-circle mb-3" style="max-width: 150px;" alt="Photo de l'élève">
-											<img *ngIf="!selectedStudent.person?.photo" src="assets/img/profiles/avatar-01.jpg" class="img-fluid rounded-circle mb-3" style="max-width: 150px;" alt="Avatar par défaut">
+											<img *ngIf="selectedStudent.photo?.url" [src]="selectedStudent.photo?.url" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px;" alt="Photo de l'élève">
+											<img *ngIf="!selectedStudent.photo?.url" src="assets/img/profiles/avatar-01.jpg" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px;" alt="Avatar par défaut">
 											<h4>{{ selectedStudent.person?.firstName }} {{ selectedStudent.person?.lastName }}</h4>
 											<p class="text-muted">N° Matricule: {{ selectedStudent.registrationNumber }}</p>
 										</div>
