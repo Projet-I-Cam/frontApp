@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 
 import { StudentsRoutingModule } from './students-routing.module';
 import { StudentsComponent } from './students.component';
@@ -32,7 +31,6 @@ import { AddStudentComponent } from './add-student/add-student.component';
     DropdownModule,
     CalendarModule,
     ChipsModule,
-    HttpClientModule,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,

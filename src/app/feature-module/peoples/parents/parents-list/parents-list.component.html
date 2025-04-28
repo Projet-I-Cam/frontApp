@@ -158,7 +158,12 @@
             </div>
           </div>
           <!-- Student List -->
-          <div class="custom-datatable-filter table-responsive">
+          <!-- <app-skelleton *ngIf="load" [table]="['', '#','Noms du parent', 'Genre', 'Date Naissance', 'Lieu Naissance', 'Enfants', 'Téléphone', 'Email','']" title="{{titlePage}}"></app-skelleton> -->
+         
+          <ng-container *ngIf="!tableData; else parentList">
+            <ngx-skeleton-loader></ngx-skeleton-loader>
+          </ng-container>
+          <div class="custom-datatable-filter table-responsive" #parentList>
             <table class="table datatable"  (matSortChange)="sortData($event)"
             matSort
             matSortActive="Sno"
@@ -171,7 +176,7 @@
                       <input class="form-check-input" type="checkbox" id="select-all" (click)="selectAll(initChecked)"  [(ngModel)]="initChecked">
                     </div>
                   </th>
-                  <th mat-sort-header="id">ID</th>
+                  <th >#</th>
                   <th>Noms du parent</th>
                   <th>Genre</th>
                   <th>Date Naissance</th>
@@ -187,34 +192,34 @@
                 <tr>
                   <td>
                     <div class="form-check form-check-md">
-                      <input class="form-check-input" type="checkbox">
+                      <input class="form-check-input" type="checkbox" [(ngModel)]="table.isSelected">
                     </div>
                   </td>
-                  <td><a href="javascript:void(0);" class="link-primary" data-bs-toggle="modal"
-                      data-bs-target="#view_details">{{table.parent.objectId}}</a>
-                  </td>
+                  <td>{{table.id}}</td>
                   <td>
                     <div class="d-flex align-items-center">
+                      <a href="javascript:void(0);" class="avatar avatar-md" data-bs-toggle="modal" data-bs-target="#view_details" (click)="viewParent(table)"><img
+                          [src]="table.photo?.url || 'assets/img/parents/parent-02.jpg'" class="img-fluid rounded-circle" alt="img"></a>
                       <div class="ms-2">
                         <p class="text-dark mb-0"><a href="javascript:void(0);" data-bs-toggle="modal"
-                            data-bs-target="#view_details">{{table.parent.person.firstName}} {{table.parent.person.lastName}}</a></p>
-                        <span class="fs-12"></span>
+                            data-bs-target="#view_details" (click)="viewParent(table)">{{table.firstName}} {{table.lastName}}</a></p>
+                        <span class="fs-12">{{table.Addedon}}</span>
                       </div>
                     </div>
                   </td>
-                  <td>{{table.parent.person.gender?.libelle_fr}}</td>
-                  <td>{{ table.parent.person.birthDate?.iso | date:'dd/MM/yyyy' }}</td>
-                  <td>{{table.parent.person.birthPlace}}</td>
+                  <td>{{table.gender?.libelle_fr}}</td>
+                  <td>{{ table.birthDate?.iso | date:'dd/MM/yyyy' }}</td>
+                  <td>{{table.birthPlace}}</td>
                   <td>
                     <div class="d-flex align-items-center">
                       <div class="ms-2">
-                        <p class="text-dark mb-0"><a href="javascript:void(0);"> {{table.parent.students.length}}</a></p>
+                        <p class="text-dark mb-0"><a href="javascript:void(0);"> {{table.students?.length || 0}}</a></p>
                         <span class="fs-12"></span>
                       </div>
                     </div>
                   </td>
-                  <td>{{table.parent.person.phone}}</td>
-                  <td>{{table.parent.person.email}}</td>
+                  <td>{{table.phone}}</td>
+                  <td>{{table.email}}</td>
                   <td>
                     <div class="d-flex align-items-center">
                       <div class="dropdown">
@@ -226,7 +231,7 @@
                         <ul class="dropdown-menu dropdown-menu-right p-3">
                           <li>
                             <a class="dropdown-item rounded-1" href="javascript:void(0);" data-bs-toggle="modal"
-                              data-bs-target="#view_details"><i class="ti ti-menu me-2"></i>Détails</a>
+                              data-bs-target="#view_details"><i class="ti ti-menu me-2" (click)="viewParent(table)"></i>Détails</a>
                           </li>
                           <li>
                             <a class="dropdown-item rounded-1" href="javascript:void(0);" data-bs-toggle="modal"
@@ -288,36 +293,36 @@
                 </div>
                 <div class="mb-3">
                   <label class="form-label">Nom</label>
-                  <input type="text" class="form-control" [(ngModel)]="parent.person.firstName" name="firstName" required>
+                  <input type="text" class="form-control" [(ngModel)]="parent.firstName" name="firstName" required>
                 </div>
                 <div class="mb-3">
                   <label class="form-label">Prénom</label>
-                  <input type="text" class="form-control" [(ngModel)]="parent.person.lastName" name="lastName" required>
+                  <input type="text" class="form-control" [(ngModel)]="parent.lastName" name="lastName" required>
                 </div>
                 <div class="mb-3">
                   <label class="form-label">Téléphone</label>
-                  <input type="text" class="form-control" id="phone" [(ngModel)]="parent.person.phone" name="phone" required>
+                  <input type="text" class="form-control" id="phone" [(ngModel)]="parent.phone" name="phone" required>
                 </div>
                 <div class="mb-3">
                   <label class="form-label">Adresse email</label>
-                  <input type="email" class="form-control" id="email" [(ngModel)]="parent.person.email" name="email">
+                  <input type="email" class="form-control" id="email" [(ngModel)]="parent.email" name="email">
                 </div>
                 <div class="mb-3">
                   <label class="form-label" for="birthDate">Date de Naissance:</label>
-                  <input type="date" id="birthDate" class="form-control" [(ngModel)]="parent.person.birthDate" name="birthDate">
+                  <input type="date" id="birthDate" class="form-control" [(ngModel)]="parent.birthDate" name="birthDate">
                 </div>
                 <div class="mb-3">
                   <label for="birthPlace">Lieu de Naissance:</label>
-                  <input type="text" id="birthPlace" class="form-control" [(ngModel)]="parent.person.birthPlace" name="birthPlace">
+                  <input type="text" id="birthPlace" class="form-control" [(ngModel)]="parent.birthPlace" name="birthPlace">
                 </div>
                 <div class="mb-3">
                   <label class="form-label">Genre</label>        
                   <div>        
                     <label>        
-                      <input type="radio" [(ngModel)]="parent.person.gender" name="gender" value="Homme" required> Homme        
+                      <input type="radio" [(ngModel)]="parent.gender" name="gender" value="Homme" required> Homme        
                     </label>        
                     <label class="ms-3">        
-                      <input type="radio" [(ngModel)]="parent.person.gender" name="gender" value="Femme" required> Femme        
+                      <input type="radio" [(ngModel)]="parent.gender" name="gender" value="Femme" required> Femme        
                     </label>        
                   </div>        
                 </div>
@@ -366,7 +371,7 @@
                     <div class="profile-uploader d-flex align-items-center">
                       <div class="drag-upload-btn mb-3">
                         Charger
-                        <input type="file" class="form-control image-sign" (change)="onFileSelected($event)" accept="image/*">
+                        <input type="file" class="form-control image-sign" (change)="onFileSelected($event)" accept="image/*" [(ngModel)]="parent.photo"> 
                       </div>
                       <a href="javascript:void(0);" class="btn btn-primary mb-3" (click)="removeImage()">Retirer</a>
                     </div>
@@ -386,13 +391,13 @@
               <div class="col-md-6">
                 <div class="mb-3">
                   <label class="form-label">Nom</label>
-                  <input type="text" class="form-control" [(ngModel)]="parent.person.firstName" name="firstName" required>
+                  <input type="text" class="form-control" [(ngModel)]="parent.firstName" name="firstName" required>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="mb-3">
                   <label class="form-label">Prénom</label>
-                  <input type="text" class="form-control" [(ngModel)]="parent.person.lastName" name="lastName" required>
+                  <input type="text" class="form-control" [(ngModel)]="parent.lastName" name="lastName" required>
                 </div>
               </div>
             </div>
@@ -400,13 +405,13 @@
               <div class="col-md-6">
                 <div class="mb-3">
                   <label class="form-label" for="birthDate">Date de Naissance:</label>
-                  <input type="date" id="birthDate" class="form-control" [(ngModel)]="parent.person.birthDate" name="birthDate" [max]="maxBirthDate"> 
+                  <input type="date" id="birthDate" class="form-control" [(ngModel)]="parent.birthDate" name="birthDate" [max]="maxBirthDate"> 
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="mb-3">
                   <label class="form-label" for="birthPlace">Lieu de Naissance:</label>
-                  <input type="text" id="birthPlace" class="form-control" [(ngModel)]="parent.person.birthPlace" name="birthPlace">
+                  <input type="text" id="birthPlace" class="form-control" [(ngModel)]="parent.birthPlace" name="birthPlace">
                 </div>
               </div>
             </div>
@@ -415,23 +420,24 @@
                 <div class="mb-3">
                   <label class="form-label">Téléphone</label>
                   <div class="input-group">
-                    <select class="form-select" [(ngModel)]="parent.person.countryCode" name="countryCode" required>
+                    <select class="form-select" [(ngModel)]="parent.countryCode" name="countryCode" required>
                       <option value="" disabled selected>Choisissez un code pays</option>
                       <option *ngFor="let country of countryCodes" [value]="country.code">{{ country.name }} ({{ country.code }})</option>
                     </select>
-                    <input type="text" class="form-control" id="phone" [(ngModel)]="parent.person.phone" name="phone" required placeholder="Numéro de téléphone">
+                    <input type="text" class="form-control" id="phone" [(ngModel)]="parent.phone" name="phone" required placeholder="Numéro de téléphone">
                   </div>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="mb-3">
                   <label class="form-label">Adresse email</label>
-                  <input type="email" class="form-control" id="email" [(ngModel)]="parent.person['email']" name="email" required 
-                         [ngClass]="{'is-invalid': parentForm.controls['email']?.invalid && (parentForm.controls['email']?.touched || parentForm.controls['email']?.dirty)}">
-                  <div *ngIf="parentForm.controls['email']?.invalid && (parentForm.controls['email']?.touched || parentForm.controls['email']?.dirty)" class="text-danger">
-                    <div *ngIf="parentForm.controls['email']?.errors?.['required']">L'adresse email est requise.</div>
-                    <div *ngIf="!validateEmail(parent.person['email'] || '')">Format d'email invalide.</div>
-                  </div>
+                  <input type="email" class="form-control" id="email" [(ngModel)]="parent.email" name="email" required >
+                  <!-- <input type="email" class="form-control" id="email" [(ngModel)]="parent.email" name="email" required 
+                         [ngClass]="{'is-invalid': parentForm.controls['email'].invalid && (parentForm.controls['email'].touched || parentForm.controls['email'].dirty)}">
+                  <div *ngIf="parentForm.controls['email'].invalid && (parentForm.controls['email'].touched || parentForm.controls['email'].dirty)" class="text-danger">
+                    <div *ngIf="parentForm.controls['email'].errors?.['required']">L'adresse email est requise.</div>
+                    <div *ngIf="!validateEmail(parent.email || '')">Format d'email invalide.</div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -439,7 +445,7 @@
               <div class="col-md-6">
                 <div class="mb-3">
                   <label class="form-label">Genre</label>
-                  <select class="form-select" [(ngModel)]="parent.person.gender" name="gender" required>
+                  <select class="form-select" [(ngModel)]="parent.gender" name="gender" required>
                     <option value="" disabled selected>Choisissez un genre</option>
                     <option *ngFor="let gender of genders" [value]="gender.objectId">{{ gender.libelle_fr }}</option>
                   </select>
@@ -558,11 +564,11 @@
               <div class="col-lg-6">
                 <div class="d-flex align-items-center mb-3">
                   <span class="avatar avatar-xl me-2">
-                    <img src="assets/img/parents/parent-01.jpg" alt="img">
+                    <img src="{{parent.photo?.url || 'assets/img/parents/parent-02.jpg'}}" alt="img">
                   </span>
                   <div class="parent-name">
-                    <h5 class="mb-1">Thomas</h5>
-                    <p>Added on 25 Mar 2024</p>
+                    <h5 class="mb-1">{{parent.lastName}} {{parent.firstName}} </h5>
+                    <p>Créé le {{parent.Addedon}} </p>
                   </div>
                 </div>
               </div>
@@ -570,17 +576,17 @@
                 <ul class="d-flex align-items-center">
                   <li class="mb-3 me-5">
                     <p class="mb-1">Email</p>
-                    <h6 class="fw-normal">tom&#64;example.com</h6>
+                    <h6 class="fw-normal"> {{parent.email}} </h6>
                   </li>
                   <li class="mb-3">
-                    <p class="mb-1">Phone</p>
-                    <h6 class="fw-normal">+1 65738 58937</h6>
+                    <p class="mb-1">Téléphone</p>
+                    <h6 class="fw-normal"> {{parent.phonr}} </h6>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
-          <h5 class="mb-3">Children Details</h5>
+          <h5 class="mb-3">Détails des enfants</h5>
           <div class="border rounded p-4 pb-1 mb-3">
             <div class="d-flex align-items-center justify-content-between flex-wrap pb-1 mb-3 border-bottom">
               <span class="link-primary mb-2">AD9892434</span>
@@ -666,11 +672,11 @@
             <span class="delete-icon">
               <i class="ti ti-trash-x"></i>
             </span>
-            <h4>Confirm Deletion</h4>
-            <p>You want to delete all the marked items, this cant be undone once you delete.</p>
+            <h4>Confirmer Suppression</h4>
+            <p>Vouslez-vous supprimer ce parent?.</p>
             <div class="d-flex justify-content-center">
-              <a href="javascript:void(0);" class="btn btn-light me-3" data-bs-dismiss="modal">Cancel</a>
-              <button type="submit" class="btn btn-danger">Yes, Delete</button>
+              <a href="javascript:void(0);" class="btn btn-light me-3" data-bs-dismiss="modal">Fermer</a>
+              <button type="submit" class="btn btn-danger">Oui Supprimer</button>
             </div>
           </div>
         </form>

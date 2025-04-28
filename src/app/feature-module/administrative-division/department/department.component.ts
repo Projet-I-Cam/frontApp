@@ -81,6 +81,7 @@ export class DepartmentComponent {
         curentPage: currentPage,
 
       });
+      
 
       console.log('Fetched data:', res);
 
@@ -113,7 +114,7 @@ export class DepartmentComponent {
       }
 
     }
-    }
+  }
 
     onPageChange(event: any) {
       this.pageSize = event.rows;

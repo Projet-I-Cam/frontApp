@@ -30,6 +30,11 @@ export class LoginService {
     this.userSubject.next(null);
     localStorage.removeItem('user');
   }
+
+  public getToken(): string | null {
+    return null;
+  }
+
 }
 
 

@@ -2,9 +2,7 @@ import { Component } from '@angular/core';
 
 import {
   apiResultFormat,
-  Parent,
   parentList,
-  Person,
 } from '../../../../shared/model/pages.model';
 import { routes } from '../../../../shared/routes/routes';
 import {
@@ -23,6 +21,8 @@ import { AuthService } from '../../../../services/auth.service';
 import Parse from 'parse';
 import { filter } from 'rxjs';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { environment } from '../../../../../environments/environment';
+
 
 interface City {
   name: string;
@@ -69,6 +69,7 @@ export class ParentsListComponent {
   selectedCities2!: City2[];
 
   parent: any = {};
+  titlePage = "Liste des parents"
 
   maxBirthDate: string = '';
   countryCodes: any = [];
@@ -76,6 +77,8 @@ export class ParentsListComponent {
   public errorMessage: string | null = null;
   public successMessage: string | null = null;
   public genders: any[] = [];
+
+
 
   constructor(
     private data: DataService,
@@ -90,7 +93,6 @@ export class ParentsListComponent {
     ngOnInit(): void {
 
       this.load=true;
-      this.initParent()
       this.loadGenders();
       this.initializeCities();
       this.loadParentList();
@@ -98,34 +100,18 @@ export class ParentsListComponent {
       this.countryCodes = this.utils.countryCodes;
       this.errorMessage = null;
       this.successMessage = null;
-      console.log(this.authService.getCurrentUser())
+
+      setTimeout(() => {
+        this.parent = [/* Actual article data */];
+      }, 2000); 
+
     }
 
-    initParent(){
-      this.parent =this.parent = {
-        objectId: '',
-        person: {
-          'objectId': '',
-          'firstName': '',
-          'lastName': '',
-          'gender': undefined,
-          'phone': '',
-          'email': '',
-          'birthDate': undefined,
-          'birthPlace': '',
-          'GuardianImage': '',
-          'image': '',
-          'countryCode': '',
-          'cratedAt': undefined,
-        },
-        students: []
-      };
-    }
+
 
     //ouverture du modal pour ajouter un élément
     openNew(){
       this.load=true;
-      this.initParent();
 
       this.submitted = false;
       this.formDialog = true;
@@ -150,7 +136,6 @@ export class ParentsListComponent {
       //script de supression
       const result = await globalDelete({T: 'Parent', objectId: this.parent.objectId})
       .then(() =>{
-          this.initParent(); //si c'est ok
           this.showSuccess("Parent enrégistré");
           this.tableData = this.tableData.filter(val => val.parent.objectId != this.parent.objectId);
         }
@@ -169,7 +154,7 @@ export class ParentsListComponent {
       return this.utils.emailRegex.test(email);
     }
 
-    onFileSelected(event: Event): void {
+    onFileSelected2(event: Event): void {
       const input = event.target as HTMLInputElement;
       if (input.files && input.files.length > 0) {
         const file = input.files[0];
@@ -199,6 +184,17 @@ export class ParentsListComponent {
           this.imagePreview = e.target?.result ?? null; // Set the image preview
         };
         reader.readAsDataURL(file);
+      }
+    }
+    onFileSelected(event: Event): void {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.imagePreview = reader.result as string; // Prévisualisation de l'image
+        };
+        reader.readAsDataURL(file);
+        this.parent.photo = file; // Stocker le fichier dans l'objet parent
       }
     }
     removeImage(): void {
@@ -241,7 +237,7 @@ export class ParentsListComponent {
 
 
 
-  private getTableData(pageOption: pageSelection): void {
+  private getTableData2(pageOption: pageSelection): void {
 
     this.data.getParentList().then((apiRes: any) => {
       this.tableData = [];
@@ -252,11 +248,19 @@ export class ParentsListComponent {
         const serialNumber = index + 1;
         if (index >= pageOption.skip && serialNumber <= pageOption.limit) {
           const newParentList: parentList = {
+            objectId: res.objectId,
             sNo: serialNumber, // Numéro de série
             isSelected: false, // Valeur par défaut, vous pouvez la modifier selon vos besoins
             Addedon: new Date().toISOString(), // Date d'ajout, vous pouvez la modifier selon vos besoins
             p: res.person.firstName+' '+res.person.lastName,
-            parent: res
+            firstName: res.firstName,
+            lastName: res.lastName,
+            email: res.firstName,
+            phone: res.phone,
+            photo: res.photo,
+            birthDate: res.birthDate,
+            birthPlace: res.birthPlace,
+            gender: res.gender
           };  
           this.actualData.push(newParentList);
           this.tableData.push(newParentList);
@@ -275,6 +279,35 @@ export class ParentsListComponent {
     });
   }
 
+    private getTableData(pageOption: pageSelection): void {
+      this.data.getParentList().then((apiRes: any) => {
+        this.load = false;
+        this.tableData = [];
+        this.tableDataCopy = [];
+        this.serialNumberArray = [];
+        this.totalData = apiRes.totalData;
+        apiRes.data.map((res: parentList, index: number) => {
+          const serialNumber = index + 1;
+          if (index >= pageOption.skip && serialNumber <= pageOption.limit) {
+            res.id = serialNumber;
+            res.Addedon = res.cratedAt ? res.cratedAt.toISOString() : undefined;
+            this.tableData.push(res);
+            this.serialNumberArray.push(serialNumber);
+            this.tableDataCopy.push(res);
+          }
+          console.log(res.id, res);
+
+        });
+        this.dataSource = new MatTableDataSource<parentList>(this.actualData);
+        this.pagination.calculatePageSize.next({
+          totalData: this.totalData,
+          pageSize: this.pageSize,
+          tableData: this.tableData,
+          tableDataCopy: this.tableDataCopy,
+          serialNumberArray: this.serialNumberArray,
+        });
+      });
+    }
 
   public searchData(value: string): void {
     if (value == '') {
@@ -284,6 +317,8 @@ export class ParentsListComponent {
       this.tableData = this.dataSource.filteredData;
     }
   }
+
+
 
   public sortData(sort: Sort) {
     const data = this.tableData.slice();
@@ -300,6 +335,7 @@ export class ParentsListComponent {
     }
   }
 
+
   public changePageSize(pageSize: number): void {
     this.pageSelection = [];
     this.limit = pageSize;
@@ -312,7 +348,6 @@ export class ParentsListComponent {
       pageSize: this.pageSize,
     });
   }
-
 
 
   selectAll(initChecked: boolean) {
@@ -328,133 +363,125 @@ export class ParentsListComponent {
   }
 
 
-  getSelectedGender() {
-    return this.genders.find(gender => gender.objectId === this.parent.person.gender);
+
+  public getSelectedGender() {
+    return this.genders.find(gender => gender.objectId === this.parent.gender);
   }
 
-  async onSubmit(form: NgForm) {
-    this.submitted = true;
-    if (form.valid && this.parent.person.nom?.trim() && this.parent.person.phone?.trim() && this.parent.person.email?.trim()) {
-      console.log('Form bifore submitted:', this.parent);
+  public async onSubmit(form: NgForm) {
+    if (form.valid) {
+      console.log('Form before submitted:', this.parent);
+      this.showError("debut");
       const gender = this.getSelectedGender();
-      const birthDateValue = this.parent.person.birthDate;
-      const birthDate = new Date(birthDateValue + 'T00:49:07.665Z');
-      if(this.parent.objectId){
-        
-      }else{
-
-        //save user for person
-        let userResponse: any = [];
-        try {
-          userResponse = await this.authService.registerUser (
-            this.parent.person.firstName + " " + this.parent.person.lastName,
-            this.parent.person.email,
-            'abc@1234',
-            this.parent.person.email,
-            'parent'
-          );
-          console.log("User  registered successfully:", userResponse);
-        } catch (error) {
-          if (error instanceof Error) {
-            this.errorMessage = error.message;
-            console.error(error);
-          } else {
-            this.errorMessage = "An unknown error occurred during peson registration.";
-            console.error("An unknown error occurred during peson registration."); 
-          }
-        }
-
-        if (!userResponse) {
-          console.error("Failed to save user:", userResponse);
-          this.errorMessage = userResponse;
+      const birthDateValue = this.parent.birthDate;
+      const birthDate = birthDateValue ? new Date(birthDateValue) : undefined;
+  
+      // Check if the phone number or email already exists
+      const query = new Parse.Query('Person');
+      query.equalTo('email', this.parent.email);
+  
+      try {
+        const existingUsers = await query.find();
+        console.log(existingUsers);
+        if (existingUsers.length > 0) {
+          this.errorMessage = "L'adresse e-mail existe déjà.";
           return;
         }
-        //save person for parent
-        console.log(userResponse?.id);
-        const personData: any = {
-          lastName: this.parent.person.lastName,
-          firstName: this.parent.person.firstName,
-          gender: {
-            className: "Gender",
-            objectId: gender?.objectId 
-          },
-          phones: [this.parent.person.countryCode+this.parent.person.phone],
-          emails: [this.parent.person.email],
-          birthDate: birthDate,
-          birthPlace: this.parent.person.birthPlace,
-          //        image: "",
-          //        countryCode: this.parent.person.countryCode,
-          user: {
-            className: '_User',
-            objectId: userResponse?.id
-          }
-        };
-
-        console.log(personData);
-        const personResponse : any = await globalPost({T: 'Person', dataObject: personData});
-        if(personData.error){
-          console.error("Failed to save person:", personResponse.message);
-          this.errorMessage = personResponse.message;
-          return;
-        }
-        const students : any[] = [];
-        // this.parent.students?.forEach(item => {
-        //   students.push({
-        //     __type: "Pointer",
-        //     className: 'Student', 
-        //     objectId: item
-        //   })
-        // })
-        //save parent
-        const parentData: any = {
-          person: {
-            __type: "Pointer",
-            className: 'Person',
-            objectId: personResponse?.id
-          },
-          students: students        
-        }
-        const parentResponse = await globalPost({T: 'Parent', dataObject: parentData});
-
-        if(parentResponse.error){
-          console.error("Failed to save Parent:", parentResponse.message);
-          this.errorMessage = parentResponse.message
-          return;
-        }else{
-          this.successMessage = "Parent enrégistré avec succès";
-          form.reset();
-          this.ngOnInit();
-        } 
+      } catch (error) {
+        console.error("Error checking existing users:", error);
+        this.errorMessage = "Une erreur est survenue lors de la vérification des utilisateurs existants.";
+        return;
       }
-      this.formDialog = false;
-         
+  
+      // Save user for person
+      let userResponse: any = [];
+      try {
+        userResponse = await this.authService.registerUser (
+          this.parent.firstName + " " + this.parent.lastName,
+          this.parent.email + "0",
+          'abc@1234',
+          this.parent.email,
+          'parent'
+        );
+        console.log("User  registered successfully:", userResponse);
+      } catch (error) {
+        if (error instanceof Error) {
+          this.errorMessage = error.message;
+          console.error(error);
+        } else {
+          this.errorMessage = "An unknown error occurred during person registration.";
+          console.error("An unknown error occurred during person registration.");
+        }
+      }
+  
+      if (!userResponse) {
+        console.error("Failed to save user:", userResponse);
+        this.errorMessage = userResponse;
+        return;
+      }
+      console.log(userResponse);
+  
+      // Save person for parent
+      const personData: any = {
+        isParent: true,
+        isStudent: false,
+        lastName: this.parent.lastName,
+        firstName: this.parent.firstName,
+        gender: {
+          className: "Gender",
+          objectId: gender.objectId
+        },
+        phone: this.parent.phone,
+        countryCode: this.parent.countryCode,
+        email: this.parent.email,
+        birthDate: birthDate,
+        birthPlace: this.parent.birthPlace,
+        photo: this.parent.photo,
+        user: userResponse
+      };
+  
+      const personResponse: any = await globalPost({ T: 'Person', dataObject: personData });
+      if (personResponse.error) {
+        this.errorMessage = personResponse.message;
+        return;
+      }
+  
+      this.successMessage = "Parent enregistré avec succès";
+      this.errorMessage = null;
+      form.reset();
     } else {
       console.log('Form is invalid');
-      this.showError("Veuillez remplir tous les champs obligatoires");
     }
   }
 
-  public editParent(selectedParent: Parent): void {
-    this.parent = { ...selectedParent }; // Remplir le formulaire avec les données du parent sélectionné
-    this.mode = 'edit'; // Changer le mode à 'edit'
-    console.log(selectedParent);
-  }
 
   public resetForm(form: NgForm): void {
     form.reset();
-    this.initParent();
+    this.parent = {};
   }
 
 
 
-
-
-
-  showError(message: string){
-    this.messageService.add({ severity: 'error', summary: 'Erreur', detail: message, life: 3000 });
+  closeModal() {
+    const modalElement = document.getElementById('add_parent');
+    if (modalElement) {
+      modalElement.classList.remove('show');
+      modalElement.style.display = 'none';
+    }
   }
-  showSuccess(message: string){
-    this.messageService.add({ severity: 'success', summary: 'Successful', detail: message, life: 3000 });
+
+  showSuccess(message : string){
+    this.messageService.add({ severity: 'success', summary: 'Successful', detail: message, life: 5000 });
+  }
+
+  showError(message : string){
+    this.messageService.add({ severity: 'error', summary: 'Erreur', detail: message, life: 5000 });
+  }
+
+
+  viewParent(item: any){
+    // this.deleteDialog = true;
+    this.parent = { ...item };
   }
 
 }

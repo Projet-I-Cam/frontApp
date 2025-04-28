@@ -590,27 +590,11 @@ export interface gradeReport {
   img: string;
 }
 export interface parentList {
+  id?: number
   sNo: number;
   isSelected: boolean;
   Addedon?: string;
   p?: string;
-  parent: Parent;
-}
-
-
-export interface Parent {
-
-  objectId?: string;
-
-  person: Person;
-
-  students?: any[];
-
-}
-
-
-export interface Person {
-
   objectId: string;
 
   lastName: string;
@@ -619,19 +603,19 @@ export interface Person {
 
   gender?: any;
 
-  phone: string; // Doit être une chaîne
+  phone: string;
 
   email: string;
 
   birthDate?: Date;
 
-  birthPlace?: string; // Doit être une chaîne
+  birthPlace?: string;
   GuardianImage?: string;
-  image?: string;
+  photo?: any;
   countryCode?: string;
   cratedAt?: Date;
   user?: any;
-
+  students?: any[];
 }
 
 

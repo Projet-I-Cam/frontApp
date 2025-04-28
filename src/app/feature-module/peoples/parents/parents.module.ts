@@ -12,7 +12,7 @@ import { SharedModule } from '../../../shared/shared.module';
   declarations: [
     ParentsComponent,
     ParentsListComponent,
-    ParentGridComponent
+    ParentGridComponent,
   ],
   imports: [
     CommonModule,

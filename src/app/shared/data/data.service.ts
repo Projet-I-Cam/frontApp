@@ -1,18 +1,16 @@
 import { Injectable } from '@angular/core';
 import { routes } from '../routes/routes';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map, from } from 'rxjs';
 import { apiResultFormat } from '../model/pages.model';
 import { LoginService } from '../../auth/services/login.service';
-import * as Parse from 'parse';
 import { globalGet} from '../../services/statefull/http';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
   constructor(private http: HttpClient, private loginService: LoginService) { }
-
 
 
 
@@ -391,9 +389,9 @@ export class DataService {
   public async getParentList(): Promise<apiResultFormat> {
 
     const data: any = await globalGet({
-      T: 'Parent',
+      T: 'Person',
       filters: {},
-      includes: ['person', 'person.gender', 'person.user'], // Notez que les inclusions doivent être des chaînes séparées
+      includes: ['gender', '_User', 'municipality'], // Notez que les inclusions doivent être des chaînes séparées
       curentPage: 1,
       size: undefined, // Ajoutez une taille par défaut si nécessaire
     });
@@ -405,48 +403,43 @@ export class DataService {
         data: [],
         totalData: 0
       };
+    }else{
+      return {
+        data: data,
+        totalData: data.length // Vous pouvez également ajuster cela si vous avez un total spécifique
+      } as apiResultFormat;
     }
-
-  
   
     // Assurez-vous que data est un tableau et qu'il contient des objets
-    const result = Array.isArray(data) ? data.map(item => {
-      // Assurez-vous que item a les propriétés nécessaires
-      if (item && item.person) {
-        return {
-          objectId: item.objectId, // ou toute autre propriété que vous souhaitez inclure
-          person: {
-            objectId: item.person.objectId,
-            lastName: item.person.lastName,
-            firstName: item.person.firstName,
-            gender: item.person.gender  || '',
-            phone: item.person?.phones?.[0],
-            email: item.person?.emails?.[0],
-            birthDate: item.person.birthDate || undefined,
-            birthPlace: item.person.birthPlace || '',
-            GuardianImage: item.person.GuardianImage || '',
-            image: item.person.image || ''
-          },
-          students: item.students || [] // Assurez-vous que students est un tableau
-        };
-      }
-      return null; // Retournez null si item n'est pas valide
-    }).filter(item => item !== null) : []; // Filtrer les éléments null
+    // const result = Array.isArray(data) ? data.map(item => {
+    //   // Assurez-vous que item a les propriétés nécessaires
+    //   if (item && item.person) {
+    //     return {
+    //       objectId: item.objectId, // ou toute autre propriété que vous souhaitez inclure
+    //       person: {
+    //         objectId: item.person.objectId,
+    //         lastName: item.person.lastName,
+    //         firstName: item.person.firstName,
+    //         gender: item.person.gender  || '',
+    //         phone: item.person?.phones?.[0],
+    //         email: item.person?.emails?.[0],
+    //         birthDate: item.person.birthDate || undefined,
+    //         birthPlace: item.person.birthPlace || '',
+    //         GuardianImage: item.person.GuardianImage || '',
+    //         image: item.person.image || ''
+    //       },
+    //       students: item.students || [] // Assurez-vous que students est un tableau
+    //     };
+    //   }
+    //   return null; // Retournez null si item n'est pas valide
+    // }).filter(item => item !== null) : []; // Filtrer les éléments null
   
-    return {
-      data: result,
-      totalData: result.length // Vous pouvez également ajuster cela si vous avez un total spécifique
-    } as apiResultFormat;
+    // return {
+    //   data: result,
+    //   totalData: result.length // Vous pouvez également ajuster cela si vous avez un total spécifique
+    // } as apiResultFormat;
   }
 
-  private parseList(parent: any): any {
-    return {
-      id: parent.id,
-      person: parent.person,
-      students: parent.students,
-      createdAt: parent.createdAt
-    };
-  }
 
   public getMembershipTransactions() {
     return this.http

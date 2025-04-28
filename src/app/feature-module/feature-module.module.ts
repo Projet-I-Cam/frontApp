@@ -21,7 +21,7 @@ import { LayoutComponent } from './common/layout/layout.component';
   imports: [
     CommonModule,
     FeatureModuleRoutingModule,
-    SharedModule,
+    SharedModule
   ],
   exports: [
   ],

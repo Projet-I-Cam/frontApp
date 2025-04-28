@@ -7,7 +7,6 @@ import { materialModule } from './material.module';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { CustomPaginationModule } from './custom-pagination/custom-pagination.module';
 import {
-  HttpClientModule,
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
@@ -62,7 +61,6 @@ import { Router, RouterModule } from '@angular/router';
     NgApexchartsModule,
     materialModule,
     CustomPaginationModule,
-    HttpClientModule,
     LightgalleryModule,
     NgScrollbarModule,
     NgxDropzoneModule,
@@ -101,7 +99,6 @@ import { Router, RouterModule } from '@angular/router';
     NgApexchartsModule,
     materialModule,
     CustomPaginationModule,
-    HttpClientModule,
     LightgalleryModule,
     NgScrollbarModule,
     NgxDropzoneModule,
