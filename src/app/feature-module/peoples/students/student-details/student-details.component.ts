@@ -11,7 +11,6 @@ import { SharedModule } from '../../../../shared/shared.module';
     selector: 'app-student-details',
     templateUrl: './student-details.component.html',
     styleUrl: './student-details.component.scss',
-    standalone: true,
     imports: [CommonModule, RouterModule, FormsModule, BsDatepickerModule, DropdownModule, SharedModule]
 })
 export class StudentDetailsComponent {

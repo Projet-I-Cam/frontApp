@@ -8,11 +8,10 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-student-report-card',
-  templateUrl: './student-report-card.component.html',
-  styleUrls: ['./student-report-card.component.scss'],
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule]
+    selector: 'app-student-report-card',
+    templateUrl: './student-report-card.component.html',
+    styleUrls: ['./student-report-card.component.scss'],
+    imports: [CommonModule, ReactiveFormsModule, RouterModule]
 })
 export class StudentReportCardComponent implements OnInit {
   public routes = routes;

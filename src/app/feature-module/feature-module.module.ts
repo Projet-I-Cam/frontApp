@@ -7,6 +7,7 @@ import { HeaderComponent } from './common/header/header.component';
 import { SidebarComponent } from './common/sidebar/sidebar.component';
 import { SharedModule } from '../shared/shared.module';
 import { LayoutComponent } from './common/layout/layout.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -21,7 +22,7 @@ import { LayoutComponent } from './common/layout/layout.component';
   imports: [
     CommonModule,
     FeatureModuleRoutingModule,
-    SharedModule
+    SharedModule, FormsModule,
   ],
   exports: [
   ],

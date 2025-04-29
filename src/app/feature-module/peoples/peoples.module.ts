@@ -6,6 +6,7 @@ import { PeoplesComponent } from './peoples.component';
 import { SharedModule } from '../../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InstitutionsModule } from './institutions/institutions.module';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @NgModule({
   declarations: [],
@@ -17,7 +18,9 @@ import { InstitutionsModule } from './institutions/institutions.module';
     FormsModule,
     ReactiveFormsModule,
     InstitutionsModule,
-    PeoplesComponent
+    PeoplesComponent,
+    SkeletonModule,
+    FormsModule,
   ],
 })
 export class PeoplesModule {}

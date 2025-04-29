@@ -24,7 +24,6 @@ interface data {
     selector: 'app-student-promotion',
     templateUrl: './student-promotion.component.html',
     styleUrl: './student-promotion.component.scss',
-    standalone: true,
     imports: [CommonModule, RouterModule, FormsModule, MatSortModule, MatTableModule, CustomPaginationModule, BsDatepickerModule, DropdownModule, SharedModule]
 })
 export class StudentPromotionComponent {

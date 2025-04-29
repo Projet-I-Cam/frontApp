@@ -163,13 +163,18 @@ export class DataService {
         })
       );
   }
-  public getCountries() {
-    return this.http.get<apiResultFormat>('assets/json/countries.json').pipe(
+  public getCountries2() {
+    return this.http.get<apiResultFormat>('https://restcountries.com/v3.1/all').pipe(
       map((res: apiResultFormat) => {
         return res;
       })
     );
   }
+
+  public getCountries() {
+    return this.http.get<any>('assets/json/countries.json');
+  }
+
   public getClassReportDate() {
     return this.http
       .get<apiResultFormat>('assets/json/class-report-data.json')
@@ -390,13 +395,12 @@ export class DataService {
 
     const data: any = await globalGet({
       T: 'Person',
-      filters: {},
-      includes: ['gender', '_User', 'municipality'], // Notez que les inclusions doivent être des chaînes séparées
+      filters: {'isParent':true},
+      includes: ['gender', 'user', 'municipality'],
       curentPage: 1,
-      size: undefined, // Ajoutez une taille par défaut si nécessaire
+      size: undefined, 
     });
   //console.log("depuis le service", data);
-    // Vérifiez si la réponse contient des données
     if (!data) {
       console.error('Error fetching parent list:', data);
       return {
@@ -406,38 +410,24 @@ export class DataService {
     }else{
       return {
         data: data,
-        totalData: data.length // Vous pouvez également ajuster cela si vous avez un total spécifique
+        totalData: data.length 
       } as apiResultFormat;
     }
-  
-    // Assurez-vous que data est un tableau et qu'il contient des objets
-    // const result = Array.isArray(data) ? data.map(item => {
-    //   // Assurez-vous que item a les propriétés nécessaires
-    //   if (item && item.person) {
-    //     return {
-    //       objectId: item.objectId, // ou toute autre propriété que vous souhaitez inclure
-    //       person: {
-    //         objectId: item.person.objectId,
-    //         lastName: item.person.lastName,
-    //         firstName: item.person.firstName,
-    //         gender: item.person.gender  || '',
-    //         phone: item.person?.phones?.[0],
-    //         email: item.person?.emails?.[0],
-    //         birthDate: item.person.birthDate || undefined,
-    //         birthPlace: item.person.birthPlace || '',
-    //         GuardianImage: item.person.GuardianImage || '',
-    //         image: item.person.image || ''
-    //       },
-    //       students: item.students || [] // Assurez-vous que students est un tableau
-    //     };
-    //   }
-    //   return null; // Retournez null si item n'est pas valide
-    // }).filter(item => item !== null) : []; // Filtrer les éléments null
-  
-    // return {
-    //   data: result,
-    //   totalData: result.length // Vous pouvez également ajuster cela si vous avez un total spécifique
-    // } as apiResultFormat;
+  }
+
+  public async getStudents(): Promise<any> {
+
+    const data =  await globalGet({
+      T: 'Person',
+      filters: {'isStudent':true},
+      includes: ['gender', 'user', 'municipality'],
+      curentPage: 1,
+      size: undefined, 
+      selects: ['objectId', 'firstName', 'lastName']
+    });
+
+    return data;
+    
   }
 
 

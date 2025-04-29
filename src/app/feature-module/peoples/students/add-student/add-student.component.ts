@@ -17,7 +17,6 @@ import { UtilsService } from '../../../../services/utilis.service';
     selector: 'app-add-student',
     templateUrl: './add-student.component.html',
     styleUrl: './add-student.component.scss',
-    standalone: true,
     imports: [CommonModule, ReactiveFormsModule, RouterModule, SharedModule]
 })
 export class AddStudentComponent implements OnInit {

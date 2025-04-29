@@ -11,7 +11,6 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     selector: 'app-edit-teacher',
     templateUrl: './edit-teacher.component.html',
     styleUrl: './edit-teacher.component.scss',
-    standalone: true,
     imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, SharedModule, DropdownModule, BsDatepickerModule]
 })
 export class EditTeacherComponent implements OnInit {

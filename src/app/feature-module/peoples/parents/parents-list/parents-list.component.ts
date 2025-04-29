@@ -22,16 +22,10 @@ import Parse from 'parse';
 import { filter } from 'rxjs';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { environment } from '../../../../../environments/environment';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ParentsModalComponent } from '../Modals/Parents-modal.component';
 
 
-interface City {
-  name: string;
-  code: string;
-}
-interface City2 {
-  name: string;
-  code: string;
-}
 
 @Component({
     selector: 'app-parents-list',
@@ -42,9 +36,8 @@ interface City2 {
 })
 export class ParentsListComponent {
   load: boolean = true;
-  formDialog: boolean = false;
   deleteDialog: boolean = false;
-  submitted: boolean = false;
+
 
   initChecked = false;
   public pageSize = 10;
@@ -62,21 +55,10 @@ export class ParentsListComponent {
   public pageSelection: pageSelection[] = [];
   dataSource!: MatTableDataSource<parentList>;
   public searchDataValue = '';
-  cities!: City[];
-  cities2!: City2[];
-
-  selectedCities1!: City[];
-  selectedCities2!: City2[];
 
   parent: any = {};
   titlePage = "Liste des parents"
 
-  maxBirthDate: string = '';
-  countryCodes: any = [];
-  public imagePreview: string | ArrayBuffer | null = null;
-  public errorMessage: string | null = null;
-  public successMessage: string | null = null;
-  public genders: any[] = [];
 
 
 
@@ -87,41 +69,33 @@ export class ParentsListComponent {
     private router: Router,
     private pagination: PaginationService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private modalService: NgbModal
   ) {}
 
     ngOnInit(): void {
-
       this.load=true;
-      this.loadGenders();
-      this.initializeCities();
       this.loadParentList();
-      this.maxBirthDate = this.utils.getMaxDate(16);
-      this.countryCodes = this.utils.countryCodes;
-      this.errorMessage = null;
-      this.successMessage = null;
-
-      setTimeout(() => {
-        this.parent = [/* Actual article data */];
-      }, 2000); 
-
     }
-
 
 
     //ouverture du modal pour ajouter un élément
     openNew(){
-      this.load=true;
-
-      this.submitted = false;
-      this.formDialog = true;
+      this.parent = {};
+      this.mode = "new";
+      const modalRef = this.modalService.open(ParentsModalComponent);
+      modalRef.componentInstance.parentData = this.parent;
+      modalRef.componentInstance.mode = this.mode;
     }
 
     //ouvrir le modal pour modifier un élément
 
     editData(item: any){
-        this.parent = { ...item };
-        this.formDialog = true;
+      this.parent = { ...item};
+      this.mode = "edit";
+      const modalRef = this.modalService.open(ParentsModalComponent);
+      modalRef.componentInstance.parentData = this.parent;
+      modalRef.componentInstance.mode = this.mode;
     }
 
     //ouvrir le modal de suppression d'un élément
@@ -136,80 +110,39 @@ export class ParentsListComponent {
       //script de supression
       const result = await globalDelete({T: 'Parent', objectId: this.parent.objectId})
       .then(() =>{
-          this.showSuccess("Parent enrégistré");
-          this.tableData = this.tableData.filter(val => val.parent.objectId != this.parent.objectId);
+          this.ngOnInit();
         }
 
       ).catch((error) => {
-        this.showError(error.message)
+        console.log(error.message)
       })
     }
 
-    hideDialog() {
-      this.formDialog = false;
-      this.submitted = false;
-    }
-
-    public validateEmail(email: string): boolean {
-      return this.utils.emailRegex.test(email);
-    }
 
     onFileSelected2(event: Event): void {
       const input = event.target as HTMLInputElement;
       if (input.files && input.files.length > 0) {
-        const file = input.files[0];
-  
+        const file = input.files[0];  
         // Validate file type
         const validTypes = ['image/jpeg', 'image/png', 'image/svg+xml'];
         if (!validTypes.includes(file.type)) {
-          this.errorMessage = 'Format de fichier non valide. Veuillez télécharger un fichier JPG, PNG ou SVG.';
-          this.showError('Format de fichier non valide. Veuillez télécharger un fichier JPG, PNG ou SVG.');
-          this.imagePreview = null; // Clear the preview
           return;
         }
   
         // Validate file size (4MB = 4 * 1024 * 1024 bytes)
         const maxSize = 4 * 1024 * 1024; // 4MB
         if (file.size > maxSize) {
-          this.errorMessage = 'La taille du fichier ne doit pas dépasser 4 Mo.';
-          this.showError('La taille du fichier ne doit pas dépasser 4 Mo.');
-          this.imagePreview = null; // Clear the preview
           return;
         }
   
         // If validation passes, read the file
-        this.errorMessage = null; // Clear any previous error messages
         const reader = new FileReader();
         reader.onload = (e) => {
-          this.imagePreview = e.target?.result ?? null; // Set the image preview
         };
         reader.readAsDataURL(file);
       }
     }
-    onFileSelected(event: Event): void {
-      const file = (event.target as HTMLInputElement).files?.[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          this.imagePreview = reader.result as string; // Prévisualisation de l'image
-        };
-        reader.readAsDataURL(file);
-        this.parent.photo = file; // Stocker le fichier dans l'objet parent
-      }
-    }
-    removeImage(): void {
-      this.imagePreview = null; // Clear the image preview
-      const input = document.querySelector('.image-sign') as HTMLInputElement;
-      if (input) {
-        input.value = ''; // Clear the file input
-      }
-    }
-   
-    private loadGenders(){
-      this.data.getGender().then((apiRes: any) => {
-        this.genders = apiRes;
-      });
-    }
+
     private async loadParentList(): Promise<void> {
       try {
         const apiRes: apiResultFormat = await this.data.getParentList();
@@ -222,19 +155,13 @@ export class ParentsListComponent {
         });
       } catch (error) {
         console.error('Erreur lors du chargement de la liste des parents', error);
-        this.showError('Erreur lors du chargement de la liste des parents');
       }
     }
 
-    private initializeCities(): void {
-      this.cities = [
-        { name: 'Janet', code: 'Janet' },
-        { name: 'Joann', code: 'Joann' },
-        { name: 'Kathleen', code: 'Kathleen' },
-        { name: 'Gifford', code: 'Gifford' },
-      ];
-    }
 
+
+
+    
 
 
   private getTableData2(pageOption: pageSelection): void {
@@ -295,7 +222,6 @@ export class ParentsListComponent {
             this.serialNumberArray.push(serialNumber);
             this.tableDataCopy.push(res);
           }
-          console.log(res.id, res);
 
         });
         this.dataSource = new MatTableDataSource<parentList>(this.actualData);
@@ -362,126 +288,20 @@ export class ParentsListComponent {
     }
   }
 
+  showDeleteForm : boolean = false;
 
-
-  public getSelectedGender() {
-    return this.genders.find(gender => gender.objectId === this.parent.gender);
-  }
-
-  public async onSubmit(form: NgForm) {
-    if (form.valid) {
-      console.log('Form before submitted:', this.parent);
-      this.showError("debut");
-      const gender = this.getSelectedGender();
-      const birthDateValue = this.parent.birthDate;
-      const birthDate = birthDateValue ? new Date(birthDateValue) : undefined;
   
-      // Check if the phone number or email already exists
-      const query = new Parse.Query('Person');
-      query.equalTo('email', this.parent.email);
-  
-      try {
-        const existingUsers = await query.find();
-        console.log(existingUsers);
-        if (existingUsers.length > 0) {
-          this.errorMessage = "L'adresse e-mail existe déjà.";
-          return;
-        }
-      } catch (error) {
-        console.error("Error checking existing users:", error);
-        this.errorMessage = "Une erreur est survenue lors de la vérification des utilisateurs existants.";
-        return;
-      }
-  
-      // Save user for person
-      let userResponse: any = [];
-      try {
-        userResponse = await this.authService.registerUser (
-          this.parent.firstName + " " + this.parent.lastName,
-          this.parent.email + "0",
-          'abc@1234',
-          this.parent.email,
-          'parent'
-        );
-        console.log("User  registered successfully:", userResponse);
-      } catch (error) {
-        if (error instanceof Error) {
-          this.errorMessage = error.message;
-          console.error(error);
-        } else {
-          this.errorMessage = "An unknown error occurred during person registration.";
-          console.error("An unknown error occurred during person registration.");
-        }
-      }
-  
-      if (!userResponse) {
-        console.error("Failed to save user:", userResponse);
-        this.errorMessage = userResponse;
-        return;
-      }
-      console.log(userResponse);
-  
-      // Save person for parent
-      const personData: any = {
-        isParent: true,
-        isStudent: false,
-        lastName: this.parent.lastName,
-        firstName: this.parent.firstName,
-        gender: {
-          className: "Gender",
-          objectId: gender.objectId
-        },
-        phone: this.parent.phone,
-        countryCode: this.parent.countryCode,
-        email: this.parent.email,
-        birthDate: birthDate,
-        birthPlace: this.parent.birthPlace,
-        photo: this.parent.photo,
-        user: userResponse
-      };
-  
-      const personResponse: any = await globalPost({ T: 'Person', dataObject: personData });
-      if (personResponse.error) {
-        this.errorMessage = personResponse.message;
-        return;
-      }
-  
-      this.successMessage = "Parent enregistré avec succès";
-      this.errorMessage = null;
-      form.reset();
-    } else {
-      console.log('Form is invalid');
-    }
-  }
-
-
-  public resetForm(form: NgForm): void {
-    form.reset();
-    this.parent = {};
-  }
-
-
-
-  closeModal() {
-    const modalElement = document.getElementById('add_parent');
-    if (modalElement) {
-      modalElement.classList.remove('show');
-      modalElement.style.display = 'none';
-    }
-  }
-
-  showSuccess(message : string){
-    this.messageService.add({ severity: 'success', summary: 'Successful', detail: message, life: 5000 });
-  }
-
-  showError(message : string){
-    this.messageService.add({ severity: 'error', summary: 'Erreur', detail: message, life: 5000 });
-  }
 
 
   viewParent(item: any){
     // this.deleteDialog = true;
     this.parent = { ...item };
+  }
+
+  showDelete(parent: any){
+    this.showDeleteForm = true;
+    this.parent = parent;
+
   }
 
 }

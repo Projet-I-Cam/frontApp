@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
     selector: 'app-students',
     templateUrl: './students.component.html',
     styleUrl: './students.component.scss',
-    standalone: true,
     imports: [RouterModule]
 })
 export class StudentsComponent {

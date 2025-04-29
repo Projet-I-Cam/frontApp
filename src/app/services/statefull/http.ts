@@ -35,7 +35,7 @@ export const globalGet = async({T, filters, includes, curentPage, size, selects,
         const query = new Parse.Query(CLASS?.[T])
         if(filters){
             Object.entries(filters).forEach(([key, value]: any) => {
-                if(typeof value === "string"){
+                if(typeof value === "string" || typeof value === "boolean" || value instanceof Date && !isNaN(value.getTime()) ){
                     query.equalTo(key, value)
                 }else{
                     query.equalTo(key, {"__type": "Pointer", "className": value?.className , "objectId": value?.objectId})

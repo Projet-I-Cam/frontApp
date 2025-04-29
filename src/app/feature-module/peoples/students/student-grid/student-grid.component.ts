@@ -19,7 +19,6 @@ declare global {
     selector: 'app-student-grid',
     templateUrl: './student-grid.component.html',
     styleUrls: ['./student-grid.component.scss'],
-    standalone: true,
     imports: [CommonModule, RouterModule, FormsModule, SharedModule, CustomPaginationModule]
 })
 export class StudentGridComponent implements OnInit {

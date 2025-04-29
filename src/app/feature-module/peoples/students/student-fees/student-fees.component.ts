@@ -24,7 +24,6 @@ import { SharedModule } from '../../../../shared/shared.module';
     selector: 'app-student-fees',
     templateUrl: './student-fees.component.html',
     styleUrl: './student-fees.component.scss',
-    standalone: true,
     imports: [CommonModule, RouterModule, FormsModule, MatSortModule, MatTableModule, CustomPaginationModule, BsDatepickerModule, DropdownModule, SharedModule]
 })
 export class StudentFeesComponent {

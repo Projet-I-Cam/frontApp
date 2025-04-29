@@ -41,19 +41,18 @@ interface GradeData {
 }
 
 @Component({
-  selector: 'app-grade-entry',
-  templateUrl: './grade-entry.component.html',
-  styleUrls: ['./grade-entry.component.scss'],
-  standalone: true,
-  imports: [
-    CommonModule, 
-    RouterModule, 
-    FormsModule, 
-    MatTableModule,
-    MatSortModule,
-    DropdownModule,
-    SharedModule
-  ]
+    selector: 'app-grade-entry',
+    templateUrl: './grade-entry.component.html',
+    styleUrls: ['./grade-entry.component.scss'],
+    imports: [
+        CommonModule,
+        RouterModule,
+        FormsModule,
+        MatTableModule,
+        MatSortModule,
+        DropdownModule,
+        SharedModule
+    ]
 })
 export class GradeEntryComponent implements OnInit {
   public routes = routes;
