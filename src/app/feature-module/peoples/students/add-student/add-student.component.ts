@@ -1,14 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { routes } from '../../../../shared/routes/routes';
-import { StudentService } from '../../../../services/student.service';
-import { PersonService } from '../../../../services/person.service';
-import { ClassService } from '../../../../services/class.service';
-import { Student, Person, Class } from '../../../../shared/model/student.model';
+import { Component, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { finalize } from 'rxjs/operators';
+import Parse from 'parse';
+
+import { ClassService } from '../../../../services/class.service';
+import { PersonService } from '../../../../services/person.service';
+import { StudentService } from '../../../../services/student.service';
+import { Class, Person, Student } from '../../../../shared/model/student.model'; 
+import { routes } from '../../../../shared/routes/routes';
 import { SharedModule } from '../../../../shared/shared.module';
+import { UtilsService } from '../../../../services/utilis.service';
 
 @Component({
     selector: 'app-add-student',
@@ -28,6 +31,8 @@ export class AddStudentComponent implements OnInit {
   
   // Add new properties
   classes: Class[] = [];
+  sections: any = [];
+  sexes: any = [];
   isLoading = false;
   isSubmitting = false;
   errorMessage = '';
@@ -39,22 +44,43 @@ export class AddStudentComponent implements OnInit {
     private personService: PersonService,
     private classService: ClassService
   ) {
+    UtilsService.getSection().then(sections => {
+      this.sections = sections?.map((sec: any) => {
+        return {
+          label: sec?.get('name_fr'),
+          value: sec?._getId()
+        }
+      })
+    })
+    UtilsService.getGender().then(sexes => {
+      this.sexes = sexes?.map((sex: any) => {
+        return {
+          label: sex?.get('libelle_fr'),
+          value: sex?._getId()
+        }
+      })
+    })
     this.studentForm = this.fb.group({
       // Person information
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       gender: ['', [Validators.required]],
       dateOfBirth: ['', [Validators.required]],
+      section: ['', [Validators.required]],
+      academicYear: [''],
+      admissionDate: [''],
+      classroom: [''],
       placeOfBirth: [''],
-      email: ['', [Validators.email]],
-      phoneNumber: [''],
+      photo: [null],
+      email: [''],
+      phoneNumber: ['', [Validators.required]],
       address: [''],
+      status: ['Active', [Validators.required]],
       
       // Student information
-      registrationNumber: ['', [Validators.required]],
-      joinDate: ['', [Validators.required]],
-      status: ['Active', [Validators.required]],
-      classId: ['', [Validators.required]],
+      // registrationNumber: ['', [Validators.required]],
+      // joinDate: ['', [Validators.required]],
+      // classId: ['', [Validators.required]],
       
       // Additional information
       bloodGroup: [''],
@@ -80,7 +106,8 @@ export class AddStudentComponent implements OnInit {
       emergencyContactRelation: [''],
       
       // Parent/Guardian information
-      parentGuardianInfo: this.fb.array([this.createParentGroup()])
+      parentGuardianInfo: ['']
+      // parentGuardianInfo: this.fb.array([this.createParentGroup()])
     });
   }
 
@@ -102,7 +129,7 @@ export class AddStudentComponent implements OnInit {
       )
       .subscribe(
         (classes) => {
-          this.classes = classes;
+          this.classes = classes; 
         },
         (error) => {
           console.error('Error loading classes:', error);
@@ -169,7 +196,18 @@ export class AddStudentComponent implements OnInit {
     }
   }
 
+  public onFileSelect(event: any) {
+    console.log('Changed')
+    const file: File = event.target.files[0];
+    if (file) {
+      this.studentForm.patchValue({
+        photo: file
+      });
+    }
+  }
+
   public onSubmit() {
+     console.log('Submited', this.studentForm.valid, this.studentForm.value)
     if (this.studentForm.valid) {
       this.isSubmitting = true;
       this.errorMessage = '';
@@ -186,7 +224,13 @@ export class AddStudentComponent implements OnInit {
         placeOfBirth: formValues.placeOfBirth,
         email: formValues.email,
         phone: formValues.phoneNumber,
-        address: formValues.address
+        section: formValues.section,
+        address: formValues.address,
+        photo: formValues.photo,
+        isStudent: true,
+        registrationNumber: UtilsService.getStudentMatricule(),
+        classroom: formValues.classroom,
+        roleId: null
       };
       
       // First create the person
@@ -198,57 +242,59 @@ export class AddStudentComponent implements OnInit {
         )
         .subscribe(
           (person) => {
+            console.log('Person created here ', person)
+            this.router.navigate([routes.studentsList]);
             // Now create the student with the person reference
-            const studentData: any = {
-              registrationNumber: formValues.registrationNumber,
-              status: formValues.status,
-              joinDate: formValues.joinDate,
-              additionalInfo: JSON.stringify({
-                bloodGroup: formValues.bloodGroup,
-                religion: formValues.religion,
-                nationality: formValues.nationality,
-                academicInfo: {
-                  previousSchool: formValues.previousSchool,
-                  previousSchoolAddress: formValues.previousSchoolAddress,
-                  transferCertificateNumber: formValues.transferCertificateNumber,
-                  transferDate: formValues.transferDate
-                },
-                medicalInfo: {
-                  medicalConditions: formValues.medicalConditions,
-                  allergies: formValues.allergies,
-                  medications: formValues.medications,
-                  emergencyContact: {
-                    name: formValues.emergencyContactName,
-                    phone: formValues.emergencyContactPhone,
-                    relation: formValues.emergencyContactRelation
-                  }
-                },
-                parentGuardianInfo: formValues.parentGuardianInfo
-              }),
-              person: {
-                objectId: person.id
-              }
-            };
+            // const studentData: any = {
+            //   registrationNumber: formValues.registrationNumber,
+            //   status: formValues.status,
+            //   joinDate: formValues.joinDate,
+            //   additionalInfo: JSON.stringify({
+            //     bloodGroup: formValues.bloodGroup,
+            //     religion: formValues.religion,
+            //     nationality: formValues.nationality,
+            //     academicInfo: {
+            //       previousSchool: formValues.previousSchool,
+            //       previousSchoolAddress: formValues.previousSchoolAddress,
+            //       transferCertificateNumber: formValues.transferCertificateNumber,
+            //       transferDate: formValues.transferDate
+            //     },
+            //     medicalInfo: {
+            //       medicalConditions: formValues.medicalConditions,
+            //       allergies: formValues.allergies,
+            //       medications: formValues.medications,
+            //       emergencyContact: {
+            //         name: formValues.emergencyContactName,
+            //         phone: formValues.emergencyContactPhone,
+            //         relation: formValues.emergencyContactRelation
+            //       }
+            //     },
+            //     parentGuardianInfo: formValues.parentGuardianInfo
+            //   }),
+            //   person: {
+            //     objectId: person.id
+            //   }
+            // };
             
-            // Add class reference if selected
-            if (formValues.classId) {
-              studentData.class = {
-                objectId: formValues.classId
-              };
-            }
+            // // Add class reference if selected
+            // if (formValues.classId) {
+            //   studentData.class = {
+            //     objectId: formValues.classId
+            //   };
+            // }
             
-            // Create the student
-            this.studentService.createStudent(studentData)
-              .subscribe(
-                (student) => {
-                  console.log('Student created successfully:', student);
-                  this.router.navigate([routes.studentsList]);
-                },
-                (error) => {
-                  console.error('Error creating student:', error);
-                  this.errorMessage = 'Failed to create student. Please try again.';
-                }
-              );
+            // Create the sother specific data to student here
+            // this.studentService.createStudent(studentData)
+            //   .subscribe(
+            //     (student) => {
+            //       console.log('Student created successfully:', student);
+            //       this.router.navigate([routes.studentsList]);
+            //     },
+            //     (error) => {
+            //       console.error('Error creating student:', error);
+            //       this.errorMessage = 'Failed to create student. Please try again.';
+            //     }
+            //   );
           },
           (error) => {
             console.error('Error creating person:', error);

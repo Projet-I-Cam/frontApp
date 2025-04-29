@@ -13,21 +13,17 @@ import { SiteModule } from './site/site.module';
 import { ParseService } from './parse.service';
 import { ServicesModule } from './services/services.module';
 
+
+import { environment } from '../environments/environment.local';
+
+
+
 @NgModule({
   declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    SharedModule,
-    SiteModule,
-    BrowserAnimationsModule,
-    RouterModule,
-    HttpClientModule,
-    ServicesModule
+  imports: [BrowserModule, AppRoutingModule, SharedModule, SiteModule,
   ],
   providers: [
     provideAnimationsAsync(),
-    ParseService
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent],
@@ -38,10 +34,5 @@ export class AppModule {
     // Parse.serverURL = 'http://5.196.68.13:1337/parse';
     Parse.serverURL = 'http://85.214.29.254:1337/parse';
 
-    // Check current user
-    const currentUser = Parse.User.current();
-    if (currentUser) {
-      console.log('Logged in user:', currentUser);
-    }
   }
 }

@@ -3,7 +3,7 @@
     <!-- Page Header -->
     <div class="d-md-flex d-block align-items-center justify-content-between mb-3">
       <div class="my-auto mb-2">
-        <h3 class="page-title mb-1">Positions</h3>
+        <h3 class="page-title mb-1">Personnel Liste</h3>
         <nav>
           <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item">
@@ -13,30 +13,31 @@
               <a href="javascript:void(0);">Personnel Management</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-              Positions
+              Personnel List
             </li>
           </ol>
         </nav>
       </div>
       <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
         <div class="mb-2">
-          <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal" (click)="openModal('create')"><i
+          <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal" routerLink="/peoples/minebase/staffs/create"><i
               class="ti ti-square-rounded-plus-filled me-2"></i>Add</a>
         </div>
       </div>
     </div>
 
-    <div *ngIf="error" class="alert alert-danger text-center mt-2">
+    <!-- <div *ngIf="error" class="alert alert-danger text-center mt-2">
       {{ error }}
     </div>
     <div *ngIf="loading" class="text-center py-5">
       <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>
-    </div>
+    </div> -->
 
-    <div class="card" *ngIf="!loading && !error">
+    <!-- <div class="card" *ngIf="!loading && !error">
       <p-table #dt [value]="tableData" dataKey="objectId" [paginator]="true" [rows]="pageSize"
+        [tableStyle]="{ 'min-width': '50rem' }"
         [rowsPerPageOptions]="pageSizeOptions" [totalRecords]="totalRecords" [lazy]="true"
         (onPage)="onPageChange($event)" [rowsPerPageOptions]="pageSizeOptions" [first]="(currentPage - 1) * pageSize"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -51,7 +52,6 @@
                 <input type="text" class="form-control" placeholder="Search sections" [(ngModel)]="searchValue"
                   (input)="dt.filterGlobal(searchValue, 'contains')" />
               </span>
-              <!-- Clear button (only visible when a filter is applied) -->
               <button *ngIf="searchValue && searchValue.trim().length > 0" (click)="dt.clear(); searchValue='';"
                 class="btn btn-primary btn-sm me-2">
                 <i class="ti ti-x me-2"></i>Clear
@@ -60,7 +60,6 @@
           </div>
         </ng-template>
 
-        <!-- Table Header -->
         <ng-template pTemplate="header">
           <tr>
             <th>
@@ -89,8 +88,6 @@
             </th>
           </tr>
         </ng-template>
-
-        <!-- Table Body -->
         <ng-template pTemplate="body" let-item>
           <tr>
             <td>
@@ -100,7 +97,7 @@
             <td>{{ item.description_en }}</td>
             <td>{{ item.createdAt | date:'MM/dd/yyyy' }}</td>
             <td style="text-align: center">
-              <p-button (click)="openModal('edit', item)" styleClass="p-button-text" tooltip="Edit section">
+              <p-button [routerLink]="" styleClass="p-button-text" tooltip="Edit section">
                 <i class="ti ti-edit h-100 w-100"></i>
               </p-button>
               <p-button (click)="openDeleteModal(item.objectId)" styleClass="p-button-text" tooltip="Delete section">
@@ -110,13 +107,12 @@
           </tr>
         </ng-template>
 
-        <!-- Empty Message -->
         <ng-template pTemplate="emptymessage">
           <tr>
             <td colspan="5">No positions found.</td>
           </tr>
         </ng-template>
       </p-table>
-    </div>
+    </div> -->
   </div>
 </div>

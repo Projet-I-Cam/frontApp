@@ -1,15 +1,20 @@
 import { Injectable } from '@angular/core';
 import { routes } from '../routes/routes';
-import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, map, from } from 'rxjs';
 import { apiResultFormat } from '../model/pages.model';
 import { LoginService } from '../../auth/services/login.service';
+import * as Parse from 'parse';
+import { globalGet } from '../../services/statefull/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
   constructor(private http: HttpClient, private loginService: LoginService) { }
+
+
+
 
   public getDataTable() {
     return this.http.get<apiResultFormat>('assets/json/data-tables.json').pipe(
@@ -350,13 +355,99 @@ export class DataService {
       })
     );
   }
-  public getParentList() {
+  public getParentList2() {
     return this.http.get<apiResultFormat>('assets/json/parents-list.json').pipe(
       map((res: apiResultFormat) => {
         return res;
       })
     );
   }
+
+  public async getGender(): Promise<any> {
+
+    const result = await globalGet({
+      T: 'Gender',
+      filters: {},
+      includes: [],
+      curentPage: 1,
+      size: undefined,
+    });
+
+    const parsedResults = result.map((element: any) => this.parseGender(element));
+    //console.log("from service", parsedResults);
+    return parsedResults;
+  }
+
+  public parseGender(element: any): any {
+    return {
+      objectId: element.objectId,
+      tag: element.slug,
+      libelle_fr: element.libelle_fr,
+      libelle_en: element.libelle_en
+    };
+  }
+
+
+  public async getParentList(): Promise<apiResultFormat> {
+
+    const data: any = await globalGet({
+      T: 'Parent',
+      filters: {},
+      includes: ['person', 'person.gender', 'person.user'], // Notez que les inclusions doivent être des chaînes séparées
+      curentPage: 1,
+      size: undefined, // Ajoutez une taille par défaut si nécessaire
+    });
+    //console.log("depuis le service", data);
+    // Vérifiez si la réponse contient des données
+    if (!data) {
+      console.error('Error fetching parent list:', data);
+      return {
+        data: [],
+        totalData: 0
+      };
+    }
+
+
+
+    // Assurez-vous que data est un tableau et qu'il contient des objets
+    const result = Array.isArray(data) ? data.map(item => {
+      // Assurez-vous que item a les propriétés nécessaires
+      if (item && item.person) {
+        return {
+          objectId: item.objectId, // ou toute autre propriété que vous souhaitez inclure
+          person: {
+            objectId: item.person.objectId,
+            lastName: item.person.lastName,
+            firstName: item.person.firstName,
+            gender: item.person.gender || '',
+            phone: item.person?.phones?.[0],
+            email: item.person?.emails?.[0],
+            birthDate: item.person.birthDate || undefined,
+            birthPlace: item.person.birthPlace || '',
+            GuardianImage: item.person.GuardianImage || '',
+            image: item.person.image || ''
+          },
+          students: item.students || [] // Assurez-vous que students est un tableau
+        };
+      }
+      return null; // Retournez null si item n'est pas valide
+    }).filter(item => item !== null) : []; // Filtrer les éléments null
+
+    return {
+      data: result,
+      totalData: result.length // Vous pouvez également ajuster cela si vous avez un total spécifique
+    } as apiResultFormat;
+  }
+
+  private parseList(parent: any): any {
+    return {
+      id: parent.id,
+      person: parent.person,
+      students: parent.students,
+      createdAt: parent.createdAt
+    };
+  }
+
   public getMembershipTransactions() {
     return this.http
       .get<apiResultFormat>('assets/json/membership-transactions.json')
@@ -1010,14 +1101,14 @@ export class DataService {
           page: 'parents',
           subMenus: [
             {
-              menuValue: 'All Parents',
+              menuValue: 'Tous les parents',
               route: routes.parentGrid,
               hasSubRoute: false,
               showSubRoute: false,
               customSubmenuTwo: false,
             },
             {
-              menuValue: 'Parent List',
+              menuValue: 'Liste des parents',
               route: routes.parentList,
               customSubmenuTwo: false,
               hasSubRoute: false,
@@ -1620,7 +1711,7 @@ export class DataService {
       ],
     },
     {
-      tittle: 'Administration Centrale',
+      tittle: 'Peoples',
       showAsTab: false,
       separateRoute: false,
       hasSubRoute: false,
@@ -1653,8 +1744,8 @@ export class DataService {
           menuValue: 'Personelle Management',
           hasSubRoute: true,
           showSubRoute: false,
-          icon: 'user-bolt',
-          page: 'parents',
+          icon: 'building',
+          page: 'institutions',
           subMenus: [
             {
               menuValue: 'Personnel list',
@@ -1668,34 +1759,8 @@ export class DataService {
               route: 'peoples/minebase/staffs/functions'
             },
             {
-              menuValue: 'Affectation et Access',
-              route: routes.parentList,
-              customSubmenuTwo: false,
-              hasSubRoute: false,
-              showSubRoute: false,
-            },
-            {
-              menuValue: 'Organigramme',
-              route: routes.parentGrid,
-              hasSubRoute: false,
-              showSubRoute: false,
-              customSubmenuTwo: false,
-            },
-          ],
-        },
-        {
-          menuValue: 'Institutions',
-          hasSubRoute: true,
-          showSubRoute: false,
-          icon: 'building',
-          page: 'institutions',
-          subMenus: [
-            {
-              menuValue: 'Institutions',
-              route: '/peoples/institutions/institutions-list',
-              hasSubRoute: false,
-              showSubRoute: false,
-              customSubmenuTwo: false,
+              menuValue: 'Positions',
+              route: 'peoples/minebase/staffs/functions'
             },
             {
               menuValue: 'Institutions Types',
@@ -1719,6 +1784,37 @@ export class DataService {
               hasSubRoute: false,
               showSubRoute: false,
             },
+          ],
+        },
+        {
+          menuValue: 'Staffs',
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'user-bolt',
+          page: 'parents',
+          subMenus: [
+            {
+              menuValue: 'Staffs',
+              route: routes.parentGrid,
+              hasSubRoute: false,
+              showSubRoute: false,
+              customSubmenuTwo: false,
+            },
+            {
+              menuValue: 'Function',
+              route: routes.parentList,
+              customSubmenuTwo: false,
+              hasSubRoute: false,
+              showSubRoute: false,
+            },
+            {
+              menuValue: 'Assignments',
+              route: routes.parentList,
+              customSubmenuTwo: false,
+              hasSubRoute: false,
+              showSubRoute: false,
+            },
+
           ],
         },
 
@@ -1851,14 +1947,14 @@ export class DataService {
           page: 'parents',
           subMenus: [
             {
-              menuValue: 'All Parents',
+              menuValue: 'Tous les parents',
               route: routes.parentGrid,
               hasSubRoute: false,
               showSubRoute: false,
               customSubmenuTwo: false,
             },
             {
-              menuValue: 'Parent List',
+              menuValue: 'Liste des parents',
               route: routes.parentList,
               customSubmenuTwo: false,
               hasSubRoute: false,

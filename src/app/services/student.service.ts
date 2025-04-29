@@ -1,24 +1,27 @@
 import { Injectable } from '@angular/core';
-import { Observable, from } from 'rxjs';
-import { map } from 'rxjs/operators';
 import * as Parse from 'parse';
+import { from, Observable } from 'rxjs'; 
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentService {
-  private readonly STUDENT_CLASS = 'Student';
+  private readonly STUDENT_CLASS = 'Person';
 
   constructor() { }
 
-  /**
+  /** 
    * Get all students
    * @returns Observable with list of students
    */
   getAllStudents(): Observable<any[]> {
     const query = new Parse.Query(this.STUDENT_CLASS);
-    query.include('person');
+    query.equalTo('isStudent', true);
+    // query.include('parents');
     query.include('class');
+    query.include('gender');
+    query.include('section');
     query.include('enrollment');
     query.descending('createdAt');
     return from(query.find()).pipe(
@@ -247,7 +250,8 @@ export class StudentService {
       joinDate: student.get('joinDate'),
       additionalInfo: student.get('additionalInfo'),
       createdAt: student.get('createdAt'),
-      updatedAt: student.get('updatedAt')
+      updatedAt: student.get('updatedAt'),
+      ...student?.toJSON()
     };
 
     // Add person data if available

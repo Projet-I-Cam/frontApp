@@ -24,6 +24,27 @@ export class PersonService {
   }
 
   /**
+ * Get all persons filtered by staffType
+ * @param staffTypeId - The objectId of the StaffType to filter by
+ * @returns Observable with list of persons
+ */
+getPersonsByStaffType(staffTypeId: string): Observable<any[]> {
+  const query = new Parse.Query(this.PERSON_CLASS);
+  query.descending('createdAt');
+
+  // Create a pointer to the StaffType
+  const staffTypePointer = new Parse.Object('StaffType');
+  staffTypePointer.id = staffTypeId;
+
+  // Add the condition to filter by staffType
+  query.equalTo('staffType', staffTypePointer);
+
+  return from(query.find()).pipe(
+    map(results => results.map(person => this.parsePersonObject(person)))
+  );
+}
+
+  /**
    * Get a person by ID
    * @param id Person ID
    * @returns Observable with person details
@@ -47,13 +68,26 @@ export class PersonService {
     // Set basic person properties
     person.set('firstName', personData.firstName);
     person.set('lastName', personData.lastName);
-    person.set('gender', personData.gender);
-    person.set('dateOfBirth', personData.dateOfBirth ? new Date(personData.dateOfBirth) : null);
-    person.set('placeOfBirth', personData.placeOfBirth);
+    person.set('gender', { "__type": "Pointer", "className": "Gender", "objectId": personData.gender });
+    person.set('section', { "__type": "Pointer", "className": "Section", "objectId": personData.section });
+
+    person.set('birthDate', personData.dateOfBirth ? new Date(personData.dateOfBirth) : null);
+    person.set('birthPlace', personData.placeOfBirth);
     person.set('email', personData.email);
     person.set('phone', personData.phone);
-    person.set('address', personData.address);
-    
+    person.set('registrationNumber', personData.registrationNumber);
+    // person.set('address', personData.address);
+    if (personData?.isStudent) {
+      person.set('isStudent', true);
+    }
+    if (personData?.isParent) {
+      person.set('isParent', true);
+    }
+    if (personData?.isStaff) {
+      person.set('isStaff', true);
+      person.set('staffType', { "__type": "Pointer", "className": "StaffType", "objectId": personData.staffType });
+    }
+
     // Handle file upload if photo is provided
     if (personData.photo && personData.photo instanceof File) {
       const photoFile = new Parse.File(personData.photo.name, personData.photo);
@@ -61,7 +95,19 @@ export class PersonService {
     }
 
     return from(person.save()).pipe(
-      map(result => this.parsePersonObject(result))
+      map(result => {
+        const usr = new Parse.User();
+        usr.set("username", personData.phone);
+        usr.set("password", personData.phone);
+        usr.set("person", person);
+        if (personData.roleId) {
+          usr.set("role", { "__type": "Pointer", "className": "_Role", "objectId": personData.roleId });
+        }
+        return usr.signUp().then(user => {
+          person.set("user", usr)
+          return this.parsePersonObject(result)
+        })
+      })
     );
   }
 
@@ -73,42 +119,42 @@ export class PersonService {
    */
   updatePerson(id: string, personData: any): Observable<any> {
     const query = new Parse.Query(this.PERSON_CLASS);
-    
+
     return from(query.get(id)).pipe(
       map(person => {
         // Update person properties
         if (personData.firstName) {
           person.set('firstName', personData.firstName);
         }
-        
+
         if (personData.lastName) {
           person.set('lastName', personData.lastName);
         }
-        
+
         if (personData.gender) {
           person.set('gender', personData.gender);
         }
-        
+
         if (personData.dateOfBirth) {
           person.set('dateOfBirth', new Date(personData.dateOfBirth));
         }
-        
+
         if (personData.placeOfBirth) {
           person.set('placeOfBirth', personData.placeOfBirth);
         }
-        
+
         if (personData.email) {
           person.set('email', personData.email);
         }
-        
+
         if (personData.phone) {
           person.set('phone', personData.phone);
         }
-        
+
         if (personData.address) {
           person.set('address', personData.address);
         }
-        
+
         // Handle file upload if photo is provided
         if (personData.photo && personData.photo instanceof File) {
           const photoFile = new Parse.File(personData.photo.name, personData.photo);
@@ -136,7 +182,7 @@ export class PersonService {
    */
   deletePerson(id: string): Observable<boolean> {
     const query = new Parse.Query(this.PERSON_CLASS);
-    
+
     return from(query.get(id)).pipe(
       map(person => from(person.destroy())),
       // Flatten the observable
@@ -154,12 +200,12 @@ export class PersonService {
   searchPersons(searchTerm: string): Observable<any[]> {
     const firstNameQuery = new Parse.Query(this.PERSON_CLASS);
     firstNameQuery.contains('firstName', searchTerm);
-    
+
     const lastNameQuery = new Parse.Query(this.PERSON_CLASS);
     lastNameQuery.contains('lastName', searchTerm);
-    
+
     const mainQuery = Parse.Query.or(firstNameQuery, lastNameQuery);
-    
+
     return from(mainQuery.find()).pipe(
       map(results => results.map(person => this.parsePersonObject(person)))
     );
@@ -185,7 +231,8 @@ export class PersonService {
       address: person.get('address'),
       photo: person.get('photo') ? person.get('photo').url() : null,
       createdAt: person.get('createdAt'),
-      updatedAt: person.get('updatedAt')
+      updatedAt: person.get('updatedAt'),
+      ...person.toJSON()
     };
   }
-} 
+}

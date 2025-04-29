@@ -1,3 +1,4 @@
+
 export interface pageSelection {
   skip: number;
   limit: number;
@@ -591,17 +592,49 @@ export interface gradeReport {
 export interface parentList {
   sNo: number;
   isSelected: boolean;
-  id?: number;
-  name?: string;
   Addedon?: string;
-  ChildImage?: string;
-  GuardianImage?: string;
-  email: string;
-  phone: string;
-  class: string;
-  Child: string;
-  ParentImage?: string;
+  p?: string;
+  parent: Parent;
 }
+
+
+export interface Parent {
+
+  objectId?: string;
+
+  person: Person;
+
+  students?: any[];
+
+}
+
+
+export interface Person {
+
+  objectId: string;
+
+  lastName: string;
+
+  firstName: string;
+
+  gender?: any;
+
+  phone: string; // Doit être une chaîne
+
+  email: string;
+
+  birthDate?: Date;
+
+  birthPlace?: string; // Doit être une chaîne
+  GuardianImage?: string;
+  image?: string;
+  countryCode?: string;
+  cratedAt?: Date;
+  user?: any;
+
+}
+
+
 export interface payroll {
   sNo: number;
   isSelected: boolean;

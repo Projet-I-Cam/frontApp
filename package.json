@@ -27,6 +27,7 @@
     "@fullcalendar/list": "^6.1.15",
     "@fullcalendar/timegrid": "^6.1.15",
     "@ng-bootstrap/ng-bootstrap": "^17.0.0",
+    "@ngx-translate/core": "^16.0.4",
     "bootstrap": "^5.3.3",
     "eslint": "^9.21.0",
     "lightgallery": "^2.7.2",

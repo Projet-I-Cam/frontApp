@@ -99,7 +99,7 @@ export class DepartmentComponent {
           region: {className: 'Region', objectId: this.idParam},
           ...filters
         },
-        includes: includes || ['region, municipalities'],
+        includes: includes || ['region', 'municipalities'],
         curentPage: currentPage,
       });
 
