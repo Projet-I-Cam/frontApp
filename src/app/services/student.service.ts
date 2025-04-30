@@ -24,8 +24,9 @@ export class StudentService {
     const query = new Parse.Query(this.STUDENT_CLASS);
     query.equalTo('isStudent', true);
     // query.include('parents');
-    query.include('class');
+    query.include('classroom');
     query.include('gender');
+    query.include('parents');
     query.include('section');
     query.include('enrollment');
     query.descending('createdAt');
@@ -257,48 +258,6 @@ export class StudentService {
       updatedAt: student.get('updatedAt'),
       ...student?.toJSON()
     };
-
-    // Add person data if available
-    const person = student.get('person');
-    if (person) {
-      result['person'] = {
-        id: person.id,
-        objectId: person.id,
-        firstName: person.get('firstName'),
-        lastName: person.get('lastName'),
-        gender: person.get('gender'),
-        dateOfBirth: person.get('dateOfBirth'),
-        placeOfBirth: person.get('placeOfBirth'),
-        email: person.get('email'),
-        phone: person.get('phone'),
-        address: person.get('address'),
-        photo: person.get('photo') ? person.get('photo').url() : null
-      };
-    }
-
-    // Add class data if available
-    const classObj = student.get('class');
-    if (classObj) {
-      result['class'] = {
-        id: classObj.id,
-        objectId: classObj.id,
-        name: classObj.get('name'),
-        maxCapacity: classObj.get('maxCapacity')
-      };
-    }
-
-    // Add enrollment data if available
-    const enrollment = student.get('enrollment');
-    if (enrollment) {
-      result['enrollment'] = {
-        id: enrollment.id,
-        objectId: enrollment.id,
-        enrollmentDate: enrollment.get('enrollmentDate'),
-        isValid: enrollment.get('isValid'),
-        validationDate: enrollment.get('validationDate')
-      };
-    }
-
     return result;
   }
 

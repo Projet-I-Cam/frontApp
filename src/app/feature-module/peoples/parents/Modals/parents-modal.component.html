@@ -1,150 +1,151 @@
-<div class="modal-content" >
-    <div class="modal-header">
-        <h4 class="modal-title">Ajouter/Editer un parent</h4>
-        <button type="button" class="btn-close custom-btn-close" (click)="closeModal()" aria-label="Close">
-            <i class="ti ti-x"></i>
-        </button>
-    </div>
-    <form>
-        <div class="modal-body">
-          <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
-          <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
 
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <div class="d-flex align-items-center upload-pic flex-wrap">
-                <div class="profile-upload">
-                  <div class="profile-uploader d-flex align-items-center">
-                    <div class="drag-upload-btn mb-3">
-                      Charger
-                      <input type="file" class="form-control image-sign" (change)="onFileSelected($event)" accept="image/*" name="photo" [(ngModel)]="parent.photo" required>
+    <div class="modal-content" >
+      <div class="modal-header">
+          <h4 class="modal-title">Ajouter/Editer un parentd</h4>
+          <button type="button" class="btn-close custom-btn-close" (click)="closeModal()" aria-label="Close">
+              <i class="ti ti-x"></i>
+          </button>
+      </div>
+      <form>
+          <div class="modal-body">
+            <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+            <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <div class="d-flex align-items-center upload-pic flex-wrap">
+                  <div class="profile-upload">
+                    <div class="profile-uploader d-flex align-items-center">
+                      <div class="drag-upload-btn mb-3">
+                        Charger
+                        <input type="file" class="form-control image-sign" (change)="onFileSelected($event)" accept="image/*" name="photo" [(ngModel)]="parent.photo" required>
+                      </div>
+                      <a href="javascript:void(0);" class="btn btn-danger mb-3" (click)="removeImage()">Retirer</a>
                     </div>
-                    <a href="javascript:void(0);" class="btn btn-danger mb-3" (click)="removeImage()">Retirer</a>
+                    <p>Taille max image 4MB, Format JPG, PNG, SVG</p>
                   </div>
-                  <p>Taille max image 4MB, Format JPG, PNG, SVG</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div *ngIf="imagePreview" class="image-preview">
+                  <h5>Aperçu de l'image :</h5>
+                  <img [src]="imagePreview" class="img-thumbnail" style="width: 100px; height: 100px;" />
                 </div>
               </div>
             </div>
-            <div class="col-md-6">
-              <div *ngIf="imagePreview" class="image-preview">
-                <h5>Aperçu de l'image :</h5>
-                <img [src]="imagePreview" class="img-thumbnail" style="width: 100px; height: 100px;" />
-              </div>
-            </div>
-          </div>
 
-          <hr>
+            <hr>
 
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Nom</label>
-              <input type="text" class="form-control" [(ngModel)]="parent.firstName" required name="firstName" #firstName="ngModel">
-              <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="text-danger">
-                <div *ngIf="firstName.errors?.['required']">Nom est requis.</div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Nom</label>
+                <input type="text" class="form-control" [(ngModel)]="parent.firstName" required name="firstName" #firstName="ngModel">
+                <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="text-danger">
+                  <div *ngIf="firstName.errors?.['required']">Nom est requis.</div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Prénom</label>
+                <input type="text" class="form-control" [(ngModel)]="parent.lastName" required name="lastName" #lastName="ngModel">
+                <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="text-danger">
+                  <div *ngIf="lastName.errors?.['required']">Prénom est requis.</div>
+                </div>
               </div>
             </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Prénom</label>
-              <input type="text" class="form-control" [(ngModel)]="parent.lastName" required name="lastName" #lastName="ngModel">
-              <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="text-danger">
-                <div *ngIf="lastName.errors?.['required']">Prénom est requis.</div>
-              </div>
-            </div>
-          </div>
 
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label class="form-label" for="birthDate">Date de Naissance:</label>
-              <input type="date" id="birthDate" class="form-control" [(ngModel)]="parent.birthDate" [max]="maxBirthDate" name="birthDate" required #birthDate="ngModel">
-              <div *ngIf="birthDate.invalid && (birthDate.dirty || birthDate.touched)" class="text-danger">
-                <div *ngIf="birthDate.errors?.['required']">Date de naissance est requise.</div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label" for="birthDate">Date de Naissance:</label>
+                <input type="date" id="birthDate" class="form-control" [(ngModel)]="parent.birthDate" [max]="maxBirthDate" name="birthDate" required #birthDate="ngModel">
+                <div *ngIf="birthDate.invalid && (birthDate.dirty || birthDate.touched)" class="text-danger">
+                  <div *ngIf="birthDate.errors?.['required']">Date de naissance est requise.</div>
+                </div>
+              </div>
+              <div class="col-md-6 mb -3">
+                <label class="form-label" for="birthPlace">Lieu de Naissance:</label>
+                <input type="text" id="birthPlace" class="form-control" [(ngModel)]="parent.birthPlace" name="birthPlace" required #birthPlace="ngModel">
+                <div *ngIf="birthPlace.invalid && (birthPlace.dirty || birthPlace.touched)" class="text-danger">
+                  <div *ngIf="birthPlace.errors?.['required']">Lieu de naissance est requis.</div>
+                </div>
               </div>
             </div>
-            <div class="col-md-6 mb -3">
-              <label class="form-label" for="birthPlace">Lieu de Naissance:</label>
-              <input type="text" id="birthPlace" class="form-control" [(ngModel)]="parent.birthPlace" name="birthPlace" required #birthPlace="ngModel">
-              <div *ngIf="birthPlace.invalid && (birthPlace.dirty || birthPlace.touched)" class="text-danger">
-                <div *ngIf="birthPlace.errors?.['required']">Lieu de naissance est requis.</div>
-              </div>
-            </div>
-          </div>
 
-          <div class="row">
-            <div class="col-md-6 mb-3">
-            <label class="form-label">Adresse email</label>
-              <input type="email" class="form-control" id="email" [(ngModel)]="parent.email" required name="email" #email="ngModel">
-              <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger">
-                <div *ngIf="email.errors?.['required']">L'adresse email est requise.</div>
-                <div *ngIf="email.errors?.['email']">Format d'email invalide.</div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+              <label class="form-label">Adresse email</label>
+                <input type="email" class="form-control" id="email" [(ngModel)]="parent.email" required name="email" #email="ngModel">
+                <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger">
+                  <div *ngIf="email.errors?.['required']">L'adresse email est requise.</div>
+                  <div *ngIf="email.errors?.['email']">Format d'email invalide.</div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Téléphone</label>
+                <input type="text" class="form-control" id="phone" [(ngModel)]="parent.phone" name="phone" required placeholder="Numéro de téléphone" #phone="ngModel">
+                <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="text-danger">
+                  <div *ngIf="phone.errors?.['required']">Téléphone requis.</div>
+                </div>
               </div>
             </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Téléphone</label>
-              <input type="text" class="form-control" id="phone" [(ngModel)]="parent.phone" name="phone" required placeholder="Numéro de téléphone" #phone="ngModel">
-              <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="text-danger">
-                <div *ngIf="phone.errors?.['required']">Téléphone requis.</div>
-              </div>
-            </div>
-          </div>
 
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Genre</label>
-              <select class="form-select" [(ngModel)]="parent.gender" required name="gender" #gender="ngModel">
-                <option value="" disabled selected>Choisissez un genre</option>
-                <option *ngFor="let gender of genders" [value]="gender.objectId">{{ gender.libelle_fr }}</option>
-              </select>
-              <div *ngIf="gender.invalid && (gender.dirty || gender.touched)" class="text-danger">
-                <div *ngIf="gender.errors?.['required']">Le genre est requis.</div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Genre</label>
+                <select class="form-select" [(ngModel)]="parent.gender" required name="gender" #gender="ngModel">
+                  <option value="" disabled selected>Choisissez un genre</option>
+                  <option *ngFor="let gender of genders" [value]="gender.objectId">{{ gender.libelle_fr }}</option>
+                </select>
+                <div *ngIf="gender.invalid && (gender.dirty || gender.touched)" class="text-danger">
+                  <div *ngIf="gender.errors?.['required']">Le genre est requis.</div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                  <label class="form-label">Nationalité</label>
+                  <p-select                    
+                      [options]="countries" 
+                      [(ngModel)]="parent.country" 
+                      optionLabel="nameFr" 
+                      [filter]="true" 
+                      filterBy="nameFr" 
+                      [showClear]="true" 
+                      [ngModelOptions]="{standalone: true}"
+                      placeholder="Sélectionner un pays" 
+                      class="w-full md:w-56 form-select">     
+                      <ng-template #selectedItem let-selectedOption>
+                          <div class="flex items-center gap-2">
+                              <img [src]="parent.country.flag" style="width: 18px" />
+                              {{ parent.country.nameFr }} {{ parent.country.phone }} 
+                          </div>
+                      </ng-template>
+                      <ng-template let-country #item>
+                          <div class="flex items-center gap-2">
+                              <img [src]="country.flag" style="width: 18px" />
+                              {{ country.nameFr }} {{ country.phone }}
+                          </div>
+                      </ng-template>
+                  </p-select>
               </div>
             </div>
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Nationalité</label>
-                <p-select                    
-                    [options]="countries" 
-                    [(ngModel)]="parent.country" 
-                    optionLabel="nameFr" 
-                    [filter]="true" 
-                    filterBy="nameFr" 
-                    [showClear]="true" 
+            <br>
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <label class="form-label">Enfants</label>
+                <div class="flex justify-content-center">
+                  <p-multiSelect 
+                    [options]="students" 
+                    [(ngModel)]="parent.students" 
                     [ngModelOptions]="{standalone: true}"
-                    placeholder="Sélectionner un pays" 
-                    class="w-full md:w-56 form-control">     
-                    <ng-template #selectedItem let-selectedOption>
-                        <div class="flex items-center gap-2">
-                            <img [src]="parent.country.flag" style="width: 18px" />
-                            {{ parent.country.nameFr }} {{ parent.country.phone }} 
-                        </div>
-                    </ng-template>
-                    <ng-template let-country #item>
-                        <div class="flex items-center gap-2">
-                            <img [src]="country.flag" style="width: 18px" />
-                            {{ country.nameFr }} {{ country.phone }}
-                        </div>
-                    </ng-template>
-                </p-select>
-            </div>
-          </div>
-          <br>
-          <div class="row">
-            <div class="col-md-12 mb-3">
-              <label class="form-label">Enfants</label>
-              <div class="flex justify-content-center">
-                <p-multiSelect 
-                  [options]="students" 
-                  [(ngModel)]="parent.students" 
-                  [ngModelOptions]="{standalone: true}"
-                  class="select"
-                  optionLabel="firstName" 
-                  display="chip" 
-                  [showClear]="true" />
+                    class="select"
+                    optionLabel="firstName" 
+                    display="chip" 
+                    [showClear]="true" />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <a href="javascript:void(0);" class="btn btn-light me-2" (click)="closeModal()">Fermer</a>
-          <button type="submit" class="btn btn-primary" (click)="save()">{{ mode === 'edit' ? 'Mettre à jour' : 'Créer' }}</button>
-        </div>
-    </form>
-</div>
+          <div class="modal-footer">
+            <a href="javascript:void(0);" class="btn btn-light me-2" (click)="closeModal()">Fermer</a>
+            <button type="submit" class="btn btn-primary" (click)="save()">{{ mode === 'edit' ? 'Mettre à jour' : 'Créer' }}</button>
+          </div>
+      </form>
+    </div>
