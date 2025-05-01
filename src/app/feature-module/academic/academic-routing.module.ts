@@ -10,6 +10,7 @@ import { ClassSyllabusComponent } from './class-syllabus/class-syllabus.componen
 import { ClassSubjectComponent } from './class-subject/class-subject.component';
 import { ClassHomeWorkComponent } from './class-home-work/class-home-work.component';
 import { ExamScheduleComponent } from './examinations/exam-schedule/exam-schedule.component';
+import { AcademicYearComponent } from './academic-year/academic-year.component';
 
 const routes: Routes = [
   {
@@ -52,6 +53,10 @@ const routes: Routes = [
       {
         path: 'class-home-work',
         component: ClassHomeWorkComponent,
+      },
+      {
+        path: 'annees-list',
+        component: AcademicYearComponent,
       },
       {
         path: 'examinations',

@@ -12,6 +12,8 @@ import { ClassSectionComponent } from './class-section/class-section.component';
 import { ClassSubjectComponent } from './class-subject/class-subject.component';
 import { ClassSyllabusComponent } from './class-syllabus/class-syllabus.component';
 import { ClassTimeTableComponent } from './class-time-table/class-time-table.component';
+import { AcademicYearComponent } from './academic-year/academic-year.component';
+import { SkeletonModule } from 'primeng/skeleton';
 
 
 @NgModule({
@@ -24,12 +26,12 @@ import { ClassTimeTableComponent } from './class-time-table/class-time-table.com
     ClassSectionComponent,
     ClassSubjectComponent,
     ClassSyllabusComponent, 
-    ClassTimeTableComponent,
+    ClassTimeTableComponent, AcademicYearComponent
   ],
   imports: [
     CommonModule,
     AcademicRoutingModule,
-    SharedModule
+    SharedModule, SkeletonModule
   ]
 })
 export class AcademicModule { }

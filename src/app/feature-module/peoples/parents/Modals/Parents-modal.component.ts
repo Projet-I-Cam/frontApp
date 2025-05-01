@@ -37,6 +37,8 @@ export class ParentsModalComponent{
   items: any[] = [];
   students: any[] = [];
 
+  isLoading = false;
+
   constructor(
     private authService: AuthService,
     private utils: UtilsService,
@@ -101,6 +103,7 @@ export class ParentsModalComponent{
   }
 
   async save() {
+    this.isLoading = true;
     this.submitted = true;
     console.log(this.parent);
     if(this.parent.firstName?.trim() && this.parent.birthDate?.trim() && 
@@ -130,27 +133,24 @@ export class ParentsModalComponent{
               let userResponse: any = [];
               userResponse = await this.authService.registerUser (
                 this.parent.firstName + " " + this.parent.lastName,
-                this.parent.email + "0",
+                this.parent.email,
                 'abc@1234',
                 this.parent.email,
                 'parent'
               );
 
-              if (!userResponse) {
-                console.error("Failed to save user:", userResponse);
-                this.errorMessage = userResponse;
-                return;
-              }else{
-
                 let studentsData : any[] = [];
-                this.parent.students.forEach((item : any) => {
+                if(this.parent.students){
+                  this.parent.students.forEach((item : any) => {
                     const student = {
                       __type: 'pointer',
                       className: 'Person',
                       objectId: item
                     }
                     studentsData.push(student);
-                })
+                  })
+                }
+                
 
                 const personData: any = {
                   isParent: true,
@@ -174,19 +174,13 @@ export class ParentsModalComponent{
                 };        
 
                 const personResponse: any = await globalPost({ T: 'Person', dataObject: personData });
-                
-                if(personResponse.error){
-                  console.error("Failed to save user:", personResponse.error.message);
-                  this.errorMessage = personResponse.error.message;
-                }else{
-                  this.ngOnInit();
-                  this.successMessage = "Parent enregistré avec succès";
-                  this.alertService.showSuccess("Parent enregistré avec succès");
-                  this.errorMessage = null;
-                }               
-              }
+                this.successMessage = "Parent enregistré avec succès";
+                this.alertService.showSuccess("Parent enregistré avec succès");
+                this.errorMessage = null;
+                this.activeModal.close(this.parent);   
             }
           }catch (error: unknown) {
+            this.isLoading = false;
             if (error instanceof Error) {
               this.alertService.showError(error.message);
             } else {
@@ -197,6 +191,7 @@ export class ParentsModalComponent{
     }else{
       this.errorMessage = "Veuillez remplir tous les champs";
       this.alertService.showError("Veuillez remplir tous les champs");
+      this.isLoading = false;
     }   
   }
 

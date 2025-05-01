@@ -19,7 +19,7 @@ export class AlertService {
   }
 
   // Alertes spécifiques
-  showSuccess(message: string, title: string = 'Succès') {
+  showSuccess(message: string = "Opération effectuée avec succès", title: string = 'Succès') {
     return this.showAlert(title, message, 'success', 3000);
   }
 

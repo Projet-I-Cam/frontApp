@@ -43,4 +43,18 @@ export class UtilsService {
     return `ST-${year}-${randomID}`
   }
 
+  public getDate(createdAt: any){
+    var result : string = "";
+    if (createdAt instanceof Date) {
+      result = createdAt.toISOString();
+      // Si c'est une chaîne, essayez de la convertir en Date
+      const date = new Date(createdAt);
+      result = isNaN(date.getTime()) ? "" : date.toISOString();
+    } else {
+        result = "";
+    }
+
+    return result;
+  }
+
 }

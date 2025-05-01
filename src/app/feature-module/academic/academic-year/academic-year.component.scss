@@ -1,0 +1,4 @@
+.dropdown-menu {
+    position: absolute !important;
+    z-index: 1050 !important; /* Plus grand que les éléments table */
+  }
