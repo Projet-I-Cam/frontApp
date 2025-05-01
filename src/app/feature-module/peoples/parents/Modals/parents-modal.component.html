@@ -1,4 +1,4 @@
-<div class="modal-content" >
+<div class="modal-content custom-modal-content" >
     <div class="modal-header">
         <h4 class="modal-title">Ajouter/Editer un parent</h4>
         <button type="button" class="btn-close custom-btn-close" (click)="closeModal()" aria-label="Close">
@@ -28,7 +28,7 @@
             <div class="col-md-6">
               <div *ngIf="imagePreview" class="image-preview">
                 <h5>Aperçu de l'image :</h5>
-                <img [src]="imagePreview" class="img-thumbnail" style="width: 100px; height: 100px;" />
+                <img [src]="imagePreview" class="img-thumbnail" style="width: 80px; height: 80px;" />
               </div>
             </div>
           </div>
@@ -36,51 +36,89 @@
           <hr>
 
           <div class="row">
-            <div class="col-md-6 mb-3">
+            <div class="col-md-4 mb-3">
               <label class="form-label">Nom</label>
-              <input type="text" class="form-control" [(ngModel)]="parent.firstName" required name="firstName" #firstName="ngModel">
+              <input type="text" class="form-control" [(ngModel)]="parent.firstName" required
+               name="firstName" #firstName="ngModel"
+               [ngClass]="{
+                'border-danger': firstName.invalid && (firstName.dirty || firstName.touched),
+                'border-success': firstName.valid && firstName.dirty
+                }"
+               >
               <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="text-danger">
                 <div *ngIf="firstName.errors?.['required']">Nom est requis.</div>
               </div>
             </div>
-            <div class="col-md-6 mb-3">
+
+            <div class="col-md-4 mb-3">
               <label class="form-label">Prénom</label>
-              <input type="text" class="form-control" [(ngModel)]="parent.lastName" required name="lastName" #lastName="ngModel">
+              <input type="text" class="form-control" [(ngModel)]="parent.lastName" required
+               name="lastName" #lastName="ngModel"
+               [ngClass]="{
+                'border-danger': lastName.invalid && (lastName.dirty || lastName.touched),
+                'border-success': lastName.valid && lastName.dirty
+                }"
+               >
               <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="text-danger">
                 <div *ngIf="lastName.errors?.['required']">Prénom est requis.</div>
               </div>
             </div>
-          </div>
 
-          <div class="row">
-            <div class="col-md-6 mb-3">
+            <div class="col-md-4 mb-3">
               <label class="form-label" for="birthDate">Date de Naissance:</label>
-              <input type="date" id="birthDate" class="form-control" [(ngModel)]="parent.birthDate" [max]="maxBirthDate" name="birthDate" required #birthDate="ngModel">
+              <input type="date" id="birthDate" class="form-control" [(ngModel)]="parent.birthDate" 
+              [max]="maxBirthDate" name="birthDate" required #birthDate="ngModel"
+              [ngClass]="{
+                'border-danger': birthDate.invalid && (birthDate.dirty || birthDate.touched),
+                'border-success': birthDate.valid && birthDate.dirty
+              }"
+              >
               <div *ngIf="birthDate.invalid && (birthDate.dirty || birthDate.touched)" class="text-danger">
                 <div *ngIf="birthDate.errors?.['required']">Date de naissance est requise.</div>
               </div>
             </div>
-            <div class="col-md-6 mb -3">
+          </div>
+
+          <div class="row">            
+            <div class="col-md-4 mb -3">
               <label class="form-label" for="birthPlace">Lieu de Naissance:</label>
-              <input type="text" id="birthPlace" class="form-control" [(ngModel)]="parent.birthPlace" name="birthPlace" required #birthPlace="ngModel">
+              <input type="text" id="birthPlace" class="form-control" [(ngModel)]="parent.birthPlace" 
+              name="birthPlace" required #birthPlace="ngModel"
+              [ngClass]="{
+                'border-danger': birthPlace.invalid && (birthPlace.dirty || birthPlace.touched),
+                'border-success': birthPlace.valid && birthPlace.dirty
+              }" 
+              >
               <div *ngIf="birthPlace.invalid && (birthPlace.dirty || birthPlace.touched)" class="text-danger">
                 <div *ngIf="birthPlace.errors?.['required']">Lieu de naissance est requis.</div>
               </div>
             </div>
-          </div>
 
-          <div class="row">
-            <div class="col-md-6 mb-3">
-            <label class="form-label">Adresse email</label>
-              <input type="email" class="form-control" id="email" [(ngModel)]="parent.email" required name="email" #email="ngModel">
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Adresse email</label>
+              <input type="email" class="form-control" id="email" [(ngModel)]="parent.email" 
+                required name="email" #email="ngModel"
+                [ngClass]="{
+                  'border-danger': email.invalid && (email.dirty || email.touched),
+                  'border-success': email.valid && email.dirty
+                }" 
+                >
               <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger">
                 <div *ngIf="email.errors?.['required']">L'adresse email est requise.</div>
                 <div *ngIf="email.errors?.['email']">Format d'email invalide.</div>
               </div>
             </div>
-            <div class="col-md-6 mb-3">
+
+            <div class="col-md-4 mb-3">
               <label class="form-label">Téléphone</label>
-              <input type="text" class="form-control" id="phone" [(ngModel)]="parent.phone" name="phone" required placeholder="Numéro de téléphone" #phone="ngModel">
+              <input type="text" 
+                class="form-control" id="phone" [(ngModel)]="parent.phone" 
+                name="phone" required placeholder="Numéro de téléphone" #phone="ngModel"
+                [ngClass]="{
+                  'border-danger': phone.invalid && (phone.dirty || phone.touched),
+                  'border-success': phone.valid && phone.dirty
+                }"                 
+                >
               <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="text-danger">
                 <div *ngIf="phone.errors?.['required']">Téléphone requis.</div>
               </div>
@@ -88,56 +126,74 @@
           </div>
 
           <div class="row">
-            <div class="col-md-6 mb-3">
+            <div class="col-md-4 mb-3">
               <label class="form-label">Genre</label>
-              <select class="form-select" [(ngModel)]="parent.gender" required name="gender" #gender="ngModel">
-                <option value="" disabled selected>Choisissez un genre</option>
-                <option *ngFor="let gender of genders" [value]="gender.objectId">{{ gender.libelle_fr }}</option>
-              </select>
+              <ng-select
+                  [items]="genders"
+                  bindLabel="libelle_fr"
+                  bindValue="objectId"
+                  [(ngModel)]="parent.gender"
+                  placeholder="Selectionner"
+                  [ngModelOptions]="{ standalone: true }"
+                  #gender="ngModel"
+                />
               <div *ngIf="gender.invalid && (gender.dirty || gender.touched)" class="text-danger">
                 <div *ngIf="gender.errors?.['required']">Le genre est requis.</div>
               </div>
             </div>
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Nationalité</label>
-                <p-select                    
-                    [options]="countries" 
-                    [(ngModel)]="parent.country" 
-                    optionLabel="nameFr" 
-                    [filter]="true" 
-                    filterBy="nameFr" 
-                    [showClear]="true" 
-                    [ngModelOptions]="{standalone: true}"
-                    placeholder="Sélectionner un pays" 
-                    class="w-full md:w-56 form-control">     
-                    <ng-template #selectedItem let-selectedOption>
-                        <div class="flex items-center gap-2">
-                            <img [src]="parent.country.flag" style="width: 18px" />
-                            {{ parent.country.nameFr }} {{ parent.country.phone }} 
-                        </div>
-                    </ng-template>
-                    <ng-template let-country #item>
-                        <div class="flex items-center gap-2">
-                            <img [src]="country.flag" style="width: 18px" />
-                            {{ country.nameFr }} {{ country.phone }}
-                        </div>
-                    </ng-template>
-                </p-select>
+ 
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Nationalité</label>
+              <ng-select
+              [items]="countries"
+              bindLabel="nameFr"
+              [(ngModel)]="parent.country"
+              [multiple]="true"
+              placeholder="Selectionner"
+              [searchable]="true"
+              [ngModelOptions]="{standalone: true}"
+              [clearable]="true">
+
+              <!-- Template pour l’option dans la liste déroulante -->
+              <ng-template ng-option-tmp let-item="item" let-index="index">
+                <img 
+                  [src]="item.flag" 
+                  alt="{{item.nameFr}} drapeau" 
+                  width="20" 
+                  height="15" 
+                  style="margin-right: 8px; vertical-align: middle;">
+                {{ item.nameFr }}
+              </ng-template>
+
+              <!-- Template pour l’élément sélectionné affiché dans le champ -->
+              <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                <img 
+                  [src]="item.flag" 
+                  alt="{{item.nameFr}} drapeau" 
+                  width="20" 
+                  height="15" 
+                  style="margin-right: 8px; vertical-align: middle;">
+                {{ item.nameFr }}
+                <span (click)="clear(item)" class="ng-select-clear-button">&times;</span>
+              </ng-template>
+              
+            </ng-select>
             </div>
-          </div>
-          <br>
-          <div class="row">
-            <div class="col-md-12 mb-3">
+
+            <div class="col-md-4 mb-3">
               <label class="form-label">Enfants</label>
               <div class="flex justify-content-center">
-                <p-multiSelect 
-                  [options]="students" 
-                  [(ngModel)]="parent.students" 
-                  [ngModelOptions]="{standalone: true}"
-                  class="select"
-                  optionLabel="firstName" 
-                  display="chip" 
-                  [showClear]="true" />
+                <ng-select
+                  [items]="students"
+                  bindLabel="firstName"
+                  bindValue="objectId"
+                  [(ngModel)]="parent.students"
+                  [multiple]="true"
+                  placeholder="Selectionner"
+                  [searchable]="true"
+                  [clearable]="true"
+                  [ngModelOptions]="{ standalone: true }"
+                />
               </div>
             </div>
           </div>

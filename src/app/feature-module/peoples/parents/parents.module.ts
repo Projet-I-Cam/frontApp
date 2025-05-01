@@ -9,10 +9,9 @@ import { SharedModule } from '../../../shared/shared.module';
 import { SkeletonModule } from 'primeng/skeleton';
 import { FormsModule } from '@angular/forms';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import { DialogModule } from 'primeng/dialog';
-import { DropdownModule } from 'primeng/dropdown';
-import { SelectModule } from 'primeng/select';
 import { ParentsModalComponent } from './Modals/Parents-modal.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { UiSweetalertsRoutingModule } from '../../ui-interface/base-ui/ui-sweetalerts/ui-sweetalerts-routing.module';
 
 @NgModule({
   declarations: [
@@ -28,9 +27,8 @@ import { ParentsModalComponent } from './Modals/Parents-modal.component';
     SkeletonModule,
     FormsModule,
     AutoCompleteModule, 
-    DialogModule,
-    DropdownModule,
-    SelectModule
+    NgSelectModule,
+    UiSweetalertsRoutingModule    
   ]
 })
 export class ParentsModule { }

@@ -1,11 +1,12 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, AfterViewInit } from '@angular/core';
 import { globalDelete, globalGet, globalPost } from '../../../../services/statefull/http';
 import { AuthService } from '../../../../services/auth.service';
 import Parse from 'parse';
 import { UtilsService } from '../../../../services/utilis.service';
 import { DataService } from '../../../../shared/data/data.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
+import Swal from 'sweetalert2';
+import { AlertService } from '../../../../services/alertService';
 
 
 @Component({
@@ -14,7 +15,9 @@ import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
   styleUrl: './parents-modal.component.scss',
   standalone: false
 })
-export class ParentsModalComponent {
+export class ParentsModalComponent{
+
+
   @Input() parent: any = {};  
   @Input() mode: any = "new";  
   
@@ -27,7 +30,6 @@ export class ParentsModalComponent {
   submitted: boolean = false;
   maxBirthDate: string = '';
 
-
   selectedItem: any;
 
   filteredItems: any[] = [];
@@ -39,7 +41,8 @@ export class ParentsModalComponent {
     private authService: AuthService,
     private utils: UtilsService,
     private data: DataService,
-    public activeModal: NgbActiveModal
+    public activeModal: NgbActiveModal,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -52,22 +55,6 @@ export class ParentsModalComponent {
         this.items.push({ label: 'Item ' + i, value: 'Item ' + i });
     }
   }
-
-
-  filterItems(event: AutoCompleteCompleteEvent) {
-    //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
-    let filtered: any[] = [];
-    let query = event.query;
-
-    for (let i = 0; i < (this.items as any[]).length; i++) {
-        let item = (this.items as any[])[i];
-        if (item.label.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-            filtered.push(item);
-        }
-    }
-
-    this.filteredItems = filtered;
-}
 
 
   onFileSelected(event: Event): void {
@@ -91,6 +78,7 @@ export class ParentsModalComponent {
 
   private loadStudents(){
     this.data.getStudents().then((apiRes: any) => {
+      console.log(apiRes);
       this.students = apiRes
     })
   }
@@ -98,7 +86,6 @@ export class ParentsModalComponent {
   private loadCounties(){
     this.data.getCountries().subscribe((apiRes: any) => {
       this.countries = apiRes
-      console.log("les pays", apiRes);
     })
   }
 
@@ -114,7 +101,6 @@ export class ParentsModalComponent {
   }
 
   async save() {
-    console.log(0);
     this.submitted = true;
     console.log(this.parent);
     if(this.parent.firstName?.trim() && this.parent.birthDate?.trim() && 
@@ -161,7 +147,7 @@ export class ParentsModalComponent {
                     const student = {
                       __type: 'pointer',
                       className: 'Person',
-                      objectId: item.objectId
+                      objectId: item
                     }
                     studentsData.push(student);
                 })
@@ -172,8 +158,9 @@ export class ParentsModalComponent {
                   lastName: this.parent.lastName,
                   firstName: this.parent.firstName,
                   gender: {
+                    __type: 'pointer',
                     className: "Gender",
-                    objectId: gender.objectId
+                    objectId: this.parent.gender
                   },
                   phone: this.parent.phone,
                   countryCode: this.parent.country.phone,
@@ -194,18 +181,22 @@ export class ParentsModalComponent {
                 }else{
                   this.ngOnInit();
                   this.successMessage = "Parent enregistré avec succès";
+                  this.alertService.showSuccess("Parent enregistré avec succès");
                   this.errorMessage = null;
                 }               
               }
             }
-          } catch (error) {
-            console.error("Error checking existing users:", error);
-            this.errorMessage = "Une erreur est survenue lors de la vérification des utilisateurs existants.";
-            return;
+          }catch (error: unknown) {
+            if (error instanceof Error) {
+              this.alertService.showError(error.message);
+            } else {
+              this.alertService.showError("Une erreur inconnue est survenue pendant la création du parent.");
+            }          
           }          
         } 
     }else{
       this.errorMessage = "Veuillez remplir tous les champs";
+      this.alertService.showError("Veuillez remplir tous les champs");
     }   
   }
 
