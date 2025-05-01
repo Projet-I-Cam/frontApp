@@ -303,6 +303,9 @@ export class routes {
   public static get academicYear(): string {
     return this.academic + '/annees-list';
   }
+  public static get educationType(): string {
+    return this.academic + '/education-types-list';
+  }
 
 
   //user-management routes

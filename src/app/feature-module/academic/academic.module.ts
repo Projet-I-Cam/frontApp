@@ -14,6 +14,7 @@ import { ClassSyllabusComponent } from './class-syllabus/class-syllabus.componen
 import { ClassTimeTableComponent } from './class-time-table/class-time-table.component';
 import { AcademicYearComponent } from './academic-year/academic-year.component';
 import { SkeletonModule } from 'primeng/skeleton';
+import { EducationTypeComponent } from './education-type/education-type.component';
 
 
 @NgModule({
@@ -26,7 +27,7 @@ import { SkeletonModule } from 'primeng/skeleton';
     ClassSectionComponent,
     ClassSubjectComponent,
     ClassSyllabusComponent, 
-    ClassTimeTableComponent, AcademicYearComponent
+    ClassTimeTableComponent, AcademicYearComponent, EducationTypeComponent
   ],
   imports: [
     CommonModule,

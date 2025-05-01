@@ -21,7 +21,7 @@
           <app-tooltip-content /> 
           <div class="mb-2">
             <a href="javascript:void(0);" (click)="openModal('create')" class="btn btn-primary"><i
-                class="ti ti-square-rounded-plus me-2"></i>Ajouter un parent</a>
+                class="ti ti-square-rounded-plus me-2"></i>Ajouter</a>
           </div>
         </div>
       </div>
@@ -168,7 +168,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-light me-2" type="button"  (click)="closeAddEditModal()">Annuler</button>
-                <button type="submit"  class="btn btn-primary" (click)="save()">
+                <button type="submit"  class="btn btn-primary" (click)="save()" [disabled]="isSubmited">
                     <span *ngIf="isSubmited" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
                     {{ mode === 'edit' ? 'Mettre à jour' : 'Ajouter' }}
                 </button>

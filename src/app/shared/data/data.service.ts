@@ -437,6 +437,28 @@ export class DataService {
     }
   }
 
+  public async getEducationTypes(): Promise<apiResultFormat> {
+
+    const data: any = await globalGet({
+      T: 'EducationType',
+      curentPage: 1,
+      size: undefined, 
+    });
+  //console.log("depuis le service", data);
+    if (!data) {
+      console.error('Error fetching academic year list:', data);
+      return {
+        data: [],
+        totalData: 0
+      };
+    }else{
+      return {
+        data: data,
+        totalData: data.length 
+      } as apiResultFormat;
+    }
+  }
+
   public async getStudents(): Promise<any> {
 
     const data =  await globalGet({
@@ -1784,6 +1806,13 @@ export class DataService {
             {
               menuValue: 'Années académiques',
               route: routes.academicYear,
+              customSubmenuTwo: false,
+              hasSubRoute: false,
+              showSubRoute: false,
+            },
+            {
+              menuValue: "Types d'enseignements",
+              route: routes.educationType,
               customSubmenuTwo: false,
               hasSubRoute: false,
               showSubRoute: false,
