@@ -10,18 +10,37 @@
           <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
           <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
 
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <div class="d-flex align-items-center upload-pic flex-wrap">
-                <div class="profile-upload">
-                  <div class="profile-uploader d-flex align-items-center">
-                    <div class="drag-upload-btn mb-3">
-                      Charger
-                      <input type="file" class="form-control image-sign" (change)="onFileSelected($event)" accept="image/*" name="photo" [(ngModel)]="parent.photo" required>
+    <div class="modal-content" >
+      <div class="modal-header">
+          <h4 class="modal-title">Ajouter/Editer un parentd</h4>
+          <button type="button" class="btn-close custom-btn-close" (click)="closeModal()" aria-label="Close">
+              <i class="ti ti-x"></i>
+          </button>
+      </div>
+      <form>
+          <div class="modal-body">
+            <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+            <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <div class="d-flex align-items-center upload-pic flex-wrap">
+                  <div class="profile-upload">
+                    <div class="profile-uploader d-flex align-items-center">
+                      <div class="drag-upload-btn mb-3">
+                        Charger
+                        <input type="file" class="form-control image-sign" (change)="onFileSelected($event)" accept="image/*" name="photo" [(ngModel)]="parent.photo" required>
+                      </div>
+                      <a href="javascript:void(0);" class="btn btn-danger mb-3" (click)="removeImage()">Retirer</a>
                     </div>
-                    <a href="javascript:void(0);" class="btn btn-danger mb-3" (click)="removeImage()">Retirer</a>
+                    <p>Taille max image 4MB, Format JPG, PNG, SVG</p>
                   </div>
-                  <p>Taille max image 4MB, Format JPG, PNG, SVG</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div *ngIf="imagePreview" class="image-preview">
+                  <h5>Aperçu de l'image :</h5>
+                  <img [src]="imagePreview" class="img-thumbnail" style="width: 100px; height: 100px;" />
                 </div>
               </div>
             </div>
@@ -33,7 +52,7 @@
             </div>
           </div>
 
-          <hr>
+            <hr>
 
           <div class="row">
             <div class="col-md-4 mb-3">
@@ -197,10 +216,9 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <a href="javascript:void(0);" class="btn btn-light me-2" (click)="closeModal()">Fermer</a>
-          <button type="submit" class="btn btn-primary" (click)="save()">{{ mode === 'edit' ? 'Mettre à jour' : 'Créer' }}</button>
-        </div>
-    </form>
-</div>
+          <div class="modal-footer">
+            <a href="javascript:void(0);" class="btn btn-light me-2" (click)="closeModal()">Fermer</a>
+            <button type="submit" class="btn btn-primary" (click)="save()">{{ mode === 'edit' ? 'Mettre à jour' : 'Créer' }}</button>
+          </div>
+      </form>
+    </div>

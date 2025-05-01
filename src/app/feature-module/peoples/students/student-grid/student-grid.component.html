@@ -185,7 +185,7 @@
 													{{ student?.firstName }} {{ student?.lastName }}
 												</a>
 											</h5>
-											<p>{{ student.classroom?.name || 'N/A' }}</p>
+											<p>{{ student.classroom?.name || 'CM2' }}</p>
 										</div>
 									</div>	
 								</div>
@@ -210,11 +210,10 @@
 							</div>
 							<div class="card-footer d-flex align-items-center justify-content-between">
 								<div class="d-flex align-items-center">
-									<a href="javascript:void(0);" class="btn btn-outline-light bg-white btn-icon d-flex align-items-center justify-content-center rounded-circle p-0 me-2"><i class="ti ti-brand-hipchat"></i></a>
-									<a href="javascript:void(0);" class="btn btn-outline-light bg-white btn-icon d-flex align-items-center justify-content-center rounded-circle p-0 me-2"><i class="ti ti-phone"></i></a>
-									<a href="javascript:void(0);" class="btn btn-outline-light bg-white btn-icon d-flex align-items-center justify-content-center rounded-circle p-0 me-3"><i class="ti ti-mail"></i></a>
+									<a href="tel:{{student.phone}}" class="btn btn-outline-light bg-white btn-icon d-flex align-items-center justify-content-center rounded-circle p-0 me-2"><i class="ti ti-phone"></i></a>
+									<a href="tel:{{student.email}}" class="btn btn-outline-light bg-white btn-icon d-flex align-items-center justify-content-center rounded-circle p-0 me-3"><i class="ti ti-mail"></i></a>
 								</div>
-								<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_fees_collect" class="btn btn-light btn-sm fw-semibold">Add Fees</a>
+								<!-- <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_fees_collect" class="btn btn-light btn-sm fw-semibold">Add Fees</a> -->
 							</div>
 						</div>
 					</div>
@@ -464,36 +463,68 @@
 											<div class="row g-3">
 												<div class="col-md-6">
 													<p class="mb-1"><strong>Classe:</strong></p>
-													<p>{{ selectedStudent.class?.name }}</p>
+													<p>{{ selectedStudent.classroom?.name || "CM2" }}</p>
 												</div>
 												<div class="col-md-6">
 													<p class="mb-1"><strong>Date d'inscription:</strong></p>
-													<p>{{ selectedStudent.joinDate | date:'dd/MM/yyyy' }}</p>
+													<p>{{ selectedStudent.createdAt | date:'dd/MM/yyyy' }}</p>
 												</div>
 												<div class="col-md-6">
 													<p class="mb-1"><strong>Statut:</strong></p>
-													<p><span [ngClass]="{'badge badge-soft-success': selectedStudent.status === 'Active', 'badge badge-soft-danger': selectedStudent.status === 'Inactive'}">{{ selectedStudent.status }}</span></p>
+													<p>
+														<span class="badge badge-soft-success">
+														<!-- <span [ngClass]="{'badge badge-soft-success': selectedStudent.status === 'Active', 'badge badge-soft-danger': selectedStudent.status === 'Inactive'}"> -->
+															<!-- {{ selectedStudent.status }} -->
+															  Actif
+														</span>
+													</p>
 												</div>
 												<div class="col-md-6">
 													<p class="mb-1"><strong>Genre:</strong></p>
-													<p>{{ selectedStudent.person?.gender }}</p>
+													<p>{{ selectedStudent?.gender?.libelle_fr }}</p>
 												</div>
 												<div class="col-md-6">
 													<p class="mb-1"><strong>Date de naissance:</strong></p>
-													<p>{{ selectedStudent.person?.dateOfBirth | date:'dd/MM/yyyy' }}</p>
+													<p>{{ selectedStudent?.birthDate?.iso | date:'dd/MM/yyyy' }}</p>
 												</div>
 												<div class="col-md-6">
 													<p class="mb-1"><strong>Email:</strong></p>
-													<p>{{ selectedStudent.person?.email }}</p>
+													<p>{{ selectedStudent?.email }}</p>
 												</div>
 												<div class="col-md-6">
 													<p class="mb-1"><strong>Téléphone:</strong></p>
-													<p>{{ selectedStudent.person?.phone }}</p>
+													<p>{{ selectedStudent?.phone }}</p>
 												</div>
 												<div class="col-md-6">
 													<p class="mb-1"><strong>Adresse:</strong></p>
-													<p>{{ selectedStudent.person?.address }}</p>
+													<p>{{ selectedStudent?.address }}</p>
 												</div>
+											</div>
+										</div>
+									</div>
+									
+									<!-- Informations supplémentaires -->
+									<div *ngIf="selectedStudent.parents?.length" class="mt-4">
+										<h5 class="border-bottom pb-2">Parents / Tuteurs</h5>
+										<div class="row mt-3">
+											<div class="col-12">
+												<p-table [value]="selectedStudent.parents" [tableStyle]="{ 'min-width': '50rem' }">
+													<ng-template pTemplate="header">
+														<tr>
+															<th>Nom complet</th>
+															<th>Telephone</th>
+															<th>Email</th>
+															<!-- <th>Quantity</th> -->
+														</tr>
+													</ng-template>
+													<ng-template pTemplate="body" let-parent>
+														<tr>
+															<td>{{ parent.lastName }} {{ parent.firstName }}</td>
+															<td>{{ parent.phone }}</td>
+															<td>{{ parent.email }}</td>
+														</tr>
+													</ng-template>
+												</p-table>
 											</div>
 										</div>
 									</div>

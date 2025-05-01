@@ -33,8 +33,14 @@ export class UtilsService {
   static async getGender(){
     return (await new Parse.Query(ParseClass.Gender).find()) //?.map(section => section.toJSON())
   }
+  static async getTypeOfFather(){
+    return (await new Parse.Query(ParseClass.TypeOfParent).find()) //?.map(section => section.toJSON())
+  }
   static getStudentMatricule(){
-    return "123456789"
+    const date = new Date();
+    const year = date.getFullYear().toString().substr(-2);
+    const randomID = Math.floor(1000 + Math.random() * 9000);;
+    return `ST-${year}-${randomID}`
   }
 
 }
