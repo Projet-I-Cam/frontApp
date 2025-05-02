@@ -6,6 +6,7 @@ import { ExamListComponent } from './exam-list/exam-list.component';
 import { ExamScheduleComponent } from './exam-schedule/exam-schedule.component';
 import { ExamAttendanceComponent } from './exam-attendance/exam-attendance.component';
 import { ExamResultsComponent } from './exam-results/exam-results.component';
+import { CoteComponent } from './cote/cote.component';
 
 const routes: Routes = [
   {
@@ -32,9 +33,14 @@ const routes: Routes = [
         path: 'exam-results',
         component: ExamResultsComponent,
       },
+      {
+        path: 'cote-list',
+        component: CoteComponent,
+      },
     ],
   },
 ];
+
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

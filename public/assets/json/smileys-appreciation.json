@@ -1,0 +1,27 @@
+[
+    {
+      "icone": "😞",
+      "appreciation_fr": "Insuffisant",
+      "appreciation_en": "Insufficient"
+    },
+    {
+      "icone": "😐",
+      "appreciation_fr": "Passable",
+      "appreciation_en": "Passable"
+    },
+    {
+      "icone": "😊",
+      "appreciation_fr": "Assez Bien",
+      "appreciation_en": "Fairly Good"
+    },
+    {
+      "icone": "😁",
+      "appreciation_fr": "Bien",
+      "appreciation_en": "Good"
+    },
+    {
+      "icone": "🌟",
+      "appreciation_fr": "Très Bien",
+      "appreciation_en": "Very Good"
+    }
+  ]

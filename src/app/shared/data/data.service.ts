@@ -175,6 +175,10 @@ export class DataService {
     return this.http.get<any>('assets/json/countries.json');
   }
 
+  public getSmileys() {
+    return this.http.get<any>('assets/json/smileys-appreciation.json');
+  }
+
   public getClassReportDate() {
     return this.http
       .get<apiResultFormat>('assets/json/class-report-data.json')
@@ -397,6 +401,30 @@ export class DataService {
       T: 'Person',
       filters: {'isParent':true},
       includes: ['gender', 'user', 'municipality'],
+      curentPage: 1,
+      size: undefined, 
+    });
+  //console.log("depuis le service", data);
+    if (!data) {
+      console.error('Error fetching parent list:', data);
+      return {
+        data: [],
+        totalData: 0
+      };
+    }else{
+      return {
+        data: data,
+        totalData: data.length 
+      } as apiResultFormat;
+    }
+  }
+
+  public async getCoteList(): Promise<apiResultFormat> {
+
+    const data: any = await globalGet({
+      T: 'Cote',
+      filters: {},
+      includes: [],
       curentPage: 1,
       size: undefined, 
     });
@@ -1817,6 +1845,13 @@ export class DataService {
               hasSubRoute: false,
               showSubRoute: false,
             },
+            {
+              menuValue: "Côtes",
+              route: routes.coteList,
+              customSubmenuTwo: false,
+              hasSubRoute: false,
+              showSubRoute: false,
+            },            
           ],
         },
         {

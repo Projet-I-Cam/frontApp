@@ -306,7 +306,9 @@ export class routes {
   public static get educationType(): string {
     return this.academic + '/education-types-list';
   }
-
+  public static get coteList(): string {
+    return this.academic + '/examinations/cote-list';
+  }
 
   //user-management routes
   public static get userManagement(): string {

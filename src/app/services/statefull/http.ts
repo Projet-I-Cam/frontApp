@@ -35,7 +35,7 @@ export const globalGet = async({T, filters, includes, curentPage, size, selects,
         const query = new Parse.Query(CLASS?.[T])
         if(filters){
             Object.entries(filters).forEach(([key, value]: any) => {
-                if(typeof value === "string" || typeof value === "boolean" || value instanceof Date && !isNaN(value.getTime()) ){
+                if(typeof value === "string" || Array.isArray(value) || value instanceof Date && !isNaN(value.getTime()) || typeof value === "boolean" || typeof value === "number"){
                     query.equalTo(key, value)
                 }else{
                     query.equalTo(key, {"__type": "Pointer", "className": value?.className , "objectId": value?.objectId})
@@ -88,7 +88,7 @@ export const globalPost = async({T, dataObject} : BasePostIO): Promise<any> => {
         // });
         Object.entries(dataObject).forEach(([key, value]: [string, any]) => {
 
-            if(typeof value === "string" || Array.isArray(value) || value instanceof Date && !isNaN(value.getTime()) || typeof value === "boolean"){
+            if(typeof value === "string" || Array.isArray(value) || value instanceof Date && !isNaN(value.getTime()) || typeof value === "boolean" || typeof value === "number"){
         
                 query.set(key, value);
         
@@ -133,7 +133,7 @@ export const globalPut = async({T, dataObject, objectId} : BasePutIO): Promise<a
         const query = new Parse.Query(CLASS?.[T])
         const toUpdate = await query.get(objectId)
         Object.entries(dataObject).forEach(([key, value]: any) => {
-            if(typeof value === "string" || Array.isArray(value)){
+            if(typeof value === "string" || Array.isArray(value) || value instanceof Date && !isNaN(value.getTime()) || typeof value === "boolean" || typeof value === "number"){
                 toUpdate.set(key, value)
             }else{
                 toUpdate.set(key, {"__type": "Pointer", "className": value?.className , "objectId": value?.objectId})
