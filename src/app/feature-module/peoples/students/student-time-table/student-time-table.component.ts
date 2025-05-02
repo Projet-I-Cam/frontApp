@@ -11,7 +11,6 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     selector: 'app-student-time-table',
     templateUrl: './student-time-table.component.html',
     styleUrl: './student-time-table.component.scss',
-    standalone: true,
     imports: [CommonModule, RouterModule, FormsModule, SharedModule, DropdownModule, BsDatepickerModule]
 })
 export class StudentTimeTableComponent {

@@ -1,18 +1,16 @@
 import { Injectable } from '@angular/core';
 import { routes } from '../routes/routes';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map, from } from 'rxjs';
 import { apiResultFormat } from '../model/pages.model';
 import { LoginService } from '../../auth/services/login.service';
-import * as Parse from 'parse';
 import { globalGet } from '../../services/statefull/http';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
   constructor(private http: HttpClient, private loginService: LoginService) { }
-
 
 
 
@@ -165,13 +163,18 @@ export class DataService {
         })
       );
   }
-  public getCountries() {
-    return this.http.get<apiResultFormat>('assets/json/countries.json').pipe(
+  public getCountries2() {
+    return this.http.get<apiResultFormat>('https://restcountries.com/v3.1/all').pipe(
       map((res: apiResultFormat) => {
         return res;
       })
     );
   }
+
+  public getCountries() {
+    return this.http.get<any>('assets/json/countries.json');
+  }
+
   public getClassReportDate() {
     return this.http
       .get<apiResultFormat>('assets/json/class-report-data.json')
@@ -391,14 +394,13 @@ export class DataService {
   public async getParentList(): Promise<apiResultFormat> {
 
     const data: any = await globalGet({
-      T: 'Parent',
-      filters: {},
-      includes: ['person', 'person.gender', 'person.user'], // Notez que les inclusions doivent être des chaînes séparées
+      T: 'Person',
+      filters: { 'isParent': true },
+      includes: ['gender', 'user', 'municipality'],
       curentPage: 1,
-      size: undefined, // Ajoutez une taille par défaut si nécessaire
+      size: undefined,
     });
     //console.log("depuis le service", data);
-    // Vérifiez si la réponse contient des données
     if (!data) {
       console.error('Error fetching parent list:', data);
       return {
@@ -1444,189 +1446,137 @@ export class DataService {
 
   public TeacherSidebarData = [
     {
-      tittle: 'Main',
+      title: 'Tableau de bord',
       showAsTab: false,
-      separateRoute: false,
-      hasSubRoute: false,
-      showSubRoute: false,
-      base: '',
-      page: '99',
       menu: [
         {
-          menuValue: 'Dashboard',
+          menuValue: 'Tableau de bord',
           icon: 'layout-2',
-          base: 'dashboard',
-          hasSubRoute: false,
-          showSubRoute: false,
           route: routes.adminDashboard,
-          base2: "",
-          base3: "",
-          base4: "",
-          base5: "",
-          base6: "",
-          base7: "",
-          base8: "",
-          base9: "",
-          customSubmenuTwo: false,
-          subRoutes: [],
-        },
-      ],
+          hasSubRoute: false
+        }
+      ]
     },
     {
-      tittle: 'Peoples',
+      title: 'Gestion pédagogique',
       showAsTab: false,
-      separateRoute: false,
-      hasSubRoute: false,
-      showSubRoute: true,
-      base: 'peoples',
       menu: [
         {
-          menuValue: 'Mes Classes',
+          menuValue: 'Ma classe',
+          icon: 'school',
           hasSubRoute: true,
           showSubRoute: false,
-          icon: 'school',
-          page: 'students',
-
           subMenus: [
-            {
-              menuValue: 'Fiche Classe',
-              route: routes.studentList,
-            },
-            // Commented out Liste des élèves entry
-            /* {
-              menuValue: 'Liste des élèves',
-              route: routes.studentPromotion,
-            }, */
-            {
-              menuValue: 'programme des cours',
-              route: routes.studentTransfer,
-            },
-            {
-              menuValue: 'devoirs',
-              route: routes.studentReportCard,
-            },
-
-            {
-              menuValue: 'contrôles ou examen',
-              route: routes.studentReportCard,
-            },
-            {
-              menuValue: 'présence / absentéisme',
-              route: routes.studentReportCard,
-            },
-          ],
+            { menuValue: 'Fiche classe', route: routes.studentList },
+            { menuValue: 'Liste des élèves', route: '' },
+            { menuValue: 'Modifier informations', route: '' },
+            { menuValue: 'Programme des cours', route: routes.studentTransfer },
+            { menuValue: 'Projet pédagogique', route: '' },
+            { menuValue: 'Absences', route: routes.studentReportCard },
+            { menuValue: 'Discipline', route: routes.studentReportCard }
+          ]
         },
         {
           menuValue: 'Notes',
+          icon: 'notes',
           hasSubRoute: true,
           showSubRoute: false,
-          icon: 'user-bolt',
-          page: 'parents',
           subMenus: [
-            {
-              menuValue: 'Saisie des Notes ',
-              route: routes.gradeEntry,
-              hasSubRoute: false,
-              showSubRoute: false,
-              customSubmenuTwo: false,
-            },
-            {
-              menuValue: 'Calcul des Moyennes',
-              route: routes.gradeCalculation,
-              customSubmenuTwo: false,
-              hasSubRoute: false,
-              showSubRoute: false,
-            },
-            {
-              menuValue: 'Bulletins Scolaires',
-              route: routes.reportCard,
-              customSubmenuTwo: false,
-              hasSubRoute: false,
-              showSubRoute: false,
-            },
-          ],
+            { menuValue: 'Saisie des notes', route: routes.gradeEntry },
+            { menuValue: 'Relevé de notes', route: '' },
+            { menuValue: 'Traitement des notes', route: '' },
+            { menuValue: 'Calcul des moyennes', route: routes.gradeCalculation },
+            { menuValue: 'Bulletins', route: routes.reportCard },
+            { menuValue: 'Livret scolaire', route: '' }
+          ]
         },
         {
-          menuValue: 'Devoir / Homework ',
+          menuValue: 'Devoirs',
+          icon: 'book',
           hasSubRoute: true,
           showSubRoute: false,
-          page: 'guardians',
-          icon: 'user-shield',
           subMenus: [
-            {
-              menuValue: 'Statistique',
-              route: routes.guardiansGrid,
-              hasSubRoute: false,
-              showSubRoute: false,
-              customSubmenuTwo: false,
-            },
-            {
-              menuValue: 'Progression des cours',
-              route: routes.guardiansList,
-              hasSubRoute: false,
-              showSubRoute: false,
-              customSubmenuTwo: false,
-            },
-          ],
-        },
-        {
-          menuValue: 'Mes Documents',
-          hasSubRoute: true,
-          showSubRoute: false,
-          page: 'teachers',
-          icon: 'fas fa-chalkboard-teacher',
-          subMenus: [
-            {
-              menuValue: 'Présences effectives / Prise de service',
-              route: routes.addTeacher,
-              parentMenuValue: 'Teachers',
-            },
-            {
-              menuValue: 'Demande de Congé / Permission',
-              route: routes.addTeacher,
-              parentMenuValue: 'Teachers',
-            },
-            {
-              menuValue: 'Consulter Fiche Etablissement ',
-              route: routes.teachersList,
-              parentMenuValue: 'Teachers',
-            },
-            {
-              menuValue: 'Correspondance au Directeur',
-              route: routes.addTeacher,
-              parentMenuValue: 'Teachers',
-            },
-          ],
-        },
+            { menuValue: 'Statistiques', route: routes.guardiansGrid },
+            { menuValue: 'Progression', route: routes.guardiansList },
+            { menuValue: 'Exercices', route: routes.studentReportCard },
+            { menuValue: 'Contrôles/Examens', route: routes.studentReportCard }
+          ]
+        }
+      ]
+    },
+    {
+      title: 'Activités',
+      showAsTab: false,
+      menu: [
         {
           menuValue: 'Planning',
-          base: 'website-settings',
-          icon: 'world-cog',
+          icon: 'calendar',
           hasSubRoute: true,
           showSubRoute: false,
-          page: '22',
           subMenus: [
-            {
-              menuValue: 'Réunion des parents ',
-              route: routes.companySettings,
-              hasSubRoute: false,
-              showSubRoute: false,
-            },
-            {
-              menuValue: 'Autres activités et jour férié',
-              route: routes.localization,
-              hasSubRoute: false,
-              showSubRoute: false,
-            },
-          ],
-        },
-
-
-      ],
+            { menuValue: 'Emploi du temps', route: '' },
+            { menuValue: 'Réunion parents', route: routes.companySettings },
+            { menuValue: 'Activités extrascolaires', route: '' },
+            { menuValue: 'Jours sans cours', route: routes.localization },
+            { menuValue: 'Carrefours pédagogiques', route: '' }
+          ]
+        }
+      ]
     },
-
-
-
+    {
+      title: 'Documents',
+      showAsTab: false,
+      menu: [
+        {
+          menuValue: 'Mes documents',
+          icon: 'folder',
+          hasSubRoute: true,
+          showSubRoute: false,
+          subMenus: [
+            { menuValue: 'Attestation présence', route: routes.addTeacher },
+            { menuValue: 'Demande congé', route: routes.addTeacher },
+            { menuValue: 'Permission absence', route: '' },
+            { menuValue: 'Attestation service', route: '' },
+            { menuValue: 'CV', route: '' },
+            { menuValue: 'Fiche établissement', route: routes.teachersList }
+          ]
+        },
+        {
+          menuValue: 'Rapports',
+          icon: 'file-chart-line',
+          hasSubRoute: true,
+          showSubRoute: false,
+          subMenus: [
+            { menuValue: 'Générer', route: '' },
+            { menuValue: 'Modifier', route: '' },
+            { menuValue: 'Imprimer', route: '' }
+          ]
+        }
+      ]
+    },
+    {
+      title: 'Communication',
+      showAsTab: false,
+      menu: [
+        {
+          menuValue: 'Communication',
+          icon: 'comments',
+          hasSubRoute: true,
+          showSubRoute: false,
+          subMenus: [
+            { menuValue: 'Direction', route: routes.addTeacher },
+            { menuValue: 'Parents', route: '' },
+            { menuValue: 'Élèves', route: '' }
+          ]
+        },
+        {
+          menuValue: 'Mon profil',
+          icon: 'user-cog',
+          route: '',
+          hasSubRoute: false
+        }
+      ]
+    }
   ];
 
   public videocall = [
@@ -1708,123 +1658,302 @@ export class DataService {
           customSubmenuTwo: false,
           subRoutes: [],
         },
+        {
+          menuValue: 'Annuaire téléphonique',
+          hasSubRoute: false,
+          showSubRoute: false,
+          route: '',
+          customSubmenuTwo: false,
+          icon: 'phone',
+          base: 'layout-rtl',
+          base2: "",
+          base3: "",
+          base4: "",
+          base5: "",
+          base6: "",
+          base7: "",
+          base8: "",
+          base9: "",
+          subRoutes: [],
+        },
+        {
+          menuValue: 'Organigramme',
+          hasSubRoute: false,
+          showSubRoute: false,
+          route: routes.adminDashboard,
+          customSubmenuTwo: false,
+          icon: 'text-direction-rtl',
+          base: 'layout-rtl',
+          base2: "",
+          base3: "",
+          base4: "",
+          base5: "",
+          base6: "",
+          base7: "",
+          base8: "",
+          base9: "",
+          subRoutes: [],
+        },
       ],
     },
     {
-      tittle: 'Peoples',
-      showAsTab: false,
+      title: 'HELP',
+      showAsTab: true,
       separateRoute: false,
-      hasSubRoute: false,
-      showSubRoute: true,
-      base: 'Administration Centrale',
       menu: [
         {
-          menuValue: 'Division Administratif',
+          menuValue: 'Division Administrative',
+          hasSubRouteThree: true,
+          icon: 'menu-2',
+          showSubRoute: false,
+          page: 'division',
+          subMenus: [
+            {
+              menuValue: 'Régions',
+              route: routes.regionsList,
+              hasSubRoute: false,
+              showSubRoute: false,
+              customSubmenuThree: false,
+            },
+            {
+              menuValue: 'Départements',
+              route: routes.departmentsList,
+              hasSubRoute: false,
+              showSubRoute: false,
+              customSubmenuThree: false,
+            },
+            {
+              menuValue: 'Municipalités',
+              route: routes.municipalitiesList,
+              hasSubRoute: false,
+              showSubRoute: false,
+              customSubmenuThree: false,
+            },
+            {
+              menuValue: 'Administration Centrale',
+              hasSubRoute: true,
+              showSubRoute: true,
+              customSubmenuThree: true,
+              page: 'centrale',
+              subMenusTwo: [
+                {
+                  menuValue: 'Secrétariat Central',
+                  route: '', // Add actual route if available
+                  hasSubRoute: false,
+                  showSubRoute: false,
+                  customSubmenuFour: false,
+                },
+                {
+                  menuValue: "Direction de l'Enseignement",
+                  hasSubRoute: true,
+                  showSubRoute: false,
+                  customSubmenuFour: true,
+                  subMenusThree: [
+                    {
+                      menuValue: 'Sous-Direction 1',
+                      route: '', // Add actual route if available
+                      hasSubRoute: false,
+                      showSubRoute: false,
+                      customSubmenuFour: false,
+                    },
+                    {
+                      menuValue: 'Sous-Direction 2',
+                      route: '', // Add actual route if available
+                      hasSubRoute: false,
+                      showSubRoute: false,
+                      customSubmenuFour: false,
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              menuValue: 'Administration Déconcentrée',
+              hasSubRoute: true,
+              showSubRoute: true,
+              customSubmenuThree: true,
+              page: 'non-central',
+              subMenusTwo: [
+                {
+                  menuValue: 'Services Déconcentrés',
+                  route: '', // Add actual route if available
+                  hasSubRoute: false,
+                  showSubRoute: false,
+                  customSubmenuFour: false,
+                },
+                {
+                  menuValue: 'Directions Régionales',
+                  hasSubRoute: true,
+                  showSubRoute: false,
+                  customSubmenuFour: true,
+                  page: 'regianale',
+                  subMenusThree: [
+                    {
+                      menuValue: 'DREN 1',
+                      route: '', // Add actual route if available
+                      hasSubRoute: false,
+                      showSubRoute: false,
+                      customSubmenuFour: false,
+                    },
+                    {
+                      menuValue: 'DREN 2',
+                      route: '', // Add actual route if available
+                      hasSubRoute: false,
+                      showSubRoute: false,
+                      customSubmenuFour: false,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: 'Gestion du Personnel',
+      showAsTab: true,
+      separateRoute: false,
+      menu: [
+        {
+          menuValue: 'Gestion des Personnels',
+          hasSubRouteThree: true,
+          icon: 'peoples',
+          showSubRoute: false,
+          page: 'personnel',
+          subMenus: [
+            {
+              menuValue: 'Liste du Personnel',
+              route: 'peoples/minebase/staffs',
+              hasSubRoute: false,
+              showSubRoute: false,
+              customSubmenuThree: false,
+            },
+            {
+              menuValue: 'Documents Administratifs',
+              hasSubRoute: true,
+              showSubRoute: true,
+              customSubmenuThree: true,
+              page: 'document',
+              subMenusTwo: [
+                {
+                  menuValue: 'Attestation de présence effective',
+                  route: '', // Add actual route if available
+                  hasSubRoute: false,
+                  showSubRoute: false,
+                  customSubmenuFour: false,
+                },
+                {
+                  menuValue: "Permission d'absence",
+                  route: '', // Add actual route if available
+                  hasSubRoute: false,
+                  showSubRoute: false,
+                  customSubmenuFour: false,
+                },
+                {
+                  menuValue: "Notification de congés",
+                  route: '', // Add actual route if available
+                  hasSubRoute: false,
+                  showSubRoute: false,
+                  customSubmenuFour: false,
+                },
+                {
+                  menuValue: "Attestation de service",
+                  route: '', // Add actual route if available
+                  hasSubRoute: false,
+                  showSubRoute: false,
+                  customSubmenuFour: false,
+                },
+                {
+                  menuValue: "Attestation de cessation de service",
+                  route: '', // Add actual route if available
+                  hasSubRoute: false,
+                  showSubRoute: false,
+                  customSubmenuFour: false,
+                },
+                {
+                  menuValue: "CV",
+                  route: '', // Add actual route if available
+                  hasSubRoute: false,
+                  showSubRoute: false,
+                  customSubmenuFour: false,
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: 'Gestion du staff',
+      showAsTab: true,
+      separateRoute: false,
+      menu: [
+        {
+          menuValue: 'Gestion des staffs',
+          hasSubRouteThree: true,
+          icon: 'peoples',
+          showSubRoute: false,
+          page: 'staff',
+          subMenus: [
+            {
+              menuValue: 'Liste des staffs',
+              route: 'peoples/minebase/staffs',
+              hasSubRoute: false,
+              showSubRoute: false,
+              customSubmenuThree: false,
+            },
+            {
+              menuValue: 'Documents Administratifs',
+              hasSubRoute: true,
+              showSubRoute: true,
+              customSubmenuThree: true,
+              page: 'staff-document',
+              subMenusTwo: [
+                {
+                  menuValue: "Permission d'absence",
+                  route: '', // Add actual route if available
+                  hasSubRoute: false,
+                  showSubRoute: false,
+                  customSubmenuFour: false,
+                },
+                {
+                  menuValue: "CV",
+                  route: '', // Add actual route if available
+                  hasSubRoute: false,
+                  showSubRoute: false,
+                  customSubmenuFour: false,
+                },
+              ],
+            },
+          ],
+        },
+        {
+          menuValue: 'Gestion des ultilisateurs',
           hasSubRoute: true,
           showSubRoute: false,
           icon: 'school',
-          page: '',
-
+          page: 'minedub-users',
           subMenus: [
             {
-              menuValue: 'Regions',
-              route: routes.regionsList,
+              menuValue: 'Liste des ultilisateurs',
+              route: routes.rolesPermision,
             },
             {
-              menuValue: 'Departments',
-              route: routes.departmentsList,
+              menuValue: 'Roles & Permissions',
+              route: routes.rolesPermision,
             },
             {
-              menuValue: 'Municipalities',
-              route: routes.municipalitiesList,
-            },
-          ],
-        },
-        {
-          menuValue: 'Personelle Management',
-          hasSubRoute: true,
-          showSubRoute: false,
-          icon: 'building',
-          page: 'institutions',
-          subMenus: [
-            {
-              menuValue: 'Personnel list',
-              route: 'peoples/minebase/staffs',
-              customSubmenuTwo: false,
-              hasSubRoute: false,
-              showSubRoute: false,
-            },
-            {
-              menuValue: 'Positions',
-              route: 'peoples/minebase/staffs/functions'
-            },
-            {
-              menuValue: 'Positions',
-              route: 'peoples/minebase/staffs/functions'
-            },
-            {
-              menuValue: 'Institutions Types',
-              route: routes.classSection,
-              customSubmenuTwo: false,
-              hasSubRoute: false,
-              showSubRoute: false,
-            },
-            {
-              menuValue: 'Sections',
-              route: routes.classSection,
-              customSubmenuTwo: false,
-              hasSubRoute: false,
-              showSubRoute: false,
-            },
-
-            {
-              menuValue: 'Director',
-              route: routes.classSection,
-              customSubmenuTwo: false,
-              hasSubRoute: false,
-              showSubRoute: false,
-            },
-          ],
-        },
-        {
-          menuValue: 'Staffs',
-          hasSubRoute: true,
-          showSubRoute: false,
-          icon: 'user-bolt',
-          page: 'parents',
-          subMenus: [
-            {
-              menuValue: 'Staffs',
-              route: routes.parentGrid,
-              hasSubRoute: false,
-              showSubRoute: false,
-              customSubmenuTwo: false,
-            },
-            {
-              menuValue: 'Function',
-              route: routes.parentList,
-              customSubmenuTwo: false,
-              hasSubRoute: false,
-              showSubRoute: false,
-            },
-            {
-              menuValue: 'Assignments',
-              route: routes.parentList,
-              customSubmenuTwo: false,
-              hasSubRoute: false,
-              showSubRoute: false,
+              menuValue: 'Delete Account Request',
+              route: routes.deleteAccount,
             },
 
           ],
         },
-
       ],
     },
-  ];
-
-  public AdminSchoolSidebarData: Array<any> = [
     {
-      tittle: 'Main',
+      tittle: 'Other',
       showAsTab: false,
       separateRoute: false,
       hasSubRoute: false,
@@ -1833,8 +1962,8 @@ export class DataService {
       page: '99',
       menu: [
         {
-          menuValue: 'Dashboard',
-          icon: 'layout-2',
+          menuValue: 'Communicatiom',
+          icon: 'layout',
           base: 'dashboard',
           hasSubRoute: false,
           showSubRoute: false,
@@ -1850,152 +1979,181 @@ export class DataService {
           customSubmenuTwo: false,
           subRoutes: [],
         },
+        {
+          menuValue: 'Rapports',
+          hasSubRoute: false,
+          showSubRoute: false,
+          route: '',
+          customSubmenuTwo: false,
+          icon: 'phone',
+          base: 'layout-rtl',
+          base2: "",
+          base3: "",
+          base4: "",
+          base5: "",
+          base6: "",
+          base7: "",
+          base8: "",
+          base9: "",
+          subRoutes: [],
+        },
       ],
     },
+
+  ];
+
+  public AdminSchoolSidebarData: Array<any> = [
     {
-      tittle: 'Peoples',
+      title: 'Principal',
       showAsTab: false,
-      separateRoute: false,
-      hasSubRoute: false,
-      showSubRoute: true,
-      base: 'peoples',
       menu: [
         {
-          menuValue: 'Élèves',
-          hasSubRoute: true,
-          showSubRoute: false,
+          menuValue: 'Tableau de bord',
+          icon: 'layout-2',
+          route: routes.adminDashboard,
+          hasSubRoute: false
+        },
+        {
+          menuValue: 'Annuaire',
+          icon: 'phone',
+          route: '',
+          hasSubRoute: false
+        }
+      ]
+    },
+    {
+      title: 'Gestion',
+      showAsTab: false,
+      menu: [
+        {
+          menuValue: 'Paramétrage',
           icon: 'school',
-          page: 'students',
-
-          subMenus: [
-            {
-              menuValue: 'Liste des Élèves',
-              route: routes.studentsList,
-            },
-            {
-              menuValue: 'Promotion d\'Élèves',
-              route: routes.studentPromotion,
-            },
-            {
-              menuValue: 'Transfert d\'Élève',
-              route: routes.studentTransfer,
-            },
-            {
-              menuValue: 'Bulletin de notes',
-              route: routes.studentReportCard,
-            },
-          ],
-        },
-        {
-          menuValue: 'Classes',
-          hasSubRoute: true,
-          showSubRoute: true,
-          icon: 'school-bell',
-          page: 'classes',
-          subMenus: [
-            {
-              menuValue: 'All Classes',
-              route: routes.classes,
-            },
-            {
-              menuValue: 'Schedule',
-              route: routes.scheduleClasses,
-            },
-          ],
-        },
-        {
-          menuValue: 'Salle de Classe',
-          hasSubRoute: true,
-          showSubRoute: true,
-          icon: 'building',
-          subMenus: [
-            {
-              menuValue: 'All Class rooms',
-              route: routes.classRoom,
-            },
-          ],
-        },
-        {
-          menuValue: 'Teachers',
           hasSubRoute: true,
           showSubRoute: false,
-          page: 'teachers',
-          icon: 'fas fa-chalkboard-teacher',
           subMenus: [
-            {
-              menuValue: 'Teachers List',
-              route: routes.teachersList,
-              parentMenuValue: 'Teachers',
-            },
-            {
-              menuValue: 'Add Teacher',
-              route: routes.addTeacher,
-              parentMenuValue: 'Teachers',
-            },
-            {
-              menuValue: 'Teachers Assignments',
-              route: routes.teacherAssignments,
-              parentMenuValue: 'Teachers',
-            }
-          ],
+            { menuValue: 'Géolocalisation', route: '' },
+            { menuValue: 'Classes', route: '' },
+            { menuValue: 'Bulletins', route: '' },
+            { menuValue: 'Frais', route: '' },
+            { menuValue: 'Emploi du temps', route: '' }
+          ]
+        },
+        {
+          menuValue: 'Élèves',
+          icon: 'school',
+          hasSubRoute: true,
+          showSubRoute: false,
+          subMenus: [
+            { menuValue: 'Liste', route: routes.studentsList },
+            { menuValue: 'Inscrire', route: '' },
+            { menuValue: 'Transferts', route: routes.studentTransfer },
+            { menuValue: 'Inactifs', route: routes.studentsList },
+            { menuValue: 'Absences', route: routes.studentsList },
+            { menuValue: 'Discipline', route: routes.studentsList },
+            { menuValue: 'Promotions', route: routes.studentPromotion },
+            { menuValue: 'Bulletins', route: routes.studentReportCard }
+          ]
+        },
+        {
+          menuValue: 'Notes',
+          icon: 'notes',
+          hasSubRoute: true,
+          showSubRoute: false,
+          subMenus: [
+            { menuValue: 'Relevés', route: routes.notes },
+            { menuValue: 'Bulletins', route: '' },
+            { menuValue: 'Livrets', route: '' }
+          ]
         },
         {
           menuValue: 'Parents',
+          icon: 'people',
           hasSubRoute: true,
           showSubRoute: false,
-          icon: 'user-bolt',
-          page: 'parents',
           subMenus: [
-            {
-              menuValue: 'Tous les parents',
-              route: routes.parentGrid,
-              hasSubRoute: false,
-              showSubRoute: false,
-              customSubmenuTwo: false,
-            },
-            {
-              menuValue: 'Liste des parents',
-              route: routes.parentList,
-              customSubmenuTwo: false,
-              hasSubRoute: false,
-              showSubRoute: false,
-            },
-          ],
+            { menuValue: 'Tous', route: routes.pagesMain },
+            { menuValue: 'Liste', route: routes.parentList },
+            { menuValue: 'Messages', route: '' }
+          ]
         },
         {
-          menuValue: 'Students',
+          menuValue: 'Classes',
+          icon: 'school-bell',
           hasSubRoute: true,
           showSubRoute: false,
-          icon: 'users',
-          page: 'students',
           subMenus: [
-            // Commented out All Students entry
-            /* {
-              menuValue: 'All Students',
-              route: '/peoples/students/student-grid',
-              hasSubRoute: false,
-              showSubRoute: false,
-              customSubmenuTwo: false,
-            }, */
-            {
-              menuValue: 'Students List',
-              route: '/peoples/students/student-grid',
-              customSubmenuTwo: false,
-              hasSubRoute: false,
-              showSubRoute: false,
-            },
-            {
-              menuValue: 'Add Student',
-              route: '/peoples/students/add-student',
-              customSubmenuTwo: false,
-              hasSubRoute: false,
-              showSubRoute: false,
-            },
-          ],
+            { menuValue: 'Projet pédagogique', route: routes.classHomeWork },
+            { menuValue: 'Indicateurs', route: '' },
+            { menuValue: 'Évaluations', route: '' },
+            { menuValue: 'Réussite', route: '' },
+            { menuValue: 'Devoirs', route: routes.classHomeWork },
+            { menuValue: 'Liste', route: routes.classes },
+            { menuValue: 'Horaires', route: routes.scheduleClasses }
+          ]
         },
-
-      ],
-    },
-
+        {
+          menuValue: 'Personnel',
+          icon: 'peoples',
+          hasSubRoute: true,
+          showSubRoute: false,
+          subMenus: [
+            { menuValue: 'Ajouter', route: routes.addStaff },
+            { menuValue: 'Liste', route: routes.staffList },
+            {
+              menuValue: 'Documents',
+              hasSubRoute: true,
+              showSubRoute: false,
+              subMenus: [
+                { menuValue: 'Présence', route: '' },
+                { menuValue: 'Absence', route: '' },
+                { menuValue: 'Congés', route: '' },
+                { menuValue: 'Service', route: '' },
+                { menuValue: 'Cessation', route: '' },
+                { menuValue: 'CV', route: '' }
+              ]
+            }
+          ]
+        },
+        {
+          menuValue: 'Enseignants',
+          icon: 'chalkboard-teacher',
+          hasSubRoute: true,
+          showSubRoute: false,
+          subMenus: [
+            { menuValue: 'Liste', route: routes.teachersList },
+            { menuValue: 'Ajouter', route: routes.addTeacher },
+            { menuValue: 'Affectations', route: routes.teacherAssignments }
+          ]
+        },
+        {
+          menuValue: 'Utilisateurs',
+          icon: 'user-cog',
+          hasSubRoute: true,
+          showSubRoute: false,
+          subMenus: [
+            { menuValue: 'Gestion', route: routes.users },
+            { menuValue: 'Rôles', route: routes.rolesPermision },
+            { menuValue: 'Demandes suppression', route: routes.deleteAccount }
+          ]
+        },
+        {
+          menuValue: 'Rapports',
+          icon: 'file-chart-line',
+          hasSubRoute: true,
+          showSubRoute: false,
+          subMenus: [
+            { menuValue: 'Générer', route: '' },
+            { menuValue: 'Modifier', route: '' },
+            { menuValue: 'Imprimer', route: '' }
+          ]
+        },
+        {
+          menuValue: 'Communication',
+          icon: 'comments',
+          route: '',
+          hasSubRoute: false
+        }
+      ]
+    }
   ];
 }

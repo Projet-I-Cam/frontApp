@@ -9,6 +9,7 @@ export class AuthService {
     return Parse.User.current();
   }
 
+  
 
   async login(username: string, password: string) {
     try {

@@ -11,7 +11,6 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     selector: 'app-student-library',
     templateUrl: './student-library.component.html',
     styleUrl: './student-library.component.scss',
-    standalone: true,
     imports: [CommonModule, RouterModule, FormsModule, SharedModule, DropdownModule, BsDatepickerModule]
 })
 export class StudentLibraryComponent {

@@ -9,7 +9,12 @@ import { map } from 'rxjs/operators';
 export class StudentService {
   private readonly STUDENT_CLASS = 'Person';
 
-  constructor() { }
+
+  constructor() {}
+
+  async loadData() {
+
+  }
 
   /** 
    * Get all students
@@ -106,7 +111,6 @@ export class StudentService {
     if (studentData.additionalInfo) {
       student.set('additionalInfo', studentData.additionalInfo);
     }
-
     return from(student.save()).pipe(
       map(result => this.parseStudentObject(result))
     );
@@ -297,4 +301,6 @@ export class StudentService {
 
     return result;
   }
+
+  
 } 

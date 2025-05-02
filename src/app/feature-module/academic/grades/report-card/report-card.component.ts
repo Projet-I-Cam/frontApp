@@ -77,23 +77,22 @@ interface StudentSearchResult {
 }
 
 @Component({
-  selector: 'app-report-card',
-  templateUrl: './report-card.component.html',
-  styleUrls: ['./report-card.component.scss'],
-  standalone: true,
-  imports: [
-    CommonModule, 
-    RouterModule, 
-    FormsModule, 
-    ReactiveFormsModule, 
-    MatTableModule,
-    MatSortModule,
-    MatFormFieldModule,
-    MatInputModule,
-    BsDatepickerModule,
-    DropdownModule,
-    SharedModule
-  ]
+    selector: 'app-report-card',
+    templateUrl: './report-card.component.html',
+    styleUrls: ['./report-card.component.scss'],
+    imports: [
+        CommonModule,
+        RouterModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatTableModule,
+        MatSortModule,
+        MatFormFieldModule,
+        MatInputModule,
+        BsDatepickerModule,
+        DropdownModule,
+        SharedModule
+    ]
 })
 export class ReportCardComponent implements OnInit {
   public routes = routes;

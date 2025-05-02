@@ -9,7 +9,6 @@ import { SharedModule } from '../../../../shared/shared.module';
     selector: 'app-teacher-details',
     templateUrl: './teacher-details.component.html',
     styleUrl: './teacher-details.component.scss',
-    standalone: true,
     imports: [CommonModule, RouterModule, FormsModule, SharedModule]
 })
 export class TeacherDetailsComponent {

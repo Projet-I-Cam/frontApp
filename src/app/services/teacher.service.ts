@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as Parse from 'parse';
+import { Parent} from '../shared/model/pages.model';
 
 @Injectable({
   providedIn: 'root'
@@ -279,4 +280,6 @@ export class TeacherService {
 
     return result;
   }
+
+  
 } 

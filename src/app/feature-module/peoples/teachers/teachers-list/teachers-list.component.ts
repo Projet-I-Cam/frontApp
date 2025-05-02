@@ -20,7 +20,6 @@ import { SharedModule } from '../../../../shared/shared.module';
     selector: 'app-teachers-list',
     templateUrl: './teachers-list.component.html',
     styleUrl: './teachers-list.component.scss',
-    standalone: true,
     imports: [CommonModule, RouterModule, FormsModule, MatSortModule, MatTableModule, CustomPaginationModule, BsDatepickerModule, DropdownModule, SharedModule]
 })
 export class TeachersListComponent {

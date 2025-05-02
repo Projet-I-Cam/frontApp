@@ -1,24 +1,6 @@
 <!-- Page Wrapper -->
 <div class="page-wrapper">
   <div class="content">
-
-    <!-- Page Header -->
-    <div class="d-md-flex d-block align-items-center justify-content-between mb-3">
-      <div class="my-auto mb-2">
-        <h3 class="page-title mb-1">Dashboard</h3>
-      </div>
-      <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
-        <div class="mb-2">
-          <a [routerLink]="routes.addStudent" class="btn btn-primary d-flex align-items-center me-3"><i
-              class="ti ti-square-rounded-plus me-2"></i>Add New Institution</a>
-        </div>
-        <div class="mb-2">
-          <a [routerLink]="routes.collectFees" class="btn btn-light d-flex align-items-center">View Reports</a>
-        </div>
-      </div>
-    </div>
-    <!-- /Page Header -->
-
     <div class="row">
       <div class="col-md-12">
         <!-- <div class="alert-message">
@@ -47,14 +29,16 @@
             <div class="d-flex align-items-xl-center justify-content-xl-between flex-xl-row flex-column">
               <div class="mb-3 mb-xl-0">
                 <div class="d-flex align-items-center flex-wrap mb-2">
-                  <h1 class="text-white me-2">Welcome Back, Mr. Herald</h1>
+                  <h1 class="text-white me-2">Welcome Back, ABESSOLO ETOGA THIERRY</h1>
                   <a [routerLink]="routes.profile" class="avatar avatar-sm img-rounded bg-gray-800 dark-hover"><i
                       class="ti ti-edit text-white"></i></a>
                 </div>
-                <p class="text-white">Have a Good day at work</p>
+                <h3 class="text-white">Administateur Ministere</h3>
+                <h3 class="text-white">AFP / APA</h3>
               </div>
-              <p class="text-white"><i class="ti ti-refresh me-1"></i>Updated Recently on 15 Jun
-                2024</p>
+              <div class="avatar avatar-xl bg-danger-transparent p-1">
+                <img src="assets/img/icons/teacher.svg" alt="img">
+              </div>
             </div>
           </div>
         </div>
@@ -65,63 +49,151 @@
 
     <div class="row">
 
-      <!-- Total Public institution -->
-      <div class="col-xxl-3 col-sm-6 col-md-4 d-flex">
-        <div class="card flex-fill animate-card border-0">
+      <!-- Total institution -->
+      <div class="col-xxl-3 col-sm-6 d-flex">
+        <div class="card flex-fill animate-card border-0 bg-success-subtle">
           <div class="card-body">
             <div class="d-flex align-items-center">
-              <div class="avatar avatar-xl bg-danger-transparent me-2 p-1">
+              <div class="avatar avatar-lg me-2 p-1">
                 <img src="assets/img/icons/folder.svg" alt="img">
               </div>
               <div class="overflow-hidden flex-fill">
                 <div class="d-flex align-items-center justify-content-between">
-
-                  <h2> <span class="counters" [countUp]="3654" [options]="{
-                                    duration: 10,
-                                    formattingFn: customFormattingFn
-                                  }">
-                      3654
-                    </span></h2>
-                  <span class="badge bg-danger">1.2%</span>
+                  <h3>TOTAL ETABLISSEMENTS</h3>
                 </div>
-                <p>Total Public Institutions</p>
               </div>
             </div>
             <div class="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
-              <p class="mb-0">Active : <span class="text-dark fw-semibold">3643</span></p>
+              <h4 class="mb-0">Publics :
+                <span class="counters" [countUp]="3654" [options]="{
+                            duration: 10,
+                            formattingFn: customFormattingFn
+                          }">
+                  3654
+                </span>
+              </h4>
               <span class="text-light">|</span>
-              <p>Inactive : <span class="text-dark fw-semibold">11</span></p>
+              <h4>Privés :
+                <span class="counters" [countUp]="3654" [options]="{
+                              duration: 10,
+                              formattingFn: customFormattingFn
+                            }">
+                  3654
+                </span>
+              </h4>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Total Public institution -->
-      <div class="col-xxl-3 col-sm-6 col-md-4 d-flex">
-        <div class="card flex-fill animate-card border-0">
+      <div class="col-xxl-3 col-sm-6 d-flex">
+        <div class="card flex-fill animate-card border-0 bg-success-subtle">
           <div class="card-body">
             <div class="d-flex align-items-center">
-              <div class="avatar avatar-xl bg-danger-transparent me-2 p-1">
+              <div class="avatar avatar-lg me-2 p-1">
                 <img src="assets/img/icons/folder.svg" alt="img">
               </div>
               <div class="overflow-hidden flex-fill">
                 <div class="d-flex align-items-center justify-content-between">
-
-                  <h2> <span class="counters" [countUp]="3654" [options]="{
-                                    duration: 10,
-                                    formattingFn: customFormattingFn
-                                  }">
-                      3654
-                    </span></h2>
-                  <span class="badge bg-danger">1.2%</span>
+                  <h3>ETABLISSEMENTS PUBLICS</h3>
                 </div>
-                <p>Total Private Institutions</p>
               </div>
             </div>
             <div class="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
-              <p class="mb-0">Active : <span class="text-dark fw-semibold">3643</span></p>
+              <h4 class="mb-0">TOTAL OUVERTS :
+                <span class="counters" [countUp]="3654" [options]="{
+                            duration: 10,
+                            formattingFn: customFormattingFn
+                          }">
+                  3654
+                </span>
+              </h4>
               <span class="text-light">|</span>
-              <p>Inactive : <span class="text-dark fw-semibold">11</span></p>
+              <h4>TOTAL FERMES :
+                <span class="counters" [countUp]="3654" [options]="{
+                              duration: 10,
+                              formattingFn: customFormattingFn
+                            }">
+                  3654
+                </span>
+              </h4>
+            </div>
+            <div class="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
+              <h4 class="mb-0">CLASSES FONC :
+                <span class="counters" [countUp]="3654" [options]="{
+                            duration: 10,
+                            formattingFn: customFormattingFn
+                          }">
+                  3654
+                </span>
+              </h4>
+              <span class="text-light">|</span>
+              <h4>CLASSE DEFEC :
+                <span class="counters" [countUp]="3654" [options]="{
+                              duration: 10,
+                              formattingFn: customFormattingFn
+                            }">
+                  3654
+                </span>
+              </h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Priver institution -->
+      <div class="col-xxl-3 col-sm-6 d-flex">
+        <div class="card flex-fill animate-card border-0 bg-success-subtle">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="avatar avatar-lg me-2 p-1">
+                <img src="assets/img/icons/folder.svg" alt="img">
+              </div>
+              <div class="overflow-hidden flex-fill">
+                <div class="d-flex align-items-center justify-content-between">
+                  <h3>ETABLISSEMENTS PRIVÉS</h3>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
+              <h4 class="mb-0">Total Laïcs
+                :
+                <span class="counters" [countUp]="3654" [options]="{
+                            duration: 10,
+                            formattingFn: customFormattingFn
+                          }">
+                  3654
+                </span>
+              </h4>
+              <span class="text-light">|</span>
+              <h4>Total Confessionnels :
+                <span class="counters" [countUp]="3654" [options]="{
+                              duration: 10,
+                              formattingFn: customFormattingFn
+                            }">
+                  3654
+                </span>
+              </h4>
+            </div>
+            <div class="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
+              <h4 class="mb-0">Total Agréés :
+                <span class="counters" [countUp]="3654" [options]="{
+                            duration: 10,
+                            formattingFn: customFormattingFn
+                          }">
+                  3654
+                </span>
+              </h4>
+              <span class="text-light">|</span>
+              <h4>Total Clandestins :
+                <span class="counters" [countUp]="3654" [options]="{
+                              duration: 10,
+                              formattingFn: customFormattingFn
+                            }">
+                  3654
+                </span>
+              </h4>
             </div>
           </div>
         </div>
@@ -129,130 +201,202 @@
 
 
       <!-- Total Students -->
-      <div class="col-xxl-3 col-sm-6 col-md-4 d-flex">
-        <div class="card flex-fill animate-card border-0">
+      <div class="col-xxl-3 col-sm-6 d-flex">
+        <div class="card flex-fill animate-card border-0 bg-success-subtle">
           <div class="card-body">
             <div class="d-flex align-items-center">
-              <div class="avatar avatar-xl bg-danger-transparent me-2 p-1">
+              <div class="avatar avatar-lg me-2 p-1">
                 <img src="assets/img/icons/student.svg" alt="img">
               </div>
               <div class="overflow-hidden flex-fill">
                 <div class="d-flex align-items-center justify-content-between">
-
-                  <h2> <span class="counters" [countUp]="3654" [options]="{
-                                    duration: 10,
-                                    formattingFn: customFormattingFn
-                                  }">
-                      3654
-                    </span></h2>
-                  <span class="badge bg-danger">1.2%</span>
+                  <div class="d-flex flex-grow-0 gap-4">
+                    <h3>TOTAL ELEVES :</h3>
+                    <h4 class="mb-0">
+                      <span class="counters" [countUp]="3654" [options]="{
+                                duration: 10,
+                                formattingFn: customFormattingFn
+                              }">
+                        3654
+                      </span>
+                    </h4>
+                  </div>
                 </div>
-                <p>Total Students</p>
               </div>
             </div>
             <div class="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
-              <p class="mb-0">Active : <span class="text-dark fw-semibold">3643</span></p>
+              <h4 class="mb-0">Total Filles :
+                <span class="counters" [countUp]="3654" [options]="{
+                            duration: 10,
+                            formattingFn: customFormattingFn
+                          }">
+                  3654
+                </span>
+              </h4>
               <span class="text-light">|</span>
-              <p>Inactive : <span class="text-dark fw-semibold">11</span></p>
+              <h4>Total Garçons :
+                <span class="counters" [countUp]="3654" [options]="{
+                              duration: 10,
+                              formattingFn: customFormattingFn
+                            }">
+                  3654
+                </span>
+              </h4>
+            </div>
+            <div class="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
+              <h4 class="mb-0">Élèves Actifs :
+                <span class="counters" [countUp]="3654" [options]="{
+                            duration: 10,
+                            formattingFn: customFormattingFn
+                          }">
+                  3654
+                </span>
+              </h4>
+              <span class="text-light">|</span>
+              <h4>Élèves Inactifs :
+                <span class="counters" [countUp]="3654" [options]="{
+                              duration: 10,
+                              formattingFn: customFormattingFn
+                            }">
+                  3654
+                </span>
+              </h4>
             </div>
           </div>
         </div>
       </div>
-      <!-- /Total Students -->
 
-      <!-- Total Teachers -->
-      <div class="col-xxl-3 col-sm-6 col-md-4 d-flex">
-        <div class="card flex-fill animate-card border-0">
+      <!-- Total Students -->
+      <div class="col-xxl-3 col-sm-6 d-flex">
+        <div class="card flex-fill animate-card border-0 bg-success-subtle">
           <div class="card-body">
             <div class="d-flex align-items-center">
-              <div class="avatar avatar-xl me-2 bg-secondary-transparent p-1">
-                <img src="assets/img/icons/teacher.svg" alt="img">
-              </div>
-              <div class="overflow-hidden flex-fill">
-                <div class="d-flex align-items-center justify-content-between">
-                  <h2> <span class="counters" [countUp]="284" [options]="{
-                                        duration: 10,
-                                        formattingFn: customFormattingFn
-                                      }">
-                      284
-                    </span></h2>
-                  <span class="badge bg-skyblue">1.2%</span>
-                </div>
-                <p>Total Teachers</p>
-              </div>
-            </div>
-            <div class="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
-              <p class="mb-0">Active : <span class="text-dark fw-semibold">254</span></p>
-              <span class="text-light">|</span>
-              <p>Inactive : <span class="text-dark fw-semibold">30</span></p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- /Total Teachers -->
-
-      <!-- Total Staff -->
-      <div class="col-xxl-3 col-sm-6 col-md-4 d-flex">
-        <div class="card flex-fill animate-card border-0">
-          <div class="card-body">
-            <div class="d-flex align-items-center">
-              <div class="avatar avatar-xl me-2 bg-warning-transparent p-1">
+              <div class="avatar avatar-lg me-2 p-1">
                 <img src="assets/img/icons/staff.svg" alt="img">
               </div>
               <div class="overflow-hidden flex-fill">
                 <div class="d-flex align-items-center justify-content-between">
-                  <h2> <span class="counters" [countUp]="162" [options]="{
-                                        duration: 10,
-                                        formattingFn: customFormattingFn
-                                      }">
-                      162
-                    </span></h2>
-                  <span class="badge bg-warning">1.2%</span>
+                  <div class="d-flex flex-grow-0 gap-4">
+                    <h3>TOTAL STAFF :</h3>
+                    <h4 class="mb-0">
+                      <span class="counters" [countUp]="3654" [options]="{
+                                duration: 10,
+                                formattingFn: customFormattingFn
+                              }">
+                        3654
+                      </span>
+                    </h4>
+                  </div>
                 </div>
-                <p>Total Staff</p>
               </div>
             </div>
             <div class="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
-              <p class="mb-0">Active : <span class="text-dark fw-semibold">161</span></p>
+              <h4 class="mb-0">FEMMES :
+                <span class="counters" [countUp]="3654" [options]="{
+                            duration: 10,
+                            formattingFn: customFormattingFn
+                          }">
+                  3654
+                </span>
+              </h4>
               <span class="text-light">|</span>
-              <p>Inactive : <span class="text-dark fw-semibold">02</span></p>
+              <h4>HOMMES :
+                <span class="counters" [countUp]="3654" [options]="{
+                              duration: 10,
+                              formattingFn: customFormattingFn
+                            }">
+                  3654
+                </span>
+              </h4>
+            </div>
+            <div class="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
+              <h4 class="mb-0">ACTIFS :
+                <span class="counters" [countUp]="3654" [options]="{
+                            duration: 10,
+                            formattingFn: customFormattingFn
+                          }">
+                  3654
+                </span>
+              </h4>
+              <span class="text-light">|</span>
+              <h4>INACTIF :
+                <span class="counters" [countUp]="3654" [options]="{
+                              duration: 10,
+                              formattingFn: customFormattingFn
+                            }">
+                  3654
+                </span>
+              </h4>
             </div>
           </div>
         </div>
       </div>
-      <!-- /Total Staff -->
 
-      <!-- Total Subjects -->
-      <div class="col-xxl-3 col-sm-6 col-md-4 d-flex">
-        <div class="card flex-fill animate-card border-0">
+      <!-- Total teachers -->
+      <div class="col-xxl-3 col-sm-6 d-flex">
+        <div class="card flex-fill animate-card border-0 bg-success-subtle">
           <div class="card-body">
             <div class="d-flex align-items-center">
-              <div class="avatar avatar-xl me-2 bg-success-transparent p-1">
-                <img src="assets/img/icons/subject.svg" alt="img">
+              <div class="avatar avatar-lg me-2 p-1">
+                <img src="assets/img/icons/teacher.svg" alt="img">
               </div>
               <div class="overflow-hidden flex-fill">
                 <div class="d-flex align-items-center justify-content-between">
-                  <h2> <span class="counters" [countUp]="82" [options]="{
-                                        duration: 10,
-                                        formattingFn: customFormattingFn
-                                      }">
-                      82
-                    </span></h2>
-                  <span class="badge bg-success">1.2%</span>
+                  <div class="d-flex flex-grow-0 gap-4">
+                    <h3>TOTAL ENSEIGNANTS :</h3>
+                    <h4 class="mb-0">
+                      <span class="counters" [countUp]="3654" [options]="{
+                                duration: 10,
+                                formattingFn: customFormattingFn
+                              }">
+                        3654
+                      </span>
+                    </h4>
+                  </div>
                 </div>
-                <p>Total Subjects</p>
               </div>
             </div>
             <div class="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
-              <p class="mb-0">Active : <span class="text-dark fw-semibold">81</span></p>
+              <h4 class="mb-0">FEMMES :
+                <span class="counters" [countUp]="3654" [options]="{
+                            duration: 10,
+                            formattingFn: customFormattingFn
+                          }">
+                  3654
+                </span>
+              </h4>
               <span class="text-light">|</span>
-              <p>Inactive : <span class="text-dark fw-semibold">01</span></p>
+              <h4>HOMMES :
+                <span class="counters" [countUp]="3654" [options]="{
+                              duration: 10,
+                              formattingFn: customFormattingFn
+                            }">
+                  3654
+                </span>
+              </h4>
+            </div>
+            <div class="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
+              <h4 class="mb-0">ACTIFS :
+                <span class="counters" [countUp]="3654" [options]="{
+                            duration: 10,
+                            formattingFn: customFormattingFn
+                          }">
+                  3654
+                </span>
+              </h4>
+              <span class="text-light">|</span>
+              <h4>INACTIF :
+                <span class="counters" [countUp]="3654" [options]="{
+                              duration: 10,
+                              formattingFn: customFormattingFn
+                            }">
+                  3654
+                </span>
+              </h4>
             </div>
           </div>
         </div>
       </div>
-      <!-- /Total Subjects -->
-
     </div>
     <div class="row">
 
@@ -300,142 +444,6 @@
           </div>
         </div>
       </div>
-      <!-- /Fees Collection -->
-    </div>
-
-    <div class="row">
-
-      <!-- Links -->
-      <div class="col-xl-3 col-md-6 d-flex">
-        <a [routerLink]="routes.studentAttendance"
-          class="card bg-warning-transparent border border-5 border-white animate-card flex-fill">
-          <div class="card-body">
-            <div class="d-flex align-items-center justify-content-between">
-              <div class="d-flex align-items-center">
-                <span class="avatar avatar-lg bg-warning rounded flex-shrink-0 me-2"><i
-                    class="ti ti-calendar-share fs-24"></i></span>
-                <div class="overflow-hidden">
-                  <h6 class="fw-semibold text-default">View Attendance</h6>
-                </div>
-              </div>
-              <span class="btn btn-white warning-btn-hover avatar avatar-sm p-0 flex-shrink-0 rounded-circle"><i
-                  class="ti ti-chevron-right fs-14"></i></span>
-            </div>
-          </div>
-        </a>
-      </div>
-      <!-- /Links -->
-
-      <!-- Links -->
-      <div class="col-xl-3 col-md-6 d-flex">
-        <a [routerLink]="routes.events"
-          class="card bg-success-transparent border border-5 border-white animate-card flex-fill ">
-          <div class="card-body">
-            <div class="d-flex align-items-center justify-content-between">
-              <div class="d-flex align-items-center">
-                <span class="avatar avatar-lg bg-success rounded flex-shrink-0 me-2"><i
-                    class="ti ti-speakerphone fs-24"></i></span>
-                <div class="overflow-hidden">
-                  <h6 class="fw-semibold text-default">New Events</h6>
-                </div>
-              </div>
-              <span class="btn btn-white success-btn-hover avatar avatar-sm p-0 flex-shrink-0 rounded-circle"><i
-                  class="ti ti-chevron-right fs-14"></i></span>
-            </div>
-          </div>
-        </a>
-      </div>
-      <!-- /Links -->
-
-      <!-- Links -->
-      <div class="col-xl-3 col-md-6 d-flex">
-        <a [routerLink]="routes.membershipPlans"
-          class="card bg-danger-transparent border border-5 border-white animate-card flex-fill">
-          <div class="card-body">
-            <div class="d-flex align-items-center justify-content-between">
-              <div class="d-flex align-items-center">
-                <span class="avatar avatar-lg bg-danger rounded flex-shrink-0 me-2"><i
-                    class="ti ti-sphere fs-24"></i></span>
-                <div class="overflow-hidden">
-                  <h6 class="fw-semibold text-default">Membership Plans</h6>
-                </div>
-              </div>
-              <span class="btn btn-white avatar avatar-sm p-0 flex-shrink-0 rounded-circle danger-btn-hover"><i
-                  class="ti ti-chevron-right fs-14"></i></span>
-            </div>
-          </div>
-        </a>
-      </div>
-      <!-- /Links -->
-
-      <!-- Links -->
-      <div class="col-xl-3 col-md-6 d-flex">
-        <a [routerLink]="routes.studentAttendance"
-          class="card bg-secondary-transparent border border-5 border-white animate-card flex-fill">
-          <div class="card-body">
-            <div class="d-flex align-items-center justify-content-between">
-              <div class="d-flex align-items-center">
-                <span class="avatar avatar-lg bg-secondary rounded flex-shrink-0 me-2"><i
-                    class="ti ti-moneybag fs-24"></i></span>
-                <div class="overflow-hidden">
-                  <h6 class="fw-semibold text-default">Finance & Accounts</h6>
-                </div>
-              </div>
-              <span class="btn btn-white secondary-btn-hover avatar avatar-sm p-0 flex-shrink-0 rounded-circle"><i
-                  class="ti ti-chevron-right fs-14"></i></span>
-            </div>
-          </div>
-        </a>
-      </div>
-      <!-- /Links -->
-
-    </div>
-    <div class="row">
-
-      <!-- Total Earnings -->
-      <div class="col-xxl-4 col-xl-6 d-flex flex-column">
-        <div class="card flex-fill">
-          <div class="card-body">
-            <div class="d-flex align-items-center justify-content-between">
-              <div>
-                <h6 class="mb-1">Total Earnings</h6>
-                <h2>$64,522,24</h2>
-              </div>
-              <span class="avatar avatar-lg bg-primary">
-                <i class="ti ti-user-dollar"></i>
-              </span>
-            </div>
-          </div>
-          <div id="total-earning">
-            <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [xaxis]="chartOptions.xaxis"
-              [dataLabels]="chartOptions.dataLabels" [grid]="chartOptions.grid"
-              [stroke]="chartOptions.stroke"></apx-chart>
-          </div>
-        </div>
-        <div class="card flex-fill">
-          <div class="card-body">
-            <div class="d-flex align-items-center justify-content-between">
-              <div>
-                <h6 class="mb-1">Total Expenses</h6>
-                <h2>$60,522,24</h2>
-              </div>
-              <span class="avatar avatar-lg bg-danger">
-                <i class="ti ti-user-dollar"></i>
-              </span>
-            </div>
-          </div>
-          <div id="total-expenses">
-            <apx-chart [series]="chartOptions2.series" [chart]="chartOptions2.chart" [xaxis]="chartOptions2.xaxis"
-              [dataLabels]="chartOptions2.dataLabels" [grid]="chartOptions2.grid" [stroke]="chartOptions2.stroke"
-              [title]="chartOptions2.title" [colors]="chartOptions2.colors"></apx-chart>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-
-      <!-- Top Subjects -->
       <div class="col-xxl-4 col-xl-6 d-flex">
         <div class="card flex-fill">
           <div class="card-header  d-flex align-items-center justify-content-between">
@@ -570,142 +578,9 @@
             </ul>
           </div>
         </div>
-
       </div>
-      <!-- /Top Subjects -->
-
-      <!-- Student Activity -->
-      <div class="col-xxl-4 col-xl-6 d-flex">
-        <div class="card flex-fill">
-          <div class="card-header  d-flex align-items-center justify-content-between">
-            <h4 class="card-title">Student Activity</h4>
-            <div class="dropdown">
-              <a href="javascript:void(0);" class="bg-white dropdown-toggle" data-bs-toggle="dropdown"><i
-                  class="ti ti-calendar me-2"></i>This Month
-              </a>
-              <ul class="dropdown-menu mt-2 p-3">
-                <li>
-                  <a href="javascript:void(0);" class="dropdown-item rounded-1">
-                    This Month
-                  </a>
-                </li>
-                <li>
-                  <a href="javascript:void(0);" class="dropdown-item rounded-1">
-                    This Year
-                  </a>
-                </li>
-                <li>
-                  <a href="javascript:void(0);" class="dropdown-item rounded-1">
-                    Last Week
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="d-flex align-items-center overflow-hidden p-3 mb-3 border rounded">
-              <span class="avatar avatar-lg flex-shrink-0 rounded me-2">
-                <img src="assets/img/students/student-09.jpg" alt="student">
-              </span>
-              <div class="overflow-hidden">
-                <h6 class="mb-1 text-truncate">1st place in "Chess”</h6>
-                <p>This event took place in Our School</p>
-              </div>
-            </div>
-            <div class="d-flex align-items-center overflow-hidden p-3 mb-3 border rounded">
-              <span class="avatar avatar-lg flex-shrink-0 rounded me-2">
-                <img src="assets/img/students/student-12.jpg" alt="student">
-              </span>
-              <div class="overflow-hidden">
-                <h6 class="mb-1 text-truncate">Participated in "Carrom"</h6>
-                <p>Justin Lee participated in "Carrom"</p>
-              </div>
-            </div>
-            <div class="d-flex align-items-center overflow-hidden p-3 mb-3 border rounded">
-              <span class="avatar avatar-lg flex-shrink-0 rounded me-2">
-                <img src="assets/img/students/student-11.jpg" alt="student">
-              </span>
-              <div class="overflow-hidden">
-                <h6 class="mb-1 text-truncate">1st place in "100M”</h6>
-                <p>This event took place in Our School</p>
-              </div>
-            </div>
-            <div class="d-flex align-items-center overflow-hidden p-3 mb-0 border rounded">
-              <span class="avatar avatar-lg flex-shrink-0 rounded me-2">
-                <img src="assets/img/students/student-10.jpg" alt="student">
-              </span>
-              <div class="overflow-hidden">
-                <h6 class="mb-1 text-truncate">International conference</h6>
-                <p class="text-truncate">We attended international conference</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-      <!-- /Student Activity -->
-
-      <!-- Todo -->
-      <div class="col-xxl-4 col-xl-12 d-flex">
-        <div class="card flex-fill">
-          <div class="card-header  d-flex align-items-center justify-content-between">
-            <h4 class="card-title">Todo</h4>
-            <div class="dropdown">
-              <a href="javascript:void(0);" class="bg-white dropdown-toggle" data-bs-toggle="dropdown"><i
-                  class="ti ti-calendar me-2"></i>Today
-              </a>
-              <ul class="dropdown-menu mt-2 p-3">
-                <li>
-                  <a href="javascript:void(0);" class="dropdown-item rounded-1">
-                    This Month
-                  </a>
-                </li>
-                <li>
-                  <a href="javascript:void(0);" class="dropdown-item rounded-1">
-                    This Year
-                  </a>
-                </li>
-                <li>
-                  <a href="javascript:void(0);" class="dropdown-item rounded-1">
-                    Last Week
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="card-body">
-            <ul class="list-group list-group-flush todo-list">
-              <li class="list-group-item py-3 px-0" *ngFor="let task of tasks">
-                <div class="d-sm-flex align-items-center justify-content-between">
-                  <div [ngClass]="{'todo-strike-content': task.completed}"
-                    class="d-flex align-items-center overflow-hidden me-2">
-                    <div class="form-check form-check-md me-2">
-                      <input class="form-check-input" type="checkbox" [(ngModel)]="task.completed"
-                        (change)="toggleCompletion(task)">
-                    </div>
-                    <div class="overflow-hidden">
-                      <h6 class="mb-1 text-truncate">{{ task.title }}</h6>
-                      <p>{{ task.time }}</p>
-                    </div>
-                  </div>
-                  <span [ngClass]="{
-                                    'badge-soft-skyblue': task.status === 'Inprogress',
-                                    'badge-soft-warning': task.status === 'Yet to Start',
-                                    'badge-soft-success': task.status === 'Completed'
-                                  }" class="badge mt-2 mt-sm-0">
-                    {{ task.status }}
-                  </span>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <!-- /Todo -->
-
     </div>
   </div>
-
 </div>
 <!-- /Page Wrapper -->
 

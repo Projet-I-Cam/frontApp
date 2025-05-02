@@ -7,7 +7,6 @@ import { materialModule } from './material.module';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { CustomPaginationModule } from './custom-pagination/custom-pagination.module';
 import {
-  HttpClientModule,
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
@@ -34,6 +33,11 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { StepsModule } from 'primeng/steps';
+import { Tag } from 'primeng/tag';
+import { InputIcon } from 'primeng/inputicon';
+import { IconField } from 'primeng/iconfield';
+import { Slider } from 'primeng/slider';
+import { ProgressBar } from 'primeng/progressbar';
 
 
 import {
@@ -58,7 +62,6 @@ import { Router, RouterModule } from '@angular/router';
     NgApexchartsModule,
     materialModule,
     CustomPaginationModule,
-    HttpClientModule,
     LightgalleryModule,
     NgScrollbarModule,
     NgxDropzoneModule,
@@ -84,6 +87,7 @@ import { Router, RouterModule } from '@angular/router';
     NgCircleProgressModule,
     TableModule,
     ButtonModule,
+    StepsModule
 
 
   ],
@@ -97,7 +101,6 @@ import { Router, RouterModule } from '@angular/router';
     NgApexchartsModule,
     materialModule,
     CustomPaginationModule,
-    HttpClientModule,
     LightgalleryModule,
     NgScrollbarModule,
     NgxDropzoneModule,
@@ -124,8 +127,7 @@ import { Router, RouterModule } from '@angular/router';
     GenericTableComponent,
     TableModule,
     ButtonModule,
-    StepsModule,
-
+    StepsModule
   ],
   providers: [
     provideNgxMask(),
@@ -134,4 +136,4 @@ import { Router, RouterModule } from '@angular/router';
     BsDaterangepickerConfig,
   ],
 })
-export class SharedModule {}
+export class SharedModule { }

@@ -7,11 +7,10 @@ import { InstitutionService } from '../../../../services/institution.service';
 import { finalize } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-add-institution',
-  templateUrl: './add-institution.component.html',
-  styleUrls: ['./add-institution.component.scss'],
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule]
+    selector: 'app-add-institution',
+    templateUrl: './add-institution.component.html',
+    styleUrls: ['./add-institution.component.scss'],
+    imports: [CommonModule, ReactiveFormsModule, RouterModule]
 })
 export class AddInstitutionComponent implements OnInit {
   public routes = routes;

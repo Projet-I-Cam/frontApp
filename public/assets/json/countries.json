@@ -1,66 +1,966 @@
-{
-    "data": [
-      {
-        "ids": "CO378258",
-        "countryName": "United States",
-        "countryCode": "US",
-        "status": "Active"
-      },
-      {
-        "ids": "CO378257",
-        "countryName": "Canada",
-        "countryCode": "CA",
-        "status": "Active"
-      },
-      {
-        "ids": "CO378256",
-        "countryName": "United Kingdom",
-        "countryCode": "UK",
-        "status": "Active"
-      },
-      {
-        "ids": "CO378255",
-        "countryName": "Germany",
-        "countryCode": "DE",
-        "status": "Active"
-      },
-      {
-        "ids": "CO378254",
-        "countryName": "France",
-        "countryCode": "FR",
-        "status": "Active"
-      },
-      {
-        "ids": "CO378253",
-        "countryName": "Argentina",
-        "countryCode": "AR",
-        "status": "Active"
-      },
-      {
-        "ids": "CO378252",
-        "countryName": "India",
-        "countryCode": "IN",
-        "status": "Active"
-      },
-      {
-        "ids": "CO378251",
-        "countryName": "Italy",
-        "countryCode": "IT",
-        "status": "Active"
-      },
-      {
-        "ids": "CO378250",
-        "countryName": "New Zealand",
-        "countryCode": "NZ",
-        "status": "Active"
-      },
-      {
-        "ids": "CO378249",
-        "countryName": "Australia",
-        "countryCode": "AU",
-        "status": "Active"
-      }
-    ],
-    "totalData": 10
-  }
-  
+[
+  {
+    "id": "C1",
+    "nameFr": "Afghanistan",
+    "nameEN": "Afghanistan",
+    "code": "AF",
+    "phone": "+93",
+    "flag": "https://flagcdn.com/af.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C2",
+    "nameFr": "Albanie",
+    "nameEN": "Albania",
+    "code": "AL",
+    "phone": "+355",
+    "flag": "https://flagcdn.com/al.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C3",
+    "nameFr": "Algérie",
+    "nameEN": "Algeria",
+    "code": "DZ",
+    "phone": "+213",
+    "flag": "https://flagcdn.com/dz.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C4",
+    "nameFr": "Andorre",
+    "nameEN": "Andorra",
+    "code": "AD",
+    "phone": "+376",
+    "flag": "https://flagcdn.com/ad.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C5",
+    "nameFr": "Angola",
+    "nameEN": "Angola",
+    "code": "AO",
+    "phone": "+244",
+    "flag": "https://flagcdn.com/ao.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C6",
+    "nameFr": "Antigua-et-Barbuda",
+    "nameEN": "Antigua and Barbuda",
+    "code": "AG",
+    "phone": "+1-268",
+    "flag": "https://flagcdn.com/ag.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C7",
+    "nameFr": "Argentine",
+    "nameEN": "Argentina",
+    "code": "AR",
+    "phone": "+54",
+    "flag": "https://flagcdn.com/ar.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C8",
+    "nameFr": "Arménie",
+    "nameEN": "Armenia",
+    "code": "AM",
+    "phone": "+374",
+    "flag": "https://flagcdn.com/am.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C9",
+    "nameFr": "Australie",
+    "nameEN": "Australia",
+    "code": "AU",
+    "phone": "+61",
+    "flag": "https://flagcdn.com/au.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C10",
+    "nameFr": "Autriche",
+    "nameEN": "Austria",
+    "code": "AT",
+    "phone": "+43",
+    "flag": "https://flagcdn.com/at.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C11",
+    "nameFr": "Azerbaïdjan",
+    "nameEN": "Azerbaijan",
+    "code": "AZ",
+    "phone": "+994",
+    "flag": "https://flagcdn.com/az.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C12",
+    "nameFr": "Bahamas",
+    "nameEN": "Bahamas",
+    "code": "BS",
+    "phone": "+1-242",
+    "flag": "https://flagcdn.com/bs.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C13",
+    "nameFr": "Bahreïn",
+    "nameEN": "Bahrain",
+    "code": "BH",
+    "phone": "+973",
+    "flag": "https://flagcdn.com/bh.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C14",
+    "nameFr": "Bangladesh",
+    "nameEN": "Bangladesh",
+    "code": "BD",
+    "phone": "+880",
+    "flag": "https://flagcdn.com/bd.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C15",
+    "nameFr": "Barbade",
+    "nameEN": "Barbados",
+    "code": "BB",
+    "phone": "+1-246",
+    "flag": "https://flagcdn.com/bb.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C16",
+    "nameFr": "Bélarus",
+    "nameEN": "Belarus",
+    "code": "BY",
+    "phone": "+375",
+    "flag": "https://flagcdn.com/by.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C17",
+    "nameFr": "Belgique",
+    "nameEN": "Belgium",
+    "code": "BE",
+    "phone": "+32",
+    "flag": "https://flagcdn.com/be.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C18",
+    "nameFr": "Belize",
+    "nameEN": "Belize",
+    "code": "BZ",
+    "phone": "+501",
+    "flag": "https://flagcdn.com/bz.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C19",
+    "nameFr": "Bénin",
+    "nameEN": "Benin",
+    "code": "BJ",
+    "phone": "+229",
+    "flag": "https://flagcdn.com/bj.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C20",
+    "nameFr": "Bhoutan",
+    "nameEN": "Bhutan",
+    "code": "BT",
+    "phone": "+975",
+    "flag": "https://flagcdn.com/bt.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C21",
+    "nameFr": "Bolivie",
+    "nameEN": "Bolivia",
+    "code": "BO",
+    "phone": "+591",
+    "flag": "https://flagcdn.com/bo.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C22",
+    "nameFr": "Bosnie-Herzégovine",
+    "nameEN": "Bosnia and Herzegovina",
+    "code": "BA",
+    "phone": "+387",
+    "flag": "https://flagcdn.com/ba.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C23",
+    "nameFr": "Botswana",
+    "nameEN": "Botswana",
+    "code": "BW",
+    "phone": "+267",
+    "flag": "https://flagcdn.com/bw.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C24",
+    "nameFr": "Brésil",
+    "nameEN": "Brazil",
+    "code": "BR",
+    "phone": "+55",
+    "flag": "https://flagcdn.com/br.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C25",
+    "nameFr": "Brunei",
+    "nameEN": "Brunei",
+    "code": "BN",
+    "phone": "+673",
+    "flag": "https://flagcdn.com/bn.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C26",
+    "nameFr": "Bulgarie",
+    "nameEN": "Bulgaria",
+    "code": "BG",
+    "phone": "+359",
+    "flag": "https://flagcdn.com/bg.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C27",
+    "nameFr": "Burkina Faso",
+    "nameEN": "Burkina Faso",
+    "code": "BF",
+    "phone": "+226",
+    "flag": "https://flagcdn.com/bf.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C28",
+    "nameFr": "Burundi",
+    "nameEN": "Burundi",
+    "code": "BI",
+    "phone": "+257",
+    "flag": "https://flagcdn.com/bi.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C29",
+    "nameFr": "Cabo Verde",
+    "nameEN": "Cape Verde",
+    "code": "CV",
+    "phone": "+238",
+    "flag": "https://flagcdn.com/cv.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C30",
+    "nameFr": "Cambodge",
+    "nameEN": "Cambodia",
+    "code": "KH",
+    "phone": "+855",
+    "flag": "https://flagcdn.com/kh.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C31",
+    "nameFr": "Cameroun",
+    "nameEN": "Cameroon",
+    "code": "CM",
+    "phone": "+237",
+    "flag": "https://flagcdn.com/cm.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C32",
+    "nameFr": "Canada",
+    "nameEN": "Canada",
+    "code": "CA",
+    "phone": "+1",
+    "flag": "https://flagcdn.com/ca.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C33",
+    "nameFr": "Centrafrique",
+    "nameEN": "Central African Republic",
+    "code": "CF",
+    "phone": "+236",
+    "flag": "https://flagcdn.com/cf.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C34",
+    "nameFr": "Chili",
+    "nameEN": "Chile",
+    "code": "CL",
+    "phone": "+56",
+    "flag": "https://flagcdn.com/cl.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C35",
+    "nameFr": "Chine",
+    "nameEN": "China",
+    "code": "CN",
+    "phone": "+86",
+    "flag": "https://flagcdn.com/cn.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C36",
+    "nameFr": "Chypre",
+    "nameEN": "Cyprus",
+    "code": "CY",
+    "phone": "+357",
+    "flag": "https://flagcdn.com/cy.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C37",
+    "nameFr": "Colombie",
+    "nameEN": "Colombia",
+    "code": "CO",
+    "phone": "+57",
+    "flag": "https://flagcdn.com/co.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C38",
+    "nameFr": "Comores",
+    "nameEN": "Comoros",
+    "code": "KM",
+    "phone": "+269",
+    "flag": "https://flagcdn.com/km.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C39",
+    "nameFr": "Congo",
+    "nameEN": "Congo",
+    "code": "CG",
+    "phone": "+242",
+    "flag": "https://flagcdn.com/cg.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C40",
+    "nameFr": "Congo, République démocratique du",
+    "nameEN": "Congo, Democratic Republic of the",
+    "code": "CD",
+    "phone": "+243",
+    "flag": "https://flagcdn.com/cd.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C41",
+    "nameFr": "Costa Rica",
+    "nameEN": "Costa Rica",
+    "code": "CR",
+    "phone": "+506",
+    "flag": "https://flagcdn.com/cr.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C42",
+    "nameFr": "Croatie",
+    "nameEN": "Croatia",
+    "code": "HR",
+    "phone": "+385",
+    "flag": "https://flagcdn.com/hr.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C43",
+    "nameFr": "Cuba",
+    "nameEN": "Cuba",
+    "code": "CU",
+    "phone": "+53",
+    "flag": "https://flagcdn.com/cu.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C44",
+    "nameFr": "Danemark",
+    "nameEN": "Denmark",
+    "code": "DK",
+    "phone": "+45",
+    "flag": "https://flagcdn.com/dk.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C45",
+    "nameFr": "Djibouti",
+    "nameEN": "Djibouti",
+    "code": "DJ",
+    "phone": "+253",
+    "flag": "https://flagcdn.com/dj.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C46",
+    "nameFr": "Dominique",
+    "nameEN": "Dominica",
+    "code": "DM",
+    "phone": "+1-767",
+    "flag": "https://flagcdn.com/dm.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C47",
+    "nameFr": "République dominicaine",
+    "nameEN": "Dominican Republic",
+    "code": "DO",
+    "phone": "+1-809",
+    "flag": "https://flagcdn.com/do.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C48",
+    "nameFr": "Équateur",
+    "nameEN": "Ecuador",
+    "code": "EC",
+    "phone": "+593",
+    "flag": "https://flagcdn.com/ec.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C49",
+    "nameFr": "Égypte",
+    "nameEN": "Egypt",
+    "code": "EG",
+    "phone": "+20",
+    "flag": "https://flagcdn.com/eg.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C50",
+    "nameFr": "El Salvador",
+    "nameEN": "El Salvador",
+    "code": "SV",
+    "phone": "+503",
+    "flag": "https://flagcdn.com/sv.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C51",
+    "nameFr": "Guinée équatoriale",
+    "nameEN": "Equatorial Guinea",
+    "code": "GQ",
+    "phone": "+240",
+    "flag": "https://flagcdn.com/gq.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C52",
+    "nameFr": "Érythrée",
+    "nameEN": "Eritrea",
+    "code": "ER",
+    "phone": "+291",
+    "flag": "https://flagcdn.com/er.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C53",
+    "nameFr": "Estonie",
+    "nameEN": "Estonia",
+    "code": "EE",
+    "phone": "+372",
+    "flag": "https://flagcdn.com/ee.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C54",
+    "nameFr": "Eswatini",
+    "nameEN": "Eswatini",
+    "code": "SZ",
+    "phone": "+268",
+    "flag": "https://flagcdn.com/sz.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C55",
+    "nameFr": "État de la Cité du Vatican",
+    "nameEN": "Vatican City",
+    "code": "VA",
+    "phone": "+39-06",
+    "flag": "https://flagcdn.com/va.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C56",
+    "nameFr": "Fidji",
+    "nameEN": "Fiji",
+    "code": "FJ",
+    "phone": "+679",
+    "flag": "https://flagcdn.com/fj.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C57",
+    "nameFr": "Finlande",
+    "nameEN": "Finland",
+    "code": "FI",
+    "phone": "+358",
+    "flag": "https://flagcdn.com/fi.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C58",
+    "nameFr": "France",
+    "nameEN": "France",
+    "code": "FR",
+    "phone": "+33",
+    "flag": "https://flagcdn.com/fr.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C59",
+    "nameFr": "Gabon",
+    "nameEN": "Gabon",
+    "code": "GA",
+    "phone": "+241",
+    "flag": "https://flagcdn.com/ga.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C60",
+    "nameFr": "Gambie",
+    "nameEN": "Gambia",
+    "code": "GM",
+    "phone": "+220",
+    "flag": "https://flagcdn.com/gm.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C61",
+    "nameFr": "Géorgie",
+    "nameEN": "Georgia",
+    "code": "GE",
+    "phone": "+995",
+    "flag": "https://flagcdn.com/ge.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C62",
+    "nameFr": "Allemagne",
+    "nameEN": "Germany",
+    "code": "DE",
+    "phone": "+49",
+    "flag": "https://flagcdn.com/de.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C63",
+    "nameFr": "Ghana",
+    "nameEN": "Ghana",
+    "code": "GH",
+    "phone": "+233",
+    "flag": "https://flagcdn.com/gh.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C64",
+    "nameFr": "Grèce",
+    "nameEN": "Greece",
+    "code": "GR",
+    "phone": "+30",
+    "flag": "https://flagcdn.com/gr.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C65",
+    "nameFr": "Grenade",
+    "nameEN": "Grenada",
+    "code": "GD",
+    "phone": "+1-473",
+    "flag": "https://flagcdn.com/gd.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C66",
+    "nameFr": "Guatemala",
+    "nameEN": "Guatemala",
+    "code": "GT",
+    "phone": "+502",
+    "flag": "https://flagcdn.com/gt.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C67",
+    "nameFr": "Guinée",
+    "nameEN": "Guinea",
+    "code": "GN",
+    "phone": "+224",
+    "flag": "https://flagcdn.com/gn.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C68",
+    "nameFr": "Guinée-Bissau",
+    "nameEN": "Guinea-Bissau",
+    "code": "GW",
+    "phone": "+245",
+    "flag": "https://flagcdn.com/gw.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C69",
+    "nameFr": "Guyana",
+    "nameEN": "Guyana",
+    "code": "GY",
+    "phone": "+592",
+    "flag": "https://flagcdn.com/gy.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C70",
+    "nameFr": "Haïti",
+    "nameEN": "Haiti",
+    "code": "HT",
+    "phone": "+509",
+    "flag": "https://flagcdn.com/ht.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C71",
+    "nameFr": "Honduras",
+    "nameEN": "Honduras",
+    "code": "HN",
+    "phone": "+504",
+    "flag": "https://flagcdn.com/hn.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C72",
+    "nameFr": "Hongrie",
+    "nameEN": "Hungary",
+    "code": "HU",
+    "phone": "+36",
+    "flag": "https://flagcdn.com/hu.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C73",
+    "nameFr": "Islande",
+    "nameEN": "Iceland",
+    "code": "IS",
+    "phone": "+354",
+    "flag": "https://flagcdn.com/is.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C74",
+    "nameFr": "Inde",
+    "nameEN": "India",
+    "code": "IN",
+    "phone": "+91",
+    "flag": "https://flagcdn.com/in.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C75",
+    "nameFr": "Indonésie",
+    "nameEN": "Indonesia",
+    "code": "ID",
+    "phone": "+62",
+    "flag": "https://flagcdn.com/id.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C76",
+    "nameFr": "Iran",
+    "nameEN": "Iran",
+    "code": "IR",
+    "phone": "+98",
+    "flag": "https://flagcdn.com/ir.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C77",
+    " nameFr": "Irak",
+    "nameEN": "Iraq",
+    "code": "IQ",
+    "phone": "+964",
+    "flag": "https://flagcdn.com/iq.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C78",
+    "nameFr": "Irlande",
+    "nameEN": "Ireland",
+    "code": "IE",
+    "phone": "+353",
+    "flag": "https://flagcdn.com/ie.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C79",
+    "nameFr": "Israël",
+    "nameEN": "Israel",
+    "code": "IL",
+    "phone": "+972",
+    "flag": "https://flagcdn.com/il.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C80",
+    "nameFr": "Italie",
+    "nameEN": "Italy",
+    "code": "IT",
+    "phone": "+39",
+    "flag": "https://flagcdn.com/it.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C81",
+    "nameFr": "Jamaïque",
+    "nameEN": "Jamaica",
+    "code": "JM",
+    "phone": "+1-876",
+    "flag": "https://flagcdn.com/jm.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C82",
+    "nameFr": "Japon",
+    "nameEN": "Japan",
+    "code": "JP",
+    "phone": "+81",
+    "flag": "https://flagcdn.com/jp.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C83",
+    "nameFr": "Jordanie",
+    "nameEN": "Jordan",
+    "code": "JO",
+    "phone": "+962",
+    "flag": "https://flagcdn.com/jo.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C84",
+    "nameFr": "Kazakhstan",
+    "nameEN": "Kazakhstan",
+    "code": "KZ",
+    "phone": "+7",
+    "flag": "https://flagcdn.com/kz.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C85",
+    "nameFr": "Kenya",
+    "nameEN": "Kenya",
+    "code": "KE",
+    "phone": "+254",
+    "flag": "https://flagcdn.com/ke.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C86",
+    "nameFr": "Kirghizistan",
+    "nameEN": "Kyrgyzstan",
+    "code": "KG",
+    "phone": "+996",
+    "flag": "https://flagcdn.com/kg.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C87",
+    "nameFr": "Kiribati",
+    "nameEN": "Kiribati",
+    "code": "KI",
+    "phone": "+686",
+    "flag": "https://flagcdn.com/ki.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C88",
+    "nameFr": "Koweït",
+    "nameEN": "Kuwait",
+    "code": "KW",
+    "phone": "+965",
+    "flag": "https://flagcdn.com/kw.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C89",
+    "nameFr": "Laos",
+    "nameEN": "Laos",
+    "code": "LA",
+    "phone": "+856",
+    "flag": "https://flagcdn.com/la.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C90",
+    "nameFr": "Lesotho",
+    "nameEN": "Lesotho",
+    "code": "LS",
+    "phone": "+266",
+    "flag": "https://flagcdn.com/ls.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C91",
+    "nameFr": "Lettonie",
+    "nameEN": "Latvia",
+    "code": "LV",
+    "phone": "+371",
+    "flag": "https://flagcdn.com/lv.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C92",
+    "nameFr": "Liban",
+    "nameEN": "Lebanon",
+    "code": "LB",
+    "phone": "+961",
+    "flag": "https://flagcdn.com/lb .svg",
+    "status": "Active"
+  },
+  {
+    "id": "C93",
+    "nameFr": "Liberia",
+    "nameEN": "Liberia",
+    "code": "LR",
+    "phone": "+231",
+    "flag": "https://flagcdn.com/lr.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C94",
+    "nameFr": "Libye",
+    "nameEN": "Libya",
+    "code": "LY",
+    "phone": "+218",
+    "flag": "https://flagcdn.com/ly.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C95",
+    "nameFr": "Liechtenstein",
+    "nameEN": "Liechtenstein",
+    "code": "LI",
+    "phone": "+423",
+    "flag": "https://flagcdn.com/li.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C96",
+    "nameFr": "Lituanie",
+    "nameEN": "Lithuania",
+    "code": "LT",
+    "phone": "+370",
+    "flag": "https://flagcdn.com/lt.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C97",
+    "nameFr": "Luxembourg",
+    "nameEN": "Luxembourg",
+    "code": "LU",
+    "phone": "+352",
+    "flag": "https://flagcdn.com/lu.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C98",
+    "nameFr": "Madagascar",
+    "nameEN": "Madagascar",
+    "code": "MG",
+    "phone": "+261",
+    "flag": "https://flagcdn.com/mg.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C99",
+    "nameFr": "Malaisie",
+    "nameEN": "Malaysia",
+    "code": "MY",
+    "phone": "+60",
+    "flag": "https://flagcdn.com/my.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C100",
+    "nameFr": "Malawi",
+    "nameEN": "Malawi",
+    "code": "MW",
+    "phone": "+265",
+    "flag": "https://flagcdn.com/mw.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C101",
+    "nameFr": "Maldives",
+    "nameEN": "Maldives",
+    "code": "MV",
+    "phone": "+960",
+    "flag": "https://flagcdn.com/mv.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C102",
+    "nameFr": "Mali",
+    "nameEN": "Mali",
+    "code": "ML",
+    "phone": "+223",
+    "flag": "https://flagcdn.com/ml.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C103",
+    "nameFr": "Malte",
+    "nameEN": "Malta",
+    "code": "MT",
+    "phone": "+356",
+    "flag": "https://flagcdn.com/mt.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C104",
+    "nameFr": "Maroc",
+    "nameEN": "Morocco",
+    "code": "MA",
+    "phone": "+212",
+    "flag": "https://flagcdn.com/ma.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C105",
+    "nameFr": "Maurice",
+    "nameEN": "Mauritius",
+    "code": "MU",
+    "phone": "+230",
+    "flag": "https://flagcdn.com/mu.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C106",
+    "nameFr": "Mauritanie",
+    "nameEN": "Mauritania",
+    "code": "MR",
+    "phone": "+222",
+    "flag": "https://flagcdn.com/mr.svg",
+    "status": "Active"
+  },
+  {
+    "id": "C107",
+    "nameFr": "Mexique",
+    "nameEN": "Mexico",
+    "code": "MX",
+    "phone": "+52",
+    "flag": "https://flagcdn.com/mx.svg",
+    "status": "Active"
+ }
+]
+ 

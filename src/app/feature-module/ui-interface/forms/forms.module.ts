@@ -21,6 +21,7 @@ import { FormMaskComponent } from './form-elements/form-mask/form-mask.component
 
 
 
+
 @NgModule({
   declarations: [
     FormsComponent,
@@ -36,7 +37,7 @@ import { FormMaskComponent } from './form-elements/form-mask/form-mask.component
     FormHorizontalComponent,
     FormVerticalComponent,
     FormMaskComponent
-    
+
   ],
   imports: [
     CommonModule,

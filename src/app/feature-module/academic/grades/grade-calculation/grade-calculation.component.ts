@@ -40,19 +40,18 @@ interface ExamData {
 }
 
 @Component({
-  selector: 'app-grade-calculation',
-  templateUrl: './grade-calculation.component.html',
-  styleUrls: ['./grade-calculation.component.scss'],
-  standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    FormsModule,
-    MatTableModule,
-    MatSortModule,
-    DropdownModule,
-    SharedModule
-  ]
+    selector: 'app-grade-calculation',
+    templateUrl: './grade-calculation.component.html',
+    styleUrls: ['./grade-calculation.component.scss'],
+    imports: [
+        CommonModule,
+        RouterModule,
+        FormsModule,
+        MatTableModule,
+        MatSortModule,
+        DropdownModule,
+        SharedModule
+    ]
 })
 export class GradeCalculationComponent implements OnInit {
   public routes = routes;

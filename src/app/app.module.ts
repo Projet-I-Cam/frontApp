@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
 import Parse from 'parse';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -12,18 +11,25 @@ import { SharedModule } from './shared/shared.module';
 import { SiteModule } from './site/site.module';
 import { ParseService } from './parse.service';
 import { ServicesModule } from './services/services.module';
+import { SkeletonModule } from 'primeng/skeleton';
 
 
-import { environment } from '../environments/environment.local';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToastModule } from 'primeng/toast';
+import { DialogModule } from '@angular/cdk/dialog';
 
 
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, SharedModule, SiteModule,
+  imports: [BrowserModule, AppRoutingModule, SharedModule, SiteModule, HttpClientModule,
+    FormsModule, ToastModule, ReactiveFormsModule, SkeletonModule, DialogModule, BrowserAnimationsModule
   ],
   providers: [
     provideAnimationsAsync(),
+    MessageService, ConfirmationService, 
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent],

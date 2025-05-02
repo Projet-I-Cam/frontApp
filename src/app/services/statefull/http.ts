@@ -6,8 +6,8 @@ const CLASS: any = ParseClass
 
 export interface BaseGetIO {
     T: any; // la classe par de base. vous pouvez regarder app/parseClass.ts
-    filters?: {}; //les contrainte
-    includes?: Array<String>; // les jointure
+    filters?: {}; //les contraintes
+    includes?: Array<String>; // les jointures
     curentPage?: number; // pour la pagination. le currentpage peu etre 1 ou 2 pour la page 1 et 2
     size?: number; // le size le nombre max a recuperer par exemple je veux une pagination 10 par 10
     selects?: Array<String>; // les champs a selection. laissez vide si on veux tous prendre
@@ -35,7 +35,7 @@ export const globalGet = async({T, filters, includes, curentPage, size, selects,
         const query = new Parse.Query(CLASS?.[T])
         if(filters){
             Object.entries(filters).forEach(([key, value]: any) => {
-                if(typeof value === "string"){
+                if(typeof value === "string" || typeof value === "boolean" || value instanceof Date && !isNaN(value.getTime()) ){
                     query.equalTo(key, value)
                 }else{
                     query.equalTo(key, {"__type": "Pointer", "className": value?.className , "objectId": value?.objectId})
@@ -75,6 +75,7 @@ export const globalGet = async({T, filters, includes, curentPage, size, selects,
     }
 }
 
+
 export const globalPost = async({T, dataObject} : BasePostIO): Promise<any> => {
     try {
         const query = new CLASS[T]()
@@ -87,7 +88,7 @@ export const globalPost = async({T, dataObject} : BasePostIO): Promise<any> => {
         // });
         Object.entries(dataObject).forEach(([key, value]: [string, any]) => {
 
-            if (typeof value === "string" || Array.isArray(value)) {
+            if(typeof value === "string" || Array.isArray(value) || value instanceof Date && !isNaN(value.getTime()) || typeof value === "boolean"){
         
                 query.set(key, value);
         
@@ -105,6 +106,9 @@ export const globalPost = async({T, dataObject} : BasePostIO): Promise<any> => {
         
                 });
         
+            }else if(value instanceof File){
+                const parseFile = new Parse.File(value.name, value);
+                query.set(key, parseFile);
             } else {
         
                 console.warn(`Invalid value for key "${key}":`, value);
@@ -167,6 +171,8 @@ export const globalDelete = async({T, objectId} : BaseDeleteIO): Promise<any> =>
         }
     }
 }
+
+
 
 
 

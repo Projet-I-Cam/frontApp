@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 
 import { StudentService } from './student.service';
 import { PersonService } from './person.service';
@@ -13,7 +12,6 @@ import { ParseService } from '../parse.service';
 @NgModule({
   imports: [
     CommonModule,
-    HttpClientModule
   ],
   providers: [
     ParseService,
@@ -22,7 +20,7 @@ import { ParseService } from '../parse.service';
     ClassService,
     InstitutionService,
     CampusService,
-    LocationService
+    LocationService,
   ],
 })
 export class ServicesModule { } 

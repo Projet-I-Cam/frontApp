@@ -8,11 +8,10 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-student-transfer',
-  templateUrl: './student-transfer.component.html',
-  styleUrls: ['./student-transfer.component.scss'],
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule]
+    selector: 'app-student-transfer',
+    templateUrl: './student-transfer.component.html',
+    styleUrls: ['./student-transfer.component.scss'],
+    imports: [CommonModule, ReactiveFormsModule, RouterModule]
 })
 export class StudentTransferComponent implements OnInit {
   public routes = routes;

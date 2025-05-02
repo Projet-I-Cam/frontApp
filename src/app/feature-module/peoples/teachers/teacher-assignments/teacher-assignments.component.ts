@@ -48,7 +48,6 @@ interface SubjectData {
     selector: 'app-teacher-assignments',
     templateUrl: './teacher-assignments.component.html',
     styleUrl: './teacher-assignments.component.scss',
-    standalone: true,
     imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, MatSortModule, MatTableModule, CustomPaginationModule, BsDatepickerModule, DropdownModule, SharedModule]
 })
 export class TeacherAssignmentsComponent {
