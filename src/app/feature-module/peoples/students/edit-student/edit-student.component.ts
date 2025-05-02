@@ -73,7 +73,7 @@ export class EditStudentComponent implements OnInit {
       transferCertificateNumber: [''],
       transferDate: [''],
       
-      // Medical information
+      // Medical information 
       medicalConditions: [''],
       allergies: this.fb.array([]),
       medications: this.fb.array([]),
