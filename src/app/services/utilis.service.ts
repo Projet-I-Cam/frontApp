@@ -56,5 +56,13 @@ export class UtilsService {
 
     return result;
   }
+  static async getArrondissement(id: any): Promise<any>{
+    const q = new Parse.Query(ParseClass.Municipality)
+    q.limit(500)
+    if(id){
+      return await q.get(id)
+    }
+    return await q.find()
+  }
 
 }

@@ -48,7 +48,7 @@ export class InstitutionsListComponent implements OnInit {
     this.loading = true;
     this.error = null;
     try {
-      await this.getTableData(this.currentPage);
+      await this.getTableData(this.currentPage, null, ['municipality', 'owner']);
     } catch (err) {
       this.error = 'An error occurred while loading data.';
     } finally {
@@ -62,10 +62,10 @@ export class InstitutionsListComponent implements OnInit {
       filters: filters || {},
       includes: includes || [],
       curentPage: currentPage,
-    });
+    }); 
 
     console.log('Fetched data:', res);
-
+ 
     if (!res.error) {
       this.tableData = res ? [...res] : [];
       this.totalRecords = res.length;
