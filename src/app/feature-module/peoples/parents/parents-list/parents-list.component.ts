@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import {
   apiResultFormat,
@@ -34,7 +34,7 @@ import { ParentsModalComponent } from '../Modals/Parents-modal.component';
     styleUrl: './parents-list.component.scss',
     standalone: false
 })
-export class ParentsListComponent {
+export class ParentsListComponent implements OnInit {
   load: boolean = true;
   deleteDialog: boolean = false;
 
@@ -68,8 +68,6 @@ export class ParentsListComponent {
     private authService: AuthService,
     private router: Router,
     private pagination: PaginationService,
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService,
     private modalService: NgbModal
   ) {}
 
@@ -86,6 +84,16 @@ export class ParentsListComponent {
       const modalRef = this.modalService.open(ParentsModalComponent);
       modalRef.componentInstance.parentData = this.parent;
       modalRef.componentInstance.mode = this.mode;
+      modalRef.result.then(
+        (result) => {
+          if (result) {
+            this.ngOnInit();
+          }
+        },
+        (reason) => {
+          console.log('Modal dismissed', reason);
+        }
+      );
     }
 
     //ouvrir le modal pour modifier un élément
@@ -161,50 +169,6 @@ export class ParentsListComponent {
 
 
 
-    
-
-
-  private getTableData2(pageOption: pageSelection): void {
-
-    this.data.getParentList().then((apiRes: any) => {
-      this.tableData = [];
-      this.tableDataCopy = [];
-      this.serialNumberArray = [];
-      this.totalData = apiRes.totalData;
-      apiRes.data.map((res: any, index: number) => {
-        const serialNumber = index + 1;
-        if (index >= pageOption.skip && serialNumber <= pageOption.limit) {
-          const newParentList: parentList = {
-            objectId: res.objectId,
-            sNo: serialNumber, // Numéro de série
-            isSelected: false, // Valeur par défaut, vous pouvez la modifier selon vos besoins
-            Addedon: new Date().toISOString(), // Date d'ajout, vous pouvez la modifier selon vos besoins
-            p: res.person.firstName+' '+res.person.lastName,
-            firstName: res.firstName,
-            lastName: res.lastName,
-            email: res.firstName,
-            phone: res.phone,
-            photo: res.photo,
-            birthDate: res.birthDate,
-            birthPlace: res.birthPlace,
-            gender: res.gender
-          };  
-          this.actualData.push(newParentList);
-          this.tableData.push(newParentList);
-          this.tableDataCopy.push(newParentList);
-          this.serialNumberArray.push(serialNumber);
-        }
-      });
-      this.dataSource = new MatTableDataSource<parentList>(this.actualData);
-      this.pagination.calculatePageSize.next({
-        totalData: this.totalData,
-        pageSize: this.pageSize,
-        tableData: this.tableData,
-        tableDataCopy: this.tableDataCopy,
-        serialNumberArray: this.serialNumberArray,
-      });
-    });
-  }
 
     private getTableData(pageOption: pageSelection): void {
       this.data.getParentList().then((apiRes: any) => {
@@ -217,7 +181,7 @@ export class ParentsListComponent {
           const serialNumber = index + 1;
           if (index >= pageOption.skip && serialNumber <= pageOption.limit) {
             res.id = serialNumber;
-            res.Addedon = res.cratedAt ? res.cratedAt.toISOString() : undefined;
+            res.Addedon = this.utils.getDate(res.cratedAt);
             this.tableData.push(res);
             this.serialNumberArray.push(serialNumber);
             this.tableDataCopy.push(res);

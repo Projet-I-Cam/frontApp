@@ -18,6 +18,8 @@ export class PersonService {
   getAllPersons(): Observable<any[]> {
     const query = new Parse.Query(this.PERSON_CLASS);
     query.descending('createdAt');
+    query.descending('createdAt');
+    query.descending('createdAt');
     return from(query.find()).pipe(
       map(results => results.map(person => this.parsePersonObject(person)))
     );
@@ -51,6 +53,11 @@ getPersonsByStaffType(staffTypeId: string): Observable<any[]> {
    */
   getPersonById(id: string): Observable<any> {
     const query = new Parse.Query(this.PERSON_CLASS);
+    query.include('classroom');
+    query.include('gender');
+    query.include('parents');
+    query.include('section');
+    query.include('enrollment');
     return from(query.get(id)).pipe(
       map(person => this.parsePersonObject(person))
     );
@@ -61,6 +68,40 @@ getPersonsByStaffType(staffTypeId: string): Observable<any[]> {
    * @param personData Data for the new person
    * @returns Observable with the created person
    */
+  async createSimpleParent(parents: Array<any>): Promise<any> {
+    const toReturn = []
+    for (let index = 0; index < parents.length; index++) {
+      const parent = parents[index];
+      if(parent.LinkExistedParent){
+        toReturn.push({
+          "__type": "Pointer",
+          "className": "Person" ,
+          "objectId": parent.fatherObjectId
+        })
+        continue
+      }
+      const usr = new Parse.User();
+      usr.set("username", parent.phoneNumber);
+      usr.set("password", parent.phoneNumber);
+      const dataRole = await Parse.Cloud.run('getRole', {task_name: "parent"})
+      console.log('Role round ', dataRole)
+      usr.set("role", {"__type": "Pointer", "className": "_Role" , "objectId": dataRole.role?.objectId});
+      const user = await usr.signUp()
+
+      const Person = Parse.Object.extend(this.PERSON_CLASS);
+      const query = new Person();
+      query.set("firstName", parent?.firstName)
+      query.set("lastName", parent?.lastName)
+      query.set("gender", {"__type": "Pointer", "className": "Gender" , "objectId": parent.gender})
+      query.set("isParent", true)
+      query.set("phone", parent?.phoneNumber)
+      query.set("email", parent?.email)
+      query.set("user", user)
+      const person = await query.save()
+      toReturn.push(person)
+    }
+    return toReturn
+  }
   createPerson(personData: any): Observable<any> {
     const Person = Parse.Object.extend(this.PERSON_CLASS);
     const person = new Person();
@@ -80,7 +121,10 @@ getPersonsByStaffType(staffTypeId: string): Observable<any[]> {
     if (personData?.isStudent) {
       person.set('isStudent', true);
     }
-    if (personData?.isParent) {
+    if(personData?.parents){
+      person.set('parents', personData.parents);
+    }
+    if(personData?.isParent){
       person.set('isParent', true);
     }
     if (personData?.isStaff) {
@@ -100,15 +144,37 @@ getPersonsByStaffType(staffTypeId: string): Observable<any[]> {
         usr.set("username", personData.phone);
         usr.set("password", personData.phone);
         usr.set("person", person);
-        if (personData.roleId) {
-          usr.set("role", { "__type": "Pointer", "className": "_Role", "objectId": personData.roleId });
+        if(personData.roleId){
+          usr.set("role", {"__type": "Pointer", "className": "_Role" , "objectId": personData.roleId});
         }
-        return usr.signUp().then(user => {
+        return  usr.signUp().then(user => {
           person.set("user", usr)
-          return this.parsePersonObject(result)
+          return person.save().then(()=>this.parsePersonObject(result))
         })
       })
     );
+  }
+
+  async searchParentByKeyword(q: string): Promise<any> {
+    try {
+      const queries = ['firstName', 'lastName', 'phone', 'email'].map(field => {
+        const qObj = new Parse.Query(this.PERSON_CLASS);
+        qObj.equalTo('isParent', true);
+        qObj.matches(field, new RegExp(q, 'i'));
+        return qObj;
+      });
+      const mainQuery = Parse.Query.or(...queries);
+      mainQuery.limit(30);
+      mainQuery.select('firstName', 'lastName', 'email', 'phone');
+      const results = await mainQuery.find();
+      return results.map(person => ({
+        label: `${person.get("firstName")} ${person.get("lastName")} - ${person.get("phone")}`,
+        value: person.id
+      }));
+    } catch (error) {
+      console.error(' error searchParentByKeyword', error)
+      return []
+    }
   }
 
   /**

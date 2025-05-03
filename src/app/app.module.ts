@@ -10,8 +10,6 @@ import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { SiteModule } from './site/site.module';
 import { ParseService } from './parse.service';
-import { ServicesModule } from './services/services.module';
-import { SkeletonModule } from 'primeng/skeleton';
 
 
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -25,7 +23,7 @@ import { DialogModule } from '@angular/cdk/dialog';
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, AppRoutingModule, SharedModule, SiteModule, HttpClientModule,
-    FormsModule, ToastModule, ReactiveFormsModule, SkeletonModule, DialogModule, BrowserAnimationsModule
+    FormsModule, ToastModule, ReactiveFormsModule,   
   ],
   providers: [
     provideAnimationsAsync(),

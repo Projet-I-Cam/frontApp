@@ -37,7 +37,6 @@ export default {
     QuarterDivision: Parse.Object.extend("QuarterDivision"),
     UA_PeriodAssessment: Parse.Object.extend("UA_PeriodAssessment"),
     Cote:  Parse.Object.extend("Cote"),
-    Position: Parse.Object.extend("Position"),
-    PersonPosition: Parse.Object.extend('PersonPosition')
+    TypeOfParent:  Parse.Object.extend("TypeOfParent"),
 
 }

@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SidebarService } from '../../../shared/sidebar/sidebar.service';
-import { DataService } from '../../../shared/data/data.service';
 import { CommonService } from '../../../shared/common/common.service';
 import { Router } from '@angular/router';
 import { routes } from '../../../shared/routes/routes';
 import { LoginService } from '../../../auth/services/login.service';
+import { globalGet } from '../../../services/statefull/http';
 
 @Component({
     selector: 'app-header',
@@ -13,13 +13,20 @@ import { LoginService } from '../../../auth/services/login.service';
     standalone: false
 })
 
-export class HeaderComponent {
+export class HeaderComponent implements OnInit{
   isNotificationVisible = false;
   public showDark = false;
   public darkTheme = false;
+  annees : any[] = [];
+
+  async ngOnInit(){
+      this.annees = await globalGet({T: 'AcademicYear'});
+  }
+
   toggleNotification() {
     this.isNotificationVisible = !this.isNotificationVisible;
   }
+
   elem = document.documentElement;
   fullscreen() {
     if (!document.fullscreenElement) {

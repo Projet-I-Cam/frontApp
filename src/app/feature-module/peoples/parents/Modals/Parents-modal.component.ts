@@ -1,11 +1,12 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, AfterViewInit } from '@angular/core';
 import { globalDelete, globalGet, globalPost } from '../../../../services/statefull/http';
 import { AuthService } from '../../../../services/auth.service';
 import Parse from 'parse';
 import { UtilsService } from '../../../../services/utilis.service';
 import { DataService } from '../../../../shared/data/data.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
+import Swal from 'sweetalert2';
+import { AlertService } from '../../../../services/alertService';
 
 
 @Component({
@@ -15,18 +16,19 @@ import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
   standalone: false
 })
 export class ParentsModalComponent {
-  @Input() parent: any = {};  
-  @Input() mode: any = "new";  
-  
- countries: any;
- genders: any[] = [];
+
+
+  @Input() parent: any = {};
+  @Input() mode: any = "new";
+
+  countries: any;
+  genders: any[] = [];
 
   public imagePreview: string | ArrayBuffer | null = null;
   public errorMessage: string | null = null;
   public successMessage: string | null = null;
   submitted: boolean = false;
   maxBirthDate: string = '';
-
 
   selectedItem: any;
 
@@ -35,12 +37,15 @@ export class ParentsModalComponent {
   items: any[] = [];
   students: any[] = [];
 
+  isLoading = false;
+
   constructor(
     private authService: AuthService,
     private utils: UtilsService,
     private data: DataService,
-    public activeModal: NgbActiveModal
-  ) {}
+    public activeModal: NgbActiveModal,
+    private alertService: AlertService
+  ) { }
 
   ngOnInit(): void {
     this.maxBirthDate = this.utils.getMaxDate(16);
@@ -49,25 +54,9 @@ export class ParentsModalComponent {
     this.loadStudents();
     this.items = [];
     for (let i = 0; i < 10000; i++) {
-        this.items.push({ label: 'Item ' + i, value: 'Item ' + i });
+      this.items.push({ label: 'Item ' + i, value: 'Item ' + i });
     }
   }
-
-
-  filterItems(event: AutoCompleteCompleteEvent) {
-    //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
-    let filtered: any[] = [];
-    let query = event.query;
-
-    for (let i = 0; i < (this.items as any[]).length; i++) {
-        let item = (this.items as any[])[i];
-        if (item.label.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-            filtered.push(item);
-        }
-    }
-
-    this.filteredItems = filtered;
-}
 
 
   onFileSelected(event: Event): void {
@@ -89,20 +78,20 @@ export class ParentsModalComponent {
     }
   }
 
-  private loadStudents(){
-    this.data.getStudent().subscribe((apiRes: any) => {
-      this.students = apiRes;
-    });
-  }
-
-  private loadCounties(){
-    this.data.getCountries().subscribe((apiRes: any) => {
-      this.countries = apiRes
-      console.log("les pays", apiRes);
+  private loadStudents() {
+    this.data.getStudents().then((apiRes: any) => {
+      console.log(apiRes);
+      this.students = apiRes
     })
   }
 
-  private loadGenders(){
+  private loadCounties() {
+    this.data.getCountries().subscribe((apiRes: any) => {
+      this.countries = apiRes
+    })
+  }
+
+  private loadGenders() {
     this.data.getGender().then((apiRes: any) => {
       this.genders = apiRes
     })
@@ -114,99 +103,96 @@ export class ParentsModalComponent {
   }
 
   async save() {
-    console.log(0);
+    this.isLoading = true;
     this.submitted = true;
     console.log(this.parent);
-    if(this.parent.firstName?.trim() && this.parent.birthDate?.trim() && 
-      this.parent.birthPlace?.trim() && this.parent.phone?.trim() && this.parent.email?.trim() && this.parent.gender){
-        
-        console.log('Form before submitted:', this.parent);
-        const gender = this.getSelectedGender();
-        const birthDateValue = this.parent.birthDate;
-        const birthDate = birthDateValue ? new Date(birthDateValue) : undefined;
+    if (this.parent.firstName?.trim() && this.parent.birthDate?.trim() &&
+      this.parent.birthPlace?.trim() && this.parent.phone?.trim() && this.parent.email?.trim() && this.parent.gender) {
 
-        const query = new Parse.Query('Person');
-        query.equalTo('email', this.parent.email);
-        const existingUsers = await query.find();
+      console.log('Form before submitted:', this.parent);
+      const gender = this.getSelectedGender();
+      const birthDateValue = this.parent.birthDate;
+      const birthDate = birthDateValue ? new Date(birthDateValue) : undefined;
 
-        if(this.parent.objectId){ //modification
+      const query = new Parse.Query('Person');
+      query.equalTo('email', this.parent.email);
+      const existingUsers = await query.find();
 
-        }else{ //creation
+      if (this.parent.objectId) { //modification
 
-          try {
-            if (existingUsers.length > 0) {
+      } else { //creation
 
-              this.errorMessage = "L'adresse e-mail existe déjà.";
-              return;
+        try {
+          if (existingUsers.length > 0) {
 
-            }else{
-
-              let userResponse: any = [];
-              userResponse = await this.authService.registerUser (
-                this.parent.firstName + " " + this.parent.lastName,
-                this.parent.email + "0",
-                'abc@1234',
-                this.parent.email,
-                'parent'
-              );
-
-              if (!userResponse) {
-                console.error("Failed to save user:", userResponse);
-                this.errorMessage = userResponse;
-                return;
-              }else{
-
-                let studentsData : any[] = [];
-                this.parent.students.forEach((item : any) => {
-                    const student = {
-                      __type: 'pointer',
-                      className: 'Person',
-                      objectId: item.objectId
-                    }
-                    studentsData.push(student);
-                })
-
-                const personData: any = {
-                  isParent: true,
-                  isStudent: false,
-                  lastName: this.parent.lastName,
-                  firstName: this.parent.firstName,
-                  gender: {
-                    className: "Gender",
-                    objectId: gender.objectId
-                  },
-                  phone: this.parent.phone,
-                  countryCode: this.parent.country.phone,
-                  //nationality: this.parent.country.nameFR,
-                  email: this.parent.email,
-                  birthDate: birthDate,
-                  birthPlace: this.parent.birthPlace,
-                  photo: this.parent.photo,
-                  user: userResponse,
-                  //students: studentsData
-                };        
-
-                const personResponse: any = await globalPost({ T: 'Person', dataObject: personData });
-                
-                if(personResponse.error){
-                  console.error("Failed to save user:", personResponse.error.message);
-                  this.errorMessage = personResponse.error.message;
-                }else{
-                  this.ngOnInit();
-                  this.successMessage = "Parent enregistré avec succès";
-                  this.errorMessage = null;
-                }               
-              }
-            }
-          } catch (error) {
-            console.error("Error checking existing users:", error);
-            this.errorMessage = "Une erreur est survenue lors de la vérification des utilisateurs existants.";
+            this.errorMessage = "L'adresse e-mail existe déjà.";
             return;
-          }          
-        } 
-    }else{
+
+          } else {
+
+            let userResponse: any = [];
+            userResponse = await this.authService.registerUser(
+              this.parent.firstName + " " + this.parent.lastName,
+              this.parent.email,
+              'abc@1234',
+              this.parent.email,
+              'parent'
+            );
+
+            let studentsData: any[] = [];
+            if (this.parent.students) {
+              this.parent.students.forEach((item: any) => {
+                const student = {
+                  __type: 'pointer',
+                  className: 'Person',
+                  objectId: item
+                }
+                studentsData.push(student);
+              })
+            }
+
+
+            const personData: any = {
+              isParent: true,
+              isStudent: false,
+              lastName: this.parent.lastName,
+              firstName: this.parent.firstName,
+              gender: {
+                __type: 'pointer',
+                className: "Gender",
+                objectId: this.parent.gender
+              },
+              phone: this.parent.phone,
+              countryCode: this.parent.country.phone,
+              //nationality: this.parent.country.nameFR,
+              email: this.parent.email,
+              birthDate: birthDate,
+              birthPlace: this.parent.birthPlace,
+              photo: this.parent.photo,
+              user: userResponse,
+              //students: studentsData
+            };
+
+            const personResponse: any = await globalPost({ T: 'Person', dataObject: personData });
+            this.successMessage = "Parent enregistré avec succès";
+            this.alertService.showSuccess("Parent enregistré avec succès");
+            this.errorMessage = null;
+            this.activeModal.close(this.parent);
+          }
+        } catch (error: unknown) {
+          this.isLoading = false;
+          if (error instanceof Error) {
+            this.alertService.showError(error.message);
+          } else {
+            this.alertService.showError("Une erreur inconnue est survenue pendant la création du parent.");
+          }
+        }
+      }
+    } else {
       this.errorMessage = "Veuillez remplir tous les champs";
-    }   
+      this.alertService.showError("Veuillez remplir tous les champs");
+      this.isLoading = false;
+    }
   }
 
 

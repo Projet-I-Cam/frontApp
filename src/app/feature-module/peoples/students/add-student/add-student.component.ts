@@ -2,16 +2,16 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { finalize } from 'rxjs/operators';
 import Parse from 'parse';
+import { finalize } from 'rxjs/operators';
 
 import { ClassService } from '../../../../services/class.service';
 import { PersonService } from '../../../../services/person.service';
 import { StudentService } from '../../../../services/student.service';
-import { Class, Person, Student } from '../../../../shared/model/student.model'; 
+import { UtilsService } from '../../../../services/utilis.service';
+import { Class, Person, Student } from '../../../../shared/model/student.model';
 import { routes } from '../../../../shared/routes/routes';
 import { SharedModule } from '../../../../shared/shared.module';
-import { UtilsService } from '../../../../services/utilis.service';
 
 @Component({
     selector: 'app-add-student',
@@ -32,6 +32,15 @@ export class AddStudentComponent implements OnInit {
   classes: Class[] = [];
   sections: any = [];
   sexes: any = [];
+  parents: any = [
+    { label: 'New York', value: 'NY' },
+    { label: 'Rome', value: 'RM' },
+    { label: 'London', value: 'LDN' },
+    { label: 'Istanbul', value: 'IST' },
+    { label: 'Paris', value: 'PRS' }
+  ];
+  filteredPerson: any[] = [];
+  loading = false;
   isLoading = false;
   isSubmitting = false;
   errorMessage = '';
@@ -105,9 +114,23 @@ export class AddStudentComponent implements OnInit {
       emergencyContactRelation: [''],
       
       // Parent/Guardian information
-      parentGuardianInfo: ['']
-      // parentGuardianInfo: this.fb.array([this.createParentGroup()])
+      // parentGuardianInfo: ['']
+      parentGuardianInfo: this.fb.array([this.createParentGroup()])
     });
+  }
+
+  async searchParent(event: any) {
+    const query = event.filter;
+    if (query?.length < 2) {
+      this.filteredPerson = [];
+      return;
+    }
+    this.loading = true;
+    console.log('query query ', query)
+    const resp = await this.personService.searchParentByKeyword(query.toLowerCase())
+    console.log('RESP ', resp)
+    this.filteredPerson = resp
+    this.loading = false;
   }
 
   ngOnInit(): void {
@@ -145,16 +168,50 @@ export class AddStudentComponent implements OnInit {
   }
 
   createParentGroup(): FormGroup {
-    return this.fb.group({
-      relation: ['', [Validators.required]],
+    const form = this.fb.group({
+      // relation: ['', [Validators.required]],
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
-      occupation: [''],
-      education: [''],
-      email: ['', [Validators.email]],
-      phoneNumber: [''],
-      address: ['']
+      gender: ['', [Validators.required]],
+      // occupation: [''],
+      // education: [''],
+      email: [''],
+      fatherObjectId: [''],
+      LinkExistedParent: [false],
+      phoneNumber: ['', [Validators.required]],
+      address: [''],
+      createUserAccount: ['']
     });
+
+    form.get('LinkExistedParent')?.valueChanges.subscribe(linked => {
+      const firstName = form.get('firstName');
+      const lastName = form.get('lastName');
+      const gender = form.get('gender');
+      const phoneNumber = form.get('phoneNumber');
+      const fatherObjectId = form.get('fatherObjectId');
+
+      // fullName is required only if NOT a company
+      if (!linked) {
+        firstName?.setValidators([Validators.required]);
+        lastName?.setValidators([Validators.required]);
+        phoneNumber?.setValidators([Validators.required]);
+        gender?.setValidators([Validators.required]);
+        fatherObjectId?.clearValidators();
+      } else {
+        fatherObjectId?.setValidators([Validators.required]);
+        firstName?.clearValidators();
+        lastName?.clearValidators();
+        phoneNumber?.clearValidators();
+        gender?.clearValidators();
+      }
+      fatherObjectId?.updateValueAndValidity();
+      firstName?.updateValueAndValidity();
+      lastName?.updateValueAndValidity();
+      phoneNumber?.updateValueAndValidity();
+      gender?.updateValueAndValidity();
+    });
+
+    return form
   }
 
   get allergiesArray(): FormArray {
@@ -186,7 +243,9 @@ export class AddStudentComponent implements OnInit {
   }
 
   addParentGuardian(): void {
-    this.parentGuardianArray.push(this.createParentGroup());
+    if (this.parentGuardianArray.length < 2) {
+      this.parentGuardianArray.push(this.createParentGroup());
+    }
   }
 
   removeParentGuardian(index: number): void {
@@ -205,7 +264,7 @@ export class AddStudentComponent implements OnInit {
     }
   }
 
-  public onSubmit() {
+  public async onSubmit() {
      console.log('Submited', this.studentForm.valid, this.studentForm.value)
     if (this.studentForm.valid) {
       this.isSubmitting = true;
@@ -214,6 +273,9 @@ export class AddStudentComponent implements OnInit {
       // Extract form values
       const formValues = this.studentForm.value;
       
+      const parentGuardianInfo = formValues?.parentGuardianInfo
+      const parents = await this.personService.createSimpleParent(parentGuardianInfo)
+      console.log(' parents parents ', parents)
       // Create person data
       const personData: Partial<Person> = {
         firstName: formValues.firstName,
@@ -227,7 +289,9 @@ export class AddStudentComponent implements OnInit {
         address: formValues.address,
         photo: formValues.photo,
         isStudent: true,
+        parents: parents,
         registrationNumber: UtilsService.getStudentMatricule(),
+        // registrationNumber: UtilsService.getStudentMatricule(),
         classroom: formValues.classroom,
         roleId: null
       };
@@ -301,12 +365,25 @@ export class AddStudentComponent implements OnInit {
           }
         );
     } else {
-      // Mark all fields as touched to display validations
-      Object.keys(this.studentForm.controls).forEach(key => {
-        const control = this.studentForm.get(key);
-        control?.markAsTouched();
-      });
+      this.markFormGroupTouched(this.studentForm);
     }
+  }
+
+  private markFormGroupTouched(formGroup: FormGroup): void {
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      control?.markAsTouched();
+      if (control instanceof FormGroup) {
+        this.markFormGroupTouched(control);
+      }else if (control instanceof FormArray) {
+        control.controls.forEach((ctrl) => {
+          ctrl.markAsTouched(); // Marquer chaque contrôle dans le FormArray comme touché
+          if (ctrl instanceof FormGroup) {
+            this.markFormGroupTouched(ctrl); // Appel récursif pour les FormGroup dans le FormArray
+          }
+        });
+      }
+    });
   }
 
   // Helper method to get a class by ID

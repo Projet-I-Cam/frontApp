@@ -1,27 +1,17 @@
-/* Custom styles for the dropdown items */
-.custom-dropdown-item {
-    padding: 10px; /* Add padding for better spacing */
-    background-color: gray; /* Default background color */
-    color: white; /* Text color */
+/* Custom style for modal content width */
+.custom-modal-content {
+    width: 760px; /* Adjust width as needed */
+    max-width: 90vw; /* Responsive max width */
+    margin: auto;
 }
 
-/* Change background color on hover */
-.custom-dropdown-item:hover {
-    background-color: #d0d0d0; /* Change to your desired hover color */
-}
+.form-control-dark-border {
+    border-color: #333 !important; /* Couleur foncée */
+    box-shadow: none; /* Supprimer éventuelle ombre claire */
+  }
+  
+  .form-control-dark-border:focus {
+    border-color: #222 !important; /* Bordure encore plus foncée au focus */
+    box-shadow: 0 0 0 0.2rem rgba(34, 34, 34, 0.25) !important; /* Ombre personnalisée */
+  }
 
-/* Ensure the selected item has a distinct style */
-.p-dropdown-label {
-    background-color: #f0f0f0; /* Background color for the selected item */
-    color: black; /* Text color for the selected item */
-}
-
-/* Optional: Style for the dropdown panel */
-.p-dropdown-panel {
-    z-index: 1050; /* Ensure dropdown is above other elements */
-}
-
-/* Optional: Style for the dropdown items */
-.p-dropdown-item {
-    padding: 10px; /* Add padding for better spacing */
-}

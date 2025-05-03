@@ -23,6 +23,7 @@ export class UiSweetalertsComponent {
 
     })
   }
+  
   footerAlert() {
     Swal.fire({
       title: 'Oops...',

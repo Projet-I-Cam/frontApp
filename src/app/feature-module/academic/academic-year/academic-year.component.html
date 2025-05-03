@@ -1,0 +1,205 @@
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+    <div class="content">
+      <!-- Page Header -->
+      <div class="d-md-flex d-block align-items-center justify-content-between mb-3">
+        <div class="my-auto mb-2">
+          <h3 class="page-title mb-1">Administration</h3>
+          <nav>
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item">
+                <a [routerLink] = "routes.adminDashboard">Dashboard</a>
+              </li>
+              <li class="breadcrumb-item">
+                <a href="javascript:void(0);">Institutions</a>
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">Années Académiques</li>
+            </ol>
+          </nav>
+        </div>
+        <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
+          <app-tooltip-content /> 
+          <div class="mb-2">
+            <a href="javascript:void(0);" (click)="openModal('create')" class="btn btn-primary"><i
+                class="ti ti-square-rounded-plus me-2"></i>Ajouter</a>
+          </div>
+        </div>
+      </div>
+      <!-- /Page Header -->
+
+
+          <!-- Guardians List -->
+    <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between flex-wrap pb-0">
+          <h4 class="mb-3">Années académiques</h4>
+        </div>
+        <div class="card-body p-0 py-3">
+          <!-- Guardians List -->
+          <div class="table-top px-3">
+            <div class="row">
+              <div class="col-sm-12 col-md-6"></div>
+              <div class="col-sm-12 col-md-6">
+                <div id="DataTables_Table_0_filter" class="dataTables_filter">
+                  <label>
+                    <input
+                      [(ngModel)]="searchDataValue"
+                      [ngModelOptions]="{ standalone: true }"
+                      (ngModelChange)="searchData(searchDataValue)"
+                      type="search"
+                      class="form-control"
+                      placeholder="Search..."
+                  /></label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="custom-datatable-filter table-responsive">
+            <table
+              (matSortChange)="sortData($event)"
+              matSort
+              matSortActive="Sno"
+              matSortDirection="asc"
+              matSortDisableClear
+              class="table datatable">
+              <thead class="thead-light">
+                <tr>
+                  <th mat-sort-header="id">#</th>
+                  <th mat-sort-header="roomNo">Libellé</th>
+                  <th mat-sort-header="status">Crée le</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="load; else dataTemplate">
+                    <td><p-skeleton width="20px" height="20px" shape="circle"></p-skeleton></td>
+                    <td><p-skeleton width="30px"></p-skeleton></td>
+                    <td><p-skeleton width="150px"></p-skeleton></td>
+                    <td><p-skeleton width="100px"></p-skeleton></td>
+                    <td><p-skeleton width="100px"></p-skeleton></td>
+                </tr>
+                <ng-template #dataTemplate>
+                    @for (table of tableData; track table.id) {
+                    <tr>
+                    <td>{{table.id}}</td>
+                    <td>{{ table.libelle }}</td>
+                    <td>{{ table.Addedon }}</td>                  
+                    <td>{{ table.Addedon }}</td> 
+                    <td style="text-align: center">
+                        <p-button
+                          (click)="openModal('edit', table)"
+                          styleClass="p-button-text"
+                          tooltip="Edit section"
+                        >
+                          <i class="ti ti-edit h-100 w-100"></i>
+                        </p-button>
+                        <p-button
+                          (click)="openDeleteModal(table)"
+                          styleClass="p-button-text"
+                          tooltip="Delete section"
+                        >
+                          <i class="ti ti-trash h-100 w-100 text-danger"></i>
+                        </p-button>
+                      </td>                 
+                    </tr>
+                    } @if (tableData.length === 0) {
+                    <tr>
+                        <td colspan="6">
+                            <h5 class="no-record text-center">Pas d'enregistrement trouvé</h5>
+                        </td>
+                    </tr>
+                    }
+                </ng-template>
+              </tbody>
+            </table>
+          </div>
+          <app-custom-pagination></app-custom-pagination>
+          <!-- /Guardians List -->
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Add Entity -->
+<div class="modal fade" id="add-edit-modal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Ajouter/Editer</h4>
+          <button
+            type="button"
+            class="btn-close custom-btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close">
+            <i class="ti ti-x"></i>
+          </button>
+        </div>
+        <form>
+            <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                <div class="mb-3">
+                    <label class="form-label">Libellé</label>
+                    <input type="text" class="form-control" [(ngModel)]="entity.libelle" required
+                        name="libelle" #libelle="ngModel"
+                        [ngClass]="{
+                        'border-danger': libelle.invalid && (libelle.dirty || libelle.touched),
+                        'border-success': libelle.valid && libelle.dirty
+                        }"
+                        >
+                    <div *ngIf="libelle.invalid && (libelle.dirty || libelle.touched)" class="text-danger">
+                        <div *ngIf="libelle.errors?.['required']">Le libellé est requis.</div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light me-2" type="button"  (click)="closeAddEditModal()">Annuler</button>
+                <button type="submit"  class="btn btn-primary" (click)="save()" [disabled]="isSubmited">
+                    <span *ngIf="isSubmited" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    {{ mode === 'edit' ? 'Mettre à jour' : 'Ajouter' }}
+                </button>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="delete-modal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form>
+          <div class="modal-body text-center">
+            <span class="delete-icon">
+              <i class="ti ti-trash-x"></i>
+            </span>
+            <h4>Confirmer la Suppression</h4>
+            <p>
+              Vous souhaitez supprimer cet élément?.
+            </p>
+            <div class="d-flex justify-content-center">
+                <a href="javascript:void(0);" class="btn btn-light me-3"(click)="closeDeleteModal()">Annuler</a>
+                <button type="button"  class="btn btn-danger" (click)="delete()" [disabled]="isSubmited">
+                    <span *ngIf="isSubmited" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Oui, Supprimer
+                </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+</div>

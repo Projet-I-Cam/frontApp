@@ -175,6 +175,10 @@ export class DataService {
     return this.http.get<any>('assets/json/countries.json');
   }
 
+  public getSmileys() {
+    return this.http.get<any>('assets/json/smileys-appreciation.json');
+  }
+
   public getClassReportDate() {
     return this.http
       .get<apiResultFormat>('assets/json/class-report-data.json')
@@ -316,6 +320,20 @@ export class DataService {
         })
       );
   }
+
+  public async getAnneeList(): Promise<apiResultFormat> {
+    return {
+      data: [],
+      totalData: 0
+    } as apiResultFormat;
+  }
+
+  public async getEducationTypes(): Promise<apiResultFormat> {
+    return {
+      data: [],
+      totalData: 0
+    } as apiResultFormat;
+  }
   public getHostelList() {
     return this.http.get<apiResultFormat>('assets/json/hostel-list.json').pipe(
       map((res: apiResultFormat) => {
@@ -330,6 +348,14 @@ export class DataService {
       })
     );
   }
+
+  public async getCoteList(): Promise<apiResultFormat> {
+    return {
+      data: [],
+      totalData: 0
+    } as apiResultFormat;
+  }
+
   public getFeesType() {
     return this.http.get<apiResultFormat>('assets/json/fees-type.json').pipe(
       map((res: apiResultFormat) => {
@@ -407,48 +433,29 @@ export class DataService {
         data: [],
         totalData: 0
       };
+    }else{
+      return {
+        data: data,
+        totalData: data.length
+      } as apiResultFormat;
     }
-
-
-
-    // Assurez-vous que data est un tableau et qu'il contient des objets
-    const result = Array.isArray(data) ? data.map(item => {
-      // Assurez-vous que item a les propriétés nécessaires
-      if (item && item.person) {
-        return {
-          objectId: item.objectId, // ou toute autre propriété que vous souhaitez inclure
-          person: {
-            objectId: item.person.objectId,
-            lastName: item.person.lastName,
-            firstName: item.person.firstName,
-            gender: item.person.gender || '',
-            phone: item.person?.phones?.[0],
-            email: item.person?.emails?.[0],
-            birthDate: item.person.birthDate || undefined,
-            birthPlace: item.person.birthPlace || '',
-            GuardianImage: item.person.GuardianImage || '',
-            image: item.person.image || ''
-          },
-          students: item.students || [] // Assurez-vous que students est un tableau
-        };
-      }
-      return null; // Retournez null si item n'est pas valide
-    }).filter(item => item !== null) : []; // Filtrer les éléments null
-
-    return {
-      data: result,
-      totalData: result.length // Vous pouvez également ajuster cela si vous avez un total spécifique
-    } as apiResultFormat;
   }
 
-  private parseList(parent: any): any {
-    return {
-      id: parent.id,
-      person: parent.person,
-      students: parent.students,
-      createdAt: parent.createdAt
-    };
+  public async getStudents(): Promise<any> {
+
+    const data =  await globalGet({
+      T: 'Person',
+      filters: {'isStudent':true},
+      includes: ['gender', 'user', 'municipality'],
+      curentPage: 1,
+      size: undefined,
+      selects: ['objectId', 'firstName', 'lastName']
+    });
+
+    return data;
+
   }
+
 
   public getMembershipTransactions() {
     return this.http
@@ -1855,6 +1862,27 @@ export class DataService {
                   route: '', // Add actual route if available
                   hasSubRoute: false,
                   showSubRoute: false,
+            },
+            {
+              menuValue: 'Années académiques',
+              route: routes.academicYear,
+              customSubmenuTwo: false,
+              hasSubRoute: false,
+              showSubRoute: false,
+            },
+            {
+              menuValue: "Types d'enseignements",
+              route: routes.educationType,
+              customSubmenuTwo: false,
+              hasSubRoute: false,
+              showSubRoute: false,
+            },
+            {
+              menuValue: "Côtes",
+              route: routes.coteList,
+              customSubmenuTwo: false,
+              hasSubRoute: false,
+              showSubRoute: false,
                   customSubmenuFour: false,
                 },
                 {

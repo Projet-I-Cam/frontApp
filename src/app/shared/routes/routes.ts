@@ -300,6 +300,15 @@ export class routes {
   public static get reportCard(): string {
     return this.academic + '/grades/report-card';
   }
+  public static get academicYear(): string {
+    return this.academic + '/annees-list';
+  }
+  public static get educationType(): string {
+    return this.academic + '/education-types-list';
+  }
+  public static get coteList(): string {
+    return this.academic + '/examinations/cote-list';
+  }
 
   //user-management routes
   public static get userManagement(): string {

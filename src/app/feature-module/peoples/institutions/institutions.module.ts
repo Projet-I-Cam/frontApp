@@ -11,6 +11,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { InstitutionDetailsComponent } from './institution-details/institution-details.component';
+import { AcademicYearComponent } from '../../academic/academic-year/academic-year.component';
 
 @NgModule({
   declarations: [
