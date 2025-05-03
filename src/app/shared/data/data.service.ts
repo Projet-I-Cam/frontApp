@@ -4,7 +4,9 @@ import { Observable, map, from } from 'rxjs';
 import { apiResultFormat } from '../model/pages.model';
 import { LoginService } from '../../auth/services/login.service';
 import { globalGet} from '../../services/statefull/http';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+import parse from 'parse';
 
 @Injectable({
   providedIn: 'root',
@@ -369,6 +371,25 @@ export class DataService {
       })
     );
   }
+
+  private parseBaseUrl = environment.parseServerUrl;
+  private appId = environment.parseAppId;
+  private restApiKey = environment.parseRestApiKey;
+
+  // getOneObject(className: string, objectId: string): Observable<any> {
+  //   const url = `${this.parseBaseUrl}/classes/${className}/${objectId}`;
+  //   const headers = new HttpHeaders({
+  //     'X-Parse-Application-Id': this.appId,
+  //     'X-Parse-REST-API-Key': this.restApiKey,
+  //     'Content-Type': 'application/json',
+  //     // Optionally add session token:
+  //     // 'X-Parse-Session-Token': this.sessionToken,
+  //   });
+
+  //   return this.http.get<any>(url, { headers });
+  // }
+
+
 
   public async getGender(): Promise<any> {  
     

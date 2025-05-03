@@ -1,5 +1,6 @@
-import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ApexAnnotations, ApexFill, ApexLegend, ApexResponsive, ApexYAxis, ChartComponent } from 'ng-apexcharts';
+import Parse from 'parse';
 
 import {
   ApexAxisChartSeries,
@@ -14,6 +15,10 @@ import {
 
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { routes } from '../../../../shared/routes/routes';
+import { AuthService } from '../../../../services/auth.service';
+import { globalGet } from '../../../../services/statefull/http';
+import { genericFindOneBy, getOneByPointer$, getOneObject } from '../../../../services/statefull/genericParse';
+import { DataService } from '../../../../shared/data/data.service';
 interface data {
   name: string | undefined;
   code: string | undefined;
@@ -47,7 +52,7 @@ export type ChartOptions = {
     styleUrl: './student-dashboard.component.scss',
     standalone: false
 })
-export class StudentDashboardComponent {
+export class StudentDashboardComponent implements OnInit{
   addNewRow() {
     this.formData.push({ selectedClass: {name: undefined,code:undefined}});
   }
@@ -63,7 +68,10 @@ export class StudentDashboardComponent {
   public attendanceChart: Partial<ChartOptions>;
   public chartOptions2: Partial<ChartOptions>;
   formData: { selectedClass: data | undefined }[] = [];
-  constructor() {
+  student : any = {};
+  currentUser : any = {};
+
+  constructor(private authService: AuthService, private dataService: DataService) {
     this.date = new Date();
     this.chartOptions = {
       chart: {
@@ -160,6 +168,24 @@ export class StudentDashboardComponent {
     };
    
   }
+
+async ngOnInit() {
+  this.currentUser = this.authService.getCurrentUser();
+
+  //this.student = await getOneObject('_User', this.currentUser.id);
+
+  getOneByPointer$('Person', 'user', '_User', this.currentUser.id).subscribe(result => {
+    if (result?.error) {
+      console.error(result.message);
+    } else if (result) {
+      this.student = result;
+    } else {
+      console.log('No person found for that user pointer.');
+    }
+  });
+}
+
+
  
   public teacher: OwlOptions = {
     items: 5,
