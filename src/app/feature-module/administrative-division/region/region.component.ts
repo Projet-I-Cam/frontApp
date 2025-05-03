@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { TableConfig, FilterConfig, SortOption } from '../../../shared/model/table.model';
 import { routes } from '../../../shared/routes/routes';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';

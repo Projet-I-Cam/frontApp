@@ -41,8 +41,8 @@ const routes: Routes = [
       {
         path: 'minebase',
         loadChildren: () =>
-          import('./staffs-module/staffs-module.module').then((m) => m.StaffsModuleModule),
-      },
+          import('./staffs-module/staffs-module.module').then((m) => m.StaffsModule),
+      }
     ],
   },
 ];
