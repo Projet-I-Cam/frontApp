@@ -6,8 +6,8 @@
       class="d-md-flex d-block align-items-center justify-content-between mb-3"
     >
       <div class="my-auto mb-2">
-        <h4 class="mb-1">Edit Student</h4>
-        <nav>
+        <h4 class="mb-1">Modifier eleve</h4>
+        <nav> 
           <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item">
               <a [routerLink] = "routes.adminDashboard">Dashboard</a>
@@ -26,10 +26,9 @@
 
     <div class="row">
       <div class="col-md-12">
-        <form >
+        <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
           <!-- Personal Information -->
-           
-           <div class="card">
+          <div class="card">
             <div class="card-header bg-light">
               <div class="d-flex align-items-center">
                 <span
@@ -37,7 +36,7 @@
                 >
                   <i class="ti ti-info-square-rounded fs-16"></i>
                 </span>
-                <h4 class="text-dark">Personal Information</h4>
+                <h4 class="text-dark">Informations personnelles</h4>
               </div>
             </div>
             <div class="card-body pb-1">
@@ -59,16 +58,17 @@
                             type="file"
                             class="form-control image-sign"
                             multiple=""
+                            #fileInput
                           />
                         </div>
                         <a
                           href="javascript:void(0);"
                           class="btn btn-primary mb-3"
-                          >Remove</a
+                          >Supprimer</a
                         >
                       </div>
                       <p class="fs-12">
-                        Upload image size 4MB, Format JPG, PNG, SVG
+                        Taille de l'image max 4MB, Format JPG, PNG, SVG
                       </p>
                     </div>
                   </div>
@@ -77,27 +77,28 @@
               <div class="row row-cols-xxl-5 row-cols-md-6">
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Academic Year</label>
+                    <label class="form-label">Année académique</label>
                     <p-dropdown
                       [options]="[
-                        { label: 'June 2024/25', value: '1' },
-                        { label: 'June 2023/24', value: '2' },
-                        { label: 'June 2022/23', value: '3' }
+                        { label: 'Juin 2024/25', value: '2024/25' },
+                        { label: 'Juin 2023/24', value: '2023/24' },
+                        { label: 'Juin 2022/23', value: '2022/23' }
                       ]"
-                      placeholder="June 2024/25"
+                      placeholder="Sélectionner"
                       class="select"
+                      formControlName="academicYear"
                     ></p-dropdown>
                   </div>
                 </div>
-                <div class="col-xxl col-xl-3 col-md-6">
+                <!-- <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Admission Number</label>
-                    <input type="text" class="form-control" />
+                    <label class="form-label">Numéro d'admission</label>
+                    <input type="text" class="form-control" formControlName="admissionNumber" readonly />
                   </div>
-                </div>
+                </div> -->
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Admission Date</label>
+                    <label class="form-label">Date d'admission <span class="login-danger">*</span></label>
                     <div class="input-icon position-relative">
                       <span class="input-icon-addon">
                         <i class="ti ti-calendar"></i>
@@ -105,1103 +106,242 @@
                       <input
                           type="text"
                           class="form-control datetimepicker"
-                          placeholder="15-12-1991"
+                          placeholder="jj-mm-aaaa"
                           bsDatepicker
+                          formControlName="admissionDate"
+                          [ngClass]="{'is-invalid': studentForm.get('admissionDate')?.invalid && studentForm.get('admissionDate')?.touched}"
                         />
                     </div>
                   </div>
                 </div>
-                <div class="col-xxl col-xl-3 col-md-6">
+                <!-- <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Roll Number</label>
-                    <input type="text" class="form-control" />
+                    <label class="form-label">Numéro de rôle</label>
+                    <input type="text" class="form-control" formControlName="rollNumber" />
                   </div>
-                </div>
+                </div> -->
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Status</label>
+                    <label class="form-label">Statut <span class="login-danger">*</span></label>
                     <p-dropdown
                         [options]="[
-                          { label: 'Active', value: '1' },
-                          { label: 'Inactive', value: '2' },
+                          { label: 'Actif', value: 'Active' },
+                          { label: 'Inactif', value: 'Inactive' }
                         ]"
-                        placeholder="Active"
+                        placeholder="Sélectionner"
                         class="select"
+                        [ngClass]="{'is-invalid': studentForm.get('status')?.invalid && studentForm.get('status')?.touched}"
+                        formControlName="status"
                       ></p-dropdown>
                   </div>
                 </div>
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">First Name</label>
-                    <input type="text" class="form-control" />
+                    <label class="form-label">Prénom<span class="login-danger">*</span></label>
+                    <input type="text" class="form-control" formControlName="firstName" [ngClass]="{'is-invalid': studentForm.get('firstName')?.invalid && studentForm.get('firstName')?.touched}" />
                   </div>
                 </div>
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Last Name</label>
-                    <input type="text" class="form-control" />
+                    <label class="form-label">Nom<span class="login-danger">*</span></label>
+                    <input type="text" class="form-control" formControlName="lastName" [ngClass]="{'is-invalid': studentForm.get('lastName')?.invalid && studentForm.get('lastName')?.touched}" />
                   </div>
                 </div>
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Class</label>
+                    <label class="form-label">Classe</label>
                    
                     <p-dropdown
                         [options]="[
-                          { label: 'I', value: '1' },
-                          { label: 'II', value: '2' },
-                          { label: 'III', value: '3' },
-                          { label: 'IV', value: '4' },
-                          { label: 'V', value: '5' },
+                          { label: 'I', value: 'I' },
+                          { label: 'II', value: 'II' },
+                          { label: 'III', value: 'III' },
+                          { label: 'IV', value: 'IV' },
+                          { label: 'V', value: 'V' }
                         ]"
-                        placeholder="I"
+                        placeholder="Sélectionner"
                         class="select"
+                        formControlName="classroom"
                       ></p-dropdown>
                   </div>
                 </div>
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Section</label>
+                    <label class="form-label">Section<span class="login-danger">*</span></label>
                    
-                    <p-dropdown
-                        [options]="[
-                          { label: 'A', value: '1' },
-                          { label: 'B', value: '2' },
-                        ]"
-                        placeholder="A"
+                    <!-- <p-dropdown
+                        [options]="sections"
+                        placeholder="Sélectionner"
                         class="select"
-                      ></p-dropdown>
+                        [ngClass]="{'is-invalid': studentForm.get('section')?.invalid && studentForm.get('section')?.touched}"
+                        formControlName="section"
+                      ></p-dropdown> -->
                   </div>
                 </div>
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Gender</label>
-                    <p-dropdown
-                        [options]="[
-                          { label: 'Male', value: '1' },
-                          { label: 'Female', value: '2' },
-                        ]"
-                        placeholder="Male"
+                    <label class="form-label">Genre<span class="login-danger">*</span></label>
+                    <!-- <p-dropdown
+                        [options]="sexes"
+                        placeholder="Sélectionner"
                         class="select"
-                      ></p-dropdown>
+                        [ngClass]="{'is-invalid': studentForm.get('gender')?.invalid && studentForm.get('gender')?.touched}"
+                        formControlName="gender"
+                      ></p-dropdown> -->
                   </div>
                 </div>
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Date of Birth</label>
+                    <label class="form-label">Date de naissance<span class="login-danger">*</span></label>
                     <div class="input-icon position-relative">
                       <span class="input-icon-addon">
                         <i class="ti ti-calendar"></i>
                       </span>
                       <input
                           type="text"
+                          [ngClass]="{'is-invalid': studentForm.get('dateOfBirth')?.invalid && studentForm.get('dateOfBirth')?.touched}"
                           class="form-control datetimepicker"
-                          placeholder="15-12-1992"
+                          placeholder="jj-mm-aaaa"
                           bsDatepicker
+                          formControlName="dateOfBirth"
                         />
                     </div>
                   </div>
                 </div>
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Blood Group</label>
-                    <p-dropdown
-                        [options]="[
-                          { label: 'Select', value: '' },
-                          { label: 'O +ve', value: 'O +ve' },
-                          { label: 'B +ve', value: 'B +ve' },
-                          { label: 'B -ve', value: 'B -ve' }
-                        ]"
-                        placeholder="O +ve"
-                        class="select"
-                      ></p-dropdown>
+                    <label class="form-label">Groupe sanguin</label>
+                    <select formControlName="bloodGroup" class="form-select">
+                      <option value="">Sélectionner</option>
+                      <option *ngFor="let bg of bloodGroups" [value]="bg">{{ bg }}</option>
+                    </select>
                   </div>
                 </div>
-                <div class="col-xxl col-xl-3 col-md-6">
+                <!-- <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">House</label>
+                    <label class="form-label">Domicile</label>
                     <p-dropdown
                         [options]="[
-                          { label: 'Rent', value: '1' },
-                          { label: 'Own', value: '2' },
+                          { label: 'Location', value: 'Rent' },
+                          { label: 'Propriétaire', value: 'Own' }
                         ]"
-                        placeholder="Select"
+                        placeholder="Sélectionner"
                         class="select"
+                        formControlName="house"
                       ></p-dropdown>
                   </div>
-                </div>
+                </div> -->
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
                     <label class="form-label">Religion</label>
                    
                     <p-dropdown
                         [options]="[
-                          { label: 'Christianity', value: '1' },
-                          { label: 'Buddhism', value: '2' },
-                          { label: 'Irreligion', value: '3' },
+                          { label: 'Christianisme', value: 'Christianity' },
+                          { label: 'Islam', value: 'Islam' },
+                          { label: 'Bouddhisme', value: 'Buddhism' },
+                          { label: 'Sans religion', value: 'None' }
                         ]"
-                        placeholder="Christianity"
+                        placeholder="Sélectionner"
                         class="select"
+                        formControlName="religion"
                       ></p-dropdown>
                   </div>
                 </div>
-                <div class="col-xxl col-xl-3 col-md-6">
+                <!-- <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Category</label>
+                    <label class="form-label">Catégorie</label>
                     <p-dropdown
                         [options]="[
-                          { label: 'OBC', value: '1' },
-                          { label: 'BC', value: '2' },
+                          { label: 'OBC', value: 'OBC' },
+                          { label: 'Général', value: 'General' },
+                          { label: 'SC', value: 'SC' },
+                          { label: 'ST', value: 'ST' }
                         ]"
-                        placeholder="OBC"
+                        placeholder="Sélectionner"
                         class="select"
+                        formControlName="category"
                       ></p-dropdown>
                   </div>
-                </div>
-                <div class="col-xxl col-xl-3 col-md-6">
+                </div> -->
+                <!-- <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Primary Contact Number</label>
-                    <input type="text" class="form-control" />
-                  </div>
-                </div>
-                <div class="col-xxl col-xl-3 col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">Email Address</label>
-                    <input type="email" class="form-control" />
-                  </div>
-                </div>
-                <div class="col-xxl col-xl-3 col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">Caste</label>
-                    <input type="text" class="form-control" />
-                  </div>
-                </div>
-                <div class="col-xxl col-xl-3 col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">Mother Tongue</label>
-                    
+                    <label class="form-label">Langue maternelle</label>
                     <p-dropdown
                         [options]="[
-                          { label: 'English', value: '1' },
-                          { label: 'Spanish', value: '2' },
+                          { label: 'Français', value: 'French' },
+                          { label: 'Anglais', value: 'English' },
+                          { label: 'Espagnol', value: 'Spanish' }
                         ]"
-                        placeholder="English"
+                        placeholder="Sélectionner"
                         class="select"
+                        formControlName="language"
                       ></p-dropdown>
                   </div>
-                </div>
+                </div> -->
                 <div class="col-xxl col-xl-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Language Known</label>
-                    <p-chips class="input-tags" [ngModelOptions]="{standalone: true}"
-                                            [(ngModel)]="values"></p-chips>
+                    <label class="form-label">Nationalité</label>
+                    <input type="text" class="form-control" formControlName="nationality" />
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <!-- /Personal Information -->
+
+          <!-- Adresse -->
         
+          <!-- /Adresse -->
 
-          <!-- Parents & Guardian Information -->
-          <div class="card">
+          <!-- Contact Information -->
+          <div class="card" >
             <div class="card-header bg-light">
               <div class="d-flex align-items-center">
                 <span
                   class="bg-white avatar avatar-sm me-2 text-gray-7 flex-shrink-0"
                 >
-                  <i class="ti ti-user-shield fs-16"></i>
+                  <i class="ti ti-phone fs-16"></i>
                 </span>
-                <h4 class="text-dark">Parents & Guardian Information</h4>
-              </div>
-            </div>
-            <div class="card-body pb-0">
-              <div class="border-bottom mb-4">
-                <h5 class="mb-3">Father’s Info</h5>
-                <div class="row">
-                  <div class="col-md-12">
-                    <div
-                      class="d-flex align-items-center flex-wrap row-gap-3 mb-4"
-                    >
-                      <div
-                        class="d-flex align-items-center justify-content-center avatar avatar-xxl border border-dashed me-2 flex-shrink-0 text-dark frames"
-                      >
-                        <i class="ti ti-photo-plus fs-16"></i>
-                      </div>
-                      <div class="profile-upload">
-                        <div class="profile-uploader d-flex align-items-center">
-                          <div class="drag-upload-btn mb-3">
-                            Upload
-                            <input
-                              type="file"
-                              class="form-control image-sign"
-                              multiple=""
-                            />
-                          </div>
-                          <a
-                            href="javascript:void(0);"
-                            class="btn btn-primary mb-3"
-                            >Remove</a
-                          >
-                        </div>
-                        <p class="fs-12">
-                          Upload image size 4MB, Format JPG, PNG, SVG
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mb-4">
-                      <label class="form-label">Father Name</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        value="Jerald Vicinius"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mb-4">
-                      <label class="form-label">Email</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        value="jera@example.com"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mb-4">
-                      <label class="form-label">Phone Number</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        value="+1 45545 46464"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mb-4">
-                      <label class="form-label">Father Occupation</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        value="Mechanic"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="border-bottom mb-4">
-                <h5 class="mb-3">Mother’s Info</h5>
-                <div class="row">
-                  <div class="col-md-12">
-                    <div
-                      class="d-flex align-items-center flex-wrap row-gap-3 mb-4"
-                    >
-                      <div
-                        class="d-flex align-items-center justify-content-center avatar avatar-xxl border border-dashed me-2 flex-shrink-0 text-dark frames"
-                      >
-                        <i class="ti ti-photo-plus fs-16"></i>
-                      </div>
-                      <div class="profile-upload">
-                        <div class="profile-uploader d-flex align-items-center">
-                          <div class="drag-upload-btn mb-3">
-                            Upload
-                            <input
-                              type="file"
-                              class="form-control image-sign"
-                              multiple=""
-                            />
-                          </div>
-                          <a
-                            href="javascript:void(0);"
-                            class="btn btn-primary mb-3"
-                            >Remove</a
-                          >
-                        </div>
-                        <p class="fs-12">
-                          Upload image size 4MB, Format JPG, PNG, SVG
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mb-4">
-                      <label class="form-label">Mother Name</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        value="Roberta Webber"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mb-4">
-                      <label class="form-label">Email</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        value="robe@example.com"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mb-4">
-                      <label class="form-label">Phone Number</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        value="+1 46499 24357"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mb-4">
-                      <label class="form-label">Mother Occupation</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        value="Homemaker"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <h5 class="mb-3">Guardian Details</h5>
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="mb-2">
-                      <div class="d-flex align-items-center flex-wrap">
-                        <label class="form-label text-dark fw-normal me-2"
-                          >If Guardian Is</label
-                        >
-                        <div class="form-check me-3 mb-2">
-                          <input
-                            class="form-check-input"
-                            type="radio"
-                            name="guardian"
-                            id="parents"
-                            checked=""
-                          />
-                          <label class="form-check-label" for="parents">
-                            Parents
-                          </label>
-                        </div>
-                        <div class="form-check me-3 mb-2">
-                          <input
-                            class="form-check-input"
-                            type="radio"
-                            name="guardian"
-                            id="guardian"
-                          />
-                          <label class="form-check-label" for="guardian">
-                            Guardian
-                          </label>
-                        </div>
-                        <div class="form-check mb-2">
-                          <input
-                            class="form-check-input"
-                            type="radio"
-                            name="guardian"
-                            id="other"
-                          />
-                          <label class="form-check-label" for="other">
-                            Others
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      class="d-flex align-items-center flex-wrap row-gap-3 mb-4"
-                    >
-                      <div
-                        class="d-flex align-items-center justify-content-center avatar avatar-xxl border border-dashed me-2 flex-shrink-0 text-dark frames"
-                      >
-                        <i class="ti ti-photo-plus fs-16"></i>
-                      </div>
-                      <div class="profile-upload">
-                        <div class="profile-uploader d-flex align-items-center">
-                          <div class="drag-upload-btn mb-3">
-                            Upload
-                            <input
-                              type="file"
-                              class="form-control image-sign"
-                              multiple=""
-                            />
-                          </div>
-                          <a
-                            href="javascript:void(0);"
-                            class="btn btn-primary mb-3"
-                            >Remove</a
-                          >
-                        </div>
-                        <p class="fs-12">
-                          Upload image size 4MB, Format JPG, PNG, SVG
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mb-4">
-                      <label class="form-label">Guardian Name</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        value="Jerald Vicinius"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mb-4">
-                      <label class="form-label">Guardian Relation</label>
-                      <input type="text" class="form-control" />
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mb-4">
-                      <label class="form-label">Phone Number</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        value="+1 45545 46464"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mb-4">
-                      <label class="form-label">Email</label>
-                      <input
-                        type="email"
-                        class="form-control"
-                        value="jera@example.com"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mb-4">
-                      <label class="form-label">Occupation</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        value="Mechanic"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mb-4">
-                      <label class="form-label">Address</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        value="3495 Red Hawk Road, Buffalo Lake, MN 55314"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- /Parents & Guardian Information -->
-
-          <!-- Sibilings -->
-          <div class="card">
-            <div class="card-header bg-light">
-              <div class="d-flex align-items-center">
-                <span
-                  class="bg-white avatar avatar-sm me-2 text-gray-7 flex-shrink-0"
-                >
-                  <i class="ti ti-users fs-16"></i>
-                </span>
-                <h4 class="text-dark">Sibilings</h4>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="addsibling-info">
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="mb-2">
-                      <label class="form-label">Sibiling Info</label>
-                      <div class="d-flex align-items-center flex-wrap">
-                        <label class="form-label text-dark fw-normal me-2"
-                          >Is Sibiling studying in same school</label
-                        >
-                        <div class="form-check me-3 mb-2">
-                          <input
-                            class="form-check-input"
-                            type="radio"
-                            name="sibling"
-                            id="yes"
-                            checked=""
-                          />
-                          <label class="form-check-label" for="yes">
-                            Yes
-                          </label>
-                        </div>
-                        <div class="form-check mb-2">
-                          <input
-                            class="form-check-input"
-                            type="radio"
-                            name="sibling"
-                            id="no"
-                          />
-                          <label class="form-check-label" for="no"> No </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Name</label>
-                      <p-dropdown
-                        [options]="[
-                          { label: 'Ralph Claudia', value: '1' },
-                          { label: 'Julie Scott', value: '2' },
-                          { label: 'Maria', value: '3' },
-                        ]"
-                        placeholder="Ralph Claudia"
-                        class="select"
-                      ></p-dropdown>
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Roll No</label>
-                      <p-dropdown
-                        [options]="[
-                          { label: '35013', value: '1' },
-                          { label: '35011', value: '2' },
-                          { label: '35010', value: '3' },
-                        ]"
-                        placeholder="35013"
-                        class="select"
-                      ></p-dropdown>
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Admission No</label>
-                      
-                      <p-dropdown
-                        [options]="[
-                          { label: 'AD9892434', value: '1' },
-                          { label: 'AD9892433', value: '2' },
-                          { label: 'AD9892432', value: '3' },
-                        ]"
-                        placeholder="AD9892434"
-                        class="select"
-                      ></p-dropdown>
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mb-3">
-                      <div class="d-flex align-items-center">
-                        <div class="w-100">
-                          <label class="form-label">Class</label>
-                          <p-dropdown
-                        [options]="[
-                          { label: 'I', value: '1' },
-                          { label: 'II', value: '2' },
-                          { label: 'III', value: '3' },
-                        ]"
-                        placeholder="I"
-                        class="select"
-                      ></p-dropdown>
-                        </div>
-                        <div>
-                          <label class="form-label">&nbsp;</label>
-                          <a href="javascript:void(0);"  class="trash-icon ms-3"
-                            ><i class="ti ti-trash-x"></i
-                          ></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  @for (item of formData; track item; let i = $index) {
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Name</label>
-                      <p-dropdown
-                        [options]="[
-                          { label: 'Ralph Claudia', value: '1' },
-                          { label: 'Julie Scott', value: '2' },
-                          { label: 'Maria', value: '3' },
-                        ]"
-                        placeholder="Ralph Claudia"
-                        class="select"
-                      ></p-dropdown>
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Roll No</label>
-                      <p-dropdown
-                        [options]="[
-                          { label: '35013', value: '1' },
-                          { label: '35011', value: '2' },
-                          { label: '35010', value: '3' },
-                        ]"
-                        placeholder="35013"
-                        class="select"
-                      ></p-dropdown>
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Admission No</label>
-                      
-                      <p-dropdown
-                        [options]="[
-                          { label: 'AD9892434', value: '1' },
-                          { label: 'AD9892433', value: '2' },
-                          { label: 'AD9892432', value: '3' },
-                        ]"
-                        placeholder="AD9892434"
-                        class="select"
-                      ></p-dropdown>
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mb-3">
-                      <div class="d-flex align-items-center">
-                        <div class="w-100">
-                          <label class="form-label">Class</label>
-                          <p-dropdown
-                        [options]="[
-                          { label: 'I', value: '1' },
-                          { label: 'II', value: '2' },
-                          { label: 'III', value: '3' },
-                        ]"
-                        placeholder="I"
-                        class="select"
-                      ></p-dropdown>
-                        </div>
-                        <div>
-                          <label class="form-label">&nbsp;</label>
-                          <a href="javascript:void(0);" (click)="removeRow(i)" class="trash-icon ms-3"
-                            ><i class="ti ti-trash-x"></i
-                          ></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                }
-                </div>
-              </div>
-              <div class="border-top pt-3">
-                <a
-                  href="javascript:void(0);" (click)="addNewRow()"
-                  class="add-sibling btn btn-primary d-inline-flex align-items-center"
-                  ><i class="ti ti-circle-plus me-2" ></i>Add New</a
-                >
-              </div>
-            </div>
-          </div>
-          <!-- /Sibilings -->
-
-          <!-- Address -->
-          <div class="card">
-            <div class="card-header bg-light">
-              <div class="d-flex align-items-center">
-                <span
-                  class="bg-white avatar avatar-sm me-2 text-gray-7 flex-shrink-0"
-                >
-                  <i class="ti ti-map fs-16"></i>
-                </span>
-                <h4 class="text-dark">Address</h4>
-              </div>
-            </div>
-            <div class="card-body pb-0">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="mb-4">
-                    <label class="form-label">Current Address</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="Enter Current Address"
-                      value="3495 Red Hawk Road, Buffalo Lake, MN 55314"
-                    />
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="mb-4">
-                    <label class="form-label">Permanent Address</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      value="3495 Red Hawk Road, Buffalo Lake, MN 55314"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- /Address -->
-
-          <!-- Transport Information -->
-          <div class="card">
-            <div
-              class="card-header bg-light d-flex align-items-center justify-content-between"
-            >
-              <div class="d-flex align-items-center">
-                <span
-                  class="bg-white avatar avatar-sm me-2 text-gray-7 flex-shrink-0"
-                >
-                  <i class="ti ti-bus-stop fs-16"></i>
-                </span>
-                <h4 class="text-dark">Transport Information</h4>
-              </div>
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" />
+                <h4 class="text-dark">Informations de contact</h4>
               </div>
             </div>
             <div class="card-body pb-1">
-              <div class="row">
-                <div class="col-lg-4 col-md-6">
+              <div class="row row-cols-xxl-5 row-cols-md-6">
+                <div class="col-xxl col-xl-4 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Route</label>
-                    <p-dropdown
-                      [options]="[
-                        { label: 'Select', value: '' },
-                        { label: 'Newyork', value: 'Newyork' },
-                        { label: 'Denver', value: 'Denver' },
-                        { label: 'Chicago', value: 'Chicago' }
-                      ]"
-                      placeholder="Newyor"
-                      class="select"
-                    ></p-dropdown>
+                    <label class="form-label">Téléphone<span class="login-danger">*</span></label>
+                    <input type="text" class="form-control" formControlName="phoneNumber" [ngClass]="{'is-invalid': studentForm.get('phoneNumber')?.invalid && studentForm.get('phoneNumber')?.touched}" />
                   </div>
                 </div>
-                <div class="col-lg-4 col-md-6">
+                <div class="col-xxl col-xl-4 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Vehicle Number</label>
-                    <p-dropdown
-                      [options]="[
-                        { label: 'Select', value: '' },
-                        { label: 'AM 54548', value: 'AM 54548' },
-                        { label: 'AM 64528', value: 'AM 64528' },
-                        { label: 'AM 123548', value: 'AM 123548' }
-                      ]"
-                      placeholder="AM 54548"
-                      class="select"
-                    ></p-dropdown>
-                  </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">Pickup Point</label>
-                    <p-dropdown
-                      [options]="[
-                        { label: 'Select', value: '' },
-                        { label: 'Cincinatti', value: 'Cincinatti' },
-                        { label: 'Illinois', value: 'Illinois' },
-                        { label: 'Morgan', value: 'Morgan' }
-                      ]"
-                      placeholder="Cincinatti"
-                      class="select"
-                    ></p-dropdown>
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" formControlName="email" />
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <!-- /Transport Information -->
+          <!-- /Contact Information -->
 
-          <!-- Hostel Information -->
+          <!-- Academic Information -->
 
-          <div class="card">
-            <div class="card-header bg-light">
-              <div class="d-flex align-items-center">
-                <span
-                  class="bg-white avatar avatar-sm me-2 text-gray-7 flex-shrink-0"
-                >
-                  <i class="ti ti-building-fortress fs-16"></i>
-                </span>
-                <h4 class="text-dark">Hostel Information</h4>
-              </div>
-            </div>
-            <div class="card-body pb-1">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">Hostel</label>
-                    <p-dropdown
-                      [options]="[
-                        { label: 'Select', value: '' },
-                        {
-                          label: 'Phoenix Residence',
-                          value: 'Phoenix Residence'
-                        },
-                        { label: 'Tranquil Haven', value: 'Tranquil Haven' },
-                        { label: 'Radiant Towers', value: 'Radiant Towers' },
-                        { label: 'Nova Nest', value: 'Nova Nest' }
-                      ]"
-                      placeholder="Phoenix Residence"
-                      class="select"
-                    ></p-dropdown>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">Room No</label>
-                    <p-dropdown
-                      [options]="[
-                        { label: 'Select', value: '' },
-                        { label: '20', value: '20' },
-                        { label: '22', value: '22' },
-                        { label: '24', value: '24' },
-                        { label: '26', value: '26' }
-                      ]"
-                      placeholder="20"
-                      class="select"
-                    ></p-dropdown>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- /Hostel Information -->
+          <!-- /Academic Information -->
 
-          <!-- Documents -->
-          <div class="card">
-            <div class="card-header bg-light">
-              <div class="d-flex align-items-center">
-                <span
-                  class="bg-white avatar avatar-sm me-2 text-gray-7 flex-shrink-0"
-                >
-                  <i class="ti ti-file fs-16"></i>
-                </span>
-                <h4 class="text-dark">Documents</h4>
-              </div>
-            </div>
-            <div class="card-body pb-1">
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="mb-2">
-                    <div class="mb-3">
-                      <label class="form-label mb-1">Medical Condition</label>
-                      <p>Upload image size of 4MB, Accepted Format PDF</p>
-                    </div>
-                    <div class="d-flex align-items-center flex-wrap">
-                      <div class="btn btn-primary drag-upload-btn mb-2 me-2">
-                        <i class="ti ti-file-upload me-1"></i>Change
-                        <input
-                          type="file"
-                          class="form-control image_sign"
-                          multiple=""
-                        />
-                      </div>
-                      <p class="mb-2">BirthCertificate.pdf</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="mb-2">
-                    <div class="mb-3">
-                      <label class="form-label mb-1"
-                        >Upload Transfer Certificate</label
-                      >
-                      <p>Upload image size of 4MB, Accepted Format PDF</p>
-                    </div>
-                    <div class="d-flex align-items-center flex-wrap">
-                      <div class="btn btn-primary drag-upload-btn mb-2">
-                        <i class="ti ti-file-upload me-1"></i>Upload Document
-                        <input
-                          type="file"
-                          class="form-control image_sign"
-                          multiple=""
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- /Documents -->
+          <!-- Medical Information -->
 
-          <!-- Medical History -->
-          <div class="card">
-            <div class="card-header bg-light">
-              <div class="d-flex align-items-center">
-                <span
-                  class="bg-white avatar avatar-sm me-2 text-gray-7 flex-shrink-0"
-                >
-                  <i class="ti ti-medical-cross fs-16"></i>
-                </span>
-                <h4 class="text-dark">Medical History</h4>
-              </div>
-            </div>
-            <div class="card-body pb-0">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="mb-2">
-                    <label class="form-label">Medical Condition</label>
-                    <div class="d-flex align-items-center flex-wrap">
-                      <label class="form-label text-dark fw-normal me-2"
-                        >Medical Condition of a Student</label
-                      >
-                      <div class="form-check me-3 mb-2">
-                        <input
-                          class="form-check-input"
-                          type="radio"
-                          name="condition"
-                          id="good"
-                          checked=""
-                        />
-                        <label class="form-check-label" for="good">
-                          Good
-                        </label>
-                      </div>
-                      <div class="form-check me-3 mb-2">
-                        <input
-                          class="form-check-input"
-                          type="radio"
-                          name="condition"
-                          id="bad"
-                        />
-                        <label class="form-check-label" for="bad"> Bad </label>
-                      </div>
-                      <div class="form-check mb-2">
-                        <input
-                          class="form-check-input"
-                          type="radio"
-                          name="condition"
-                          id="others"
-                        />
-                        <label class="form-check-label" for="others">
-                          Others
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Allergies</label>
-                  <p-chips
-                    class="input-tags"
-                    [ngModelOptions]="{ standalone: true }"
-                    [(ngModel)]="values2"
-                  ></p-chips>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Medications</label>
-                  <p-chips
-                    class="input-tags"
-                    [ngModelOptions]="{ standalone: true }"
-                    [(ngModel)]="values3"
-                  ></p-chips>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- /Medical History -->
+ 
 
-          <!-- Previous School details -->
-          <div class="card">
-            <div class="card-header bg-light">
-              <div class="d-flex align-items-center">
-                <span
-                  class="bg-white avatar avatar-sm me-2 text-gray-7 flex-shrink-0"
-                >
-                  <i class="ti ti-building fs-16"></i>
-                </span>
-                <h4 class="text-dark">Previous School Details</h4>
-              </div>
-            </div>
-            <div class="card-body pb-0">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="mb-4">
-                    <label class="form-label">School Name</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      value="Oxford Matriculation, USA"
-                    />
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="mb-4">
-                    <label class="form-label">Address</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      value="1852 Barnes Avenue, Cincinnati, OH 45202"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- /Previous School details -->
+          <!-- /Medical Information -->
 
-          <!-- Other Details -->
-          <div class="card">
-            <div class="card-header bg-light">
-              <div class="d-flex align-items-center">
-                <span
-                  class="bg-white avatar avatar-sm me-2 text-gray-7 flex-shrink-0"
-                >
-                  <i class="ti ti-building-bank fs-16"></i>
-                </span>
-                <h4 class="text-dark">Other Details</h4>
-              </div>
-            </div>
-            <div class="card-body pb-0">
-              <div class="row">
-                <div class="col-md-5">
-                  <div class="mb-4">
-                    <label class="form-label">Bank Name</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      value="Bank of America"
-                    />
-                  </div>
-                </div>
-                <div class="col-md-2">
-                  <div class="mb-4">
-                    <label class="form-label">Branch</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      value="Cincinnati"
-                    />
-                  </div>
-                </div>
-                <div class="col-md-5">
-                  <div class="mb-4">
-                    <label class="form-label">IFSC Number</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      value="BOA83209832"
-                    />
-                  </div>
-                </div>
-                <div class="col-md-12">
-                  <div class="mb-4">
-                    <label class="form-label">Other Information</label>
-                    <textarea
-                      class="form-control"
-                      placeholder="Other Information"
-                      rows="3"
-                    >
-Depending on the specific needs of your organization or system, additional information may be collected or tracked. It's important to ensure that any data collected complies with privacy regulations and policies to protect students' sensitive information.</textarea
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- /Other Details -->
+          <!-- Parent/Guardian Information -->
+          <!-- /Parent/Guardian Information -->
 
-          <div class="text-end">
-            <button type="button" class="btn btn-light me-3">Cancel</button>
-            <button type="submit" class="btn btn-primary">Save Changes</button>
+          <div class="col-12">
+            <div class="student-submit">
+              <button type="submit" class="btn btn-primary">Enregistrer</button>
+            </div>
           </div>
         </form>
       </div>
