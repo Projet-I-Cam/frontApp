@@ -5,40 +5,47 @@ import { routes } from '../../../../shared/routes/routes';
 import { CommonModule } from '@angular/common';
 import { InstitutionService } from '../../../../services/institution.service';
 import { finalize } from 'rxjs/operators';
+import { UtilsService } from '../../../../services/utilis.service';
+import { PersonService } from '../../../../services/person.service';
+import { SharedModule } from '../../../../shared/shared.module';
 
 @Component({
     selector: 'app-add-institution',
     templateUrl: './add-institution.component.html',
     styleUrls: ['./add-institution.component.scss'],
-    imports: [CommonModule, ReactiveFormsModule, RouterModule]
+    imports: [CommonModule, ReactiveFormsModule, RouterModule, SharedModule]
 })
 export class AddInstitutionComponent implements OnInit {
   public routes = routes;
   public institutionForm: FormGroup;
   public submitting = false;
   public loading = false;
-  public errorMessage: string | null = null;
+  public loadingDrop = false;
+  public errorMessage: string | null = null; 
   public isEditMode = false;
   public editId: string | null = null;
   public pageTitle = 'Add Institution';
+  municipalities: any[] = [];
+  filteredPerson: any[] = [];
+  sexes: any[] = [];
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
+    private personService: PersonService,
     private institutionService: InstitutionService
   ) {
     this.institutionForm = this.fb.group({
       name: ['', [Validators.required]],
-      registrationNumber: ['', [Validators.required]],
-      motto: [''],
-      description: [''],
-      poBox: [''],
+      registrationDate: ['', [Validators.required]],
+      municipality: ['', [Validators.required]],
+      address: [''],
+      certificateOppointment: [null],
       emails: ['', [Validators.email]],
       phones: [''],
       isActive: [true],
       owners: this.fb.array([]),
-      // campus: this.fb.array([]),
     });
   }
 
@@ -63,47 +70,77 @@ export class AddInstitutionComponent implements OnInit {
         }
       }
     });
-    // this.addCampus();
     this.addOwner();
+
+    UtilsService.getArrondissement(null).then((arrds: Array<any>) => {
+      this.municipalities = arrds?.map((arr: any) => {
+        return{
+          label: arr.get('name'),
+          value: arr._getId(),
+        }
+      })
+    })
+    UtilsService.getGender().then(sexes => {
+      this.sexes = sexes?.map((sex: any) => {
+        return {
+          label: sex?.get('libelle_fr'),
+          value: sex?._getId()
+        }
+      })
+    })
   }
 
-  get campus(): FormArray {
-    return this.institutionForm.get('campus') as FormArray;
-  }
   
   get owners(): FormArray {
     return this.institutionForm.get('owners') as FormArray;
   }
 
-  addCampus(): void {
-    const campusGroup = this.fb.group({
-      name: ['', Validators.required],
-      latitude: ['', Validators.required],
-      longitude: ['', Validators.required],
-      address: ['', Validators.required],
-      municipality: ['', Validators.required],
-      classes: ['', Validators.required],
-      educationOfferings: ['', Validators.required],
-    });
-    this.campus.push(campusGroup);
-  }
+
   addOwner(): void {
-    const onwnerGroup = this.fb.group({
-      // emails: ['', Validators.required],
+    const form = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      phones: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
+      LinkExistedParent: [false],
+      gender: ['', [Validators.required]],
+      email: [''],
+      address: [''],
+      ownerId: [''],
     });
-    this.owners.push(onwnerGroup);
+
+    form.get('LinkExistedParent')?.valueChanges.subscribe(linked => {
+      const firstName = form.get('firstName');
+      const lastName = form.get('lastName');
+      const gender = form.get('gender');
+      const phoneNumber = form.get('phoneNumber');
+      const ownerId = form.get('ownerId');
+      if (!linked) {
+        firstName?.setValidators([Validators.required]);
+        lastName?.setValidators([Validators.required]);
+        phoneNumber?.setValidators([Validators.required]);
+        gender?.setValidators([Validators.required]);
+        ownerId?.clearValidators();
+      } else {
+        ownerId?.setValidators([Validators.required]);
+        firstName?.clearValidators();
+        lastName?.clearValidators();
+        phoneNumber?.clearValidators();
+        gender?.clearValidators();
+      }
+      ownerId?.updateValueAndValidity();
+      firstName?.updateValueAndValidity();
+      lastName?.updateValueAndValidity();
+      phoneNumber?.updateValueAndValidity();
+      gender?.updateValueAndValidity();
+    });
+
+    this.owners.push(form);
   }
 
   removeOwner(index: number): void {
     this.owners.removeAt(index);
   }
 
-  removeCampus(index: number): void {
-    this.owners.removeAt(index);
-  }
 
   loadInstitutionData(id: string): void {
     if (!id) {
@@ -134,7 +171,7 @@ export class AddInstitutionComponent implements OnInit {
           // Remplir le formulaire avec les données existantes
           this.institutionForm.patchValue({
             name: institution.name || '',
-            registrationNumber: institution.registrationNumber || '',
+            registrationDate: institution.registrationDate || '',
             motto: institution.motto || '',
             description: institution.description || '',
             poBox: institution.poBox || '',
@@ -154,6 +191,15 @@ export class AddInstitutionComponent implements OnInit {
       });
   }
 
+  public onFileSelect(event: any) {
+    console.log('Changed')
+    const file: File = event.target.files[0];
+    if (file) {
+      this.institutionForm.patchValue({
+        certificateOppointment: file
+      });
+    }
+  }
   // Méthode pour soumettre le formulaire
   onSubmit(): void {
     if (this.institutionForm.valid) {
@@ -197,7 +243,7 @@ export class AddInstitutionComponent implements OnInit {
           });
       } else {
         // Appeler le service pour créer l'institution
-        this.institutionService.createInstitution(formData)
+        this.institutionService.createInstitution(formData) 
           .pipe(finalize(() => this.submitting = false))
           .subscribe({
             next: (response) => {
@@ -215,6 +261,20 @@ export class AddInstitutionComponent implements OnInit {
       this.markFormGroupTouched(this.institutionForm);
       this.errorMessage = 'Veuillez remplir correctement tous les champs obligatoires.';
     }
+  }
+
+  async searchParent(event: any) {
+    const query = event.filter;
+    if (query?.length < 2) {
+      this.filteredPerson = [];
+      return;
+    }
+    this.loadingDrop = true;
+    console.log('query query ', query)
+    const resp = await this.personService.searchParentByKeyword(query.toLowerCase())
+    console.log('RESP ', resp)
+    this.filteredPerson = resp
+    this.loadingDrop = false;
   }
 
   // Méthode pour annuler et retourner à la liste

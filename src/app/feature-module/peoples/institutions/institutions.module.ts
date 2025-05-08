@@ -12,7 +12,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { InstitutionDetailsComponent } from './institution-details/institution-details.component';
 import { AcademicYearComponent } from '../../academic/academic-year/academic-year.component';
-
+import { DropdownModule } from 'primeng/dropdown';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 @NgModule({
   declarations: [
     InstitutionsListComponent,
@@ -29,7 +30,8 @@ import { AcademicYearComponent } from '../../academic/academic-year/academic-yea
     MatPaginatorModule,
     MatSortModule,
     InstitutionsComponent,
-    AddInstitutionComponent
+    AddInstitutionComponent,
+    DropdownModule
   ],
   exports: [
     InstitutionsListComponent,
