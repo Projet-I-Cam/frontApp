@@ -4,6 +4,14 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { globalPost, globalGet, globalPut, globalDelete } from '../../../services/statefull/http';
 import { Validators } from 'ngx-editor';
+import { pageSelection, PaginationService, tablePageSize } from '../../../shared/custom-pagination/pagination.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { DataService } from '../../../shared/data/data.service';
+import { UtilsService } from '../../../services/utilis.service';
+import { AuthService } from '../../../services/auth.service';
+import { AlertService } from '../../../services/alertService';
+import { apiResultFormat } from '../../../shared/model/pages.model';
+import { Sort } from '@angular/material/sort';
 
 declare var bootstrap: any;
 
@@ -13,156 +21,222 @@ declare var bootstrap: any;
     styleUrl: './classroom.component.scss',
     standalone: false
 })
-export class ClassroomComponent {
+export class ClassroomComponent implements OnInit {
+  load: boolean = true;
+  deleteDialog: boolean = false;
+  initChecked = false;
+  public pageSize = 10;
+  public tableData: Array<any> = [];
+  public tableDataCopy: Array<any> = [];
+  public actualData: Array<any> = [];
   public routes = routes;
-    public mode = 'create';
-    public sectionForm: FormGroup;
-    public currentObjectId = '';
-    public loading: boolean = true;
-    public error: string | null = null;
-    public searchValue: string = '';
-    public pageSize = 10;
-    public currentPage = 1;
-    public tableData: any[] = [];
-    public pageSizeOptions = [10, 25, 50];
-    public totalRecords: number = 0;
+  public currentPage = 1;
+  mode = 'create'; // Mode par défaut
+  public skip = 0;
+  public limit: number = this.pageSize;
+  public serialNumberArray: Array<number> = [];
+  public totalData = 0;
+  showFilter = false;
+  public pageSelection: pageSelection[] = [];
+  public searchDataValue = '';
+  dataSource!: MatTableDataSource<any>;
+  isSubmited: boolean = false;
+  entity: any = {};
 
-    constructor(
-      private fb: FormBuilder,
-      private router: Router
-    ) {
-      this.sectionForm = this.fb.group({
-        objectId: [''],
-        sectionNameFr: ['', Validators.required],
-        sectionNameEn: ['', Validators.required],
+  values = [
+    {'label': 'Actif', value: true},
+    {'label': 'Inactif', value: false}
+  ];
+
+   constructor(
+     private data: DataService,
+     private utils: UtilsService,
+     private authService: AuthService,
+     private router: Router,
+     private pagination: PaginationService,
+     private alertService: AlertService
+   ) {}
+ 
+   ngOnInit(): void {
+     this.load=true;
+     this.loadData();
+     this.entity = {}
+     this.isSubmited = false;
+   }
+
+  private async loadData(): Promise<void> {
+      try {
+        const apiRes: apiResultFormat = await this.data.getClassRoomList();
+        this.actualData = apiRes.data;
+        this.pagination.tablePageSize.subscribe((res: tablePageSize) => {
+          if (this.router.url === this.routes.classRoom) {
+            this.getTableData({ skip: res.skip, limit: res.limit });
+            this.pageSize = res.pageSize;
+          }
+        });
+      } catch (error) {
+        this.alertService.showError('Erreur lors du chargement des données');
+      }
+    }
+
+    getTableData(pageOption: pageSelection): void {
+      this.data.getClassRoomList().then((apiRes: any) => {
+        this.load = false;
+        this.tableData = [];
+        this.tableDataCopy = [];
+        this.serialNumberArray = [];
+        this.totalData = apiRes.totalData;
+        apiRes.data.map((res: any, index: number) => {
+          const serialNumber = index + 1;
+          if (index >= pageOption.skip && serialNumber <= pageOption.limit) {
+            res.id = serialNumber;
+            res.Addedon = this.utils.getDate(res.createdAt);
+            this.tableData.push(res);
+            this.serialNumberArray.push(serialNumber);
+            this.tableDataCopy.push(res);
+          }
+        });
+        this.dataSource = new MatTableDataSource<any>(this.actualData);
+        this.pagination.calculatePageSize.next({
+          totalData: this.totalData,
+          pageSize: this.pageSize,
+          tableData: this.tableData,
+          tableDataCopy: this.tableDataCopy,
+          serialNumberArray: this.serialNumberArray,
+        });
       });
     }
 
-    ngOnInit(): void {
-      this.loadData();
-    }
-
-    async loadData(): Promise<void> {
-      this.loading = true;
-      this.error = null;
-      try {
-        await this.getTableData(this.currentPage, this.pageSize);
-      } catch (err) {
-        this.error = 'An error occurred while loading data.';
-        console.error('Error loading data:', err);
-      } finally {
-        this.loading = false;
-      }
-    }
-
-    async getTableData(currentPage: number, size: number, filters?: any, includes?: any): Promise<void> {
-      try {
-        const res: any = await globalGet({
-          T: 'Section',
-          filters: filters || {},
-          includes: includes || [],
-          curentPage: currentPage,
-          size: size
-        });
-
-        if (!res.error) {
-          this.tableData = res ? [...res] : [];
-        } else {
-          throw new Error(res.message);
-        }
-      } catch (error) {
-        console.error('Error fetching section data:', error);
-        throw error;
-      }
-    }
-
-    onPageChange(event: any): void {
-      this.pageSize = event.rows;
-      this.currentPage = (event.first / event.rows) + 1;
-      this.loadData();
-    }
-
-    async onSubmit(): Promise<void> {
-      if (this.sectionForm.invalid) {
-        return;
-      }
-
-      try {
-        if (this.mode === 'create') {
-          await globalPost({
-            T: 'Section',
-            dataObject: {
-              name_fr: this.sectionForm.value.sectionNameFr,
-              name_en: this.sectionForm.value.sectionNameEn,
-            },
-          });
-        } else {
-          await globalPut({
-            T: 'Section',
-            dataObject: {
-              name_fr: this.sectionForm.value.sectionNameFr,
-              name_en: this.sectionForm.value.sectionNameEn,
-            },
-            objectId: this.sectionForm.value.objectId
-          });
-        }
-
-        this.sectionForm.reset();
-        this.getTableData(1, this.pageSize);
-        this.closeAddModal();
-      } catch (error) {
-        console.error('Error during submission:', error);
-      }
-    }
-
-    async deleteSection(): Promise<void> {
-      try {
-        await globalDelete({
-          T: 'Section',
-          objectId: this.currentObjectId
-        });
-        this.getTableData(1, this.pageSize);
-        this.closeDeleteModal();
-      } catch (error) {
-        console.error('Error during deletion:', error);
-      }
-    }
-
-    openModal(mode: string, data?: any): void {
-      this.mode = mode;
-
-      if (mode === 'edit' && data) {
-        this.sectionForm.patchValue({
-          objectId: data.objectId,
-          sectionNameFr: data.name_fr,
-          sectionNameEn: data.name_en,
-        });
+    public sortData(sort: Sort) {
+      const data = this.tableData.slice();
+  
+      if (!sort.active || sort.direction === '') {
+        this.tableData = data;
       } else {
-        this.sectionForm.reset();
+        this.tableData = data.sort((a, b) => {
+          const aValue = (a as never)[sort.active];
+  
+          const bValue = (b as never)[sort.active];
+          return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
+        });
       }
+    }
 
-      const modalElement = document.getElementById('add_class_section');
+    public changePageSize(pageSize: number): void {
+      this.pageSelection = [];
+      this.limit = pageSize;
+      this.skip = 0;
+      this.currentPage = 1;
+      // this.getTableData();
+      this.pagination.tablePageSize.next({
+        skip: this.skip,
+        limit: this.limit,
+        pageSize: this.pageSize,
+      });
+    } 
+
+    public searchData(value: string): void {
+      if (value == '') {
+        this.tableData = this.tableDataCopy;
+      } else {
+        this.dataSource.filter = value.trim().toLowerCase();
+        this.tableData = this.dataSource.filteredData;
+      }
+    }
+    
+    openModal(mode: string, entity?: any): void {
+      this.mode = mode;
+      this.isSubmited = false;
+      if (mode === 'edit' && entity) {
+        this.entity = { ...entity}
+      } else {
+        this.entity = {};
+      }
+      const modalElement = document.getElementById('add-edit-modal');
       const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
       modalInstance.show();
     }
 
-    openDeleteModal(objectId: string): void {
-      this.currentObjectId = objectId;
-      const modalElement = document.getElementById('delete-modal');
-      const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
-      modalInstance.show();
-    }
+     openDeleteModal(entity: any){
+        this.entity = { ...entity}
+        const modalElement = document.getElementById('delete-modal');
+        const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+        modalInstance.show();
+      }
+    
+      closeDeleteModal(){
+        const modalElement = document.getElementById('delete-modal');
+        const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+        modalInstance.hide();
+        this.entity = {};
+      }
+    
+      closeAddEditModal() {
+        const modalElement = document.getElementById('add-edit-modal');
+        const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+        modalInstance.hide();
+        this.entity = {};
+      }
+    
+    
+       async save(): Promise<void> {
+        this.isSubmited = true;
+        if(!this.entity.slug?.trim() || !this.entity.name_fr.trim() || !this.entity.name_en.trim()){
+          this.alertService.showError("Veuilez remplir tous les champs");
+          this.isSubmited = false;
+          return;
+        }
+    
+        console.log(this.entity, this.mode);
+        const data : any =  {
+          slug: this.entity.slug,
+          name_fr: this.entity.name_fr,
+          name_en: this.entity.name_en,
+          maxCapacity: 30,
+          isActive: this.entity.isActive,
+        };
+        try {
+          if (this.mode === 'create') {
+            const classRoom = await globalPost({T:'Classroom', dataObject: data});
+            console.log(classRoom);
+          } else {
+            if(!this.entity.objectId){
+              this.alertService.showError("Aucun Id spécifié");
+              this.isSubmited = false;
+              return;
+            }
+            const classRoom = await globalPut({T:'Classroom', dataObject: data, objectId: this.entity.objectId});
+          }
+          this.alertService.showSuccess();
+          this.ngOnInit();
+          this.closeAddEditModal();
+          this.isSubmited = false;
+        } catch (error: unknown) {
+          this.isSubmited = false;
+          if (error instanceof Error) {
+            this.alertService.showError(error.message);
+          } else {
+            this.alertService.showError("Une erreur inconnue est survenue pendant l'opération");
+          }          
+        }    
+      }
+    
+      async delete(){
+        this.isSubmited = true;
+        if(this.entity && this.entity.objectId){
+          const classRoom = await globalDelete({T: 'Classroom', objectId: this.entity.objectId});
+          console.log(classRoom);
+          this.alertService.showSuccess();
+          this.isSubmited = false;
+          this.ngOnInit();
+          this.closeDeleteModal();
+        }else{
+          this.alertService.showError("Aucune classe sélectionnée");
+          this.isSubmited = false;
+          return;
+        }
+      }
+      
+      
 
-    closeDeleteModal(): void {
-      const modalElement = document.getElementById('delete-modal');
-      const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
-      modalInstance.hide();
-      this.currentObjectId = '';
-    }
-
-    closeAddModal(): void {
-      const modalElement = document.getElementById('add_class_section');
-      const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
-      modalInstance.hide();
-    }
-}
+  }

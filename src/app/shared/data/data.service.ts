@@ -441,6 +441,30 @@ export class DataService {
     }
   }
 
+  public async getClassRoomList(): Promise<apiResultFormat> {
+
+    const data: any = await globalGet({
+      T: 'Classroom',
+      filters: {},
+      includes: [],
+      curentPage: 1,
+      size: undefined,
+    });
+    //console.log("depuis le service", data);
+    if (!data) {
+      console.error('Error fetching parent list:', data);
+      return {
+        data: [],
+        totalData: 0
+      };
+    }else{
+      return {
+        data: data,
+        totalData: data.length
+      } as apiResultFormat;
+    }
+  }
+
   public async getStudents(): Promise<any> {
 
     const data =  await globalGet({
@@ -2115,7 +2139,7 @@ export class DataService {
             { menuValue: 'Évaluations', route: '' },
             { menuValue: 'Réussite', route: '' },
             { menuValue: 'Devoirs', route: routes.classHomeWork },
-            { menuValue: 'Liste', route: routes.classes },
+            { menuValue: 'Liste', route: routes.classRoom },
             { menuValue: 'Horaires', route: routes.scheduleClasses }
           ]
         },

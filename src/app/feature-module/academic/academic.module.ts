@@ -15,6 +15,7 @@ import { ClassTimeTableComponent } from './class-time-table/class-time-table.com
 import { AcademicYearComponent } from './academic-year/academic-year.component';
 import { SkeletonModule } from 'primeng/skeleton';
 import { EducationTypeComponent } from './education-type/education-type.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
@@ -32,7 +33,7 @@ import { EducationTypeComponent } from './education-type/education-type.componen
   imports: [
     CommonModule,
     AcademicRoutingModule,
-    SharedModule, SkeletonModule
+    SharedModule, SkeletonModule, NgSelectModule
   ]
 })
 export class AcademicModule { }
