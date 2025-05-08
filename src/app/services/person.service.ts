@@ -19,10 +19,32 @@ export class PersonService {
     const query = new Parse.Query(this.PERSON_CLASS);
     query.descending('createdAt');
     query.descending('createdAt');
+    query.descending('createdAt');
     return from(query.find()).pipe(
       map(results => results.map(person => this.parsePersonObject(person)))
     );
   }
+
+  /**
+ * Get all persons filtered by staffType
+ * @param staffTypeId - The objectId of the StaffType to filter by
+ * @returns Observable with list of persons
+ */
+getPersonsByStaffType(staffTypeId: string): Observable<any[]> {
+  const query = new Parse.Query(this.PERSON_CLASS);
+  query.descending('createdAt');
+
+  // Create a pointer to the StaffType
+  const staffTypePointer = new Parse.Object('StaffType');
+  staffTypePointer.id = staffTypeId;
+
+  // Add the condition to filter by staffType
+  query.equalTo('staffType', staffTypePointer);
+
+  return from(query.find()).pipe(
+    map(results => results.map(person => this.parsePersonObject(person)))
+  );
+}
 
   /**
    * Get a person by ID
@@ -52,8 +74,8 @@ export class PersonService {
       const parent = parents[index];
       if(parent.LinkExistedParent){
         toReturn.push({
-          "__type": "Pointer", 
-          "className": "Person" , 
+          "__type": "Pointer",
+          "className": "Person" ,
           "objectId": parent.fatherObjectId
         })
         continue
@@ -87,8 +109,8 @@ export class PersonService {
     // Set basic person properties
     person.set('firstName', personData.firstName);
     person.set('lastName', personData.lastName);
-    person.set('gender', {"__type": "Pointer", "className": "Gender" , "objectId": personData.gender});
-    person.set('section', {"__type": "Pointer", "className": "Section" , "objectId": personData.section});
+    person.set('gender', { "__type": "Pointer", "className": "Gender", "objectId": personData.gender });
+    person.set('section', { "__type": "Pointer", "className": "Section", "objectId": personData.section });
 
     person.set('birthDate', personData.dateOfBirth ? new Date(personData.dateOfBirth) : null);
     person.set('birthPlace', personData.placeOfBirth);
@@ -96,7 +118,7 @@ export class PersonService {
     person.set('phone', personData.phone);
     person.set('registrationNumber', personData.registrationNumber);
     // person.set('address', personData.address);
-    if(personData?.isStudent){
+    if (personData?.isStudent) {
       person.set('isStudent', true);
     }
     if(personData?.parents){
@@ -105,10 +127,11 @@ export class PersonService {
     if(personData?.isParent){
       person.set('isParent', true);
     }
-    if(personData?.isStaff){
+    if (personData?.isStaff) {
       person.set('isStaff', true);
+      person.set('staffType', { "__type": "Pointer", "className": "StaffType", "objectId": personData.staffType });
     }
-    
+
     // Handle file upload if photo is provided
     if (personData.photo && personData.photo instanceof File) {
       const photoFile = new Parse.File(personData.photo.name, personData.photo);
@@ -116,15 +139,15 @@ export class PersonService {
     }
 
     return from(person.save()).pipe(
-      map(async result => { 
+      map(result => {
         const usr = new Parse.User();
         usr.set("username", personData.phone);
         usr.set("password", personData.phone);
-        if(personData?.isStudent){
-          const dataRole = await Parse.Cloud.run('getRole', {task_name: "eleve"})
-          usr.set("role", {"__type": "Pointer", "className": "_Role" , "objectId": dataRole.role?.objectId});
+        usr.set("person", person);
+        if(personData.roleId){
+          usr.set("role", {"__type": "Pointer", "className": "_Role" , "objectId": personData.roleId});
         }
-        return  usr.signUp().then(() => {
+        return  usr.signUp().then(user => {
           person.set("user", usr)
           return person.save().then(()=>this.parsePersonObject(result))
         })
@@ -162,42 +185,42 @@ export class PersonService {
    */
   updatePerson(id: string, personData: any): Observable<any> {
     const query = new Parse.Query(this.PERSON_CLASS);
-    
+
     return from(query.get(id)).pipe(
       map(person => {
         // Update person properties
         if (personData.firstName) {
           person.set('firstName', personData.firstName);
         }
-        
+
         if (personData.lastName) {
           person.set('lastName', personData.lastName);
         }
-        
+
         if (personData.gender) {
           person.set('gender', personData.gender);
         }
-        
+
         if (personData.dateOfBirth) {
           person.set('dateOfBirth', new Date(personData.dateOfBirth));
         }
-        
+
         if (personData.placeOfBirth) {
           person.set('placeOfBirth', personData.placeOfBirth);
         }
-        
+
         if (personData.email) {
           person.set('email', personData.email);
         }
-        
+
         if (personData.phone) {
           person.set('phone', personData.phone);
         }
-        
+
         if (personData.address) {
           person.set('address', personData.address);
         }
-        
+
         // Handle file upload if photo is provided
         if (personData.photo && personData.photo instanceof File) {
           const photoFile = new Parse.File(personData.photo.name, personData.photo);
@@ -225,7 +248,7 @@ export class PersonService {
    */
   deletePerson(id: string): Observable<boolean> {
     const query = new Parse.Query(this.PERSON_CLASS);
-    
+
     return from(query.get(id)).pipe(
       map(person => from(person.destroy())),
       // Flatten the observable
@@ -243,12 +266,12 @@ export class PersonService {
   searchPersons(searchTerm: string): Observable<any[]> {
     const firstNameQuery = new Parse.Query(this.PERSON_CLASS);
     firstNameQuery.contains('firstName', searchTerm);
-    
+
     const lastNameQuery = new Parse.Query(this.PERSON_CLASS);
     lastNameQuery.contains('lastName', searchTerm);
-    
+
     const mainQuery = Parse.Query.or(firstNameQuery, lastNameQuery);
-    
+
     return from(mainQuery.find()).pipe(
       map(results => results.map(person => this.parsePersonObject(person)))
     );
@@ -278,4 +301,4 @@ export class PersonService {
       ...person.toJSON()
     };
   }
-} 
+}

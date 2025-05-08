@@ -32,6 +32,7 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { StepsModule } from 'primeng/steps';
 import { Tag } from 'primeng/tag';
 import { InputIcon } from 'primeng/inputicon';
 import { IconField } from 'primeng/iconfield';
@@ -86,6 +87,7 @@ import { Router, RouterModule } from '@angular/router';
     NgCircleProgressModule,
     TableModule,
     ButtonModule,
+    StepsModule
 
 
   ],
@@ -125,6 +127,7 @@ import { Router, RouterModule } from '@angular/router';
     GenericTableComponent,
     TableModule,
     ButtonModule,
+    StepsModule
   ],
   providers: [
     provideNgxMask(),
@@ -133,4 +136,4 @@ import { Router, RouterModule } from '@angular/router';
     BsDaterangepickerConfig,
   ],
 })
-export class SharedModule {}
+export class SharedModule { }

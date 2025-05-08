@@ -15,14 +15,14 @@ import { AlertService } from '../../../../services/alertService';
   styleUrl: './parents-modal.component.scss',
   standalone: false
 })
-export class ParentsModalComponent{
+export class ParentsModalComponent {
 
 
-  @Input() parent: any = {};  
-  @Input() mode: any = "new";  
-  
- countries: any;
- genders: any[] = [];
+  @Input() parent: any = {};
+  @Input() mode: any = "new";
+
+  countries: any;
+  genders: any[] = [];
 
   public imagePreview: string | ArrayBuffer | null = null;
   public errorMessage: string | null = null;
@@ -45,7 +45,7 @@ export class ParentsModalComponent{
     private data: DataService,
     public activeModal: NgbActiveModal,
     private alertService: AlertService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.maxBirthDate = this.utils.getMaxDate(16);
@@ -54,7 +54,7 @@ export class ParentsModalComponent{
     this.loadStudents();
     this.items = [];
     for (let i = 0; i < 10000; i++) {
-        this.items.push({ label: 'Item ' + i, value: 'Item ' + i });
+      this.items.push({ label: 'Item ' + i, value: 'Item ' + i });
     }
   }
 
@@ -78,20 +78,20 @@ export class ParentsModalComponent{
     }
   }
 
-  private loadStudents(){
+  private loadStudents() {
     this.data.getStudents().then((apiRes: any) => {
       console.log(apiRes);
       this.students = apiRes
     })
   }
 
-  private loadCounties(){
+  private loadCounties() {
     this.data.getCountries().subscribe((apiRes: any) => {
       this.countries = apiRes
     })
   }
 
-  private loadGenders(){
+  private loadGenders() {
     this.data.getGender().then((apiRes: any) => {
       this.genders = apiRes
     })
@@ -106,93 +106,93 @@ export class ParentsModalComponent{
     this.isLoading = true;
     this.submitted = true;
     console.log(this.parent);
-    if(this.parent.firstName?.trim() && this.parent.birthDate?.trim() && 
-      this.parent.birthPlace?.trim() && this.parent.phone?.trim() && this.parent.email?.trim() && this.parent.gender){
-        
-        console.log('Form before submitted:', this.parent);
-        const gender = this.getSelectedGender();
-        const birthDateValue = this.parent.birthDate;
-        const birthDate = birthDateValue ? new Date(birthDateValue) : undefined;
+    if (this.parent.firstName?.trim() && this.parent.birthDate?.trim() &&
+      this.parent.birthPlace?.trim() && this.parent.phone?.trim() && this.parent.email?.trim() && this.parent.gender) {
 
-        const query = new Parse.Query('Person');
-        query.equalTo('email', this.parent.email);
-        const existingUsers = await query.find();
+      console.log('Form before submitted:', this.parent);
+      const gender = this.getSelectedGender();
+      const birthDateValue = this.parent.birthDate;
+      const birthDate = birthDateValue ? new Date(birthDateValue) : undefined;
 
-        if(this.parent.objectId){ //modification
+      const query = new Parse.Query('Person');
+      query.equalTo('email', this.parent.email);
+      const existingUsers = await query.find();
 
-        }else{ //creation
+      if (this.parent.objectId) { //modification
 
-          try {
-            if (existingUsers.length > 0) {
+      } else { //creation
 
-              this.errorMessage = "L'adresse e-mail existe déjà.";
-              return;
+        try {
+          if (existingUsers.length > 0) {
 
-            }else{
+            this.errorMessage = "L'adresse e-mail existe déjà.";
+            return;
 
-              let userResponse: any = [];
-              userResponse = await this.authService.registerUser (
-                this.parent.firstName + " " + this.parent.lastName,
-                this.parent.email,
-                'abc@1234',
-                this.parent.email,
-                'parent'
-              );
+          } else {
 
-                let studentsData : any[] = [];
-                if(this.parent.students){
-                  this.parent.students.forEach((item : any) => {
-                    const student = {
-                      __type: 'pointer',
-                      className: 'Person',
-                      objectId: item
-                    }
-                    studentsData.push(student);
-                  })
+            let userResponse: any = [];
+            userResponse = await this.authService.registerUser(
+              this.parent.firstName + " " + this.parent.lastName,
+              this.parent.email,
+              'abc@1234',
+              this.parent.email,
+              'parent'
+            );
+
+            let studentsData: any[] = [];
+            if (this.parent.students) {
+              this.parent.students.forEach((item: any) => {
+                const student = {
+                  __type: 'pointer',
+                  className: 'Person',
+                  objectId: item
                 }
-                
-
-                const personData: any = {
-                  isParent: true,
-                  isStudent: false,
-                  lastName: this.parent.lastName,
-                  firstName: this.parent.firstName,
-                  gender: {
-                    __type: 'pointer',
-                    className: "Gender",
-                    objectId: this.parent.gender
-                  },
-                  phone: this.parent.phone,
-                  countryCode: this.parent.country.phone,
-                  //nationality: this.parent.country.nameFR,
-                  email: this.parent.email,
-                  birthDate: birthDate,
-                  birthPlace: this.parent.birthPlace,
-                  photo: this.parent.photo,
-                  user: userResponse,
-                  //students: studentsData
-                };        
-
-                const personResponse: any = await globalPost({ T: 'Person', dataObject: personData });
-                this.successMessage = "Parent enregistré avec succès";
-                this.alertService.showSuccess("Parent enregistré avec succès");
-                this.errorMessage = null;
-                this.activeModal.close(this.parent);   
+                studentsData.push(student);
+              })
             }
-          }catch (error: unknown) {
-            this.isLoading = false;
-            if (error instanceof Error) {
-              this.alertService.showError(error.message);
-            } else {
-              this.alertService.showError("Une erreur inconnue est survenue pendant la création du parent.");
-            }          
-          }          
-        } 
-    }else{
+
+
+            const personData: any = {
+              isParent: true,
+              isStudent: false,
+              lastName: this.parent.lastName,
+              firstName: this.parent.firstName,
+              gender: {
+                __type: 'pointer',
+                className: "Gender",
+                objectId: this.parent.gender
+              },
+              phone: this.parent.phone,
+              countryCode: this.parent.country.phone,
+              //nationality: this.parent.country.nameFR,
+              email: this.parent.email,
+              birthDate: birthDate,
+              birthPlace: this.parent.birthPlace,
+              photo: this.parent.photo,
+              user: userResponse,
+              //students: studentsData
+            };
+
+            const personResponse: any = await globalPost({ T: 'Person', dataObject: personData });
+            this.successMessage = "Parent enregistré avec succès";
+            this.alertService.showSuccess("Parent enregistré avec succès");
+            this.errorMessage = null;
+            this.activeModal.close(this.parent);
+          }
+        } catch (error: unknown) {
+          this.isLoading = false;
+          if (error instanceof Error) {
+            this.alertService.showError(error.message);
+          } else {
+            this.alertService.showError("Une erreur inconnue est survenue pendant la création du parent.");
+          }
+        }
+      }
+    } else {
       this.errorMessage = "Veuillez remplir tous les champs";
       this.alertService.showError("Veuillez remplir tous les champs");
       this.isLoading = false;
-    }   
+    }
   }
 
 

@@ -26,9 +26,9 @@ import { UiSweetalertsRoutingModule } from '../../ui-interface/base-ui/ui-sweeta
     SharedModule,
     SkeletonModule,
     FormsModule,
-    AutoCompleteModule, 
+    AutoCompleteModule,
     NgSelectModule,
-    UiSweetalertsRoutingModule    
+    UiSweetalertsRoutingModule
   ]
 })
 export class ParentsModule { }
