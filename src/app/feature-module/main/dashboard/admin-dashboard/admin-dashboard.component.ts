@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 
 import {
@@ -13,6 +13,8 @@ import {
 } from 'ng-apexcharts';
 import { routes } from '../../../../shared/routes/routes';
 import { Router } from '@angular/router';
+import { fetchCurrentPerson } from '../../../../services/statefull/genericParse';
+import { AuthService } from '../../../../services/auth.service';
 export type ChartOptions = {
   series: ApexAxisChartSeries | any;
   chart: ApexChart | any;
@@ -35,9 +37,10 @@ interface Task {
     styleUrl: './admin-dashboard.component.scss',
     standalone: false
 })
-export class AdminDashboardComponent {
+export class AdminDashboardComponent implements OnInit {
   public routes = routes;
   value!: Date;
+  person : any = {};
   public student: OwlOptions = {
     loop: true,
     margin: 24,
@@ -144,7 +147,7 @@ export class AdminDashboardComponent {
   public chartOptions6: Partial<ChartOptions> | any;
   public chartOptions7: Partial<ChartOptions> | any;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private authService: AuthService) {
     this.chartOptions = {
       chart: {
         height: 90,
@@ -443,6 +446,15 @@ export class AdminDashboardComponent {
         },
       },
     };
+
+    fetchCurrentPerson(this.authService, (person) => {
+      if (person) {
+        this.person = person;
+        console.log('Person found:', person);
+      } else {
+        console.log('No person found or error occurred.');
+      }
+    });
   }
 
   tasks: Task[] = [
@@ -484,4 +496,6 @@ export class AdminDashboardComponent {
   customFormattingFn(value: number): string {
     return value.toString();
   }
+
+
 }

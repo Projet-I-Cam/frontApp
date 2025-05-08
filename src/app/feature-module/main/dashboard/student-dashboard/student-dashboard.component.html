@@ -20,6 +20,7 @@
       </div>
     </div>
     <!-- /Page Header -->
+     
 
     <div class="row">
       <div class="col-xxl-8 d-flex">
@@ -31,7 +32,7 @@
                 <div class="card-body">
                   <div class="d-flex align-items-center row-gap-3 mb-3">
                     <div class="avatar avatar-xxl rounded flex-shrink-0 me-3">
-                      <img src="assets/img/students/student-13.jpg" alt="Img" />
+                      <img src="{{student.photo?.url}}" alt="Img" />
                     </div>
                     <div class="d-block">
                       <span
@@ -39,7 +40,7 @@
                         >#ST1234546</span
                       >
                       <h3 class="text-truncate text-white mb-1">
-                        MANGA PELAGIE
+                        {{student?.firstName}} {{student?.lastName}}
                       </h3>
                       <div
                         class="d-flex align-items-center flex-wrap row-gap-2 text-gray-2"

@@ -37,14 +37,14 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center row-gap-3">
                             <div class="avatar avatar-xxl rounded flex-shrink-0 me-3">
-                                <img src="assets/img/parents/parent-01.jpg" alt="Img">
+                                <img src="{{parent.photo?.url}}" alt="Img">
                             </div>
                             <div class="d-block">
                                 <span class="badge bg-transparent-primary text-primary mb-1">#P124556</span>
-                                <h4 class="text-truncate text-white mb-1">Thomas Bown</h4>
+                                <h4 class="text-truncate text-white mb-1">{{parent?.firstName}} {{parent?.lastName}}</h4>
                                 <div class="d-flex align-items-center flex-wrap row-gap-2 class-info">
-                                    <span>Added On : 25 Mar 2024</span>
-                                    <span>Child : Janet</span>
+                                    <span>Added On : {{parent.createdAt | date:'d MMMM yyyy' }}</span>
+                                    <span>Childs : {{parent.students?.length || 0}}</span>
                                 </div>
                             </div>
                         </div>
