@@ -20,7 +20,7 @@ export default {
     Enrollment: Parse.Object.extend("Enrollment"),
     EducationType: Parse.Object.extend("EducationType"),
     Section: Parse.Object.extend("Section"),
-    ClassRoom: Parse.Object.extend("ClassRoom"),
+    Classroom: Parse.Object.extend("Classroom"),
     Institution: Parse.Object.extend("Institution"),
     Campus: Parse.Object.extend("Campus"),
     InstitutionSection: Parse.Object.extend("InstitutionSection"),
