@@ -2,6 +2,7 @@ import Parse from 'parse'; // Ensure Parse is imported properly
 
 import { Observable, from, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { AuthService } from '../auth.service';
 
 /**
  * Generic function to perform a 'find all' query on Parse Server.
@@ -193,4 +194,36 @@ export function getOneByPointer$(
       });
     })
   );
+}
+
+/**
+ * Global utility function to fetch the Person object associated with the current user.
+ * Accepts an AuthService instance and a callback to handle the result.
+ * Handles subscription and logs errors internally.
+ *
+ * @param authService - the AuthService instance to get the current user
+ * @param onResult - callback function to receive the Person object or null
+ */
+export function fetchCurrentPerson(
+  authService: AuthService,
+  onResult: (person: any | null) => void
+): void {
+  const currentUser = authService.getCurrentUser();
+  if (!currentUser || !currentUser.id) {
+    console.error('No current user found.');
+    onResult(null);
+    return;
+  }
+  console.log(currentUser.id)
+  getOneByPointer$('Person', 'user', '_User', currentUser.id).subscribe(result => {
+    if (result?.error) {
+      console.error(result.message);
+      onResult(null);
+    } else if (result) {
+      onResult(result);
+    } else {
+      console.log('No person found for that user pointer.');
+      onResult(null);
+    }
+  });
 }

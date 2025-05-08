@@ -17,7 +17,7 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
 import { routes } from '../../../../shared/routes/routes';
 import { AuthService } from '../../../../services/auth.service';
 import { globalGet } from '../../../../services/statefull/http';
-import { genericFindOneBy, getOneByPointer$, getOneObject } from '../../../../services/statefull/genericParse';
+import { fetchCurrentPerson, genericFindOneBy, getOneByPointer$, getOneObject } from '../../../../services/statefull/genericParse';
 import { DataService } from '../../../../shared/data/data.service';
 interface data {
   name: string | undefined;
@@ -170,17 +170,12 @@ export class StudentDashboardComponent implements OnInit{
   }
 
 async ngOnInit() {
-  this.currentUser = this.authService.getCurrentUser();
-
-  //this.student = await getOneObject('_User', this.currentUser.id);
-
-  getOneByPointer$('Person', 'user', '_User', this.currentUser.id).subscribe(result => {
-    if (result?.error) {
-      console.error(result.message);
-    } else if (result) {
-      this.student = result;
+  fetchCurrentPerson(this.authService, (person) => {
+    if (person) {
+      this.student = person;
+      console.log('Person found:', person);
     } else {
-      console.log('No person found for that user pointer.');
+      console.log('No person found or error occurred.');
     }
   });
 }

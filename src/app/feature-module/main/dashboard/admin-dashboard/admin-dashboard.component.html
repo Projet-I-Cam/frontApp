@@ -46,7 +46,7 @@
             <div class="d-flex align-items-xl-center justify-content-xl-between flex-xl-row flex-column">
               <div class="mb-3 mb-xl-0 gap-2">
                 <div class="d-flex align-items-center flex-wrap mb-2">
-                  <h2 class="text-white me-2">Welcome Back, ABESSOLO ETOGA THIERRY</h2>
+                  <h2 class="text-white me-2">Welcome Back, {{person.fristName}} {{person.lastName}}</h2>
                   <a [routerLink]="routes.profile" class="avatar avatar-sm img-rounded bg-gray-800 dark-hover"><i
                       class="ti ti-edit text-white"></i></a>
                 </div>
@@ -68,7 +68,7 @@
                 </div>
               </div>
               <div class="avatar avatar-xxxl bg-danger-transparent p-1">
-                <img src="assets/img/icons/teacher.svg" alt="img">
+                <img src="{{person.photo?.url}}" alt="img">
               </div>
             </div>
           </div>

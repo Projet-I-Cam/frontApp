@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApexStroke, ApexXAxis, ChartComponent } from 'ng-apexcharts';
 export type ChartOptions = {
   series: ApexNonAxisChartSeries | any;
@@ -24,6 +24,8 @@ import {
   ApexGrid,
 } from 'ng-apexcharts';
 import { routes } from '../../../../shared/routes/routes';
+import { fetchCurrentPerson } from '../../../../services/statefull/genericParse';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
     selector: 'app-parent-dashboard',
@@ -31,13 +33,14 @@ import { routes } from '../../../../shared/routes/routes';
     styleUrl: './parent-dashboard.component.scss',
     standalone: false
 })
-export class ParentDashboardComponent {
+export class ParentDashboardComponent implements OnInit{
   public routes = routes;
   @ViewChild('chart') chart!: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
-  
 
-  constructor( ) {
+  parent : any = {};
+
+  constructor( private authService: AuthService) {
     this.chartOptions = {
       chart: {
         type: 'line',
@@ -54,10 +57,18 @@ export class ParentDashboardComponent {
         categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
       },
 		
-    };
-   
-   
-   
+    };   
+  }
+
+  async ngOnInit() {
+    fetchCurrentPerson(this.authService, (person) => {
+      if (person) {
+        this.parent = person;
+        console.log('Person found:', person);
+      } else {
+        console.log('No person found or error occurred.');
+      }
+    });
   }
  
 }

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import Parse from 'parse';
+import { getOneByPointer$ } from './statefull/genericParse';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,23 @@ export class AuthService {
     return Parse.User.current();
   }
 
+
+  async getCurrentPerson(): Promise<any> {
+    const currentUser : any = this.getCurrentUser ();
+    return new Promise((resolve, reject) => {
+      getOneByPointer$('Person', 'user', '_User ', currentUser?.id).subscribe(result => {
+        if (result?.error) {
+          console.error(result.message);
+          reject(result.message);
+        } else if (result) {
+          resolve(result);
+        } else {
+          console.log('No person found for that user pointer.', currentUser.id);
+          resolve(null); // ou reject si vous préférez
+        }
+      });
+    });
+  }
   
 
   async login(username: string, password: string) {
@@ -80,6 +98,8 @@ export class AuthService {
             throw new Error("An unknown error occurred during user registration."); // Fallback for unknown errors
         }
     }
-}
+  } 
+
+ 
 
 }
