@@ -149,7 +149,6 @@ export const getOneObject = async (className: string, objectId: string): Promise
   }
 };
 
-
 /**
  * Generic function to retrieve one Parse object by pointer field, returning an Observable.
  * 
