@@ -1,6 +1,27 @@
 <!-- Page Wrapper -->
 <div class="page-wrapper">
   <div class="content">
+    <div class="d-md-flex d-block align-items-center justify-content-between mb-3">
+      <div class="my-auto mb-2">
+        <h3 class="page-title mb-1">TABLEAU DE BORD | ADMINISTRATEUR | MINISTERE | MINEDUB | Délégation Régionale du
+          Centre</h3>
+        <nav>
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+              <a [routerLink]="routes.adminDashboard">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Admin Dashboard</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <div class="row d-flex align-items-xl-center justify-content-xl-between flex-xl-row flex-column">
+      <div class="col-md-7"></div>
+      <div class="col-md-4 bg-primary mx-3 rounded-top-3 d-flex align-items-xl-center justify-content-xl-center "
+        style="height: 40px;">
+        <h4 class="text-white me-2">NOUVEAU PERSONNEL</h4>
+      </div>
+    </div>
     <div class="row">
       <div class="col-md-12">
         <!-- <div class="alert-message">
@@ -18,6 +39,7 @@
         </div> -->
 
         <!-- Dashboard Content -->
+
         <div class="card bg-dark">
           <div class="overlay-img">
             <img src="assets/img/bg/shape-04.png" alt="img" class="img-fluid shape-01">
@@ -26,18 +48,28 @@
             <img src="assets/img/bg/shape-03.png" alt="img" class="img-fluid shape-04">
           </div>
           <div class="card-body">
-            <div class="d-flex align-items-xl-center justify-content-xl-between flex-xl-row flex-column">
-              <div class="mb-3 mb-xl-0">
+            <div class="d-flex align-items-xl-center justify-content-xl-start flex-xl-row flex-column gap-5">
+              <div class="avatar avatar-xxxl bg-danger-transparent">
+                <img src="assets/img/icons/user-profile.svg" alt="img">
+              </div>
+              <div class="mb-2 mb-xl-0">
                 <div class="d-flex align-items-center flex-wrap mb-2">
-                  <h1 class="text-white me-2">Welcome Back, ABESSOLO ETOGA THIERRY</h1>
+                  <h2 class="text-white me-2">Welcome Back, ABESSOLO ETOGA THIERRY</h2>
                   <a [routerLink]="routes.profile" class="avatar avatar-sm img-rounded bg-gray-800 dark-hover"><i
                       class="ti ti-edit text-white"></i></a>
                 </div>
-                <h3 class="text-white">Administateur Ministere</h3>
-                <h3 class="text-white">AFP / APA</h3>
-              </div>
-              <div class="avatar avatar-xl bg-danger-transparent p-1">
-                <img src="assets/img/icons/teacher.svg" alt="img">
+                <div class="mt-1">
+                  <h4 class="text-white">Grade : Professeur des Lycées ESG</h4>
+                </div>
+                <div class="mt-1">
+                  <h4 class="text-white">Age : 38 ans | AFP : 15 ans | APA : 03 ans</h4>
+                </div>
+                <div class="mt-1">
+                  <h4 class="text-white">Membre depuis le 08/08/2025</h4>
+                </div>
+                <div class="mt-1">
+                  <h4 class="text-white">Fonction : Délégué Départemental</h4>
+                </div>
               </div>
             </div>
           </div>
@@ -55,13 +87,22 @@
           <div class="card-body">
             <div class="d-flex align-items-center">
               <div class="avatar avatar-lg me-2 p-1">
-                <img src="assets/img/icons/folder.svg" alt="img">
+                <img src="assets/img/icons/school.svg" alt="img">
               </div>
               <div class="overflow-hidden flex-fill">
                 <div class="d-flex align-items-center justify-content-between">
-                  <h3>TOTAL ETABLISSEMENTS</h3>
+                  <h3>MINEDUB</h3>
                 </div>
               </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
+              <h4>TOTAL ETABLISSEMENT : <span class="counters" [countUp]="3654" [options]="{
+                duration: 10,
+                formattingFn: customFormattingFn
+              }">
+                  3654
+                </span>
+              </h4>
             </div>
             <div class="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
               <h4 class="mb-0">Publics :
@@ -86,13 +127,13 @@
         </div>
       </div>
 
-      <!-- Total Public institution -->
+      <!-- Total institution -->
       <div class="col-12 col-sm-6 d-flex">
         <div class="card flex-fill animate-card border-0 bg-success-subtle">
           <div class="card-body">
             <div class="d-flex align-items-center">
               <div class="avatar avatar-lg me-2 p-1">
-                <img src="assets/img/icons/folder.svg" alt="img">
+                <img src="assets/img/icons/school.svg" alt="img">
               </div>
               <div class="overflow-hidden flex-fill">
                 <div class="d-flex align-items-center justify-content-between">
@@ -120,7 +161,7 @@
               </h4>
             </div>
             <div class="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
-              <h4 class="mb-0">CLASSES FONC :
+              <h4 class="mb-0">CLASSES FONCTIONELLE :
                 <span class="counters" [countUp]="3654" [options]="{
                             duration: 10,
                             formattingFn: customFormattingFn
@@ -129,7 +170,7 @@
                 </span>
               </h4>
               <span class="text-light">|</span>
-              <h4>CLASSE DEFEC :
+              <h4>CLASSE DEFECTUEUX :
                 <span class="counters" [countUp]="3654" [options]="{
                               duration: 10,
                               formattingFn: customFormattingFn
@@ -148,7 +189,7 @@
           <div class="card-body">
             <div class="d-flex align-items-center">
               <div class="avatar avatar-lg me-2 p-1">
-                <img src="assets/img/icons/folder.svg" alt="img">
+                <img src="assets/img/icons/school.svg" alt="img">
               </div>
               <div class="overflow-hidden flex-fill">
                 <div class="d-flex align-items-center justify-content-between">
