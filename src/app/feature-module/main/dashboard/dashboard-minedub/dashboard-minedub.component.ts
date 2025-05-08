@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 
 import {
@@ -13,6 +13,8 @@ import {
 } from 'ng-apexcharts';
 import { routes } from '../../../../shared/routes/routes';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../../services/auth.service';
+import { fetchCurrentPerson } from '../../../../services/statefull/genericParse';
 export type ChartOptions = {
   series: ApexAxisChartSeries | any;
   chart: ApexChart | any;
@@ -34,9 +36,10 @@ interface Task {
   templateUrl: './dashboard-minedub.component.html',
   styleUrl: './dashboard-minedub.component.scss'
 })
-export class DashboardMinedubComponent {
+export class DashboardMinedubComponent implements OnInit{
    public routes = routes;
     value!: Date;
+    person : any = {};
     public student: OwlOptions = {
       loop: true,
       margin: 24,
@@ -143,7 +146,7 @@ export class DashboardMinedubComponent {
     public chartOptions6: Partial<ChartOptions> | any;
     public chartOptions7: Partial<ChartOptions> | any;
 
-    constructor(private router: Router) {
+    constructor(private router: Router, private authService: AuthService) {
       this.chartOptions = {
         chart: {
           height: 90,
@@ -442,6 +445,15 @@ export class DashboardMinedubComponent {
           },
         },
       };
+
+      fetchCurrentPerson(this.authService, (person) => {
+            if (person) {
+              this.person = person;
+              console.log('Person found:', person);
+            } else {
+              console.log('No person found or error occurred.');
+            }
+          });
     }
 
     tasks: Task[] = [

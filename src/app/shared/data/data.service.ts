@@ -443,6 +443,30 @@ export class DataService {
     }
   }
 
+  public async getClassRoomList(): Promise<apiResultFormat> {
+
+    const data: any = await globalGet({
+      T: 'Classroom',
+      filters: {},
+      includes: [],
+      curentPage: 1,
+      size: undefined,
+    });
+    //console.log("depuis le service", data);
+    if (!data) {
+      console.error('Error fetching parent list:', data);
+      return {
+        data: [],
+        totalData: 0
+      };
+    } else {
+      return {
+        data: data,
+        totalData: data.length
+      } as apiResultFormat;
+    }
+  }
+
   public async getStudents(): Promise<any> {
 
     const data = await globalGet({
@@ -861,8 +885,8 @@ export class DataService {
       } else if (role === 'enseignant') {
         return this.TeacherSidebarData;
       } else if (role === 'parent') {
-          console.log('Parent children:', this.parentChildren);
-          return this.getParentMenu(this.parentChildren || []);
+        console.log('Parent children:', this.parentChildren);
+        return this.getParentMenu(this.parentChildren || []);
       }
       else if (role === 'administration') {
         return this.AdminSidebarData;
@@ -1363,32 +1387,32 @@ export class DataService {
   ];
 
   // Updated getParentMenu method with proper formatting
-getParentMenu(children: any[] = []) {
-  try {
-    // Validate input
-    const safeChildren = Array.isArray(children) ? children.filter(child =>
-      child && typeof child === 'object' && 'name' in child
-    ) : [];
+  getParentMenu(children: any[] = []) {
+    try {
+      // Validate input
+      const safeChildren = Array.isArray(children) ? children.filter(child =>
+        child && typeof child === 'object' && 'name' in child
+      ) : [];
 
-    // Generate child menus with proper structure
-    const childMenus = safeChildren.map(child => ({
-      menuValue: child?.name || 'Enfant sans nom',
-      hasSubRoute: true,
-      showSubRoute: true,
-      customSubmenuThree: true,
-      icon: 'user', // Added icon for consistency
-      subMenusTwo: [ // Changed from subMenusTwo to subMenus to match your structure
+      // Generate child menus with proper structure
+      const childMenus = safeChildren.map(child => ({
+        menuValue: child?.name || 'Enfant sans nom',
+        hasSubRoute: true,
+        showSubRoute: true,
+        customSubmenuThree: true,
+        icon: 'user', // Added icon for consistency
+        subMenusTwo: [ // Changed from subMenusTwo to subMenus to match your structure
           {
             menuValue: 'Établissement',
             customSubmenuFour: true,
             subMenusThree: [
-              { menuValue: `Etablissement: ${child.school?.name || 'Non spécifié'}` , route: '', customSubmenuFour: false},
+              { menuValue: `Etablissement: ${child.school?.name || 'Non spécifié'}`, route: '', customSubmenuFour: false },
               { menuValue: `Directeur: ${child.school?.director || 'Non spécifié'}`, route: '', customSubmenuFour: false },
               { menuValue: `Enseignant: ${child.school?.teacher || 'Non spécifié'}`, route: '', customSubmenuFour: false },
               { menuValue: `Classe: ${child.class?.name || 'Non spécifié'}`, route: '', customSubmenuFour: false },
-              { menuValue: `Effectif: ${child.class?.totalStudents || 'N/A'}` , route: '', customSubmenuFour: false},
+              { menuValue: `Effectif: ${child.class?.totalStudents || 'N/A'}`, route: '', customSubmenuFour: false },
               { menuValue: `Filles: ${child.class?.girls || 'N/A'}`, route: '', customSubmenuFour: false },
-              { menuValue: `Garçons: ${child.class?.boys || 'N/A'}` , route: '', customSubmenuFour: false}
+              { menuValue: `Garçons: ${child.class?.boys || 'N/A'}`, route: '', customSubmenuFour: false }
             ]
           },
           {
@@ -1405,7 +1429,7 @@ getParentMenu(children: any[] = []) {
           { menuValue: 'Absences/Présences', route: '', customSubmenuFour: false },
           { menuValue: 'Planning des Examens', route: routes.examSchedule, customSubmenuFour: false },
           { menuValue: 'Notes / Bulletins', route: '', customSubmenuFour: false },
-          { menuValue: 'Etat de Payement', route: '' , customSubmenuFour: false},
+          { menuValue: 'Etat de Payement', route: '', customSubmenuFour: false },
           {
             menuValue: 'Informations/planning',
             customSubmenuFour: true,
@@ -1417,10 +1441,51 @@ getParentMenu(children: any[] = []) {
               { menuValue: 'Activités Extrascolaires', route: '', customSubmenuThree: false }
             ]
           }
-      ]
-    }));
+        ]
+      }));
 
-    // Return properly formatted parent menu
+      // Return properly formatted parent menu
+      return [{
+        tittle: 'Main',
+        showAsTab: false,
+        separateRoute: false,
+        hasSubRoute: false,
+        showSubRoute: false,
+        base: '',
+        page: '99',
+        menu: [
+          {
+            menuValue: 'Dashboard',
+            icon: 'layout-2',
+            base: 'dashboard',
+            hasSubRoute: false,
+            showSubRoute: false,
+            route: routes.adminDashboard,
+            customSubmenuTwo: false,
+            subRoutes: [],
+          },
+          {
+            menuValue: 'Mes enfants Inscrit',
+            hasSubRouteThree: true,
+            icon: 'school',
+            page: 'students',
+            subMenus: childMenus.length ? childMenus : [{
+              menuValue: 'Aucun enfant inscrit',
+              customSubmenuThree: false,
+              route: ''
+            }]
+          }
+        ]
+      }];
+    } catch (error) {
+      console.error('Error generating parent menu:', error);
+      return this.getFallbackParentMenu();
+    }
+  }
+
+
+  // Updated fallback menu
+  private getFallbackParentMenu(): any[] {
     return [{
       tittle: 'Main',
       showAsTab: false,
@@ -1433,62 +1498,21 @@ getParentMenu(children: any[] = []) {
         {
           menuValue: 'Dashboard',
           icon: 'layout-2',
-          base: 'dashboard',
-          hasSubRoute: false,
-          showSubRoute: false,
           route: routes.adminDashboard,
-          customSubmenuTwo: false,
-          subRoutes: [],
+          hasSubRoute: false
         },
         {
           menuValue: 'Mes enfants Inscrit',
-          hasSubRouteThree: true,
           icon: 'school',
-          page: 'students',
-          subMenus: childMenus.length ? childMenus : [{
-            menuValue: 'Aucun enfant inscrit',
+          subMenus: [{
+            menuValue: 'Erreur de chargement',
             customSubmenuThree: false,
             route: ''
           }]
         }
       ]
     }];
-  } catch (error) {
-    console.error('Error generating parent menu:', error);
-    return this.getFallbackParentMenu();
   }
-}
-
-
-// Updated fallback menu
-private getFallbackParentMenu(): any[] {
-  return [{
-    tittle: 'Main',
-    showAsTab: false,
-    separateRoute: false,
-    hasSubRoute: false,
-    showSubRoute: false,
-    base: '',
-    page: '99',
-    menu: [
-      {
-        menuValue: 'Dashboard',
-        icon: 'layout-2',
-        route: routes.adminDashboard,
-        hasSubRoute: false
-      },
-      {
-        menuValue: 'Mes enfants Inscrit',
-        icon: 'school',
-        subMenus: [{
-          menuValue: 'Erreur de chargement',
-          customSubmenuThree: false,
-          route: ''
-        }]
-      }
-    ]
-  }];
-}
 
   // Rest of your existing menu definitions...
   public ParentSidebarData = [

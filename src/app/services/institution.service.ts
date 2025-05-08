@@ -71,10 +71,14 @@ export class InstitutionService {
 
     // Set basic properties
     institution.set('name', institutionData.name);
-    institution.set('registrationNumber', institutionData.registrationNumber);
-    institution.set('motto', institutionData.motto || '');
-    institution.set('description', institutionData.description || '');
-    institution.set('poBox', institutionData.poBox || '');
+    institution.set('address', institutionData.address);
+    // institution.set('registrationNumber', institutionData.registrationNumber);
+    institution.set('registrationDate', institutionData.registrationDate);
+    institution.set('municipality', {
+      __type: 'Pointer',
+      className: 'Municipality',
+      objectId: institutionData?.municipality
+    });
     institution.set('isActive', institutionData.isActive !== undefined ? institutionData.isActive : true);
     
     // Set emails and phones arrays
@@ -96,64 +100,56 @@ export class InstitutionService {
       institution.set('logo', logoFile);
     }
 
-    // Set campus pointer if it exists
-    if (institutionData.campus && institutionData.campus.objectId) {
-      const campusPointer = {
-        __type: 'Pointer',
-        className: 'Campus',
-        objectId: institutionData.campus.objectId
-      };
-      institution.set('campuses', [campusPointer]);
-    }
 
-    const owners: any = []
-    let i = 0;
     institutionData?.owners?.forEach(async(owner : any) => {
-      i++
-      const usr = new Parse.User();
-      usr.set("username", owner.phones);
-      usr.set("password", owner.phones);
-      const user = await usr.signUp()
-      console.log(' user user user ', user)
-      const person  = await globalPost(
-        {
-          T: 'Person',
-          dataObject: {
-            lastName: owner.firstName,
-            firstName: owner.firstName,
-            phones: [owner.phones],
-            user: {
-              __type: 'Pointer',
-              className: '_User',
-              objectId: user?.id
+      let ownnerClass;
+      if(owner.LinkExistedParent){
+        ownnerClass = {
+          "__type": "Pointer", 
+          "className": "Person" , 
+          "objectId": owner.ownerId
+        }
+        const dataUpdate = await Parse.Cloud.run('updateUserRole', {task_name: "etablissement", userId: owner.ownerId})
+        console.log('dataUpdate dataUpdate dataUpdate ', dataUpdate)
+      }else{
+        const dataRole = await Parse.Cloud.run('getRole', {task_name: "etablissement"})
+        console.log('Role round ', dataRole)
+        
+        const usr = new Parse.User();
+        usr.set("role", {"__type": "Pointer", "className": "_Role" , "objectId": dataRole.role?.objectId});
+        usr.set("username", owner.phoneNumber);
+        usr.set("password", owner.phoneNumber);
+        const user = await usr.signUp()
+        console.log(' user user user ', user)
+        ownnerClass  = await globalPost(
+          {
+            T: 'Person',
+            dataObject: {
+              lastName: owner.lastName,
+              firstName: owner.firstName,
+              email: owner.email,
+              phone: owner.phoneNumber,
+              certificateOppointment: institutionData.certificateOppointment,
+              gender: {"__type": "Pointer", "className": "Gender" , "objectId": owner.gender},
+              user: {
+                __type: 'Pointer',
+                className: '_User',
+                objectId: user?.id
+              }
             }
+  
           }
-
-        }
-      )
-      console.log(' owners owners person ', person)
-      if(!person.error) {
-        user.set('person', person?.object)
-        await user.save()
-        owners.push(person?.object)
-        console.log('saving ', i, institutionData?.owners?.length, owners)
-        if(i === institutionData?.owners?.length){
-          console.log('Here saving')
-          institution.set('owners', owners)
-          await institution.save()
-        }
+        )
+        console.log(' owners owners person ', ownnerClass)
+      }
+      if(ownnerClass) {
+        console.log('Here owners final saving')
+        institution.set('owner', ownnerClass)
+        await institution.save()
       }
     });
-    
-    console.log(' owners owners owners ', owners)
-    
-    
     return from(institution.save()).pipe(
       map(async result => {
-        owners.forEach(async(owner: any) => {
-          owner.set('institutions', [institution])
-          await owner.save()
-        });
         return this.parseInstitutionObject(result)
       })
     );

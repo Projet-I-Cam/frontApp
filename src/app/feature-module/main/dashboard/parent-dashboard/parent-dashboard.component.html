@@ -37,14 +37,14 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center row-gap-3">
                             <div class="avatar avatar-xxl rounded flex-shrink-0 me-3">
-                                <img src="assets/img/parents/parent-01.jpg" alt="Img">
+                                <img src="{{parent.photo?.url}}" alt="Img">
                             </div>
                             <div class="d-block">
                                 <span class="badge bg-transparent-primary text-primary mb-1">#P124556</span>
-                                <h4 class="text-truncate text-white mb-1">Thomas Bown</h4>
+                                <h4 class="text-truncate text-white mb-1">{{parent?.firstName}} {{parent?.lastName}}</h4>
                                 <div class="d-flex align-items-center flex-wrap row-gap-2 class-info">
-                                    <span>Added On : 25 Mar 2024</span>
-                                    <span>Child : Janet</span>
+                                    <span>Added On : {{parent.createdAt | date:'d MMMM yyyy' }}</span>
+                                    <span>Childs : {{parent.students?.length || 0}}</span>
                                 </div>
                             </div>
                         </div>
@@ -60,7 +60,7 @@
             <!-- /Profile -->
 
             <!-- Leave -->
-            <div class="col-xxl-7 d-flex">
+            <!--<div class="col-xxl-7 d-flex">
                 <div class="row flex-fill">
                     <div class="col-xl-4 d-flex flex-column">
                         <div
@@ -111,14 +111,15 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
             <!-- /Leave -->
 
         </div>
         <div class="row">
 
             <!-- Events List -->
-            <div class="col-xxl-4 col-xl-6 d-flex">
+            
+            <div class="col-xxl-4 col-xl-12 d-flex">
                 <div class="card flex-fill">
                     <div class="card-header  d-flex align-items-center justify-content-between">
                         <h4 class="card-title">Events List</h4>
@@ -219,7 +220,7 @@
             <!-- /Events List -->
 
             <!-- Statistics -->
-            <div class="col-xxl-8 col-xl-6 d-flex">
+            <!--<div class="col-xxl-8 col-xl-6 d-flex">
                 <div class="card flex-fill">
                     <div class="card-header d-flex align-items-center justify-content-between">
                         <h4 class="card-title">Statistics</h4>
@@ -261,14 +262,14 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
             <!-- /Statistics -->
 
         </div>
         <div class="row">
 
             <!-- Leave Status -->
-            <div class="col-xxl-4 col-xl-6 d-flex">
+           <!--- <div class="col-xxl-4 col-xl-6 d-flex">
                 <div class="card flex-fill">
                     <div class="card-header d-flex align-items-center justify-content-between">
                         <h4 class="card-title">Leave Status</h4>
@@ -346,11 +347,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
             <!-- /Leave Status -->
-
+            
             <!-- Home Works -->
-            <div class="col-xxl-4  col-xl-6 d-flex">
+            <div class="col-xxl-4  col-xl-12 d-flex">
                 <div class="card flex-fill">
                     <div class="card-header d-flex align-items-center justify-content-between">
                         <h4 class="card-titile">Home Works</h4>

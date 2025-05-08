@@ -361,6 +361,9 @@ export class routes {
   public static get addStudent(): string {
     return this.peoples + '/students/add-student';
   }
+  public static get addInstitution(): string {
+    return this.peoples + '/institutions/add-institution';
+  }
   public static get teacherLeaves(): string {
     return this.peoples + '/teachers/teacher-leaves';
   }

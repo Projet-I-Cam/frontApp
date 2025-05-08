@@ -64,61 +64,59 @@
 
                   <div class="col-12 col-md-6 col-xl-6">
                     <div class="form-group local-forms">
-                      <label>Registration Number <span class="login-danger">*</span></label>
-                      <input 
-                        type="text" 
-                        class="form-control" 
-                        placeholder="Enter registration number"
-                        formControlName="registrationNumber"
-                        [ngClass]="{'is-invalid': institutionForm.get('registrationNumber')?.invalid && institutionForm.get('registrationNumber')?.touched}"
+                      <label>Registration date <span class="login-danger">*</span></label>
+                      <div class="input-icon position-relative">
+                        <span class="input-icon-addon">
+                          <i class="ti ti-calendar"></i>
+                        </span> 
+                        <input
+                            type="text"
+                            class="form-control datetimepicker"
+                            placeholder="jj-mm-aaaa"
+                            bsDatepicker
+                            formControlName="registrationDate"
+                            [ngClass]="{'is-invalid': institutionForm.get('registrationDate')?.invalid && institutionForm.get('registrationDate')?.touched}"
+                          />
+                      </div>
+                      <div class="invalid-feedback" *ngIf="institutionForm.get('registrationDate')?.invalid && institutionForm.get('registrationDate')?.touched">
+                        Registration date is required
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-12 col-md-6 col-xl-6">
+                    <div class="form-group local-forms">
+                      <label>Municipality <span class="login-danger">*</span></label>
+                      <p-dropdown
+                        formControlName="municipality"
+                        [options]="municipalities"
+                        [filter]="true"
+                        placeholder="Rechercher le parent"
+                        [virtualScroll]="true"
+                        [ngClass]="{'is-invalid': institutionForm.get('municipality')?.invalid && institutionForm.get('municipality')?.touched}"
                       >
-                      <div class="invalid-feedback" *ngIf="institutionForm.get('registrationNumber')?.invalid && institutionForm.get('registrationNumber')?.touched">
-                        Registration number is required
+                      </p-dropdown>
+
+                      <div class="invalid-feedback" *ngIf="institutionForm.get('municipality')?.invalid && institutionForm.get('municipality')?.touched">
+                        Municipality is required
                       </div>
                     </div>
                   </div>
 
+
                   <div class="col-12 col-md-6 col-xl-6">
                     <div class="form-group local-forms">
-                      <label>Motto</label>
+                      <label>Address</label>
                       <input 
-                        type="text" 
+                        type="address" 
                         class="form-control" 
-                        placeholder="Enter institution motto"
-                        formControlName="motto"
+                        placeholder="Enter the address"
+                        formControlName="address"
                       >
                     </div>
                   </div>
 
-                  <div class="col-12 col-md-6 col-xl-6">
-                    <div class="form-group local-forms">
-                      <label>P.O. Box</label>
-                      <input 
-                        type="text" 
-                        class="form-control" 
-                        placeholder="Enter P.O. Box"
-                        formControlName="poBox"
-                      >
-                    </div>
-                  </div>
-
-                  <div class="col-12 col-md-6 col-xl-6">
-                    <div class="form-group local-forms">
-                      <label>Email</label>
-                      <input 
-                        type="email" 
-                        class="form-control" 
-                        placeholder="Enter email address"
-                        formControlName="emails"
-                        [ngClass]="{'is-invalid': institutionForm.get('emails')?.invalid && institutionForm.get('emails')?.touched}"
-                      >
-                      <div class="invalid-feedback" *ngIf="institutionForm.get('emails')?.invalid && institutionForm.get('emails')?.touched">
-                        <span *ngIf="institutionForm.get('emails')?.errors?.['email']">Enter a valid email address</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-12 col-md-6 col-xl-6">
+                  <!-- <div class="col-12 col-md-6 col-xl-6">
                     <div class="form-group local-forms">
                       <label>Phone Number</label>
                       <input 
@@ -140,69 +138,121 @@
                         formControlName="description"
                       ></textarea>
                     </div>
-                  </div>
+                  </div> -->
 
-                  <div class="col-12 col-md-6">
-                    <div class="form-group">
-                      <div class="form-check form-switch">
-                        <input 
-                          class="form-check-input" 
-                          type="checkbox" 
-                          id="isActiveSwitch"
-                          formControlName="isActive"
-                        >
-                        <label class="form-check-label" for="isActiveSwitch">Active</label>
-                      </div>
-                    </div>
-                  </div>
                   
                   <div class="col-12 mt-10" >
-                    <h4>Persons responsibles</h4>
+                    <h4>Person responsible</h4>
                   </div>
                   <div class="col-12" formArrayName="owners">
-                    <div style="margin-top: 20px;" class="row col-12" *ngFor="let owner of owners.controls; let i = index" [formGroupName]="i">
-                      <div class="col-12 col-md-6 ">
-                        <div class="form-group local-forms">
-                          <label>Firstname<span class="login-danger">*</span></label>
-                          <input 
-                            type="text" 
-                            class="form-control" 
-                            placeholder="Enter Firstname"
-                            formControlName="firstName"
-                            [ngClass]="{'is-invalid': owner.get('firstName')?.invalid && owner.get('firstName')?.touched}"
-                          >
+                    
+                    <div style="margin-top: 20px;" *ngFor="let owner of owners.controls; let i = index" [formGroupName]="i">
+                      <div class="row col-12" >
+                        <div class="row">
+                          <div class="col-md-4">
+                            <div class="mb-3">
+                              <input class="form-check-input" type="checkbox" value="" id="ny" formControlName="LinkExistedParent" >
+                              <label for="ny">&nbsp;Link with existing person</label>
+
+                            </div>
+                          </div>
+                          <div class="row" *ngIf="owner.get('LinkExistedParent')?.value">
+                            <div class="col-md-4">
+                              <div class="mb-3">
+                                <label class="form-label">Find that person</label>
+                                <p-dropdown
+                                formControlName="ownerId"
+                                [options]="filteredPerson"
+                                [loading]="loadingDrop"
+                                [filter]="true"
+                                placeholder="Rechercher le parent"
+                                [virtualScroll]="true"
+                                [itemSize]="30"
+                                (onFilter)="searchParent($event)">
+                              </p-dropdown>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="row" *ngIf="!owner.get('LinkExistedParent')?.value">
+                            <div class="col-12 col-md-6">
+                              <div class="mb-3">
+                                <label class="form-label">Genre<span class="login-danger">*</span></label>
+                                <select 
+                                  class="form-select" 
+                                  formControlName="gender"
+                                  required
+                                  [ngClass]="{'is-invalid': owner.get('gender')?.invalid && owner.get('gender')?.touched}"
+                                >
+                                  <option value="">Sélectionner</option>
+                                  <option *ngFor="let type of sexes, let i = index" [value]="type.value">{{type.label}}</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="col-12 col-md-6 ">
+                              <div class="form-group local-forms">
+                                <label>Firstname<span class="login-danger">*</span></label>
+                                <input 
+                                  type="text" 
+                                  class="form-control" 
+                                  placeholder="Enter Firstname"
+                                  formControlName="firstName"
+                                  [ngClass]="{'is-invalid': owner.get('firstName')?.invalid && owner.get('firstName')?.touched}"
+                                >
+                              </div>
+                            </div>
+                            <div class="col-12 col-md-6 ">
+                              <div class="form-group local-forms">
+                                <label>Lastname<span class="login-danger">*</span></label>
+                                <input 
+                                  type="text" 
+                                  class="form-control" 
+                                  placeholder="Enter the Last name"
+                                  formControlName="lastName"
+                                  [ngClass]="{'is-invalid': owner.get('lastName')?.invalid && owner.get('lastName')?.touched}"
+                                >
+                              </div>
+                            </div>
+                            <div class="col-12 col-md-6 ">
+                              <div class="form-group local-forms">
+                                <label>Phone<span class="login-danger">*</span></label>
+                                <input 
+                                  type="text" 
+                                  class="form-control" 
+                                  placeholder="Enter the phone number"
+                                  formControlName="phoneNumber"
+                                  [ngClass]="{'is-invalid': owner.get('phones')?.invalid && owner.get('phones')?.touched}"
+                                >
+                              </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                              <div class="mb-3">
+                                <label class="form-label">Certificate of appointment</label>
+                                <input 
+                                  type="file" 
+                                  class="form-control" 
+                                  (change)="onFileSelect($event)"
+                                  #fileInput
+                                />
+                              </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                              <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" formControlName="email" />
+                              </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                              <div class="mb-3">
+                                <label class="form-label">Adresse</label>
+                                <input type="text" class="form-control" formControlName="address" />
+                              </div>
+                            </div>
+                          </div>
                         </div>
+
                       </div>
-                      <div class="col-12 col-md-6 ">
-                        <div class="form-group local-forms">
-                          <label>Lastname<span class="login-danger">*</span></label>
-                          <input 
-                            type="text" 
-                            class="form-control" 
-                            placeholder="Enter the Last name"
-                            formControlName="lastName"
-                            [ngClass]="{'is-invalid': owner.get('lastName')?.invalid && owner.get('lastName')?.touched}"
-                          >
-                        </div>
-                      </div>
-                      <div class="col-12 col-md-6 ">
-                        <div class="form-group local-forms">
-                          <label>Phone<span class="login-danger">*</span></label>
-                          <input 
-                            type="text" 
-                            class="form-control" 
-                            placeholder="Enter the phone number"
-                            formControlName="phones"
-                            [ngClass]="{'is-invalid': owner.get('phones')?.invalid && owner.get('phones')?.touched}"
-                          >
-                        </div>
-                      </div>
-                      <div class="col-12 ">
-                        <div style="display: flex; gap: 5px;">
-                          <button *ngIf="owners.controls.length > 1" class="btn btn-warning me-2" type="button" (click)="removeOwner(i)">Delete this owner</button>
-                          <button *ngIf="owners.controls.length === i+1" type="button" class="btn btn-info me-2" (click)="addOwner()">Add an Owner</button>
-                        </div>
-                      </div>
+
                     </div>
                   </div>
 

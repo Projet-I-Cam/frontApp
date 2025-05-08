@@ -1,10 +1,10 @@
 <div class="page-wrapper">
   <div class="content">
-    <!-- Page Header -->
+    <!-- Page Header(click)="addInstitution()" -->
     <div class="d-md-flex d-block align-items-center justify-content-between mb-3">
       <div class="my-auto mb-2">
         <h3 class="page-title mb-1">Institutions</h3>
-        <nav>
+        <nav> 
           <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item">
               <a [routerLink]="routes.adminDashboard">Dashboard</a>
@@ -20,7 +20,7 @@
       </div>
       <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
         <div class="mb-2">
-          <a href="javascript:void(0);" class="btn btn-primary" (click)="addInstitution()">
+          <a href="javascript:void(0);" class="btn btn-primary" [routerLink]="routes.addInstitution">
             <i class="ti ti-square-rounded-plus-filled me-2"></i>Add Institution
           </a>
         </div>
@@ -78,19 +78,18 @@
             </th>
             <th pSortableColumn="isActive">
               <div class="flex justify-between items-center">
-                Status
+                Registration Date
                 <p-sortIcon field="isActive"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="emails">
               <div class="flex justify-between items-center">
-                Email
-                <p-sortIcon field="emails"></p-sortIcon>
+                Municipality
               </div>
             </th>
             <th pSortableColumn="phones">
               <div class="flex justify-between items-center">
-                Phone
+                Owner
                 <p-sortIcon field="phones"></p-sortIcon>
               </div>
             </th>
@@ -105,13 +104,9 @@
           <tr>
             <td>{{ institution.name }}</td>
             <td>{{ institution.registrationNumber || 'N/A' }}</td>
-            <td>
-              <span [ngClass]="institution.isActive ? 'badge bg-success-light' : 'badge bg-danger-light'">
-                {{ institution.isActive ? 'Active' : 'Inactive' }}
-              </span>
-            </td>
-            <td>{{ institution.emails && institution.emails.length > 0 ? institution.emails[0] : 'N/A' }}</td>
-            <td>{{ institution.phones && institution.phones.length > 0 ? institution.phones[0] : 'N/A' }}</td>
+            <td>{{ institution.registrationDate?.iso | date:'dd/MM/yyyy' }}</td>
+            <td>{{ institution.municipality?.name || 'N/A' }}</td>
+            <td>{{ institution.owner?.lastName + " "+institution.owner?.firstName }}</td>
             <td>
               <p-button [routerLink]="['/peoples/institutions/institution-details', institution.objectId]"
                 styleClass="p-button-text" tooltip="view institution">
