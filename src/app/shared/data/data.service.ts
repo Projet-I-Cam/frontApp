@@ -14,7 +14,7 @@ import { Section } from '../model/institution.model';
 export class DataService {
   constructor(private http: HttpClient, private loginService: LoginService) { }
 
-
+  iconStudents : string = 'user';
 
   public getDataTable() {
     return this.http.get<apiResultFormat>('assets/json/data-tables.json').pipe(
@@ -1556,6 +1556,12 @@ export class DataService {
           icon: 'layout-2',
           route: routes.adminDashboard,
           hasSubRoute: false
+        },
+        {
+          menuValue: 'Mes enfants',
+          icon: this.iconStudents,
+          route: routes.myStudents,
+          hasSubRoute: false
         }
       ]
     },
@@ -2707,9 +2713,14 @@ export class DataService {
           base9: "",
           subRoutes: [],
         },
+        {
+          menuValue: 'Mes enfants',
+          icon: this.iconStudents,
+          route: routes.myStudents,
+          hasSubRoute: false
+        }
       ],
-    },
-
+    }
   ];
 
   public AdminSchoolSidebarData: Array<any> = [
@@ -2723,6 +2734,18 @@ export class DataService {
           route: routes.adminDashboard,
           hasSubRoute: false
         },
+        {
+          menuValue: 'Annuaire',
+          icon: 'phone',
+          route: '',
+          hasSubRoute: false
+        },
+        {
+          menuValue: 'Mes enfants',
+          icon: this.iconStudents,
+          route: routes.myStudents,
+          hasSubRoute: false
+        }
       ]
     },
     {

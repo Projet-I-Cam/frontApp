@@ -18,9 +18,12 @@ import { StudentService } from '../../../services/student.service';
 import { PersonService } from '../../../services/person.service';
 import { EditStudentModule } from './edit-student/edit-student.module';
 import { AddStudentComponent } from './add-student/add-student.component';
+import { MyStudentsComponent } from './my-students/my-students.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    MyStudentsComponent
+  ],
   imports: [
     CommonModule,
     RouterModule,

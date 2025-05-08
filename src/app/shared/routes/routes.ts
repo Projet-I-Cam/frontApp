@@ -421,6 +421,10 @@ export class routes {
     return this.peoples + '/students/student-report-card';
   }
 
+  public static get myStudents(): string {
+    return this.peoples + '/students/my-students';
+  }
+
 
 
 
