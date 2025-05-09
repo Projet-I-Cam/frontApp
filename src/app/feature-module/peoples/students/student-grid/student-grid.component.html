@@ -47,10 +47,9 @@
                                                 <div class="mb-3">
                                                     <label class="form-label">Classe</label>
                                                  
-                                                    <select class="form-select">
+                                                    <select class="form-select" [(ngModel)]="selectedClasse" name="classe">
                                                         <option value="">Sélectionner</option>
-                                                        <option value="I">I</option>
-                                                        <option value="III">III</option>
+                                                        <option *ngFor="let item of classes" [value]="item" >{{ item?.name_fr }}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -58,11 +57,10 @@
                                                 <div class="mb-3">
                                                     <label class="form-label">Section</label>
                                                    
-                                                    <select class="form-select">
+                                                    <select class="form-select" [(ngModel)]="selectedSection" name=""section>
                                                         <option value="">Sélectionner</option>
-                                                        <option value="A">A</option>
-                                                        <option value="B">B</option>
-                                                        <option value="C">C</option>
+                                                        <option value="A" *ngFor="let item of sections" [value]="item">{{item.name_fr}}</option>
+    
                                                     </select>
                                                 </div>
                                             </div>
@@ -147,17 +145,17 @@
 					<div class="col-xxl-3 col-xl-4 col-md-6 d-flex" *ngFor="let student of students">
 						<div class="card flex-fill">
 							<div class="card-header d-flex align-items-center justify-content-between">
-								<a [routerLink]="routes.studentDetails" class="link-primary">{{ student.registrationNumber || 'N/A' }}</a>
+								<a [routerLink]="routes.studentDetails" class="link-primary">{{ student.matricule || 'N/A' }}</a>
 								<div class="d-flex align-items-center">
-									<span class="badge badge-soft-success d-inline-flex align-items-center me-1" *ngIf="student.status === 'Active'"><i class="ti ti-circle-filled fs-5 me-1"></i>Actif</span>
-									<span class="badge badge-soft-danger d-inline-flex align-items-center me-1" *ngIf="student.status === 'Inactive'"><i class="ti ti-circle-filled fs-5 me-1"></i>Inactif</span>
+									<span class="badge badge-soft-success d-inline-flex align-items-center me-1" *ngIf="student.isValid === 'Active'"><i class="ti ti-circle-filled fs-5 me-1"></i>Actif</span>
+									<span class="badge badge-soft-danger d-inline-flex align-items-center me-1" *ngIf="student.isValid === 'Inactive'"><i class="ti ti-circle-filled fs-5 me-1"></i>Inactif</span>
 									<div class="dropdown">
 										<a href="javascript:void(0);" class="btn btn-white btn-icon btn-sm d-flex align-items-center justify-content-center rounded-circle p-0" data-bs-toggle="dropdown" aria-expanded="false">
 											<i class="ti ti-dots-vertical fs-14"></i>
 										</a>
 										<ul class="dropdown-menu dropdown-menu-right p-3">
 											<li>
-												<a class="dropdown-item rounded-1" href="javascript:void(0);" (click)="viewDetails(student.id)"><i class="ti ti-menu me-2"></i>Voir l'Élève</a>
+												<a class="dropdown-item rounded-1" href="javascript:void(0);" (click)="viewDetails(student.person.objectId)"><i class="ti ti-menu me-2"></i>Voir l'Élève</a>
 											</li>
 											<li>
 												<a class="dropdown-item rounded-1" [routerLink]="routes.editStudent"><i class="ti ti-edit-circle me-2"></i>Modifier</a>
@@ -175,32 +173,31 @@
 							<div class="card-body">
 								<div class="bg-light-300 rounded-2 p-3 mb-3">
 									<div class="d-flex align-items-center">
-										<a href="javascript:void(0);" (click)="viewDetails(student.id)" class="avatar avatar-lg flex-shrink-0">
-											<img *ngIf="student.photo?.url" [src]="student.photo?.url" class="img-fluid rounded-circle" alt="img">
-											<img *ngIf="!student.photo?.url" src="assets/img/profiles/avatar-01.jpg" class="img-fluid rounded-circle" alt="img">
+										<a href="javascript:void(0);" (click)="viewDetails(student.person.objectId)" class="avatar avatar-lg flex-shrink-0">
+											<img [src]="student?.person?.photo?.url || 'assets/img/profiles/avatar-01.jpg' " class="img-fluid rounded-circle" alt="img">
 										</a> 
 										<div class="ms-2">
 											<h5 class="mb-0" class="text-dark text-truncate">
 												<a href="javascript:void(0);" (click)="viewDetails(student.id)">
-													{{ student?.firstName }} {{ student?.lastName }}
+													{{ student?.person?.firstName }} {{ student?.person?.lastName }}
 												</a>
 											</h5>
-											<p>{{ student.classroom?.name || 'CM2' }}</p>
+											<p>{{ student?.classroom?.name_fr || 'CM2' }}</p>
 										</div>
 									</div>	
 								</div>
 								<div class="d-flex align-items-center justify-content-between gx-2">
 									<div>
-										<p class="mb-0">N° Matricule</p>
-										<p class="text-dark">{{ student.registrationNumber || 'N/A' }}</p>
+										<p class="mb-0">Matricule</p>
+										<p class="text-dark">{{ student.matricule || 'N/A' }}</p>
 									</div>
 									<div>
 										<p class="mb-0">Genre</p>
-										<p class="text-dark">{{ student?.gender?.libelle_fr || 'N/A' }}</p>
+										<p class="text-dark">{{ student?.person?.gender?.libelle_fr || 'N/A' }}</p>
 									</div>
 									<div>
 										<p class="mb-0">Section</p>
-										<p class="text-dark">{{ student?.section?.name_fr || 'N/A' }}</p>
+										<p class="text-dark">{{ student?.classroom?.classe?.section?.name_fr || 'N/A' }}</p>
 									</div>
 									<!-- <div>
 										<p class="mb-0">Inscription</p>
@@ -210,8 +207,8 @@
 							</div>
 							<div class="card-footer d-flex align-items-center justify-content-between">
 								<div class="d-flex align-items-center">
-									<a href="tel:{{student.phone}}" class="btn btn-outline-light bg-white btn-icon d-flex align-items-center justify-content-center rounded-circle p-0 me-2"><i class="ti ti-phone"></i></a>
-									<a href="tel:{{student.email}}" class="btn btn-outline-light bg-white btn-icon d-flex align-items-center justify-content-center rounded-circle p-0 me-3"><i class="ti ti-mail"></i></a>
+									<a href="tel:{{student?.person?.phone}}" class="btn btn-outline-light bg-white btn-icon d-flex align-items-center justify-content-center rounded-circle p-0 me-2"><i class="ti ti-phone"></i></a>
+									<a href="tel:{{student?.person?.email}}" class="btn btn-outline-light bg-white btn-icon d-flex align-items-center justify-content-center rounded-circle p-0 me-3"><i class="ti ti-mail"></i></a>
 								</div>
 								<!-- <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_fees_collect" class="btn btn-light btn-sm fw-semibold">Add Fees</a> -->
 							</div>

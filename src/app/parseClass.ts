@@ -38,5 +38,6 @@ export default {
     UA_PeriodAssessment: Parse.Object.extend("UA_PeriodAssessment"),
     Cote:  Parse.Object.extend("Cote"),
     TypeOfParent:  Parse.Object.extend("TypeOfParent"),
+    Classe:  Parse.Object.extend("Classe"),
 
 }

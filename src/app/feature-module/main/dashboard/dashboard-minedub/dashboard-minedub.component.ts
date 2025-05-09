@@ -15,6 +15,7 @@ import { routes } from '../../../../shared/routes/routes';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
 import { fetchCurrentPerson } from '../../../../services/statefull/genericParse';
+import { LoginService } from '../../../../auth/services/login.service';
 export type ChartOptions = {
   series: ApexAxisChartSeries | any;
   chart: ApexChart | any;
@@ -146,7 +147,7 @@ export class DashboardMinedubComponent implements OnInit{
     public chartOptions6: Partial<ChartOptions> | any;
     public chartOptions7: Partial<ChartOptions> | any;
 
-    constructor(private router: Router, private authService: AuthService) {
+    constructor(private router: Router, private loginService: LoginService) {
       this.chartOptions = {
         chart: {
           height: 90,
@@ -446,14 +447,7 @@ export class DashboardMinedubComponent implements OnInit{
         },
       };
 
-      fetchCurrentPerson(this.authService, (person) => {
-            if (person) {
-              this.person = person;
-              console.log('Person found:', person);
-            } else {
-              console.log('No person found or error occurred.');
-            }
-          });
+      this.person = this.loginService.getPerson();
     }
 
     tasks: Task[] = [
