@@ -9,6 +9,9 @@ import { AlertService } from '../../../../services/alertService';
 import { apiResultFormat } from '../../../../shared/model/pages.model';
 import { StudentService } from '../../../../services/student.service';
 import { finalize } from 'rxjs';
+import Parse from 'parse';
+import { fetchCurrentPerson, getCurrentAcademicYear, getEnrolledStudents, getLiteCurrentAcademicYear } from '../../../../services/statefull/genericParse';
+
 
 @Component({
   selector: 'app-my-students',
@@ -28,7 +31,8 @@ export class MyStudentsComponent implements OnInit{
   public error = ''; // Message d'erreur
   public rows = 0; // Variable pour stocker le nombre total de lignes
   public selectedStudent: any = null; // Stocke l'étudiant sélectionné
-
+  person : any = {};
+  academicYear : any = {};
 
   values = [
     {'label': 'Actif', value: true},
@@ -46,10 +50,25 @@ export class MyStudentsComponent implements OnInit{
      private studentService: StudentService
    ) {}
  
-   ngOnInit(): void {
-     this.load=true;
-     this.loadStudents();
-   }
+  async ngOnInit() {
+    this.load=true;
+    this.academicYear = await getCurrentAcademicYear();
+    this.students = await getEnrolledStudents(this.academicYear.objectId);
+    console.log(this.students);
+    fetchCurrentPerson(this.authService, (person) => {
+      if(person){
+        this.person = person;
+        //this.getMesEnfants();
+      }else{
+        this.alertService.showError('aucune personne associé à cet utilisateur');
+      }
+    })
+  }
+
+
+
+
+
 
   loadStudents(): void {
     this.isLoading = true;
@@ -111,10 +130,45 @@ export class MyStudentsComponent implements OnInit{
     }
   }
 
-    public changePage(pageIndex: number): void {
+  public changePage(pageIndex: number): void {
     this.currentPage = pageIndex;
-    // Vous pouvez ici implémenter une logique pour charger uniquement les données 
-    // de la page actuelle si vous avez beaucoup d'étudiants
+  }
+
+  async getMesEnfants2() {
+    const parentQuery = new Parse.Query('Person');    
+    const parent = await parentQuery.get(this.person.objectId);
+    
+    if (!parent) {
+        console.log('Parent non trouvé');
+        return;
+    }
+    const childrenQuery = new Parse.Query('Person');
+    childrenQuery.equalTo('parents', parent);
+    const children = await childrenQuery.find();
+
+    children.forEach(child => {
+      console.log('Enfant:', {
+        id: child.id,
+        firstName: child.get('firstName'), 
+        lastName: child.get('lastName'), 
+        photo: child.get('photo'), 
+          // Add more fields as needed
+      });
+  })    
+    return children;
+  }
+
+  async getMesEnfants() {
+
+    const parent = new Parse.Query('Person')
+    parent.equalTo('isParent', true)
+    const p = await parent.first()
+    
+    const elevs = new Parse.Query('Person')
+    elevs.equalTo('parents', p)
+    const els = await elevs.find()
+    console.log('els els ', els)
+
   }
 }
 

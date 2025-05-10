@@ -16,6 +16,8 @@ export class DataService {
 
   iconStudents : string = 'user';
 
+
+
   public getDataTable() {
     return this.http.get<apiResultFormat>('assets/json/data-tables.json').pipe(
       map((res: apiResultFormat) => {
@@ -1509,6 +1511,12 @@ export class DataService {
             customSubmenuThree: false,
             route: ''
           }]
+        },
+        {
+          menuValue: 'Mes enfants',
+          icon: this.iconStudents,
+          route: routes.myStudents,
+          hasSubRoute: false
         }
       ]
     }];
@@ -1536,12 +1544,12 @@ export class DataService {
           subRoutes: [],
         },
         {
-          menuValue: 'Mes enfants Inscrit',
+          menuValue: 'Mes enfants Inscrits',
           hasSubRouteThree: true,
           icon: 'school',
           page: 'students',
           subMenus: [],
-        },
+        }
       ],
     },
   ];

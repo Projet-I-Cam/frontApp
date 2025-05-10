@@ -26,6 +26,7 @@ import {
 import { routes } from '../../../../shared/routes/routes';
 import { fetchCurrentPerson } from '../../../../services/statefull/genericParse';
 import { AuthService } from '../../../../services/auth.service';
+import { LoginService } from '../../../../auth/services/login.service';
 
 @Component({
     selector: 'app-parent-dashboard',
@@ -40,7 +41,7 @@ export class ParentDashboardComponent implements OnInit{
 
   parent : any = {};
 
-  constructor( private authService: AuthService) {
+  constructor( private loginService: LoginService) {
     this.chartOptions = {
       chart: {
         type: 'line',
@@ -61,14 +62,7 @@ export class ParentDashboardComponent implements OnInit{
   }
 
   async ngOnInit() {
-    fetchCurrentPerson(this.authService, (person) => {
-      if (person) {
-        this.parent = person;
-        console.log('Person found:', person);
-      } else {
-        console.log('No person found or error occurred.');
-      }
-    });
+    this.parent = this.loginService.getPerson();
   }
  
 }
