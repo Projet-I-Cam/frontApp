@@ -7,6 +7,8 @@ import { AuthService } from '../auth.service';
 
 export interface FilterStudent {
   yearId?: string; 
+  genderId?: string
+  statut?: boolean
   sectionId?: string; 
   classroomId?: string; 
   classeId?: string; 
@@ -85,8 +87,17 @@ export async function listInscriptions(f: FilterStudent) {
     }
   };
 
+  // Filtrer par statut
+  if(f.statut != undefined){
+    query.equalTo('isValid', f.statut);
+  }
+  console.log("Query", f)
   // Filtrer par année académique
   addFilter(query, "AcademicYear", "academicYear", f.yearId || '');
+
+  // Filtrer par Genre
+  addFilter(query, "Gender", "person.gender", f.genderId || '');
+
 
   // Filtrer par Section
   addFilter(query, "Section", "classroom.classe.section", f.sectionId || '');

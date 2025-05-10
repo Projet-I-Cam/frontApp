@@ -32,7 +32,7 @@
 					<h4 class="mb-3">Grille des Élèves</h4>
 					<div class="d-flex align-items-center flex-wrap">		
 						<div class="input-icon-start mb-3 me-2 position-relative">
-							<app-date-range-picker></app-date-range-picker>
+							<!-- <app-date-range-picker></app-date-range-picker> -->
 						</div>
 						<div class="dropdown mb-3 me-2">
 							<a href="javascript:void(0);" class="btn btn-outline-light bg-white dropdown-toggle"  data-bs-toggle="dropdown"  data-bs-auto-close="outside"><i class="ti ti-filter me-2"></i>Filtrer</a>
@@ -49,7 +49,7 @@
                                                  
                                                     <select class="form-select" [(ngModel)]="selectedClasse" name="classe">
                                                         <option value="">Sélectionner</option>
-                                                        <option *ngFor="let item of classes" [value]="item" >{{ item?.name_fr }}</option>
+                                                        <option *ngFor="let item of classes" [value]="item.objectId" >{{ item?.name_fr }}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -57,22 +57,10 @@
                                                 <div class="mb-3">
                                                     <label class="form-label">Section</label>
                                                    
-                                                    <select class="form-select" [(ngModel)]="selectedSection" name=""section>
+                                                    <select class="form-select" [(ngModel)]="selectedSection" name="section">
                                                         <option value="">Sélectionner</option>
-                                                        <option value="A" *ngFor="let item of sections" [value]="item">{{item.name_fr}}</option>
+                                                        <option *ngFor="let item of sections" [value]="item.objectId">{{item.name_fr}}</option>
     
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Nom</label>
-                                                  
-                                                    <select class="form-select">
-                                                        <option value="">Sélectionner</option>
-                                                        <option value="Janet">Janet</option>
-                                                        <option value="Joann">Joann</option>
-                                                        <option value="Kathleen">Kathleen</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -80,10 +68,9 @@
                                                 <div class="mb-3">
                                                     <label class="form-label">Genre</label>
                                                    
-                                                    <select class="form-select">
+                                                    <select class="form-select" [(ngModel)]="selectedGender" name="gender">
                                                         <option value="">Sélectionner</option>
-                                                        <option value="Male">Homme</option>
-                                                        <option value="Female">Femme</option>
+                                                        <option  *ngFor="let item of genders" [value]="item.objectId">{{item.libelle_fr}}</option>    
                                                     </select>
                                                 </div>
                                             </div>
@@ -91,17 +78,16 @@
                                                 <div class="mb-3">
                                                     <label class="form-label">Statut</label>
                                                  
-                                                    <select class="form-select">
+													<select class="form-select" [(ngModel)]="selectedStatut" name="statut">
                                                         <option value="">Sélectionner</option>
-                                                        <option value="Active">Actif</option>
-                                                        <option value="Inactive">Inactif</option>
+                                                        <option  *ngFor="let s of statuts" [value]="s.value">{{s.item}}</option>    
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
 									</div>
 									<div class="p-3 d-flex align-items-center justify-content-end">
-										<a href="javascript:void(0);" class="btn btn-light me-3">Réinitialiser</a>
+										<a href="javascript:void(0);" class="btn btn-light me-3" (click)="resetFilters()">Réinitialiser</a>
 										<button type="button" (click)="handleApplyClick()" class="btn btn-primary">Appliquer</button>
 									</div>
 								</form>									
