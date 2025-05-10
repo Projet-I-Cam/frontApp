@@ -11,6 +11,7 @@ import { FilterStudent, getCurrentAcademicYear, listInscriptions } from '../../.
 import { AuthService } from '../../../../services/auth.service';
 import { LoginService } from '../../../../auth/services/login.service';
 import { globalGet } from '../../../../services/statefull/http';
+import { AlertService } from '../../../../services/alertService';
 
 // Définition d'interface pour Bootstrap pour éviter les erreurs TS
 declare global {
@@ -41,23 +42,29 @@ export class StudentGridComponent implements OnInit {
   currentUser : any = {};
   currentPerson : any = {};
   classes : any[] = [];
-  selectedClasse : any = {};
+  selectedClasse : string | undefined;
   sections : any[] = [];
-  selectedSection : any = {};
+  selectedSection :string | undefined;
+  genders : any[] = [];
+  selectedGender : string | undefined;
+  statuts : any[] = [{item: "Actif", value: true}, {item: "Inactif", value: false}];
+  selectedStatut : boolean = true;
+  academicYears : any[] = [];
   
 
   constructor(
     private router: Router,
     private renderer: Renderer2,
     private studentService: StudentService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private alertService: AlertService
   ) {}
 
   async ngOnInit() {
     this.currentUser = this.loginService.getUser();
     this.currentPerson = this.loginService.getPerson();
     this.academicYear = await getCurrentAcademicYear();
-    this.loadStudents({yearId : this.academicYear.objectId});
+    this.loadStudents({yearId : this.academicYear.objectId, statut: true});
     this.loadFilterData();
   }
 
@@ -87,7 +94,8 @@ export class StudentGridComponent implements OnInit {
   async loadFilterData(){
     this.classes = await globalGet({T: 'Classe'});
     this.sections = await globalGet({T: 'Section'});
-    console.log(this.classes, this.sections);
+    this.genders = await globalGet({T: 'Gender'});
+    this.academicYears = await globalGet({T: 'AcademicYear'});
   }
 
   async loadStudents2(academicYearId:any){     
@@ -306,16 +314,22 @@ export class StudentGridComponent implements OnInit {
     }
   }
 
-  public handleApplyClick(): void {
-    const modalElements = document.getElementsByClassName('drop-width');
-    if (modalElements.length > 0) {
-      for (let i = 0; i < modalElements.length; i++) {
-        const modalElement = modalElements[i];
-        this.renderer.removeClass(modalElement, 'show');
-      }
-    }
+  handleApplyClick() {
+    const f = {
+      yearId: this.academicYear.objectId,
+      classeId: this.selectedClasse,
+      sectionId: this.selectedSection,
+      genderId: this.selectedGender,
+      statut: this.convertStringToBoolean(this.selectedStatut) 
+    };
+    //this.students = [];
+    console.log(f);
+    this.loadStudents(f);
   }
 
+  resetFilters() {
+    this.ngOnInit();
+  }
   public deleteStudent(id: string): void {
     if (confirm('Are you sure you want to delete this student?')) {
       this.studentService.deleteStudent(id)
@@ -343,4 +357,8 @@ export class StudentGridComponent implements OnInit {
     // Vous pouvez ici implémenter une logique pour charger uniquement les données 
     // de la page actuelle si vous avez beaucoup d'étudiants
   }
+  convertStringToBoolean(str:any) {
+    return str.toLowerCase() === 'true';
+  } 
+  
 }

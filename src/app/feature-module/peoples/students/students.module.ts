@@ -40,7 +40,7 @@ import { MyStudentsComponent } from './my-students/my-students.component';
     EditStudentModule,
     AddStudentComponent,
     StudentsComponent,
-    StudentGridComponent
+    StudentGridComponent,
   ],
   providers: [
     StudentService,
