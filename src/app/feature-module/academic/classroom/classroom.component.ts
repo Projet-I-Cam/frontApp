@@ -31,7 +31,6 @@ export class ClassroomComponent implements OnInit {
   public actualData: Array<any> = [];
   public routes = routes;
   public currentPage = 1;
-  mode = 'create'; // Mode par défaut
   public skip = 0;
   public limit: number = this.pageSize;
   public serialNumberArray: Array<number> = [];
@@ -42,11 +41,12 @@ export class ClassroomComponent implements OnInit {
   dataSource!: MatTableDataSource<any>;
   isSubmited: boolean = false;
   entity: any = {};
+  mode = 'create'; // Mode par défaut
+  champRequis = '* Veuillez renseignez ce champ';
 
-  values = [
-    {'label': 'Actif', value: true},
-    {'label': 'Inactif', value: false}
-  ];
+    toggle() {
+      this.entity.isActive = !this.entity.isActive;
+    }
 
    constructor(
      private data: DataService,
@@ -150,7 +150,7 @@ export class ClassroomComponent implements OnInit {
       if (mode === 'edit' && entity) {
         this.entity = { ...entity}
       } else {
-        this.entity = {};
+        this.entity = { maxCapacity : 30, isActive : true };
       }
       const modalElement = document.getElementById('add-edit-modal');
       const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
@@ -177,8 +177,7 @@ export class ClassroomComponent implements OnInit {
         modalInstance.hide();
         this.entity = {};
       }
-    
-    
+
        async save(): Promise<void> {
         this.isSubmited = true;
         if(!this.entity.slug?.trim() || !this.entity.name_fr.trim() || !this.entity.name_en.trim()){
@@ -192,7 +191,7 @@ export class ClassroomComponent implements OnInit {
           slug: this.entity.slug,
           name_fr: this.entity.name_fr,
           name_en: this.entity.name_en,
-          maxCapacity: 30,
+          maxCapacity: this.entity.maxCapacity,
           isActive: this.entity.isActive,
         };
         try {
@@ -236,7 +235,14 @@ export class ClassroomComponent implements OnInit {
           return;
         }
       }
-      
-      
 
-  }
+      increment() {
+        this.entity.maxCapacity++;
+      }
+
+      decrement() {
+        if (this.entity.maxCapacity > 0) {
+          this.entity.maxCapacity--;
+        }
+      }
+}

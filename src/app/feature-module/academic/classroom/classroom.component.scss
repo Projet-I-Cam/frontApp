@@ -19,5 +19,24 @@
   background-color: white !important;
 }
 
+.notfound{
+  color : gray;
+}
 
+.bstatut {
+  display: inline-flex; margin-left:10%;
+  padding: 10px 20px;
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  color: white;
+}
 
+button.active {
+  background-color: #28a745; /* vert */
+}
+button.inactive {
+  background-color: #dc3545; /* rouge */
+}
