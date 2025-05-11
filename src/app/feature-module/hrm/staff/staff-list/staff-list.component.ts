@@ -6,6 +6,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DataService } from '../../../../shared/data/data.service';
 import { Router } from '@angular/router';
 import { Sort } from '@angular/material/sort';
+import {finalize} from "rxjs/operators";
+import {StaffService} from "../../../../services/staff.service";
 
 @Component({
     selector: 'app-staff-list',
@@ -32,13 +34,21 @@ export class StaffListComponent {
   dataSource!: MatTableDataSource<staff>;
   public searchDataValue = '';
 
+  public isLoading = false; // Indicateur de chargement
+  public error = ''; // Message d'erreur
+  public staffs: any[] = []; // Liste des étudiants
+  public rows = 0; // Variable pour stocker le nombre total de lignes
+  public totalItems = 0; // Nombre total d'éléments
+
   constructor(
     private data: DataService,
     private router: Router,
-    private pagination: PaginationService
+    private pagination: PaginationService,
+    private staffService : StaffService
   ) {
     this.data.getStaffList().subscribe((apiRes: apiResultFormat) => {
       this.actualData = apiRes.data;
+      console.log(this.actualData);
       this.pagination.tablePageSize.subscribe((res: tablePageSize) => {
         if (this.router.url == this.routes.staffList) {
           this.getTableData({ skip: res.skip, limit: res.limit });
@@ -120,4 +130,35 @@ export class StaffListComponent {
       });
     }
   }
+
+  ngOnInit(): void {
+    this.loadStaffs();
+  }
+
+
+  loadStaffs(): void {
+    this.isLoading = true;
+    this.error = '';
+
+    this.staffService.getAllStaffs()
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+        })
+      )
+      .subscribe(
+        (staffs) => {
+          this.staffs = staffs;
+          this.totalItems = staffs.length;
+          this.rows = staffs.length;
+          console.log("Taille du tableau : "+this.staffs.length);
+          console.log(this.staffs);
+        },
+        (error) => {
+          console.error('Error loading staff:', error);
+          this.error = 'Failed to load staffs. Please try again.';
+        }
+      );
+  }
+
 }

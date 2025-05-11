@@ -20,9 +20,9 @@
                   </nav>
             </div>
             <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
-                <app-tooltip-content />              
+                <app-tooltip-content />
                   <div class="mb-2">
-                
+
                     <a [routerLink] = "routes.addStaff" class="btn btn-primary d-flex align-items-center"><i
                         class="ti ti-square-rounded-plus me-2"></i>Add Staff</a>
                   </div>
@@ -30,11 +30,11 @@
         </div>
         <!-- /Page Header -->
 
-        
+
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between flex-wrap pb-0">
                 <h4 class="mb-3">Staff List</h4>
-                <div class="d-flex align-items-center flex-wrap">		
+                <div class="d-flex align-items-center flex-wrap">
                     <div class="input-icon-start mb-3 me-2 position-relative">
                         <app-date-range-picker />
                     </div>
@@ -50,7 +50,7 @@
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Name</label>
-                                               
+
                                                 <p-dropdown [options]="[
                                                 { label: 'Select', value: '' },
                                                 { label: 'Kevin', value: 'Kevin' },
@@ -64,7 +64,7 @@
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Department</label>
-                                               
+
                                                 <p-dropdown [options]="[
                                                 { label: 'Select', value: '' },
                                                 { label: 'Admin', value: 'Admin' },
@@ -76,7 +76,7 @@
                                         <div class="col-md-6">
                                             <div class="mb-0">
                                                 <label class="form-label">Designation</label>
-                                               
+
                                                 <p-dropdown [options]="[
                                                 { label: 'Select', value: '' },
                                                 { label: 'Technical Head', value: 'Technical Head' },
@@ -90,7 +90,7 @@
                                         <div class="col-md-6">
                                             <div class="mb-0">
                                                 <label class="form-label">More Filter</label>
-                                               
+
                                                 <p-dropdown [options]="[
                                                 { label: 'Select', value: '' },
                                                 { label: 'ID', value: 'ID' },
@@ -102,17 +102,17 @@
                                               ]" placeholder="Select" class="select"></p-dropdown>
                                             </div>
                                         </div>
-                                        
+
                                     </div>
                                 </div>
                                 <div class="p-3 d-flex align-items-center justify-content-end">
                                     <a href="javascript:void(0);" class="btn btn-light me-3">Reset</a>
                                     <button type="submit" class="btn btn-primary">Apply</button>
                                 </div>
-                            </form>									
+                            </form>
                         </div>
                     </div>
-                    
+
                     <div class="dropdown mb-3">
                         <a href="javascript:void(0);" class="btn btn-outline-light bg-white dropdown-toggle"  data-bs-toggle="dropdown"><i class="ti ti-sort-ascending-2 me-2"></i>Sort by A-Z </a>
                         <ul class="dropdown-menu p-3">
@@ -137,7 +137,7 @@
                             </li>
                         </ul>
                     </div>
-                </div>	
+                </div>
             </div>
             <div class="card-body p-0 py-3">
                 <div class="table-top px-3">
@@ -173,16 +173,72 @@
                                     </div>
                                 </th>
                                 <th mat-sort-header="id">ID</th>
-                            <th mat-sort-header="name">Name</th>
-                            <th mat-sort-header="department">Department</th>
-                            <th mat-sort-header="designation">Designation </th>
-                            <th mat-sort-header="phone">Phone</th>
-                            <th mat-sort-header="email">Email</th>
-                            <th mat-sort-header="join">Date of Join</th>
-                            <th>Action</th>
+                                <th mat-sort-header="name">Photo</th>
+                                <th mat-sort-header="department">Nom</th>
+                                <th mat-sort-header="phone">Phone</th>
+                                <th mat-sort-header="email">Email</th>
+                                <th mat-sort-header="join">Genre</th>
+                                <th mat-sort-header="designation">Date création </th>
+                                <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody *ngFor="let staff of staffs">
+                          <tr>
+                            <td>
+                              <div class="form-check form-check-md">
+                                <input class="form-check-input" type="checkbox"  [(ngModel)]="initChecked">
+                              </div>
+                            </td>
+                            <td>{{staff?.id}}</td>
+                            <td>
+                              <div class="d-flex align-items-center">
+                                <a [routerLink] = "routes.staffDetails" class="avatar avatar-md">
+                                  <img *ngIf="staff.photo?.url" [src]="staff.photo?.url" class="img-fluid rounded-circle" alt="img">
+                                  <img *ngIf="!staff.photo?.url" src="assets/img/profiles/avatar-01.jpg" class="img-fluid rounded-circle" alt="img">
+                                </a>
+                                <div class="ms-2">
+                                  <p class="text-dark mb-0"><a [routerLink] = "routes.staffDetails">{{staff?.firstName}}</a>
+                                  </p>
+                                </div>
+                              </div>
+                            </td>
+                            <td>{{staff?.firstName}} {{staff?.lastName}}</td>
+                            <td>{{staff?.phone}}</td>
+                            <td>{{staff?.email}}</td>
+                            <td>{{staff?.gender?.libelle_fr }}</td>
+                            <td>{{staff?.createdAt | date:'dd/MM/yyyy' }}</td>
+                            <td>
+                              <div class="d-flex align-items-center">
+                                <div class="dropdown">
+                                  <a href="javascript:void(0);"
+                                     class="btn btn-white btn-icon btn-sm d-flex align-items-center justify-content-center rounded-circle p-0"
+                                     data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="ti ti-dots-vertical fs-14"></i>
+                                  </a>
+                                  <ul class="dropdown-menu dropdown-menu-right p-3">
+                                    <li>
+                                      <a class="dropdown-item rounded-1"
+                                         [routerLink] = "routes.staffDetails"><i
+                                        class="ti ti-menu me-2"></i>View Staff</a>
+                                    </li>
+                                    <li>
+                                      <a class="dropdown-item rounded-1" [routerLink] = "routes.editStaff"><i
+                                        class="ti ti-edit-circle me-2"></i>Edit</a>
+                                    </li>
+                                    <li>
+                                      <a class="dropdown-item rounded-1" href="javascript:void(0);"
+                                         data-bs-toggle="modal" data-bs-target="#delete-modal"><i
+                                        class="ti ti-trash-x me-2"></i>Delete</a>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </td>
+
+                          </tr>
+                        </tbody>
+<!--
+                        <tbody class="d-none">
                             @for (table of tableData; track table) {
                             <tr>
                                 <td>
@@ -246,15 +302,16 @@
                                 <h5 class="no-record text-center">No records found</h5>
                               </td>
                             </tr>
-                            }  
+                            }
                         </tbody>
+-->
                     </table>
                 </div>
                 <app-custom-pagination></app-custom-pagination>
                 <!-- /Staffs List -->
             </div>
         </div>
-            
+
 
     </div>
 </div>

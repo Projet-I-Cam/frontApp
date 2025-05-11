@@ -87,116 +87,6 @@
                   </div>
                   <div class="col-xxl col-xl-3 col-md-6">
                     <div class="mb-3">
-                      <label class="form-label">Role</label>
-
-                      <p-dropdown
-                        [options]="[
-                          { label: 'Teacher', value: '1' },
-                          { label: 'Accountant', value: '2' },
-                          { label: 'Librarian', value: '3' }
-                        ]"
-                        placeholder="Select"
-                        class="select"
-                      ></p-dropdown>
-                    </div>
-                  </div>
-                  <div class="col-xxl col-xl-3 col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Department</label>
-                      <p-dropdown
-                        [options]="[
-                          { label: 'Admin', value: '1' },
-                          { label: 'Management', value: '2' },
-                          { label: 'Academic', value: '3' },
-                          { label: 'Library', value: '4' }
-                        ]"
-                        placeholder="Select"
-                        class="select"
-                      ></p-dropdown>
-                    </div>
-                  </div>
-                  <div class="col-xxl col-xl-3 col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Designation</label>
-                      <p-dropdown
-                        [options]="[
-                          { label: 'Teacher', value: '1' },
-                          { label: 'Accountant', value: '2' },
-                          { label: 'Librarian', value: '3' }
-                        ]"
-                        placeholder="Select"
-                        class="select"
-                      ></p-dropdown>
-                    </div>
-                  </div>
-                  <div class="col-xxl col-xl-3 col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Gender</label>
-                      <p-dropdown
-                        [options]="[
-                          { label: 'Female', value: '1' },
-                          { label: 'Male', value: '2' }
-                        ]"
-                        placeholder="Select"
-                        class="select"
-                      ></p-dropdown>
-                    </div>
-                  </div>
-                  <div class="col-xxl col-xl-3 col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Primary Contact Number</label>
-                      <input type="text" class="form-control" />
-                    </div>
-                  </div>
-                  <div class="col-xxl col-xl-3 col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Email Address</label>
-                      <input type="email" class="form-control" />
-                    </div>
-                  </div>
-                  <div class="col-xxl col-xl-3 col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Blood Group</label>
-                      <p-dropdown
-                        [options]="[
-                          { label: 'Select', value: '' },
-                          { label: 'O +ve', value: 'O +ve' },
-                          { label: 'B +ve', value: 'B +ve' },
-                          { label: 'B -ve', value: 'B -ve' }
-                        ]"
-                        placeholder="Select"
-                        class="select"
-                      ></p-dropdown>
-                    </div>
-                  </div>
-                  <div class="col-xxl col-xl-3 col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Marital Status</label>
-                      <p-dropdown
-                        [options]="[
-                          { label: 'Select', value: '' },
-                          { label: 'Single', value: 'Single' },
-                          { label: 'Married', value: 'Married' }
-                        ]"
-                        placeholder="Select"
-                        class="select"
-                      ></p-dropdown>
-                    </div>
-                  </div>
-                  <div class="col-xxl col-xl-3 col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Father’s Name</label>
-                      <input type="text" class="form-control" />
-                    </div>
-                  </div>
-                  <div class="col-xxl col-xl-3 col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Mother’s Name</label>
-                      <input type="text" class="form-control" />
-                    </div>
-                  </div>
-                  <div class="col-xxl col-xl-3 col-md-6">
-                    <div class="mb-3">
                       <label class="form-label">Date of Birth</label>
                       <div class="input-icon position-relative">
                         <span class="input-icon-addon">
@@ -213,6 +103,212 @@
                   </div>
                   <div class="col-xxl col-xl-3 col-md-6">
                     <div class="mb-3">
+                      <label class="form-label">Lieu de naissance</label>
+                      <input type="text" class="form-control" />
+                    </div>
+                  </div>
+
+                  <div class="col-xxl col-xl-3 col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label">Gender</label>
+                      <p-dropdown
+                        [options]="[
+                          { label: 'Female', value: '1' },
+                          { label: 'Male', value: '2' }
+                        ]"
+                        placeholder="Select"
+                        class="select"
+                      ></p-dropdown>
+                    </div>
+                  </div>
+                  <div class="col-xxl col-xl-3 col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label">Marital Status *</label>
+                      <p-dropdown
+                        [options]="[
+                          { label: 'Select', value: '' },
+                          { label: 'Single', value: 'Single' },
+                          { label: 'Married', value: 'Married' }
+                        ]"
+                        placeholder="Select"
+                        class="select"
+                      ></p-dropdown>
+                    </div>
+                  </div>
+                  <div class="col-xxl col-xl-3 col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label">Nationnalité</label>
+                      <p-dropdown
+                        [options]="[
+                          { label: 'Select', value: '' },
+                          { label: 'Single', value: 'Single' },
+                          { label: 'Married', value: 'Married' }
+                        ]"
+                        placeholder="Select"
+                        class="select"
+                      ></p-dropdown>
+                    </div>
+                  </div>
+                  <div class="col-xxl col-xl-3 col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label">Arrondissement d'origine *</label>
+                      <p-dropdown
+                        [options]="[
+                          { label: 'Select', value: '' },
+                          { label: 'Single', value: 'Single' },
+                          { label: 'Married', value: 'Married' }
+                        ]"
+                        placeholder="Select"
+                        class="select"
+                      ></p-dropdown>
+                    </div>
+                  </div>
+
+                  <div class="col-xxl col-xl-3 col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label">Info CNI</label>
+                      <input type="text" class="form-control" />
+                    </div>
+                  </div>
+
+                  <div class="col-xxl col-xl-3 col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label">Religion</label>
+
+                      <p-dropdown
+                        [options]="[
+                          { label: 'Christianisme', value: 'Christianity' },
+                          { label: 'Islam', value: 'Islam' },
+                          { label: 'Bouddhisme', value: 'Buddhism' },
+                          { label: 'Sans religion', value: 'None' }
+                        ]"
+                        placeholder="Sélectionner"
+                        class="select"
+                        formControlName="religion"
+                      ></p-dropdown>
+                    </div>
+                  </div>
+
+
+                  <div class="col-xxl col-xl-3 col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label">Téléphone WhatsApp</label>
+                      <input type="tel" class="form-control" />
+                    </div>
+                  </div>
+
+                  <div class="col-xxl col-xl-3 col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label">Autres téléphones</label>
+                      <input type="tel" class="form-control" />
+                    </div>
+                  </div>
+
+                  <div class="col-xxl col-xl-3 col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label">E-Mail</label>
+                      <input type="email" class="form-control" />
+                    </div>
+                  </div>
+
+                  <div class="col-xxl col-xl-3 col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label">Adresse</label>
+                      <input type="text" class="form-control" />
+                    </div>
+                  </div>
+
+                  <div class="col-xxl col-xl-3 col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label">Ville/Village de résidence</label>
+                      <input type="text" class="form-control" />
+                    </div>
+                  </div>
+
+                  <div class="col-xxl col-xl-3 col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label">Quartier de résidence</label>
+                      <input type="text" class="form-control" />
+                    </div>
+                  </div>
+
+<!--                  role -->
+                  <div class="col-xxl col-xl-3 col-md-6 d-none">
+                    <div class="mb-3">
+                      <label class="form-label">Role</label>
+
+                      <p-dropdown
+                        [options]="[
+                          { label: 'Teacher', value: '1' },
+                          { label: 'Accountant', value: '2' },
+                          { label: 'Librarian', value: '3' }
+                        ]"
+                        placeholder="Select"
+                        class="select"
+                      ></p-dropdown>
+                    </div>
+                  </div>
+<!-- departement-->
+                  <div class="col-xxl col-xl-3 col-md-6 d-none">
+                    <div class="mb-3">
+                      <label class="form-label">Department</label>
+                      <p-dropdown
+                        [options]="[
+                          { label: 'Admin', value: '1' },
+                          { label: 'Management', value: '2' },
+                          { label: 'Academic', value: '3' },
+                          { label: 'Library', value: '4' }
+                        ]"
+                        placeholder="Select"
+                        class="select"
+                      ></p-dropdown>
+                    </div>
+                  </div>
+<!--                  Designation-->
+                  <div class="col-xxl col-xl-3 col-md-6 d-none">
+                    <div class="mb-3">
+                      <label class="form-label">Designation</label>
+                      <p-dropdown
+                        [options]="[
+                          { label: 'Teacher', value: '1' },
+                          { label: 'Accountant', value: '2' },
+                          { label: 'Librarian', value: '3' }
+                        ]"
+                        placeholder="Select"
+                        class="select"
+                      ></p-dropdown>
+                    </div>
+                  </div>
+                  <div class="col-xxl col-xl-3 col-md-6 d-none">
+                    <div class="mb-3">
+                      <label class="form-label">Blood Group</label>
+                      <p-dropdown
+                        [options]="[
+                          { label: 'Select', value: '' },
+                          { label: 'O +ve', value: 'O +ve' },
+                          { label: 'B +ve', value: 'B +ve' },
+                          { label: 'B -ve', value: 'B -ve' }
+                        ]"
+                        placeholder="Select"
+                        class="select"
+                      ></p-dropdown>
+                    </div>
+                  </div>
+
+                  <div class="col-xxl col-xl-3 col-md-6 d-none">
+                    <div class="mb-3">
+                      <label class="form-label">Father’s Name</label>
+                      <input type="text" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="col-xxl col-xl-3 col-md-6 d-none">
+                    <div class="mb-3">
+                      <label class="form-label">Mother’s Name</label>
+                      <input type="text" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="col-xxl col-xl-3 col-md-6 d-none">
+                    <div class="mb-3">
                       <label class="form-label">Date of Joining</label>
                       <div class="input-icon position-relative">
                         <span class="input-icon-addon">
@@ -227,6 +323,7 @@
                       </div>
                     </div>
                   </div>
+
                   <div class="col-xxl col-xl-3 col-md-6">
                     <div class="mb-3">
                       <label class="form-label">Language Known</label>
@@ -234,31 +331,31 @@
                                             [(ngModel)]="values"></p-chips>
                     </div>
                   </div>
-                  <div class="col-xxl-4 col-xl-3 col-md-6">
+                  <div class="col-xxl-4 col-xl-3 col-md-6 d-none">
                     <div class="mb-3">
                       <label class="form-label">Qualification</label>
                       <input type="text" class="form-control" />
                     </div>
                   </div>
-                  <div class="col-xxl-4 col-xl-3 col-md-6">
+                  <div class="col-xxl-4 col-xl-3 col-md-6 d-none">
                     <div class="mb-3">
                       <label class="form-label">Work Experience</label>
                       <input type="text" class="form-control" />
                     </div>
                   </div>
-                  <div class="col-xxl-4 col-xl-3 col-md-6">
+                  <div class="col-xxl-4 col-xl-3 col-md-6 d-none">
                     <div class="mb-3">
                       <label class="form-label">Note</label>
                       <input type="text" class="form-control" />
                     </div>
                   </div>
-                  <div class="col-xxl-6 col-xl-3 col-md-6">
+                  <div class="col-xxl-6 col-xl-3 col-md-6 d-none">
                     <div class="mb-3">
                       <label class="form-label">Address</label>
                       <input type="text" class="form-control" />
                     </div>
                   </div>
-                  <div class="col-xxl-6 col-xl-3 col-md-6">
+                  <div class="col-xxl-6 col-xl-3 col-md-6 d-none">
                     <div class="mb-3">
                       <label class="form-label">Permanent Address</label>
                       <input type="text" class="form-control" />
@@ -270,7 +367,7 @@
           </div>
           <!-- /Personal Information -->
 
-          <!-- Payroll -->
+          <!-- Professional informations -->
           <div class="card">
             <div class="card-header bg-light">
               <div class="d-flex align-items-center">
@@ -279,26 +376,14 @@
                 >
                   <i class="ti ti-user-shield fs-16"></i>
                 </span>
-                <h4 class="text-dark">Payroll</h4>
+                <h4 class="text-dark">Informations professionnelles</h4>
               </div>
             </div>
             <div class="card-body pb-1">
               <div class="row">
                 <div class="col-lg-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">EPF No</label>
-                    <input type="text" class="form-control" />
-                  </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">Basic Salary</label>
-                    <input type="text" class="form-control" />
-                  </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">Contract Type</label>
+                    <label class="form-label">Secteur d'activité *</label>
                     <p-dropdown
                       [options]="[
                         { label: 'Select', value: '' },
@@ -312,7 +397,7 @@
                 </div>
                 <div class="col-lg-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Work Shift</label>
+                    <label class="form-label">Employeur *</label>
                     <p-dropdown
                       [options]="[
                         { label: 'Select', value: '' },
@@ -326,6 +411,18 @@
                 </div>
                 <div class="col-lg-3 col-md-6">
                   <div class="mb-3">
+                    <label class="form-label">Profession *</label>
+                    <input type="text" class="form-control" />
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6 d-none">
+                  <div class="mb-3">
+                    <label class="form-label">Basic Salary</label>
+                    <input type="text" class="form-control" />
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6 d-none">
+                  <div class="mb-3">
                     <label class="form-label">Work Location</label>
                     <input type="text" class="form-control" />
                   </div>
@@ -333,9 +430,9 @@
               </div>
             </div>
           </div>
-          <!-- /Payroll -->
+          <!-- / Professional informations  -->
 
-          <!-- Leaves -->
+          <!-- Careers informations -->
           <div class="card">
             <div class="card-header bg-light">
               <div class="d-flex align-items-center">
@@ -344,42 +441,158 @@
                 >
                   <i class="ti ti-users fs-16"></i>
                 </span>
-                <h4 class="text-dark">Leaves</h4>
+                <h4 class="text-dark">Informations carrière</h4>
               </div>
             </div>
             <div class="card-body pb-1">
               <div class="row">
                 <div class="col-lg-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Medical Leaves</label>
-                    <input type="text" class="form-control" />
+                    <label class="form-label">Division administrative *</label>
+                    <p-dropdown
+                      [options]="[
+                        { label: 'Select', value: '' },
+                        { label: 'Permanent', value: 'Permanent' },
+                        { label: 'Temporary', value: 'Temporary' }
+                      ]"
+                      placeholder="Select"
+                      class="select"
+                    ></p-dropdown>
                   </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Casual Leaves</label>
-                    <input type="text" class="form-control" />
+                    <label class="form-label">Structure *</label>
+                    <p-dropdown
+                      [options]="[
+                        { label: 'Select', value: '' },
+                        { label: 'Permanent', value: 'Permanent' },
+                        { label: 'Temporary', value: 'Temporary' }
+                      ]"
+                      placeholder="Select"
+                      class="select"
+                    ></p-dropdown>
                   </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Maternity Leaves</label>
-                    <input type="text" class="form-control" />
+                    <label class="form-label">Etablissement *</label>
+                    <p-dropdown
+                      [options]="[
+                        { label: 'Select', value: '' },
+                        { label: 'Permanent', value: 'Permanent' },
+                        { label: 'Temporary', value: 'Temporary' }
+                      ]"
+                      placeholder="Select"
+                      class="select"
+                    ></p-dropdown>
                   </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Sick Leaves</label>
+                    <label class="form-label">Statut *</label>
+                    <p-dropdown
+                      [options]="[
+                        { label: 'Select', value: '' },
+                        { label: 'Permanent', value: 'Permanent' },
+                        { label: 'Temporary', value: 'Temporary' }
+                      ]"
+                      placeholder="Select"
+                      class="select"
+                    ></p-dropdown>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Matricule *</label>
                     <input type="text" class="form-control" />
                   </div>
                 </div>
+
+                <div class="col-lg-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">NIU</label>
+                    <input type="text" class="form-control" />
+                  </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Grade *</label>
+                    <p-dropdown
+                      [options]="[
+                        { label: 'Select', value: '' },
+                        { label: 'Permanent', value: 'Permanent' },
+                        { label: 'Temporary', value: 'Temporary' }
+                      ]"
+                      placeholder="Select"
+                      class="select"
+                    ></p-dropdown>
+                  </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Fonction actuelle</label>
+                    <input type="text" class="form-control" />
+                  </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Référence acte nomination/affectation</label>
+                    <input type="text" class="form-control" />
+                  </div>
+                </div>
+
+                <div class="col-xxl col-xl-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Date de prise service</label>
+                    <div class="input-icon position-relative">
+                        <span class="input-icon-addon">
+                          <i class="ti ti-calendar"></i>
+                        </span>
+                      <input
+                        type="text"
+                        class="form-control datetimepicker"
+                        placeholder="dd-mm-yyyy"
+                        bsDatepicker
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-xxl col-xl-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Date d'entrée à la FP*</label>
+                    <div class="input-icon position-relative">
+                        <span class="input-icon-addon">
+                          <i class="ti ti-calendar"></i>
+                        </span>
+                      <input
+                        type="text"
+                        class="form-control datetimepicker"
+                        placeholder="dd-mm-yyyy"
+                        bsDatepicker
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Référence acte intégration</label>
+                    <input type="text" class="form-control" />
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
-          <!-- /Leaves -->
+          <!-- / Careers informations  -->
 
           <!-- Bank Details -->
-          <div class="card">
+          <div class="card d-none">
             <div class="card-header bg-light">
               <div class="d-flex align-items-center">
                 <span
@@ -428,7 +641,7 @@
           <!-- /Bank Details -->
 
           <!-- Transport Information -->
-          <div class="card">
+          <div class="card d-none">
             <div
               class="card-header bg-light d-flex align-items-center justify-content-between"
             >
@@ -497,7 +710,7 @@
           <!-- /Transport Information -->
 
           <!-- Hostel Information -->
-          <div class="card">
+          <div class="card d-none">
             <div class="card-header bg-light">
               <div class="d-flex align-items-center">
                 <span
@@ -551,7 +764,7 @@
           <!-- /Hostel Information -->
 
           <!-- Social Media Links -->
-          <div class="card">
+          <div class="card d-none">
             <div class="card-header bg-light">
               <div class="d-flex align-items-center">
                 <span
@@ -594,7 +807,7 @@
           <!-- /Social Media Links -->
 
           <!-- Documents -->
-          <div class="card">
+          <div class="card d-none">
             <div class="card-header bg-light">
               <div class="d-flex align-items-center">
                 <span

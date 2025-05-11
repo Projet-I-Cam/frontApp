@@ -44,10 +44,10 @@ export class StudentGridComponent implements OnInit {
     this.loadStudents();
   }
 
-  loadStudents(): void { 
+  loadStudents(): void {
     this.isLoading = true;
     this.error = '';
-    
+
     this.studentService.getAllStudents()
       .pipe(
         finalize(() => {
@@ -59,6 +59,7 @@ export class StudentGridComponent implements OnInit {
           this.students = students;
           this.totalItems = students.length;
           this.rows = students.length;
+          console.log(this.students);
         },
         (error) => {
           console.error('Error loading students:', error);
@@ -76,7 +77,7 @@ export class StudentGridComponent implements OnInit {
         console.log('Student details received:', student);
         this.selectedStudent = student;
         this.isLoading = false;
-        
+
         // Ouvrir le modal
         this.openModal();
       },
@@ -93,27 +94,27 @@ export class StudentGridComponent implements OnInit {
     // Définir une méthode pour vérifier si Bootstrap est disponible
     const isBootstrapAvailable = typeof window.bootstrap !== 'undefined';
     console.log('Bootstrap available:', isBootstrapAvailable);
-    
+
     // Réinitialiser le modal à chaque fois pour éviter les problèmes
     const modalElement = document.querySelector('#view-details') as HTMLElement;
-    
+
     if (!modalElement) {
       console.error('Modal element not found in DOM with querySelector');
       alert('Erreur: Élément modal non trouvé dans le DOM.');
       return;
     }
-    
+
     console.log('Modal element found:', modalElement);
-    
+
     if (isBootstrapAvailable) {
       try {
         // Essayons de repartir de zéro à chaque fois pour éviter les problèmes
         this.modalInstance = null;
-        
+
         // Créer une nouvelle instance
         this.modalInstance = new window.bootstrap.Modal(modalElement);
         console.log('New Modal instance created');
-        
+
         // Montrer le modal
         this.modalInstance.show();
         console.log('Modal show() method called');
@@ -124,20 +125,20 @@ export class StudentGridComponent implements OnInit {
     } else {
       console.warn('Bootstrap is not defined, trying manual approach');
     }
-    
+
     // Méthode alternative: manipulation directe du DOM
     try {
       console.log('Using DOM manipulation as fallback');
-      
+
       // Ajouter la classe 'show' au modal et afficher
       modalElement.classList.add('show');
       modalElement.style.display = 'block';
       modalElement.setAttribute('aria-modal', 'true');
       modalElement.removeAttribute('aria-hidden');
-      
+
       // Ajouter modal-open à body
       document.body.classList.add('modal-open');
-      
+
       // Ajouter un backdrop manuellement
       const backdropExists = document.querySelector('.modal-backdrop');
       if (!backdropExists) {
@@ -145,7 +146,7 @@ export class StudentGridComponent implements OnInit {
         backdrop.className = 'modal-backdrop fade show';
         document.body.appendChild(backdrop);
       }
-      
+
       // Ajouter un gestionnaire de clic pour fermer le modal
       const closeButtons = modalElement.querySelectorAll('[data-bs-dismiss="modal"]');
       closeButtons.forEach(button => {
@@ -153,7 +154,7 @@ export class StudentGridComponent implements OnInit {
           this.closeModal(modalElement);
         });
       });
-      
+
       console.log('Modal displayed with DOM manipulation');
     } catch (domError) {
       console.error('DOM manipulation failed:', domError);
@@ -167,9 +168,9 @@ export class StudentGridComponent implements OnInit {
     modalElement.style.display = 'none';
     modalElement.setAttribute('aria-hidden', 'true');
     modalElement.removeAttribute('aria-modal');
-    
+
     document.body.classList.remove('modal-open');
-    
+
     const backdrop = document.querySelector('.modal-backdrop');
     if (backdrop) {
       backdrop.parentNode?.removeChild(backdrop);
@@ -210,7 +211,7 @@ export class StudentGridComponent implements OnInit {
 
   public changePage(pageIndex: number): void {
     this.currentPage = pageIndex;
-    // Vous pouvez ici implémenter une logique pour charger uniquement les données 
+    // Vous pouvez ici implémenter une logique pour charger uniquement les données
     // de la page actuelle si vous avez beaucoup d'étudiants
   }
 }
