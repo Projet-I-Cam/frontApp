@@ -22,7 +22,7 @@ export class SidebarComponent {
   currentUrl = '';
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public side_bar_data: Array<any> = [];
+  public side_bar_data: any = [];
 
   constructor(
     private sidebar: SidebarService,

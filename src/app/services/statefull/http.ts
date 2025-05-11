@@ -75,7 +75,6 @@ export const globalGet = async({T, filters, includes, curentPage, size, selects,
     }
 }
 
-
 export const globalPost = async({T, dataObject} : BasePostIO): Promise<any> => {
     try {
         const query = new CLASS[T]()

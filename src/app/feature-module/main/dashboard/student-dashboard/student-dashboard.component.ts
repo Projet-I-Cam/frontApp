@@ -19,6 +19,7 @@ import { AuthService } from '../../../../services/auth.service';
 import { globalGet } from '../../../../services/statefull/http';
 import { fetchCurrentPerson, genericFindOneBy, getOneByPointer$, getOneObject } from '../../../../services/statefull/genericParse';
 import { DataService } from '../../../../shared/data/data.service';
+import { LoginService } from '../../../../auth/services/login.service';
 interface data {
   name: string | undefined;
   code: string | undefined;
@@ -71,7 +72,7 @@ export class StudentDashboardComponent implements OnInit{
   student : any = {};
   currentUser : any = {};
 
-  constructor(private authService: AuthService, private dataService: DataService) {
+  constructor(private loginService: LoginService, private dataService: DataService) {
     this.date = new Date();
     this.chartOptions = {
       chart: {
@@ -169,18 +170,6 @@ export class StudentDashboardComponent implements OnInit{
    
   }
 
-async ngOnInit() {
-  fetchCurrentPerson(this.authService, (person) => {
-    if (person) {
-      this.student = person;
-      console.log('Person found:', person);
-    } else {
-      console.log('No person found or error occurred.');
-    }
-  });
-}
-
-
  
   public teacher: OwlOptions = {
     items: 5,
@@ -241,6 +230,11 @@ async ngOnInit() {
   ngAfterViewInit() {
     this.updateProgress();
   }
+
+  ngOnInit(): void {
+    this.student = this.loginService.getPerson();
+  }
+
   updateProgress() {
     this.circleProgressElements.forEach(elementRef => {
       const element = elementRef.nativeElement;

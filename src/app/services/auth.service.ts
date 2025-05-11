@@ -100,6 +100,55 @@ export class AuthService {
     }
   } 
 
- 
+
+
+
+   // Primary method: Use matchesQuery on pointer field "user"
+   async getPersonByUser(userId = '') {
+    try {
+      if (!userId) {
+        const currentUser  = this.getCurrentUser ();
+        userId = currentUser ?.id || '';
+      }
+      if (!userId) {
+        console.error('No user ID provided and no current user found.');
+        return null;
+      }
+      console.log('Fallback: userId:', userId);
+      const personQuery = new Parse.Query('Person');
+      const persons = await personQuery.find();
+      // Filter locally by user id
+      const person = persons.find(p => {
+        const userPointer = p.get('user');
+        return userPointer && userPointer.id === userId;
+      });
+      console.log('Fallback person found:', person);
+      return person || null;
+    } catch (error) {
+      console.error('Error in getPersonByUser Fallback:', error);
+      return null;
+    }
+  }
+
+  async fetchCurrentPerson() : Promise<any>{
+    const currentUser = this.getCurrentUser();
+    if (!currentUser || !currentUser.id) {
+      console.error('No current user found.');
+      return null;
+    }
+    console.log(currentUser.id)
+    getOneByPointer$('Person', 'user', '_User', currentUser.id).subscribe(result => {
+      if (result?.error) {
+        console.error(result.message);
+        return null;
+      } else if (result) {
+        return result;
+      } else {
+        console.log('No person found for that user pointer.');
+        return null;
+      }
+    });
+  }
+
 
 }

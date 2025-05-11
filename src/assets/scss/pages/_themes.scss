@@ -1,6 +1,6 @@
 .layout-box-mode {
     background: $light-200;
-    
+
     .header {
         max-width: 1350px;
         margin: auto;
@@ -22,17 +22,17 @@
             @include respond-below(lg) {
                 padding-right: 15px;
             }
-        }  
+        }
     }
 }
 .layout-box-mode.main-wrapper {
     max-width: 1350px;
     margin: auto;
     @include respond-below(xxl) {
-        max-width: 1170px;
+        max-width: 950px;
     }
     @include respond-below(xl) {
-        max-width: 950px;
+        max-width: 800px;
     }
     @include respond-below(lg) {
         max-width: 100%;
@@ -42,7 +42,7 @@
 
     .layout-mode-rtl {
         direction: rtl;
-       
+
         .header-left {
             float: right;
             border-right: 0;
@@ -112,13 +112,13 @@
         }
         #toggle_btn {
             color: $white;
-        }       
+        }
         .bg-white {
             background: transparent  !important;
         }
         .btn-outline-light {
             color: $white !important;
-            border-color: $primary-700 !important;  
+            border-color: $primary-700 !important;
         }
         .header-left {
             background: $primary;
@@ -137,7 +137,7 @@
                 background: $primary;
                 color: $white;
             }
-        } 
+        }
     }
     @include respond-above(lg) {
         .mini-sidebar .header-left .dark-logo {
@@ -158,7 +158,7 @@
             > ul {
                 > li {
                     .submenu-hdr::after {
-                        background: $dark-700;                        
+                        background: $dark-700;
                     }
                     .submenu {
                         > a.subdrop {
@@ -228,7 +228,7 @@
                     .submenu-hdr{
                         color: $white;
                         &::after {
-                            background: $primary-100;                        
+                            background: $primary-100;
                         }
                     }
                     .submenu {
@@ -252,7 +252,7 @@
                                 color: $white;
                             }
                         }
-                        
+
                     }
                     ul {
                         li {
@@ -311,7 +311,7 @@
                     .submenu-hdr{
                         color: $white;
                         &::after {
-                            background: $primary-100;                        
+                            background: $primary-100;
                         }
                     }
                     .submenu {
@@ -335,7 +335,7 @@
                                 color: $white;
                             }
                         }
-                        
+
                     }
                     ul {
                         li {
@@ -394,7 +394,7 @@
                     .submenu-hdr{
                         color: $white;
                         &::after {
-                            background: $primary-100;                        
+                            background: $primary-100;
                         }
                     }
                     .submenu {
@@ -418,7 +418,7 @@
                                 color: $white;
                             }
                         }
-                        
+
                     }
                     ul {
                         li {
@@ -491,7 +491,7 @@
                 background: $dark-700;
                 color: $dark-200;
             }
-        }        
+        }
         .bg-white {
             background: $dark-800 !important;
         }
@@ -502,7 +502,7 @@
         #toggle_btn {
             color: $dark-300;
         }
-        
+
     }
     @include respond-above(lg) {
         .mini-sidebar .header-left .dark-logo {
@@ -538,7 +538,7 @@
                 background: $dark-200;
                 color: $dark-700;
             }
-        }        
+        }
         .bg-white {
             background: $dark-200 !important;
         }
@@ -549,9 +549,9 @@
         #toggle_btn {
             color: $dark-300;
         }
-        
+
     }
-   
+
 }
 
 .light.sidebarbg1{
@@ -832,10 +832,37 @@
 }
 .darkblue.sidebarbg6{
     .sidebar {
-        background-image: url(../../../../public/assets/img/theme/bg-06.jpg);
-        .sidebar-menu{
-            background: rgba(57,67,95,0.85);
+      background-image: url(../../../../public/assets/img/theme/bg-06.jpg);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      width: 300px; // Increased width for a more spacious layout
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); // Added subtle shadow for a professional look
+      border-right: 1px solid rgba(255, 255, 255, 0.1); // Added a border for better separation
+
+      .sidebar-menu {
+        background: rgba(57, 67, 95, 0.9); // Slightly darker background for better contrast
+        padding: 20px; // Added padding for better spacing
+        border-radius: 8px; // Rounded corners for a modern look
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Subtle shadow for depth
+      }
+
+      .sidebar-menu > ul > li {
+        margin-bottom: 10px; // Added spacing between menu items
+
+        a {
+          color: #ffffff; // Ensuring text is readable
+          font-weight: 500; // Slightly bolder text for better visibility
+          padding: 10px 15px; // Added padding for better click area
+          border-radius: 4px; // Rounded corners for links
+          transition: background 0.3s, color 0.3s; // Smooth hover effect
+
+          &:hover {
+            background: rgba(80, 110, 228, 0.8); // Highlight on hover
+            color: #ffffff; // Ensure text remains readable
+          }
         }
+      }
     }
 }
 
@@ -854,7 +881,7 @@
                     color: $primary;
                 }
             }
-            &.active {                
+            &.active {
                 a {
                     span, i {
                         color: $primary;
@@ -871,7 +898,7 @@
                 &::before {
                     border-color: $primary;
                 }
-            }   
+            }
         }
     }
     .btn-primary {
@@ -1033,7 +1060,7 @@
                     color: $primary;
                 }
             }
-            &.active {                
+            &.active {
                 a {
                     span, i {
                         color: $primary;
@@ -1050,7 +1077,7 @@
                 &::before {
                     border-color: $primary;
                 }
-            }   
+            }
         }
     }
     .btn-primary {
@@ -1189,7 +1216,7 @@
     }
     .sidebar-contact .toggle-theme {
         background-color: $primary;
-    }    
+    }
     .primary-hover {
         &:hover {
           background: $primary !important;
@@ -1212,7 +1239,7 @@
                     color: $primary;
                 }
             }
-            &.active {                
+            &.active {
                 a {
                     span, i {
                         color: $primary;
@@ -1229,7 +1256,7 @@
                 &::before {
                     border-color: $primary;
                 }
-            }   
+            }
         }
     }
     .btn-primary {
@@ -1391,7 +1418,7 @@
                     color: $primary;
                 }
             }
-            &.active {                
+            &.active {
                 a {
                     span, i {
                         color: $primary;
@@ -1408,7 +1435,7 @@
                 &::before {
                     border-color: $primary;
                 }
-            }   
+            }
         }
     }
     .btn-primary {
@@ -1570,7 +1597,7 @@
                     color: $primary;
                 }
             }
-            &.active {                
+            &.active {
                 a {
                     span, i {
                         color: $primary;
@@ -1587,7 +1614,7 @@
                 &::before {
                     border-color: $primary;
                 }
-            }   
+            }
         }
     }
     .btn-primary {
@@ -1806,7 +1833,7 @@
 .darktheme {
     background: $dark-900;
     color: $dark-300;
-    body {        
+    body {
         background-color: $dark-900;
         &.mini-sidebar {
             .dark-logo {
@@ -1865,14 +1892,14 @@
     }
     .btn-icon {
         i {
-            color: $dark-300; 
+            color: $dark-300;
         }
     }
     header{
         .btn-outline-light {
             border-color: $dark-700 !important;
             color: #B9B7C0 !important;
-        } 
+        }
     }
     .btn-outline-light {
         border-color: $dark-700 !important;
@@ -1949,7 +1976,7 @@
             th {
                 background: $dark-800 !important;
                 color: $dark-100 !important;
-                border-color: $dark-700 !important; 
+                border-color: $dark-700 !important;
             }
         }
         tbody {
@@ -1958,7 +1985,7 @@
                 border-color: $dark-700 !important;
             }
             th {
-                border-color: $dark-700 !important; 
+                border-color: $dark-700 !important;
             }
             td {
                 .text-dark {
@@ -2056,7 +2083,7 @@
             border-color: $dark-700;
             background: $dark-800;
         }
-    } 
+    }
     .select2-dropdown {
         border-color: $dark-700;
     }
@@ -2129,7 +2156,7 @@
                 color: $dark-200;
             }
         }
-        
+
     }
     .sidebar {
         background: $dark-900 !important;
@@ -2139,7 +2166,7 @@
             > ul {
                 > li {
                     .submenu-hdr::after {
-                        background: $dark-700;                        
+                        background: $dark-700;
                     }
                     .submenu {
                         > a.subdrop {
@@ -2234,11 +2261,11 @@
                             background: $dark-700;
                         }
                     }
-                } 
+                }
                 .action-circle {
                     background: $dark-800 !important;
                 }
-            } 
+            }
             .chat-page-wrapper .left-chat-title {
                 border-bottom-color: $dark-700;
             }
@@ -2254,7 +2281,7 @@
                 border-bottom-color: $dark-700;
             }
         }
-    } 
+    }
     .part-name.sub-part-name,.more-icon a,.meet-call-menu-blk .video-call-action ul li a {
         background: $dark-800;
         border-color: $dark-700;
