@@ -3,7 +3,7 @@
     <!-- Page Header -->
     <div class="d-md-flex d-block align-items-center justify-content-between mb-3">
       <div class="my-auto mb-2">
-        <h3 class="page-title mb-1">Class Sections</h3>
+        <h3 class="page-title mb-1">Salles de Classes</h3>
         <nav>
           <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item">
@@ -13,7 +13,7 @@
               <a href="javascript:void(0);">Academic</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-              Class Sections
+              Salles de Classes
             </li>
           </ol>
         </nav>
@@ -21,7 +21,7 @@
       <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
         <div class="mb-2">
           <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal"
-            (click)="openModal('create')"><i class="ti ti-square-rounded-plus-filled me-2"></i>Ajouter</a>
+            (click)="openModal('create')"><i class="ti ti-square-rounded-plus-filled me-2"></i>Créer nouvelle Salle</a>
         </div>
       </div>
     </div>
@@ -30,7 +30,7 @@
           <!-- Guardians List -->
           <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between flex-wrap pb-0">
-              <h4 class="mb-3">Salles enrégistrées</h4>
+              <h4 class="mb-3">Liste des Salles de classes</h4>
             </div>
             <div class="card-body p-0 py-3">
               <!-- Guardians List -->
@@ -46,7 +46,7 @@
                           (ngModelChange)="searchData(searchDataValue)"
                           type="search"
                           class="form-control"
-                          placeholder="Search..."
+                          placeholder="Rechercher ..."
                       /></label>
                     </div>
                   </div>
@@ -63,9 +63,10 @@
                   <thead class="thead-light">
                     <tr>
                       <th mat-sort-header="id">#</th>
-                      <th mat-sort-header="slug">Slug</th>
-                      <th mat-sort-header="name_fr">Nom FR</th>
-                      <th mat-sort-header="nameEn">Nom EN</th>
+                     <!-- <th mat-sort-header="slug">Slug</th> -->
+                      <th mat-sort-header="name_fr">Libellé [FR]</th>
+                      <th mat-sort-header="nameEn">Libellé [EN]</th>
+                      <th mat-sort-header="maxCapacity">Capacité</th>
                       <th mat-sort-header="statut">Statut</th>
                       <th mat-sort-header="Addedon">Crée le</th>
                       <th>Action</th>
@@ -74,38 +75,47 @@
                   <tbody>
                     <tr *ngIf="load; else dataTemplate">
                         <td><p-skeleton width="20px" height="20px" shape="circle"></p-skeleton></td>
-                        <td><p-skeleton width="150px"></p-skeleton></td>
-                        <td><p-skeleton width="150px"></p-skeleton></td>
-                        <td><p-skeleton width="150px"></p-skeleton></td>
-                        <td><p-skeleton width="150px"></p-skeleton></td>
-                        <td><p-skeleton width="150px"></p-skeleton></td>
-                        <td><p-skeleton width="150px"></p-skeleton></td>
+                        <!--<td><p-skeleton width="150px"></p-skeleton></td>-->
+                        <td><p-skeleton width="250px"></p-skeleton></td>
+                        <td><p-skeleton width="250px"></p-skeleton></td>
+                        <td><p-skeleton width="50px"></p-skeleton></td>
+                        <td><p-skeleton width="100px"></p-skeleton></td>
+                        <td><p-skeleton width="100px"></p-skeleton></td>
+                        <td><p-skeleton width="100px"></p-skeleton></td>
                     </tr>
                     <ng-template #dataTemplate>
                         @for (table of tableData; track table.id) {
                         <tr>
                         <td>{{table.id}}</td>
-                        <td>{{ table.slug }}</td>
+                       <!-- <td>{{ table.slug }}</td> -->
                         <td>{{ table.name_fr }}</td>
                         <td>{{ table.name_en }}</td>
+                        <td>{{ table.maxCapacity }}</td>
                         <td>
                           <span class="badge d-inline-flex align-items-center"
                             [ngClass]="{'badge-soft-success': table.isActive == true, 'badge-soft-danger': table.isActive == false}"><i
-                                class="ti ti-circle-filled fs-5 me-1"></i>{{table.isActive ? 'Actif' : 'Inactif'}}</span>
+                                class="ti ti-circle-filled fs-5 me-1"></i>{{table.isActive ? 'Disponible' : 'En Travaux !'}}</span>
                         </td>
                         <td>{{ table.createdAt | date:'d MMMM yyyy' }}</td> 
                         <td style="text-align: center">
+                          <p-button
+                              [routerLink]="routes.studentList"
+                              styleClass="p-button-text"
+                              tooltip="Consulter la liste des élèves et enseignants"
+                            >
+                              <i class="ti ti-eye h-100 w-100"></i>
+                            </p-button>
                             <p-button
                               (click)="openModal('edit', table)"
                               styleClass="p-button-text"
-                              tooltip="Edit section"
+                              tooltip="Modifier les informations sur la Salle de Classe"
                             >
                               <i class="ti ti-edit h-100 w-100"></i>
                             </p-button>
                             <p-button
                               (click)="openDeleteModal(table)"
                               styleClass="p-button-text"
-                              tooltip="Delete section"
+                              tooltip="Supprimer la Salle de Classe"
                             >
                               <i class="ti ti-trash h-100 w-100 text-danger"></i>
                             </p-button>
@@ -114,7 +124,7 @@
                         } @if (tableData.length === 0) {
                         <tr>
                             <td colspan="7">
-                                <h5 class="no-record text-center">Pas d'enregistrement trouvé</h5>
+                                <h5 class="no-record text-center notfound"> Aucun salle de classe trouvée ! </h5>
                             </td>
                         </tr>
                         }
@@ -127,13 +137,12 @@
             </div>
           </div>
     
-    
     <!-- Add Entity -->
     <div class="modal fade" id="add-edit-modal">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Ajouter/Editer</h4>
+              <h4 class="modal-title">{{ entity.name_fr && entity.name_fr.trim().length > 0 ? 'Modifier' : 'Ajouter' }} une Salle de classe</h4>
               <button
                 type="button"
                 class="btn-close custom-btn-close"
@@ -156,13 +165,13 @@
                                 }"
                                 >
                             <div *ngIf="slug.invalid && (slug.dirty || slug.touched)" class="text-danger">
-                                <div *ngIf="slug.errors?.['required']">Slug est requis.</div>
+                                <div *ngIf="slug.errors?.['required']">{{champRequis}}</div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="mb-3">
-                            <label class="form-label">Libellé Fr</label>
+                            <label class="form-label">Libellé en Français [FR]</label>
                             <input type="text" class="form-control" [(ngModel)]="entity.name_fr" required
                                 name="name_fr" #name_fr="ngModel"
                                 [ngClass]="{
@@ -171,13 +180,13 @@
                                 }"
                                 >
                             <div *ngIf="name_fr.invalid && (name_fr.dirty || name_fr.touched)" class="text-danger">
-                                <div *ngIf="name_fr.errors?.['required']">Le nom FR est requis.</div>
+                                <div *ngIf="name_fr.errors?.['required']">{{champRequis}}</div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="mb-3">
-                            <label class="form-label">Libellé En</label>
+                            <label class="form-label">Libellé en Anglais [EN]</label>
                             <input type="text" class="form-control" [(ngModel)]="entity.name_en" required
                                 name="name_en" #name_en="ngModel"
                                 [ngClass]="{
@@ -186,26 +195,39 @@
                                 }"
                                 >
                             <div *ngIf="name_en.invalid && (name_en.dirty || name_en.touched)" class="text-danger">
-                                <div *ngIf="name_en.errors?.['required']">Le nom EN est requis.</div>
+                                <div *ngIf="name_en.errors?.['required']">{{champRequis}}</div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-12">
                       <div class="mb-3">
-                        <label class="form-label">Status</label>
-                        <ng-select
-                            [items]="values"
-                            bindLabel="label"
-                            bindValue="value"
-                            [(ngModel)]="entity.isActive"
-                            placeholder="Selectionner"
-                            [ngModelOptions]="{ standalone: true }"
-                            #status="ngModel"
-                            [searchable]="false"
+                        <label class="form-label"> Capacité Maximum :  </label>
+                        <div style="display: inline-flex; align-items: center; gap: 5px;">
+                          <!-- <button (click)="decrement()">-</button> -->
+                          <input 
+                            type="number"
+                            [(ngModel)]="entity.maxCapacity" 
+                            min="0"
+                            max="100"
+                            style="width: 60px; text-align: center; margin-left:10px"
+                            name="maxCapacity" #maxCapacity="ngModel"
                           />
-                        <div *ngIf="status.invalid && (status.dirty || status.touched)" class="text-danger">
-                          <div *ngIf="status.errors?.['required']">Le status est requis.</div>
+                           <!-- <button (click)="increment()">+</button> -->
                         </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="mb-3">
+                        <label class="form-label">Status : </label>
+                        <button 
+                        (click)="toggle()" 
+                        [class.active]="entity.isActive" 
+                        [class.inactive]="!entity.isActive"
+                        [attr.tooltip]="'La salle de classe est' + (entity.isActive ? ' disponible' : ' en travaux') + '.'"
+                        class ="bstatut"
+                      >
+                        {{ entity.isActive ? 'Disponible' : 'En Travaux !' }}
+                      </button>
                       </div>
                     </div>
                 </div>
@@ -247,4 +269,3 @@
           </div>
         </div>
     </div>
-

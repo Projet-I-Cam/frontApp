@@ -445,6 +445,7 @@ export class DataService {
     }
   }
 
+  //#region  "ClassRoom => Salle de Classe"
   public async getClassRoomList(): Promise<apiResultFormat> {
 
     const data: any = await globalGet({
@@ -454,20 +455,22 @@ export class DataService {
       curentPage: 1,
       size: undefined,
     });
-    //console.log("depuis le service", data);
+    
     if (!data) {
-      console.error('Error fetching parent list:', data);
+      console.error('Error fetching Classroom list:', data);
       return {
         data: [],
         totalData: 0
       };
-    } else {
+    } 
+    else {
       return {
         data: data,
         totalData: data.length
       } as apiResultFormat;
     }
   }
+//#endregion
 
   public async getStudents(): Promise<any> {
 
