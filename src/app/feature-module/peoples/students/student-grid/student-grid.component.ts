@@ -59,7 +59,6 @@ export class StudentGridComponent implements OnInit {
           this.students = students;
           this.totalItems = students.length;
           this.rows = students.length;
-          console.log(this.students);
         },
         (error) => {
           console.error('Error loading students:', error);
