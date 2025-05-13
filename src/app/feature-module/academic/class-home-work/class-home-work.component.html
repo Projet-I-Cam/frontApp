@@ -6,7 +6,7 @@
       class="d-md-flex d-block align-items-center justify-content-between mb-3"
     >
       <div class="my-auto mb-2">
-        <h3 class="page-title mb-1">Class Work</h3>
+        <h3 class="page-title mb-1">Devoir</h3>
         <nav>
           <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item">
@@ -16,7 +16,7 @@
               <a href="javascript:void(0);">Academic </a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-              Class Work
+              Devoir
             </li>
           </ol>
         </nav>
@@ -29,8 +29,7 @@
             class="btn btn-primary"
             data-bs-toggle="modal"
             data-bs-target="#add_home_work"
-            ><i class="ti ti-square-rounded-plus-filled me-2"></i>Add Home
-            Work</a
+            ><i class="ti ti-square-rounded-plus-filled me-2"></i>Ajouter</a
           >
         </div>
       </div>
@@ -42,7 +41,7 @@
       <div
         class="card-header d-flex align-items-center justify-content-between flex-wrap pb-0"
       >
-        <h4 class="mb-3">Class Home Work</h4>
+        <h4 class="mb-3">Devoir de ma classe</h4>
         <div class="d-flex align-items-center flex-wrap">
           <div class="input-icon-start mb-3 me-2 position-relative">
             <app-date-range-picker />
@@ -62,7 +61,7 @@
                 </div>
                 <div class="p-3 border-bottom pb-0">
                   <div class="row">
-                    <div class="col-md-12">
+                    <!-- <div class="col-md-12">
                       <div class="mb-3">
                         <label class="form-label">Subject</label>
 
@@ -98,7 +97,7 @@
                           placeholder="A"
                         />
                       </div>
-                    </div>
+                    </div> -->
                     <div class="col-md-12">
                       <div class="mb-3">
                         <label class="form-label">Date</label>
@@ -200,18 +199,15 @@
                     />
                   </div>
                 </th>
-                <th mat-sort-header="id">ID</th>
-                <th mat-sort-header="class">Class</th>
-                <th mat-sort-header="section">Section</th>
-                <th mat-sort-header="subject">Subject</th>
-                <th mat-sort-header="homework">Homework Date</th>
-                <th mat-sort-header="submission">Submission Date</th>
-                <th mat-sort-header="created">Created By</th>
+                <th mat-sort-header="class">Classe</th>
+                <th mat-sort-header="homework"> Date</th>
+                <th mat-sort-header="submission"> Date de soumission</th>
+                <th mat-sort-header="created">Fichier joint</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              @for (table of tableData; track table) {
+              @for (table of homework; track table) {
               <tr>
                 <td>
                   <div class="form-check form-check-md">
@@ -222,33 +218,12 @@
                     />
                   </div>
                 </td>
+                <td>{{ table?.classroom?.name_fr }}</td>
+                <td>{{ table.homeWorkDate?.iso | date:'MM/dd/yyyy' }}</td>
+                <td>{{ table.submissionDate?.iso | date:'MM/dd/yyyy'}}</td>
+                <td><a href="{{table.attachment?.url}}" target="_blank">Fichier joint</a></td>
                 <td>
-                  <a href="javascript:void(0);" class="link-primary">{{
-                    table.id
-                  }}</a>
-                </td>
-                <td>{{ table.class }}</td>
-                <td>{{ table.section }}</td>
-                <td>{{ table.subject }}</td>
-                <td>{{ table.homeworkDate }}</td>
-                <td>{{ table.submissionDate }}</td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <a href="javascript:void(0);" class="avatar avatar-md"
-                      ><img
-                        [src]="table.img"
-                        class="img-fluid rounded-circle"
-                        alt="img"
-                    /></a>
-                    <div class="ms-2">
-                      <p class="text-dark mb-0">
-                        <a href="javascript:void(0);">{{ table.createdBy }}</a>
-                      </p>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="d-flex align-items-center">
+                  <div class="d-flex align-items-center"> 
                     <div class="dropdown">
                       <a
                         href="javascript:void(0);"
@@ -263,17 +238,19 @@
                           <a
                             class="dropdown-item rounded-1"
                             href="javascript:void(0);"
-                            data-bs-toggle="modal"
-                            data-bs-target="#edit_home_work"
+                            
                             ><i class="ti ti-edit-circle me-2"></i>Edit</a
                           >
+                          <!-- data-bs-toggle="modal"
+                            data-bs-target="#edit_home_work" 
+                            data-bs-toggle="modal"
+                            data-bs-target="#delete-modal"
+                            -->
                         </li>
                         <li>
                           <a
                             class="dropdown-item rounded-1"
                             href="javascript:void(0);"
-                            data-bs-toggle="modal"
-                            data-bs-target="#delete-modal"
                             ><i class="ti ti-trash-x me-2"></i>Delete</a
                           >
                         </li>
@@ -300,7 +277,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Add Home Work</h4>
+        <h4 class="modal-title">Créer un devoir</h4>
         <button
           type="button"
           class="btn-close custom-btn-close"
@@ -310,10 +287,11 @@
           <i class="ti ti-x"></i>
         </button>
       </div>
-      <form>
+      <form [formGroup]="homeworkForm" (ngSubmit)="onSubmit()">
         <div class="modal-body">
           <div class="row">
             <div class="col-md-12">
+              <!-- 
               <div class="mb-3">
                 <label class="form-label">Class</label>
                 <input type="text" class="form-control" />
@@ -343,30 +321,58 @@
                         />
                   </div>
                 </div>
-              </div>
+              </div> -->
               <div class="row">
                 <div class="col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Homework Date</label>
-                    <input type="text" class="form-control" />
+                    <label class="form-label">Date</label>
+                    <div class="input-icon position-relative">
+                      <span class="input-icon-addon">
+                        <i class="ti ti-calendar"></i>
+                      </span> 
+                      <input
+                          type="text"
+                          class="form-control datetimepicker"
+                          placeholder="jj-mm-aaaa"
+                          bsDatepicker
+                          formControlName="homeWorkDate"
+                        />
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Submission Date</label>
-                    <input type="text" class="form-control" />
+                    <label class="form-label">Date de soumission</label>
+                    <div class="input-icon position-relative">
+                      <span class="input-icon-addon">
+                        <i class="ti ti-calendar"></i>
+                      </span> 
+                      <input
+                          type="text"
+                          class="form-control datetimepicker"
+                          placeholder="jj-mm-aaaa"
+                          bsDatepicker
+                          formControlName="submissionDate"
+                        />
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="mb-3">
                 <label class="form-label">Attachments</label>
-                <input type="text" class="form-control" />
+                <input 
+                  type="file" 
+                  class="form-control" 
+                  formControlName="attachment" 
+                  (change)="onFileSelect($event)"
+                  #fileInput
+                />
               </div>
               <div class="mb-3">
-                <label class="form-label">Attachments</label>
-                <textarea class="form-control" rows="4"></textarea>
+                <label class="form-label">Contenu</label>
+                <textarea class="form-control" rows="4" formControlName="content"></textarea>
               </div>
-              <div class="d-flex align-items-center justify-content-between">
+              <!-- <div class="d-flex align-items-center justify-content-between">
                 <div class="status-title">
                   <h5>Status</h5>
                   <p>Change the Status by toggle</p>
@@ -379,7 +385,7 @@
                     id="switch-sm"
                   />
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -388,9 +394,12 @@
             href="javascript:void(0);"
             class="btn btn-light me-2"
             data-bs-dismiss="modal"
-            >Cancel</a
-          >
-          <button type="submit" class="btn btn-primary">Add Homework</button>
+            id="myModal"
+            >Annuler
+            </a>
+          <button type="submit" class="btn btn-primary" [disabled]="submitting">
+            <span *ngIf="submitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>créer
+          </button>
         </div>
       </form>
     </div>

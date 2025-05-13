@@ -1,20 +1,19 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { routes } from '../routes/routes';
-import { Observable, map, from } from 'rxjs';
-import { apiResultFormat, classRoomData } from '../model/pages.model';
+import { from, map, Observable } from 'rxjs';
+
 import { LoginService } from '../../auth/services/login.service';
 import { globalGet } from '../../services/statefull/http';
-import { HttpClient } from '@angular/common/http';
-import { SettingsService } from '../settings/settings.service';
 import { Section } from '../model/institution.model';
+import { apiResultFormat, classRoomData } from '../model/pages.model';
+import { routes } from '../routes/routes';
+import { SettingsService } from '../settings/settings.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
   constructor(private http: HttpClient, private loginService: LoginService) { }
-
-  iconStudents : string = 'user';
 
 
 
@@ -445,7 +444,6 @@ export class DataService {
     }
   }
 
-  //#region  "ClassRoom => Salle de Classe"
   public async getClassRoomList(): Promise<apiResultFormat> {
 
     const data: any = await globalGet({
@@ -455,22 +453,20 @@ export class DataService {
       curentPage: 1,
       size: undefined,
     });
-    
+    //console.log("depuis le service", data);
     if (!data) {
-      console.error('Error fetching Classroom list:', data);
+      console.error('Error fetching parent list:', data);
       return {
         data: [],
         totalData: 0
       };
-    } 
-    else {
+    } else {
       return {
         data: data,
         totalData: data.length
       } as apiResultFormat;
     }
   }
-//#endregion
 
   public async getStudents(): Promise<any> {
 
@@ -893,7 +889,7 @@ export class DataService {
         console.log('Parent children:', this.parentChildren);
         return this.getParentMenu(this.parentChildren || []);
       }
-      else if (role === 'administration') {
+      else if (role === 'administration' || role === 'services_centraux' || role == 'ministre') {
         return this.AdminSidebarData;
       }
       else if (role === 'regional') {
@@ -1503,12 +1499,6 @@ export class DataService {
             customSubmenuThree: false,
             route: ''
           }]
-        },
-        {
-          menuValue: 'Mes enfants',
-          icon: this.iconStudents,
-          route: routes.myStudents,
-          hasSubRoute: false
         }
       ]
     }];
@@ -1536,12 +1526,12 @@ export class DataService {
           subRoutes: [],
         },
         {
-          menuValue: 'Mes enfants Inscrits',
+          menuValue: 'Mes enfants Inscrit',
           hasSubRouteThree: true,
           icon: 'school',
           page: 'students',
           subMenus: [],
-        }
+        },
       ],
     },
   ];
@@ -1555,12 +1545,6 @@ export class DataService {
           menuValue: 'Tableau de bord',
           icon: 'layout-2',
           route: routes.adminDashboard,
-          hasSubRoute: false
-        },
-        {
-          menuValue: 'Mes enfants',
-          icon: this.iconStudents,
-          route: routes.myStudents,
           hasSubRoute: false
         }
       ]
@@ -1581,7 +1565,7 @@ export class DataService {
             { menuValue: 'Programme des cours', route: routes.studentTransfer },
             { menuValue: 'Manuels au programme', route: '' },
             { menuValue: 'Matériel pédagogique', route: '' },
-            { menuValue: 'Devoirs/Exercices', route: '' },
+            { menuValue: 'Devoirs/Exercices', route: routes.classHomeWork },
             { menuValue: 'Contrôle/Examens', route: '' },
             { menuValue: 'Gestion des absences', route: routes.studentReportCard },
             { menuValue: 'Suivi des élèves/Discipline', route: routes.studentReportCard }
@@ -1682,6 +1666,16 @@ export class DataService {
           customSubmenuTwo: false,
           subRoutes: [],
         },
+        {
+          menuValue: 'Annuaire',
+          icon: 'phone',
+          base: 'base',
+          hasSubRoute: false,
+          showSubRoute: false,
+          route: '',
+          customSubmenuTwo: false,
+          subRoutes: [],
+        },
       ],
     },
     {
@@ -1690,12 +1684,39 @@ export class DataService {
       separateRoute: false,
       menu: [
         {
-          menuValue: "Parametres Etablissement",
+          menuValue: "Etablissements",
           hasSubRouteTwo: true,
           icon: 'settings',
           showSubRoute: false,
           page: 'institution-settings',
           subMenus: [
+            {
+              menuValue: "Liste des etablissements",
+              route: '/peoples/institutions/institutions-list',
+              customSubmenuTwo: false,
+            },
+            {
+              menuValue: "Liste des eleves inscrit",
+              route: routes.studentList,
+              customSubmenuTwo: false,
+            },
+            {
+              menuValue: "Liste des eleves inactif",
+              route: routes.studentList,
+              customSubmenuTwo: false,
+            },
+            {
+              menuValue: "Notes/Bulletin",
+              route: routes.notes
+            },
+            {
+              menuValue: "Livret Scolaire",
+              route: routes.studentReportCard
+            },
+            {
+              menuValue: "Liste des demande de transferer",
+              route: routes.studentTransfer
+            },
             {
               menuValue: 'Geo-Localisation et autres',
               route: routes.securitySettings,
@@ -1731,120 +1752,21 @@ export class DataService {
           page: 'institution-settings',
           subMenus: [
             {
-              menuValue: 'Delegation Regionale',
-              hasSubRoute: true,
-              showSubRoute: true,
-              customSubmenuTwo: true,
-              page: 'base',
-              subMenusTwo: [
-                {
-                  menuValue: 'Liste des delegations regionale',
-                  route: routes.regionsList,
-                  customSubmenuTwo: false,
-                },
-                {
-                  menuValue: "Liste des etablissements",
-                  route: routes.scheduleClasses,
-                  customSubmenuTwo: false,
-                },
-                {
-                  menuValue: "Liste des eleves inscrit",
-                  route: routes.studentList,
-                  customSubmenuTwo: false,
-                },
-                {
-                  menuValue: "Liste des eleves inactif",
-                  route: routes.studentList,
-                  customSubmenuTwo: false,
-                },
-                {
-                  menuValue: "Notes/Bulletin",
-                  route: routes.notes
-                },
-                {
-                  menuValue: "Livret Scolaire",
-                  route: routes.studentReportCard
-                },
-                {
-                  menuValue: "Liste des demande de transferer",
-                  route: routes.studentTransfer
-                },
-              ],
+              menuValue: 'Liste des delegations regionale',
+              route: routes.regionsList,
+              customSubmenuTwo: false,
             },
             {
-              menuValue: 'Delegations de partementale',
-              hasSubRoute: true,
-              showSubRoute: true,
-              customSubmenuTwo: true,
-              page: 'base',
-              subMenusTwo: [
-                {
-                  menuValue: 'Liste des delegations departementale',
-                  route: routes.departmentsList,
-                },
-                {
-                  menuValue: "Liste des etablissements",
-                  route: routes.scheduleClasses
-                },
-                {
-                  menuValue: "Liste des eleves inscrit",
-                  route: routes.studentList
-                },
-                {
-                  menuValue: "Liste des eleves inactif",
-                  route: routes.studentList
-                },
-                {
-                  menuValue: "Notes/Bulletin",
-                  route: routes.notes
-                },
-                {
-                  menuValue: "Livret Scolaire",
-                  route: routes.studentReportCard
-                },
-                {
-                  menuValue: "Liste des demande de transferer",
-                  route: routes.studentTransfer
-                },
-              ],
+              menuValue: 'Liste des delegations departementale',
+              route: routes.departmentsList,
+              customSubmenuTwo: false,
             },
             {
-              menuValue: "Delegations d'arrondissement",
-              hasSubRoute: true,
-              showSubRoute: true,
-              customSubmenuTwo: true,
-              page: 'base',
-              subMenusTwo: [
-                {
-                  menuValue: "Liste des delegations d'arrondissement",
-                  route: routes.municipalitiesList,
-                },
-                {
-                  menuValue: "Liste des etablissements",
-                  route: routes.scheduleClasses
-                },
-                {
-                  menuValue: "Liste des eleves inscrit",
-                  route: routes.studentList
-                },
-                {
-                  menuValue: "Liste des eleves inactif",
-                  route: routes.studentList
-                },
-                {
-                  menuValue: "Notes/Bulletin",
-                  route: routes.notes
-                },
-                {
-                  menuValue: "Livret Scolaire",
-                  route: routes.studentReportCard
-                },
-                {
-                  menuValue: "Liste des demande de transferer",
-                  route: routes.studentTransfer
-                },
-              ],
+              menuValue: "Liste des delegations d'arrondissement",
+              route: routes.municipalitiesList,
+              customSubmenuTwo: false,
             },
+
           ],
         },
       ],
@@ -2031,6 +1953,21 @@ export class DataService {
           customSubmenuTwo: false,
           subRoutes: [],
         },
+         {
+          menuValue: 'Annuaire',
+          icon: 'phone',
+          base: 'base',
+          hasSubRoute: false,
+          showSubRoute: false,
+          route: '',
+          customSubmenuTwo: false,
+          subRoutes: [],
+        },
+         {
+              menuValue: 'Liste des delegations departementale',
+              route: routes.departmentsList,
+              icon: 'office'
+            },
       ],
     },
     {
@@ -2039,43 +1976,26 @@ export class DataService {
       separateRoute: false,
       menu: [
         {
-          menuValue: "Parametres Etablissement",
+          menuValue: "Etablissements",
           hasSubRouteTwo: true,
           icon: 'settings',
           showSubRoute: false,
           page: 'institution-settings',
           subMenus: [
             {
-              menuValue: 'Geo-Localisation et autres',
-              route: routes.securitySettings,
-              hasSubRoute: false,
-              showSubRoute: false,
-              customSubmenuTwo: false,
-            },
-          ],
-        },
-        {
-          menuValue: 'Delegations de partementale',
-          hasSubRoute: true,
-          showSubRoute: true,
-          customSubmenuTwo: true,
-          page: 'base',
-          subMenus: [
-            {
-              menuValue: 'Liste des delegations departementale',
-              route: routes.departmentsList,
-            },
-            {
               menuValue: "Liste des etablissements",
-              route: routes.scheduleClasses
+              route: '/peoples/institutions/institutions-list',
+              customSubmenuTwo: false,
             },
             {
               menuValue: "Liste des eleves inscrit",
-              route: routes.studentList
+              route: routes.studentList,
+              customSubmenuTwo: false,
             },
             {
               menuValue: "Liste des eleves inactif",
-              route: routes.studentList
+              route: routes.studentList,
+              customSubmenuTwo: false,
             },
             {
               menuValue: "Notes/Bulletin",
@@ -2088,6 +2008,24 @@ export class DataService {
             {
               menuValue: "Liste des demande de transferer",
               route: routes.studentTransfer
+            },
+            {
+              menuValue: 'Geo-Localisation et autres',
+              route: routes.securitySettings,
+              hasSubRoute: false,
+              showSubRoute: false,
+              customSubmenuTwo: false,
+            },
+            {
+              menuValue: 'Années académiques',
+              route: routes.academicYear,
+              customSubmenuTwo: false,
+
+            },
+            {
+              menuValue: "Types d'enseignements",
+              route: routes.educationType,
+              customSubmenuTwo: false,
             },
           ],
         },
@@ -2275,6 +2213,21 @@ export class DataService {
           customSubmenuTwo: false,
           subRoutes: [],
         },
+        {
+          menuValue: 'Annuaire',
+          icon: 'phone',
+          base: 'base',
+          hasSubRoute: false,
+          showSubRoute: false,
+          route: '',
+          customSubmenuTwo: false,
+          subRoutes: [],
+        },
+         {
+             menuValue: 'Liste des Inspection',
+              route: routes.municipalitiesList,
+              icon: 'office'
+            },
       ],
     },
     {
@@ -2283,43 +2236,26 @@ export class DataService {
       separateRoute: false,
       menu: [
         {
-          menuValue: "Parametres Etablissement",
+          menuValue: "Etablissements",
           hasSubRouteTwo: true,
           icon: 'settings',
           showSubRoute: false,
           page: 'institution-settings',
           subMenus: [
             {
-              menuValue: 'Geo-Localisation et autres',
-              route: routes.securitySettings,
-              hasSubRoute: false,
-              showSubRoute: false,
-              customSubmenuTwo: false,
-            },
-          ],
-        },
-        {
-          menuValue: 'Gestion des inspections',
-          hasSubRoute: true,
-          showSubRoute: true,
-          customSubmenuTwo: true,
-          page: 'base',
-          subMenus: [
-            {
-              menuValue: 'Liste des Inspection',
-              route: routes.departmentsList,
-            },
-            {
               menuValue: "Liste des etablissements",
-              route: routes.scheduleClasses
+              route: '/peoples/institutions/institutions-list',
+              customSubmenuTwo: false,
             },
             {
               menuValue: "Liste des eleves inscrit",
-              route: routes.studentList
+              route: routes.studentList,
+              customSubmenuTwo: false,
             },
             {
               menuValue: "Liste des eleves inactif",
-              route: routes.studentList
+              route: routes.studentList,
+              customSubmenuTwo: false,
             },
             {
               menuValue: "Notes/Bulletin",
@@ -2332,6 +2268,24 @@ export class DataService {
             {
               menuValue: "Liste des demande de transferer",
               route: routes.studentTransfer
+            },
+            {
+              menuValue: 'Geo-Localisation et autres',
+              route: routes.securitySettings,
+              hasSubRoute: false,
+              showSubRoute: false,
+              customSubmenuTwo: false,
+            },
+            {
+              menuValue: 'Années académiques',
+              route: routes.academicYear,
+              customSubmenuTwo: false,
+
+            },
+            {
+              menuValue: "Types d'enseignements",
+              route: routes.educationType,
+              customSubmenuTwo: false,
             },
           ],
         },
@@ -2519,6 +2473,16 @@ export class DataService {
           customSubmenuTwo: false,
           subRoutes: [],
         },
+        {
+          menuValue: 'Annuaire',
+          icon: 'phone',
+          base: 'base',
+          hasSubRoute: false,
+          showSubRoute: false,
+          route: '',
+          customSubmenuTwo: false,
+          subRoutes: [],
+        },
       ],
     },
     {
@@ -2527,39 +2491,26 @@ export class DataService {
       separateRoute: false,
       menu: [
         {
-          menuValue: "Parametres Etablissement",
+          menuValue: "Etablissements",
           hasSubRouteTwo: true,
           icon: 'settings',
           showSubRoute: false,
           page: 'institution-settings',
           subMenus: [
             {
-              menuValue: 'Geo-Localisation et autres',
-              route: routes.securitySettings,
-              hasSubRoute: false,
-              showSubRoute: false,
-              customSubmenuTwo: false,
-            },
-          ],
-        },
-        {
-          menuValue: 'Gestion des etablissement',
-          hasSubRoute: true,
-          showSubRoute: true,
-          customSubmenuTwo: true,
-          page: 'base',
-          subMenus: [
-            {
               menuValue: "Liste des etablissements",
-              route: routes.scheduleClasses
+              route: '/peoples/institutions/institutions-list',
+              customSubmenuTwo: false,
             },
             {
               menuValue: "Liste des eleves inscrit",
-              route: routes.studentList
+              route: routes.studentList,
+              customSubmenuTwo: false,
             },
             {
               menuValue: "Liste des eleves inactif",
-              route: routes.studentList
+              route: routes.studentList,
+              customSubmenuTwo: false,
             },
             {
               menuValue: "Notes/Bulletin",
@@ -2572,6 +2523,24 @@ export class DataService {
             {
               menuValue: "Liste des demande de transferer",
               route: routes.studentTransfer
+            },
+            {
+              menuValue: 'Geo-Localisation et autres',
+              route: routes.securitySettings,
+              hasSubRoute: false,
+              showSubRoute: false,
+              customSubmenuTwo: false,
+            },
+            {
+              menuValue: 'Années académiques',
+              route: routes.academicYear,
+              customSubmenuTwo: false,
+
+            },
+            {
+              menuValue: "Types d'enseignements",
+              route: routes.educationType,
+              customSubmenuTwo: false,
             },
           ],
         },
@@ -2713,14 +2682,9 @@ export class DataService {
           base9: "",
           subRoutes: [],
         },
-        {
-          menuValue: 'Mes enfants',
-          icon: this.iconStudents,
-          route: routes.myStudents,
-          hasSubRoute: false
-        }
       ],
-    }
+    },
+
   ];
 
   public AdminSchoolSidebarData: Array<any> = [
@@ -2734,18 +2698,6 @@ export class DataService {
           route: routes.adminDashboard,
           hasSubRoute: false
         },
-        {
-          menuValue: 'Annuaire',
-          icon: 'phone',
-          route: '',
-          hasSubRoute: false
-        },
-        {
-          menuValue: 'Mes enfants',
-          icon: this.iconStudents,
-          route: routes.myStudents,
-          hasSubRoute: false
-        }
       ]
     },
     {
@@ -2850,7 +2802,7 @@ export class DataService {
             { menuValue: 'Programme des cours', route: routes.scheduleClasses },
             { menuValue: 'Manuels au programme', route: '' },
             { menuValue: 'Matériel pédagogique', route: '' },
-            { menuValue: 'Devoirs/Exercices', route: routes.classHomeWork },
+            { menuValue: 'Devoirs/Exercices', route: '' },
             { menuValue: 'Contrôle/Examens', route: '' },
             { menuValue: 'Gestion des absences', route: '' },
             { menuValue: 'Suivi des élèves/Discipline', route: '' }

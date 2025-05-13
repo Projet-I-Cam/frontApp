@@ -3,6 +3,9 @@ import { routes } from '../../../../shared/routes/routes';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { globalPost, globalGet, globalPut, globalDelete } from './../../../../services/statefull/http'
+import { LoginService } from '../../../../auth/services/login.service';
+import { Municipality } from '../../../../shared/model/institution.model';
+
 
 declare var bootstrap: any;
 
@@ -30,6 +33,7 @@ export class InstitutionsListComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
+    private loginService: LoginService,
     private route: ActivatedRoute
   ) {
     this.institutionForm = this.fb.group({
@@ -57,15 +61,129 @@ export class InstitutionsListComponent implements OnInit {
   }
 
   async getTableData(currentPage: number, filters?: any, includes?: any): Promise<void> {
-    const res: any = await globalGet({
-      T: 'Institution',
-      filters: filters || {},
-      includes: includes || [],
-      curentPage: currentPage,
-    }); 
+    var res = null;
+    if (this.loginService.isLoggedIn()) {
+      const user = this.loginService.getUser();
+      const role = user?.role?.task_name || 'admin';
+      var person = this.loginService.getPerson();
+      if (role === 'administration' || role === 'services_centraux' || role == 'ministre') {
+        res = await globalGet({
+          T: 'Institution',
+          filters: filters || {},
+          includes: includes || [],
+          curentPage: currentPage,
+        });
+      }
+      else if (role === 'regional') {
+        const regionId = ''
+        const regionPointer = {
+          __type: "Pointer",
+          className: "Region",
+          objectId: regionId
+        };
+        // Get institutions where:
+        // 1. The institution's municipality's department's region matches our region
+        // 2. The institution is active
+        res = await globalGet({
+          T: "Institution",
+          filters: {
+            ...filters,
+            "municipality.department.region": regionPointer,
+            isActive: true
+          },
+          includes: [
+            "municipality",
+            "municipality.department",
+            "municipality.department.region"
+          ],
+          selects: [
+            "name",
+            "address",
+            "geoPoint",
+            "logo",
+            "registrationNumber",
+            "phones",
+            "municipality.name",
+            "municipality.department.name",
+            "municipality.department.region.name_fr"
+          ],
+          size: 2000
+        });
+      }
+      else if (role === 'departemental') {
+        const departmentId = ''
+        const departmentPointer = {
+          __type: "Pointer",
+          className: "Department",
+          objectId: departmentId
+        };
+        // Get institutions where:
+        // 1. The institution's municipality's  matches our departmen
+        // 2. The institution is active
+        res = await globalGet({
+          T: "Institution",
+          filters: {
+            ...filters,
+            "municipality.department": departmentPointer,
+            isActive: true
+          },
+          includes: [
+            "municipality",
+            "municipality.department",
+            "municipality.department.region"
+          ],
+          selects: [
+            "name",
+            "address",
+            "geoPoint",
+            "logo",
+            "registrationNumber",
+            "phones",
+            "municipality.name",
+            "municipality.department.name",
+            "municipality.department.region.name_fr"
+          ],
+          curentPage: currentPage,
+        });
+
+
+      }
+      else if (role === 'arrondissement') {
+        res = await globalGet({
+          T: 'Institution',
+          filters: {
+            ...filters,
+             municipality: {
+              className: 'Municipality',
+              objectId: person.municipality
+            }
+          },
+          includes: [
+            "municipality",
+            "municipality.department",
+            "municipality.department.region"
+          ],
+          selects:[
+            "name",
+            "address",
+            "geoPoint",
+            "logo",
+            "registrationNumber",
+            "phones",
+            "municipality.name",
+            "municipality.department.name",
+            "municipality.department.region.name_fr"
+          ],
+          curentPage: currentPage,
+        });
+      }
+
+
+    }
+
 
     console.log('Fetched data:', res);
- 
+
     if (!res.error) {
       this.tableData = res ? [...res] : [];
       this.totalRecords = res.length;

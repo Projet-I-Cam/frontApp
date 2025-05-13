@@ -6,19 +6,19 @@ import { AuthService } from '../auth.service';
 
 
 export interface FilterStudent {
-  yearId?: string; 
+  yearId?: string;
   genderId?: string
   statut?: boolean
-  sectionId?: string; 
-  classroomId?: string; 
-  classeId?: string; 
-  schoolId?: string; 
+  sectionId?: string;
+  classroomId?: string;
+  classeId?: string;
+  schoolId?: string;
   arronId?: string;
   departId?: string;
   regionId?: string;
   parentId?: string;
-  enseignantId?: string 
-} 
+  enseignantId?: string
+}
 
 roleTaskName : [] = ['super', 'administration', 'regional', 'departement', 'arrondissement', 'etablissement', 'enseignant', 'parent', 'eleve'];
 
@@ -32,14 +32,14 @@ export async function listInscriptions2(f : FilterStudent) {
     academicYearQuery.equalTo("objectId", f.yearId);
     query.matchesQuery("academicYear", academicYearQuery);
   }
-  
-  
+
+
   // Filtrer par institution
   if(f.schoolId){
     const institutionQuery = new Parse.Query("Institution");
     institutionQuery.equalTo("objectId", f.schoolId);
     query.matchesQuery("institution", institutionQuery);
-  } 
+  }
 
   // Filtrer par arrondissement
   if (f.arronId) {
@@ -107,7 +107,7 @@ export async function listInscriptions(f: FilterStudent) {
 
   // Filtrer par Classe
   addFilter(query, "Classe", "classroom.classe", f.classeId || '');
-  
+
   // Filtrer par institution
   addFilter(query, "Institution", "institution", f.schoolId || '');
 
@@ -144,7 +144,7 @@ export async function listInscriptions(f: FilterStudent) {
 
 /**
  * Generic function to perform a 'find all' query on Parse Server.
- * 
+ *
  * @param className - The Parse class name to query.
  * @param includes - An array of pointer fields to include in the results.
  * @param selectFields - Optional array of fields to select (retrieve).
@@ -177,7 +177,7 @@ export async function genericFindAll(
 
 /**
  * Generic function to perform a 'find by' query on Parse Server.
- * 
+ *
  * @param className - The Parse class name to query.
  * @param filters - An object with keys as field names and values as the expected field values.
  * @param includes - An array of pointer fields to include in the results.
@@ -217,7 +217,7 @@ export async function genericFindBy(
 
 /**
  * Generic function to perform a 'find one by' query on Parse Server.
- * 
+ *
  * @param className - The Parse class name to query.
  * @param filters - An object with keys as field names and values as the expected field values.
  * @param includes - An array of pointer fields to include in the result.
@@ -254,7 +254,7 @@ export async function genericFindOneBy(
   }
 }
 
-/* 
+/*
     const students = await genericFindBy(
         'Person',
         { user: someUserPointer },
@@ -265,7 +265,7 @@ export async function genericFindOneBy(
 
   /**
  * Generic function to retrieve a single object from Parse Server by class name and object ID.
- * 
+ *
  * @param className - The name of the Parse class to query.
  * @param objectId - The object ID of the Parse object to retrieve.
  * @returns Promise resolving to the object data or an error message.
@@ -274,7 +274,7 @@ export const getOneObject = async (className: string, objectId: string): Promise
   try {
       const ParseClass = Parse.Object.extend(className);
       const query = new Parse.Query(ParseClass);
-      
+
       const object = await query.get(objectId);
       console.log(`${className} found:`, object.toJSON());
       return object.toJSON();
@@ -289,7 +289,7 @@ export const getOneObject = async (className: string, objectId: string): Promise
 
 /**
  * Generic function to retrieve one Parse object by pointer field, returning an Observable.
- * 
+ *
  * @param className - Parse class name to query (e.g., 'Person').
  * @param pointerField - The pointer field name to filter by (e.g., 'user').
  * @param pointerClassName - The class name of the pointer object (e.g., '_User').
@@ -407,7 +407,7 @@ export async function getEnrolledStudents(academicYearId: string) {
   } catch (error) {
       console.error("Erreur dans EnrollmentService.getEnrolledStudents :", error);
       throw error; // Rethrow l'erreur pour un traitement ultérieur
-  }  
+  }
 }
 
 
@@ -448,7 +448,7 @@ export async function getEnrolledStudentsBySchool(academicYearId: string, establ
   } catch (error) {
       console.error("Erreur dans EnrollmentService.getEnrolledStudentsBySchool :", error);
       throw error; // Rethrow l'erreur pour un traitement ultérieur
-  }  
+  }
 }
 
 
@@ -479,9 +479,9 @@ export async function listInscriptionByYear(academicYearId: any) {
 
 /**
  * Function to get the current AcademicYear object.
- * 
+ *
  * Prerequisite: Parse SDK must be initialized before calling this function.
- * 
+ *
  * @returns {Promise<Parse.Object|null>} The current AcademicYear object or null if none found.
  */
 export async function getLiteCurrentAcademicYear() {
@@ -489,7 +489,7 @@ export async function getLiteCurrentAcademicYear() {
       const query = new Parse.Query("AcademicYear");
       query.equalTo("isCurrent", true);
       const currentYear = await query.first();
-      
+
       if (!currentYear) {
           return null; // Return null if no current academic year is found
       }
@@ -536,12 +536,14 @@ export async function getCurrentAcademicYear() {
 export async function getPersonByUserId(userId: string) {
   try {
       const query = new Parse.Query("Person");
+      query.include("municipality");
       const userPointer = Parse.Object.extend("_User").createWithoutData(userId); // Créer un pointeur vers l'utilisateur
       query.equalTo("user", userPointer); // Filtrer par le champ user
       const person = await query.first(); // Récupérer la première correspondance
       if (!person) {
           return null; // Retourner null si aucune personne n'est trouvée
       }
+
       return person.toJSON(); // Retourner l'objet sous forme de JSON
   } catch (error) {
       console.error("Erreur lors de la récupération de la personne par userId :", error);
