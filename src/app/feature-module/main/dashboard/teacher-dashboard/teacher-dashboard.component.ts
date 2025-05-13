@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   ApexChart,
   ApexNonAxisChartSeries,
@@ -10,6 +10,7 @@ import {
 } from 'ng-apexcharts';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { routes } from '../../../../shared/routes/routes';
+import { LoginService } from '../../../../auth/services/login.service';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries | any;
@@ -28,13 +29,14 @@ export type ChartOptions = {
     styleUrl: './teacher-dashboard.component.scss',
     standalone: false
 })
-export class TeacherDashboardComponent {
+export class TeacherDashboardComponent implements OnInit{
   public routes = routes;
   public studentDonutChart: Partial<ChartOptions>;
   public attendanceChart: Partial<ChartOptions>;
   date: Date | undefined;
+  person : any = {};
 
-  constructor() {
+  constructor(private loginService : LoginService) {
     this.date = new Date();
 
     this.studentDonutChart = {
@@ -122,6 +124,10 @@ export class TeacherDashboardComponent {
         position: 'bottom',
       },
     };
+  }
+
+  ngOnInit(): void {
+    this.person = this.loginService.getPerson();
   }
   customOptions: OwlOptions = {
     items: 3,

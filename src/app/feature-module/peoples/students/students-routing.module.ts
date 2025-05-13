@@ -13,6 +13,7 @@ import { StudentLibraryComponent } from './student-library/student-library.compo
 import { EditStudentComponent } from './edit-student/edit-student.component';
 import { StudentGridComponent } from './student-grid/student-grid.component';
 import { MyStudentsComponent } from './my-students/my-students.component';
+import {StudentResultComponent} from "./student-result/student-result.component";
 
 const routes: Routes = [
   {
@@ -67,6 +68,10 @@ const routes: Routes = [
         path: 'my-students',
         component: MyStudentsComponent,
       },
+      {
+        path: 'student-result',
+        component: StudentResultComponent,
+      }
     ],
   },
 ];

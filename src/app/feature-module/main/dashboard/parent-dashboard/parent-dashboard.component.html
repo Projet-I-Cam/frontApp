@@ -41,7 +41,7 @@
                             </div>
                             <div class="d-block">
                                 <span class="badge bg-transparent-primary text-primary mb-1">#P124556</span>
-                                <h4 class="text-truncate text-white mb-1">{{parent?.firstName}} {{parent?.lastName}}</h4>
+                                <h4 class="text-truncate text-white mb-1">{{parent?.firstNoms}} {{parent?.lastNoms}}</h4>
                                 <div class="d-flex align-items-center flex-wrap row-gap-2 class-info">
                                     <span>Added On : {{parent.createdAt | date:'d MMMM yyyy' }}</span>
                                     <span>Childs : {{parent.students?.length || 0}}</span>
@@ -118,7 +118,7 @@
         <div class="row">
 
             <!-- Events List -->
-            
+
             <div class="col-xxl-4 col-xl-12 d-flex">
                 <div class="card flex-fill">
                     <div class="card-header  d-flex align-items-center justify-content-between">
@@ -171,7 +171,7 @@
                                                 alt="img">
                                         </a>
                                         <div class="overflow-hidden">
-                                            <h6 class="mb-1"><a [routerLink] = "routes.events">Annual Day</a></h6>
+                                            <h6 class="mb-1"><a [routerLink] = "routes.events">Troisième Trimestre Day</a></h6>
                                             <p><i class="ti ti-calendar me-1"></i>11 Mar 2024</p>
                                         </div>
                                     </div>
@@ -205,12 +205,12 @@
                                                 alt="img">
                                         </a>
                                         <div class="overflow-hidden">
-                                            <h6 class="mb-1"><a [routerLink] = "routes.events">Exam Result</a></h6>
-                                            <p><i class="ti ti-calendar me-1"></i>16 July 2024</p>
+                                            <h6 class="mb-1"><a [routerLink] = "routes.events">Résultat des examens</a></h6>
+                                            <p><i class="ti ti-calendar me-1"></i>16 Juillet 2025</p>
                                         </div>
                                     </div>
                                     <span class="badge badge-soft-skyblue d-inline-flex align-items-center"><i
-                                            class="ti ti-circle-filled fs-5 me-1"></i>Half Day</span>
+                                            class="ti ti-circle-filled fs-5 me-1"></i>Demi-journée</span>
                                 </div>
                             </li>
                         </ul>
@@ -256,8 +256,8 @@
                         [dataLabels]="chartOptions.dataLabels"
                         [grid]="chartOptions.grid"
                         [stroke]="chartOptions.stroke"
-                        
-                        
+
+
                       ></apx-chart>
                         </div>
                     </div>
@@ -349,7 +349,7 @@
                 </div>
             </div>-->
             <!-- /Leave Status -->
-            
+
             <!-- Home Works -->
             <div class="col-xxl-4  col-xl-12 d-flex">
                 <div class="card flex-fill">
@@ -580,15 +580,15 @@
 
         <div class="row">
 
-            <!-- Exam Result -->
+            <!-- Résultat des examens -->
             <div class="col-xxl-8 col-xl-7 d-flex">
                 <div class="card flex-fill">
                     <div class="card-header d-flex align-items-center justify-content-between flex-wrap pb-0">
-                        <h4 class="card-title mb-3">Exam Result</h4>
+                        <h4 class="card-title mb-3">Résultat des examens</h4>
                         <div class="d-flex align-items-center">
                             <div class="dropdown me-3 mb-3">
                                 <a href="javascript:void(0);" class="bg-white dropdown-toggle"
-                                    data-bs-toggle="dropdown"><i class="ti ti-calendar me-2"></i>All Classes
+                                    data-bs-toggle="dropdown"><i class="ti ti-calendar me-2"></i>Toutes les classes
                                 </a>
                                 <ul class="dropdown-menu mt-2 p-3">
                                     <li>
@@ -610,17 +610,17 @@
                             </div>
                             <div class="dropdown mb-3">
                                 <a href="javascript:void(0);" class="bg-white dropdown-toggle"
-                                    data-bs-toggle="dropdown"><i class="ti ti-calendar me-2"></i>All Exams
+                                    data-bs-toggle="dropdown"><i class="ti ti-calendar me-2"></i>Toutes les examens
                                 </a>
                                 <ul class="dropdown-menu mt-2 p-3">
                                     <li>
                                         <a href="javascript:void(0);" class="dropdown-item rounded-1">
-                                            Quartely
+                                            Premier Trimestre
                                         </a>
                                     </li>
                                     <li>
                                         <a href="javascript:void(0);" class="dropdown-item rounded-1">
-                                            Practical
+                                            Deuxième Trimestre
                                         </a>
                                     </li>
                                     <li>
@@ -638,12 +638,12 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Class </th>
+                                        <th>Noms</th>
+                                        <th>Classe </th>
                                         <th>Section</th>
-                                        <th>Marks %</th>
-                                        <th>Exams</th>
-                                        <th>Status</th>
+                                        <th>Notes %</th>
+                                        <th>Examens</th>
+                                        <th>Statut</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -656,16 +656,16 @@
                                                         class="img-fluid rounded-circle" alt="img"></a>
                                                 <div class="ms-2">
                                                     <p class="text-dark mb-0"><a
-                                                            [routerLink] = "routes.studentDetails">Janet</a></p>
+                                                            [routerLink] = "routes.studentDetails">Anaëlle</a></p>
                                                 </div>
                                             </div>
                                         </td>
                                         <td>III</td>
                                         <td>A</td>
                                         <td>89%</td>
-                                        <td>Quartely</td>
+                                        <td>Premier Trimestre</td>
                                         <td>
-                                            <span class="badge bg-success">Pass</span>
+                                            <span class="badge bg-success">Réussi</span>
                                         </td>
                                     </tr>
                                     <tr>
@@ -677,16 +677,16 @@
                                                         class="img-fluid rounded-circle" alt="img"></a>
                                                 <div class="ms-2">
                                                     <p class="text-dark mb-0"><a
-                                                            [routerLink] = "routes.staffDetails">Joann</a></p>
+                                                            [routerLink] = "routes.staffDetails">Raphaël</a></p>
                                                 </div>
                                             </div>
                                         </td>
                                         <td>IV</td>
                                         <td>B</td>
                                         <td>88%</td>
-                                        <td>Practical</td>
+                                        <td>Deuxième Trimestre</td>
                                         <td>
-                                            <span class="badge bg-success">Pass</span>
+                                            <span class="badge bg-success">Réussi</span>
                                         </td>
                                     </tr>
                                     <tr>
@@ -698,16 +698,16 @@
                                                         class="img-fluid rounded-circle" alt="img"></a>
                                                 <div class="ms-2">
                                                     <p class="text-dark mb-0"><a
-                                                            [routerLink] = "routes.studentDetails">Gifford</a></p>
+                                                            [routerLink] = "routes.studentDetails">Julie</a></p>
                                                 </div>
                                             </div>
                                         </td>
                                         <td>I</td>
                                         <td>B</td>
                                         <td>21%</td>
-                                        <td>Mid Term</td>
+                                        <td>Deuxième Trimestre</td>
                                         <td>
-                                            <span class="badge bg-success">Pass</span>
+                                            <span class="badge bg-success">Réussi</span>
                                         </td>
                                     </tr>
                                     <tr>
@@ -719,16 +719,16 @@
                                                         class="img-fluid rounded-circle" alt="img"></a>
                                                 <div class="ms-2">
                                                     <p class="text-dark mb-0"><a
-                                                            [routerLink] = "routes.studentDetails">Lisa</a></p>
+                                                            [routerLink] = "routes.studentDetails">Julie</a></p>
                                                 </div>
                                             </div>
                                         </td>
                                         <td>II</td>
                                         <td>B</td>
                                         <td>31%</td>
-                                        <td>Annual</td>
+                                        <td>Troisième Trimestre</td>
                                         <td>
-                                            <span class="badge bg-danger">Fail</span>
+                                            <span class="badge bg-danger">Echec</span>
                                         </td>
                                     </tr>
                                     <tr>
@@ -740,16 +740,16 @@
                                                         class="img-fluid rounded-circle" alt="img"></a>
                                                 <div class="ms-2">
                                                     <p class="text-dark mb-0"><a
-                                                            [routerLink] = "routes.studentDetails">Riana</a></p>
+                                                            [routerLink] = "routes.studentDetails">Raphaëlle</a></p>
                                                 </div>
                                             </div>
                                         </td>
                                         <td>III</td>
                                         <td>A</td>
                                         <td>89%</td>
-                                        <td>Quartely</td>
+                                        <td>Premier Trimestre</td>
                                         <td>
-                                            <span class="badge bg-success">Pass</span>
+                                            <span class="badge bg-success">Réussi</span>
                                         </td>
                                     </tr>
                                     <tr>
@@ -761,16 +761,16 @@
                                                         class="img-fluid rounded-circle" alt="img"></a>
                                                 <div class="ms-2">
                                                     <p class="text-dark mb-0"><a
-                                                            [routerLink] = "routes.staffDetails">Angelo </a></p>
+                                                            [routerLink] = "routes.staffDetails">Anaëlle </a></p>
                                                 </div>
                                             </div>
                                         </td>
                                         <td>IV</td>
                                         <td>B</td>
                                         <td>88%</td>
-                                        <td>Practical</td>
+                                        <td>Deuxième Trimestre</td>
                                         <td>
-                                            <span class="badge bg-danger">Fail</span>
+                                            <span class="badge bg-danger">Echec</span>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -779,7 +779,7 @@
                     </div>
                 </div>
             </div>
-            <!-- /Exam Result -->
+            <!-- /Résultat des examens -->
 
             <!-- Notice Board -->
             <div class="col-xxl-4 col-xl-5 d-flex">
@@ -913,8 +913,8 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Name</label>
-                                <input type="text" class="form-control" placeholder="Enter Name" value="Thomas">
+                                <label class="form-label">Noms</label>
+                                <input type="text" class="form-control" placeholder="Enter Noms" value="Thomas">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Phone Number</label>
@@ -928,7 +928,7 @@
                             </div>
                             <div class="mb-0">
                                 <label class="form-label">Child</label>
-                              
+
                                 <p-dropdown [options]="[
                                                 { label: 'Select', value: '' },
                                                 { label: 'Janet', value: 'Janet' },

@@ -7,6 +7,11 @@ import { SharedModule } from '../../../../shared/shared.module';
 import { StudentService } from '../../../../services/student.service';
 import { finalize } from 'rxjs/operators';
 import { CustomPaginationModule } from '../../../../shared/custom-pagination/custom-pagination.module';
+import { FilterStudent, getCurrentAcademicYear, listInscriptions } from '../../../../services/statefull/genericParse';
+import { AuthService } from '../../../../services/auth.service';
+import { LoginService } from '../../../../auth/services/login.service';
+import { globalGet } from '../../../../services/statefull/http';
+import { AlertService } from '../../../../services/alertService';
 
 // Définition d'interface pour Bootstrap pour éviter les erreurs TS
 declare global {
@@ -33,18 +38,37 @@ export class StudentGridComponent implements OnInit {
   public rows = 0; // Variable pour stocker le nombre total de lignes
   public selectedStudent: any = null; // Stocke l'étudiant sélectionné
   private modalInstance: any = null; // Instance du modal
+  academicYear : any = {};
+  currentUser : any = {};
+  currentPerson : any = {};
+  classes : any[] = [];
+  selectedClasse : string | undefined;
+  sections : any[] = [];
+  selectedSection :string | undefined;
+  genders : any[] = [];
+  selectedGender : string | undefined;
+  statuts : any[] = [{item: "Actif", value: true}, {item: "Inactif", value: false}];
+  selectedStatut : boolean = true;
+  academicYears : any[] = [];
+
 
   constructor(
     private router: Router,
     private renderer: Renderer2,
-    private studentService: StudentService
+    private studentService: StudentService,
+    private loginService: LoginService,
+    private alertService: AlertService
   ) {}
 
-  ngOnInit(): void {
-    this.loadStudents();
+  async ngOnInit() {
+    this.currentUser = this.loginService.getUser();
+    this.currentPerson = this.loginService.getPerson();
+    this.academicYear = await getCurrentAcademicYear();
+    this.loadStudents({yearId : this.academicYear.objectId, statut: true});
+    this.loadFilterData();
   }
 
-  loadStudents(): void {
+  loadStudents3(): void {
     this.isLoading = true;
     this.error = '';
 
@@ -66,6 +90,120 @@ export class StudentGridComponent implements OnInit {
         }
       );
   }
+
+  async loadFilterData(){
+    this.classes = await globalGet({T: 'Classe'});
+    this.sections = await globalGet({T: 'Section'});
+    this.genders = await globalGet({T: 'Gender'});
+    this.academicYears = await globalGet({T: 'AcademicYear'});
+  }
+
+  async loadStudents2(academicYearId:any){
+    this.isLoading = true;
+    switch (this.currentUser .role.task_name) {
+      case "super":
+      case "administration":
+        // Accès aux inscriptions pour toutes les institutions et l'année donnée
+        this.students = await listInscriptions({ yearId: academicYearId });
+        break;
+
+      // Accès aux inscriptions pour linstitution et l'année donnée
+      case "etablissement":
+        if (this.currentPerson.institution) {
+          this.students = await listInscriptions({ yearId: academicYearId, schoolId: this.currentPerson.institution.id });
+        } else {
+          this.students = [];
+        }
+      break;
+
+      case "regional":
+        if (this.currentPerson.region) {
+          this.students = await listInscriptions({ yearId: academicYearId, regionId: this.currentPerson.region.id });
+        } else {
+          this.students = [];
+        }
+      break;
+
+      case "departement":
+        if (this.currentPerson.department) {
+          this.students = await listInscriptions({ yearId: academicYearId, departId: this.currentPerson.department.id });
+        } else {
+          this.students = [];
+        }
+      break;
+
+      case "arrondissement":
+        if (this.currentPerson.arrondissement) {
+          this.students = await listInscriptions({ yearId: academicYearId, arronId: this.currentPerson.arrondissement.id });
+        } else {
+          this.students = [];
+        }
+      break;
+
+      case "enseignant":
+        this.students = await listInscriptions({ yearId: academicYearId, enseignantId: this.currentUser .id });
+      break;
+
+      default:
+        console.error("Rôle non reconnu ou accès non autorisé.");
+        this.students = [];
+      break;
+    }
+
+    this.totalItems = this.students?.length || 0;
+    this.rows = this.students?.length || 0;
+    this.isLoading = false;
+    console.log(this.students);
+  }
+
+  async loadStudents(f: FilterStudent) {
+    this.isLoading = true;
+
+    try {
+      // Définir les filtres en fonction du rôle
+      switch (this.currentUser .role.task_name) {
+        case "super":
+        case "administration":
+          // Accès aux inscriptions pour toutes les institutions et l'année donnée
+          break; // Pas besoin de modifier f ici
+
+        case "etablissement":
+          f.schoolId = this.currentPerson.institution?.id;
+          break;
+
+        case "regional":
+          f.regionId = this.currentPerson?.municipality?.departement?.region?.id;
+          break;
+
+        case "departement":
+          f.departId = this.currentPerson?.municipality?.departement?.id;
+          break;
+
+        case "arrondissement":
+          f.arronId = this.currentPerson?.municipality?.id;
+          break;
+
+        default:
+          console.error("Rôle non reconnu ou accès non autorisé.");
+          this.students = [];
+          this.isLoading = false;
+          return;
+      }
+
+      // Charger les inscriptions avec les filtres appliqués
+      this.students = await listInscriptions(f);
+      this.totalItems = this.students?.length || 0;
+      this.rows = this.students?.length || 0;
+
+    } catch (error) {
+      console.error("Erreur lors du chargement des étudiants:", error);
+      this.students = [];
+    } finally {
+      this.isLoading = false;
+      console.log(this.students);
+    }
+  }
+
 
   // Méthode pour voir les détails d'un étudiant
   viewDetails(id: string): void {
@@ -176,16 +314,22 @@ export class StudentGridComponent implements OnInit {
     }
   }
 
-  public handleApplyClick(): void {
-    const modalElements = document.getElementsByClassName('drop-width');
-    if (modalElements.length > 0) {
-      for (let i = 0; i < modalElements.length; i++) {
-        const modalElement = modalElements[i];
-        this.renderer.removeClass(modalElement, 'show');
-      }
-    }
+  handleApplyClick() {
+    const f = {
+      yearId: this.academicYear.objectId,
+      classeId: this.selectedClasse,
+      sectionId: this.selectedSection,
+      genderId: this.selectedGender,
+      statut: this.convertStringToBoolean(this.selectedStatut)
+    };
+    //this.students = [];
+    console.log(f);
+    this.loadStudents(f);
   }
 
+  resetFilters() {
+    this.ngOnInit();
+  }
   public deleteStudent(id: string): void {
     if (confirm('Are you sure you want to delete this student?')) {
       this.studentService.deleteStudent(id)
@@ -213,4 +357,8 @@ export class StudentGridComponent implements OnInit {
     // Vous pouvez ici implémenter une logique pour charger uniquement les données
     // de la page actuelle si vous avez beaucoup d'étudiants
   }
+  convertStringToBoolean(str:any) {
+    return str.toLowerCase() === 'true';
+  }
+
 }

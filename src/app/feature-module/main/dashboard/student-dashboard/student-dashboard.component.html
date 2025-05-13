@@ -20,7 +20,7 @@
       </div>
     </div>
     <!-- /Page Header -->
-     
+
 
     <div class="row">
       <div class="col-xxl-8 d-flex">
@@ -32,7 +32,8 @@
                 <div class="card-body">
                   <div class="d-flex align-items-center row-gap-3 mb-3">
                     <div class="avatar avatar-xxl rounded flex-shrink-0 me-3">
-                      <img src="{{student.photo?.url}}" alt="Img" />
+                      <img *ngIf="student" [src]="student?.photo?.url" alt="Img">
+                      <img *ngIf="!student" src="assets/img/profiles/avatar-01.jpg" alt="Img">
                     </div>
                     <div class="d-block">
                       <span
@@ -633,7 +634,7 @@
                     </span>
                     <div class="progress-value">65%</div>
                   </div>
-                
+
                 </div>
               </li>
               <li class="list-group-item py-3 px-0 pb-0">
@@ -679,7 +680,7 @@
                       </div>
                     </div>
                   </div>
-                 
+
                   <div class="circle-progress mb-3" data-value="30" #circleProgress>
                     <span class="progress-left">
                       <span class="progress-bar border-warning"></span>
@@ -734,7 +735,7 @@
                       </div>
                     </div>
                   </div>
-                 
+
 
                   <div class="circle-progress mb-3" data-value="10" #circleProgress>
                     <span class="progress-left">
@@ -1460,7 +1461,7 @@
       </div>
       <!-- Fees Reminder -->
 
-      
+
 
     </div>
 
