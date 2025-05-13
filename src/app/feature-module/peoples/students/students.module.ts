@@ -42,6 +42,7 @@ import { MyStudentsComponent } from './my-students/my-students.component';
     StudentsComponent,
     StudentGridComponent,
   ],
+  exports: [MyStudentsComponent],
   providers: [
     StudentService,
     PersonService

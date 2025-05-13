@@ -1,131 +1,127 @@
 <!-- Page Wrapper -->
-<div class="page-wrapper">
     <div class="content content-two">
-        
-        <!-- Page Header -->
-        <div class="d-md-flex d-block align-items-center justify-content-between mb-3">
-            <div class="my-auto mb-2">
-                <h3 class="page-title mb-1">Élèves</h3>
-                <nav>
-                    <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item">
-                            <a [routerLink]="routes.adminDashboard">Tableau de bord</a>
-                        </li>
-                        <li class="breadcrumb-item">
-                            Personnes
-                        </li>
-                        <li class="breadcrumb-item active" aria-current="page">Mes enfants</li>
-                    </ol>
-                </nav>
-            </div>
-            <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
-                <app-tooltip-content></app-tooltip-content>                 
-            </div>
-        </div>
-        <!-- /Page Header -->
-        
-        <!-- Filter -->
-        <div class="bg-white p-3 border rounded-1 d-flex align-items-center justify-content-between flex-wrap mb-4 pb-0">
-            <h4 class="mb-3">Mes enfants ({{students.length || 0}})</h4>
-            <div class="d-flex align-items-center flex-wrap">		
-            </div>	
-        </div>
-        <!-- /Filter -->
+        <!-- Enfants -->
+        <div class="col-xxl-12 col-xl-7 d-flex">
+            <div class="card flex-fill">
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap pb-0">
+                    <h4 class="card-title mb-3">Mes enfants ({{filteredStudents.length || 0}})</h4>
+                    <div class="d-flex align-items-center">
+                        <div class="dropdown me-3 mb-3">
+                            <a href="javascript:void(0);" class="bg-white dropdown-toggle"
+                                data-bs-toggle="dropdown"><i class="ti ti-calendar me-2"></i>Etablissements
+                            </a>
+                            <ul class="dropdown-menu mt-2 p-3">
+                                <li *ngFor="let school of schools">
+                                    <a class="dropdown-item rounded-1" (click)="onSchoolChange(school.objectId)">
+                                        {{school.name}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
 
-        <div class="row">
-            <!-- Student Grid -->
-            <div class="col-xxl-3 col-xl-4 col-md-6 d-flex" *ngFor="let student of students">
-                <div class="card flex-fill">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                        <a [routerLink]="routes.studentDetails" class="link-primary">{{ student.registrationNumber || 'N/A' }}</a>
-                        <div class="d-flex align-items-center">
-                            <span class="badge badge-soft-success d-inline-flex align-items-center me-1" *ngIf="student.status === 'Active'"><i class="ti ti-circle-filled fs-5 me-1"></i>Actif</span>
-                            <span class="badge badge-soft-danger d-inline-flex align-items-center me-1" *ngIf="student.status === 'Inactive'"><i class="ti ti-circle-filled fs-5 me-1"></i>Inactif</span>
+                        <div class="dropdown mb-3">
+                            <a href="javascript:void(0);" class="bg-white dropdown-toggle"
+                                data-bs-toggle="dropdown"><i class="ti ti-calendar me-2"></i>Section
+                            </a>
+                            <ul class="dropdown-menu mt-2 p-3">
+                                <li *ngFor="let section of sections">
+                                    <a class="dropdown-item rounded-1" (click)="onSectionChange(section.objectId)">
+                                        {{section.name_fr}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="dropdown mb-3">
+                            <a href="javascript:void(0);" class="bg-white dropdown-toggle" data-bs-toggle="dropdown">
+                                <i class="ti ti-calendar me-2"></i>Classes
+                            </a>
+                            <ul class="dropdown-menu mt-2 p-3">
+                                <li *ngFor="let classe of classes">
+                                    <a class="dropdown-item rounded-1" (click)="onClasseChange(classe.objetId)">
+                                        {{ classe.name_fr }}
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <div class="bg-light-300 rounded-2 p-3 mb-3">
-                            <div class="d-flex align-items-center">
-                                <a href="javascript:void(0);" (click)="viewDetails(student.id)" class="avatar avatar-lg flex-shrink-0">
-                                    <img *ngIf="student.photo?.url" [src]="student.photo?.url" class="img-fluid rounded-circle" alt="img">
-                                    <img *ngIf="!student.photo?.url" src="assets/img/profiles/avatar-01.jpg" class="img-fluid rounded-circle" alt="img">
-                                </a> 
-                                <div class="ms-2">
-                                    <h5 class="mb-0" class="text-dark text-truncate">
-                                        <a href="javascript:void(0);" (click)="viewDetails(student.id)">
-                                            {{ student?.firstName }} {{ student?.lastName }}
-                                        </a>
-                                    </h5>
-                                    <p>{{ student.classroom?.name || 'CM2' }}</p>
+                </div>
+                <div class="card-body px-0">
+                    <div class="custom-datatable-filter table-responsive">
+                        <!-- Student Grid -->
+                        <div class="col-xxl-3 col-xl-4 col-md-6 d-flex" *ngFor="let student of filteredStudents">
+                            <div class="card flex-fill">
+                                <div class="card-header d-flex align-items-center justify-content-between">
+                                    <a [routerLink]="routes.studentDetails" class="link-primary">{{ student.matricule || 'N/A' }}</a>
+                                    <div class="d-flex align-items-center">
+                                        <span class="badge badge-soft-success d-inline-flex align-items-center me-1" *ngIf="student.isValid === true"><i class="ti ti-circle-filled fs-5 me-1"></i>Actif</span>
+                                        <span class="badge badge-soft-danger d-inline-flex align-items-center me-1" *ngIf="student.isValid === false"><i class="ti ti-circle-filled fs-5 me-1"></i>Inactif</span>
+                                    </div>
                                 </div>
-                            </div>	
+                                <div class="card-body">
+                                    <div class="bg-light-300 rounded-2 p-3 mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <a href="javascript:void(0);" (click)="viewDetails(student.id)" class="avatar avatar-lg flex-shrink-0">
+                                                <img [src]="student?.person.url || 'assets/img/profiles/avatar-01.jpg'" class="img-fluid rounded-circle" alt="img">
+                                            </a> 
+                                            <div class="ms-2">
+                                                <h5 class="mb-0" class="text-dark text-truncate">
+                                                    <a href="javascript:void(0);" (click)="viewDetails(student.id)">
+                                                        {{ student?.person?.firstName }} {{ student?.person?.lastName }}
+                                                    </a>
+                                                </h5>
+                                                <p>{{ student?.classroom?.name || 'CM2' }}</p>
+                                            </div>
+                                        </div>	
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between gx-2">
+                                        <div>
+                                            <p class="mb-0">Ecole</p>
+                                            <p class="text-dark">{{ student.institution.name || 'N/A' }}</p>
+                                        </div>
+                                        <div>
+                                            <p class="mb-0">Genre</p>
+                                            <p class="text-dark">{{ student?.person?.gender?.libelle_fr || 'N/A' }}</p>
+                                        </div>
+                                        <div>
+                                            <p class="mb-0">Section</p>
+                                            <p class="text-dark">{{ student?.classroom?.classe?.section?.name_fr || 'N/A' }}</p>
+                                        </div>
+                                        <!-- <div>
+                                            <p class="mb-0">Inscription</p>
+                                            <p class="text-dark">{{ student.joinDate | date:'dd MMM yyyy' }}</p>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <a href="tel:{{ student?.person?.contryCode}} {{student?.person?.phone}}" class="btn btn-outline-light bg-white btn-icon d-flex align-items-center justify-content-center rounded-circle p-0 me-2"><i class="ti ti-phone"></i></a>
+                                        <a href="mailTo: {{student?.person?.email}}" class="btn btn-outline-light bg-white btn-icon d-flex align-items-center justify-content-center rounded-circle p-0 me-3"><i class="ti ti-mail"></i></a>
+                                    </div>
+                                    <!-- <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_fees_collect" class="btn btn-light btn-sm fw-semibold">Add Fees</a> -->
+                                </div>
+                            </div>
                         </div>
-                        <div class="d-flex align-items-center justify-content-between gx-2">
-                            <div>
-                                <p class="mb-0">N° Matricule</p>
-                                <p class="text-dark">{{ student.registrationNumber || 'N/A' }}</p>
-                            </div>
-                            <div>
-                                <p class="mb-0">Genre</p>
-                                <p class="text-dark">{{ student?.gender?.libelle_fr || 'N/A' }}</p>
-                            </div>
-                            <div>
-                                <p class="mb-0">Section</p>
-                                <p class="text-dark">{{ student?.section?.name_fr || 'N/A' }}</p>
-                            </div>
-                            <!-- <div>
-                                <p class="mb-0">Inscription</p>
-                                <p class="text-dark">{{ student.joinDate | date:'dd MMM yyyy' }}</p>
-                            </div> -->
+                        <!-- /Student Grid -->
+
+                    <div class="col-md-12 text-center" *ngIf="students.length === 0 && !isLoading">
+                        <div class="alert alert-info">
+                            Aucun élève trouvé.
                         </div>
                     </div>
-                    <div class="card-footer d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-center">
-                            <a href="tel:{{student.phone}}" class="btn btn-outline-light bg-white btn-icon d-flex align-items-center justify-content-center rounded-circle p-0 me-2"><i class="ti ti-phone"></i></a>
-                            <a href="tel:{{student.email}}" class="btn btn-outline-light bg-white btn-icon d-flex align-items-center justify-content-center rounded-circle p-0 me-3"><i class="ti ti-mail"></i></a>
+
+                    <div class="col-md-12 text-center" *ngIf="isLoading">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Chargement...</span>
                         </div>
-                        <!-- <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_fees_collect" class="btn btn-light btn-sm fw-semibold">Add Fees</a> -->
+                        <p class="mt-2">Chargement des élèves...</p>
                     </div>
                 </div>
-            </div>
-            <!-- /Student Grid -->
-
-            <div class="col-md-12 text-center" *ngIf="students.length === 0 && !isLoading">
-                <div class="alert alert-info">
-                    Aucun élève trouvé.
                 </div>
             </div>
-
-            <div class="col-md-12 text-center" *ngIf="isLoading">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Chargement...</span>
-                </div>
-                <p class="mt-2">Chargement des élèves...</p>
-            </div>
-
         </div>
-
+            <!-- /Enfants-->
     </div>
-</div>
-		<!-- /Page Wrapper -->
 
-
-		<!-- Pagination -->
-		<div class="pagination-section page-section">
-			<div class="row align-items-center">
-				<div class="col-lg-6 col-md-6 col-sm-12">
-				<p>Affichage des résultats {{ length * currentPage + 1 }} - {{ (totalItems > length * (currentPage + 1)) ? length * (currentPage + 1) : totalItems }} sur {{ totalItems }} entrées</p>
-				</div>
-				<div class="col-lg-6 col-md-6 col-sm-12">
-				<app-custom-pagination 
-					[totalData]="totalItems" 
-					[currentPage]="currentPage+1" 
-					[pageSize]="length" 
-					(onPageChange)="changePage($event-1)"
-				></app-custom-pagination>
-				</div>
-			</div>
-		</div>
-		<!-- /Pagination -->
 
 
