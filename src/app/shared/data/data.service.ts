@@ -886,7 +886,6 @@ export class DataService {
       } else if (role === 'enseignant') {
         return this.TeacherSidebarData;
       } else if (role === 'parent') {
-        console.log('Parent children:', this.parentChildren);
         return this.getParentMenu(this.parentChildren || []);
       }
       else if (role === 'administration' || role === 'services_centraux' || role == 'ministre') {

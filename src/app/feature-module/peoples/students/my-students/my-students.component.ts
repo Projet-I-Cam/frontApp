@@ -73,8 +73,7 @@ export class MyStudentsComponent implements OnInit{
     if(!this.filter.yearId){
       this.filter.yearId = this.academicYear.objectId;
     }
-    this.loadStudents(this.filter)
-    this.loadFilterData();
+    this.loadStudents(this.filter);    
   }
 
   
@@ -89,21 +88,43 @@ export class MyStudentsComponent implements OnInit{
       this.totalItems = this.students?.length || 0;
       this.rows = this.students?.length || 0;
       this.filteredStudents = this.students;
+      this.loadFilterData();
     } catch (error) {
       console.error("Erreur lors du chargement des étudiants:", error);
       this.students = [];
     } finally {
       this.isLoading = false;
-      console.log(this.students);
     }
   }
 
 
   async loadFilterData(){
-    this.classes = await globalGet({T: 'Classe'});
-    this.sections = await globalGet({T: 'Section'});
-    this.schools = await globalGet({T: 'Institution'});
-    this.academicYears = await globalGet({T: 'AcademicYear'});
+    const uniqueSchoolsMap = new Map<string, {objectId: string, name: string}>();
+    const uniqueSectionsMap = new Map<string, {objectId: string, name_fr: string}>();
+    const uniqueClassesMap = new Map<string, {objectId: string, name_fr: string}>();
+
+    this.students.forEach(student => {
+      // Schools
+      if (student.institution && !uniqueSchoolsMap.has(student.institution.objectId)) {
+        uniqueSchoolsMap.set(student.institution.objectId, {objectId: student.institution.objectId, name:student.institution.name});
+      }
+      // Sections
+      if (student.classroom.classe.section && !uniqueSectionsMap.has(student.classroom.classe.section.objectId)) {
+        uniqueSectionsMap.set(student.classroom.classe.section.objectId, {objectId: student.classroom.classe.section.objectId, name_fr:student.classroom.classe.section.name_fr});
+      }
+      // Classes
+      if (student.classroom.classe && !uniqueClassesMap.has(student.classroom.classe.objectId)) {
+        uniqueClassesMap.set(student.classroom.classe.objectId, {objectId: student.classroom.classe.objectId, name_fr:student.classroom.classe.name_fr});
+      }
+    });
+
+
+
+    this.classes = Array.from(uniqueClassesMap.values());
+    this.sections = Array.from(uniqueSectionsMap.values());
+    this.schools = Array.from(uniqueSchoolsMap.values());
+    this.academicYears = await  globalGet({T:'AcademicYear'})
+
   }
 
   filterStudents() {
@@ -131,6 +152,12 @@ export class MyStudentsComponent implements OnInit{
 
 
 
+  reset(){
+    this.filteredStudents = this.students;
+    this.selectedSchool = undefined;
+    this.selectedClasse = undefined;
+    this.selectedSection = undefined;
+  }
 
   // loadStudents(): void {
   //   this.isLoading = true;

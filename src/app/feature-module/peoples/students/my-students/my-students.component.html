@@ -38,12 +38,13 @@
                             </a>
                             <ul class="dropdown-menu mt-2 p-3">
                                 <li *ngFor="let classe of classes">
-                                    <a class="dropdown-item rounded-1" (click)="onClasseChange(classe.objetId)">
+                                    <a class="dropdown-item rounded-1" (click)="onClasseChange(classe.objectId)">
                                         {{ classe.name_fr }}
                                     </a>
                                 </li>
                             </ul>
                         </div>
+                        <button class="btn btn-default btn-sm ms-3 mb-3" (click)="reset()" title="réinialiser les données"><i class="fa fa-refresh"></i></button>
                     </div>
                 </div>
                 <div class="card-body px-0">
@@ -54,8 +55,8 @@
                                 <div class="card-header d-flex align-items-center justify-content-between">
                                     <a [routerLink]="routes.studentDetails" class="link-primary">{{ student.matricule || 'N/A' }}</a>
                                     <div class="d-flex align-items-center">
-                                        <span class="badge badge-soft-success d-inline-flex align-items-center me-1" *ngIf="student.isValid === true"><i class="ti ti-circle-filled fs-5 me-1"></i>Actif</span>
-                                        <span class="badge badge-soft-danger d-inline-flex align-items-center me-1" *ngIf="student.isValid === false"><i class="ti ti-circle-filled fs-5 me-1"></i>Inactif</span>
+                                        <span class="badge badge-soft-success d-inline-flex align-items-center me-1" *ngIf="student.isValid === true"><i class="ti ti-circle-filled fs-5 me-1"></i>Valide</span>
+                                        <span class="badge badge-soft-danger d-inline-flex align-items-center me-1" *ngIf="student.isValid === false"><i class="ti ti-circle-filled fs-5 me-1"></i>Non valide</span>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -70,7 +71,7 @@
                                                         {{ student?.person?.firstName }} {{ student?.person?.lastName }}
                                                     </a>
                                                 </h5>
-                                                <p>{{ student?.classroom?.name || 'CM2' }}</p>
+                                                <p>{{ student?.classroom?.name_fr || 'CM2' }}</p>
                                             </div>
                                         </div>	
                                     </div>
