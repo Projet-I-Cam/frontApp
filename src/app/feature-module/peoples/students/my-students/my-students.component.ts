@@ -1,23 +1,23 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component,  Input, OnInit, Renderer2 } from '@angular/core';
 import { routes } from '../../../../shared/routes/routes';
 import { DataService } from '../../../../shared/data/data.service';
 import { UtilsService } from '../../../../services/utilis.service';
 import { AuthService } from '../../../../services/auth.service';
 import { Router } from '@angular/router';
-import { PaginationService, tablePageSize } from '../../../../shared/custom-pagination/pagination.service';
+import { PaginationService } from '../../../../shared/custom-pagination/pagination.service';
 import { AlertService } from '../../../../services/alertService';
-import { apiResultFormat } from '../../../../shared/model/pages.model';
-import { StudentService } from '../../../../services/student.service';
-import { finalize } from 'rxjs';
 import Parse from 'parse';
-import { fetchCurrentPerson, getCurrentAcademicYear, getEnrolledStudents, getLiteCurrentAcademicYear } from '../../../../services/statefull/genericParse';
+import { FilterStudent, getCurrentAcademicYear, listInscriptions } from '../../../../services/statefull/genericParse';
+import { LoginService } from '../../../../auth/services/login.service';
+import { globalGet } from '../../../../services/statefull/http';
 
 
 @Component({
   selector: 'app-my-students',
   standalone: false,
   templateUrl: './my-students.component.html',
-  styleUrl: './my-students.component.scss'
+  styleUrl: './my-students.component.scss',
+  
 })
 export class MyStudentsComponent implements OnInit{
 
@@ -33,11 +33,25 @@ export class MyStudentsComponent implements OnInit{
   public selectedStudent: any = null; // Stocke l'étudiant sélectionné
   person : any = {};
   academicYear : any = {};
-
+  currentUser : any = {};
   values = [
     {'label': 'Actif', value: true},
     {'label': 'Inactif', value: false}
   ];
+
+  @Input() filter : FilterStudent = {};
+
+  classes : any[] = [];
+  selectedClasse : string | undefined;
+  sections : any[] = [];
+  selectedSection :string | undefined;
+  schools : any[] = [];
+  selectedSchool : string | undefined;
+  statuts : any[] = [{item: "Actif", value: true}, {item: "Inactif", value: false}];
+  selectedStatut : boolean = true;
+  academicYears : any[] = [];
+
+  filteredStudents: any[] = [];
 
    constructor(
      private data: DataService,
@@ -47,51 +61,126 @@ export class MyStudentsComponent implements OnInit{
      private pagination: PaginationService,
      private alertService: AlertService,
      private renderer: Renderer2,
-     private studentService: StudentService
+     private loginService: LoginService
    ) {}
  
   async ngOnInit() {
     this.load=true;
-    this.academicYear = await getCurrentAcademicYear();
-    this.students = await getEnrolledStudents(this.academicYear.objectId);
-    console.log(this.students);
-    fetchCurrentPerson(this.authService, (person) => {
-      if(person){
-        this.person = person;
-        //this.getMesEnfants();
-      }else{
-        this.alertService.showError('aucune personne associé à cet utilisateur');
-      }
-    })
+    this.academicYear = await getCurrentAcademicYear();    
+    this.currentUser = this.loginService.getUser();
+    this.person = this.loginService.getPerson();
+    this.filter.parentId = this.person.objectId
+    if(!this.filter.yearId){
+      this.filter.yearId = this.academicYear.objectId;
+    }
+    this.loadStudents(this.filter);    
   }
 
+  
 
-
-
-
-
-  loadStudents(): void {
+  async loadStudents(f: FilterStudent) {
     this.isLoading = true;
-    this.error = '';
-    
-    this.studentService.getAllStudents()
-      .pipe(
-        finalize(() => {
-          this.isLoading = false;
-        })
-      )
-      .subscribe(
-        (students) => {
-          this.students = students;
-          this.totalItems = students.length;
-          this.rows = students.length;
-        },
-        (error) => {
-          console.error('Error loading students:', error);
-          this.error = 'Failed to load students. Please try again.';
-      }
-    );
+  
+    try {
+ 
+      // Charger les inscriptions avec les filtres appliqués
+      this.students = await listInscriptions({yearId: f.yearId, parentId: f.parentId});
+      this.totalItems = this.students?.length || 0;
+      this.rows = this.students?.length || 0;
+      this.filteredStudents = this.students;
+      this.loadFilterData();
+    } catch (error) {
+      console.error("Erreur lors du chargement des étudiants:", error);
+      this.students = [];
+    } finally {
+      this.isLoading = false;
+    }
   }
+
+
+  async loadFilterData(){
+    const uniqueSchoolsMap = new Map<string, {objectId: string, name: string}>();
+    const uniqueSectionsMap = new Map<string, {objectId: string, name_fr: string}>();
+    const uniqueClassesMap = new Map<string, {objectId: string, name_fr: string}>();
+
+    this.students.forEach(student => {
+      // Schools
+      if (student.institution && !uniqueSchoolsMap.has(student.institution.objectId)) {
+        uniqueSchoolsMap.set(student.institution.objectId, {objectId: student.institution.objectId, name:student.institution.name});
+      }
+      // Sections
+      if (student.classroom.classe.section && !uniqueSectionsMap.has(student.classroom.classe.section.objectId)) {
+        uniqueSectionsMap.set(student.classroom.classe.section.objectId, {objectId: student.classroom.classe.section.objectId, name_fr:student.classroom.classe.section.name_fr});
+      }
+      // Classes
+      if (student.classroom.classe && !uniqueClassesMap.has(student.classroom.classe.objectId)) {
+        uniqueClassesMap.set(student.classroom.classe.objectId, {objectId: student.classroom.classe.objectId, name_fr:student.classroom.classe.name_fr});
+      }
+    });
+
+
+
+    this.classes = Array.from(uniqueClassesMap.values());
+    this.sections = Array.from(uniqueSectionsMap.values());
+    this.schools = Array.from(uniqueSchoolsMap.values());
+    this.academicYears = await  globalGet({T:'AcademicYear'})
+
+  }
+
+  filterStudents() {
+    this.filteredStudents = this.students.filter(student => {
+        const matchesSchool = this.selectedSchool ? student?.institution?.objectId === this.selectedSchool : true;
+        const matchesSection = this.selectedSection ? student.classroom?.classe?.section?.objectId === this.selectedSection : true;
+        const matchesClasse = this.selectedClasse ? student.classroom?.classe?.objectId === this.selectedClasse : true;
+        return matchesSchool && matchesSection && matchesClasse;
+    });
+}
+  
+
+  onSchoolChange(schoolId: string) {
+      this.selectedSchool = schoolId;
+      this.filterStudents();
+  }
+  onSectionChange(sectionId: string) {
+      this.selectedSection = sectionId;
+      this.filterStudents();
+  }
+  onClasseChange(classeId: string) {
+      this.selectedClasse = classeId;
+      this.filterStudents();
+  }
+
+
+
+  reset(){
+    this.filteredStudents = this.students;
+    this.selectedSchool = undefined;
+    this.selectedClasse = undefined;
+    this.selectedSection = undefined;
+  }
+
+  // loadStudents(): void {
+  //   this.isLoading = true;
+  //   this.error = '';
+    
+  //   this.studentService.getAllStudents()
+  //     .pipe(
+  //       finalize(() => {
+  //         this.isLoading = false;
+  //       })
+  //     )
+  //     .subscribe(
+  //       (students) => {
+  //         this.students = students;
+  //         this.totalItems = students.length;
+  //         this.rows = students.length;
+  //       },
+  //       (error) => {
+  //         console.error('Error loading students:', error);
+  //         this.error = 'Failed to load students. Please try again.';
+  //     }
+  //   );
+  // }
 
   navigateToGigs() {
     // Remove the modal backdrop
@@ -105,19 +194,7 @@ export class MyStudentsComponent implements OnInit{
 
   viewDetails(id: string): void {
     this.isLoading = true;
-    console.log('Fetching student details for ID:', id);
-    this.studentService.getStudentById(id).subscribe({
-      next: (student) => {
-        console.log('Student details received:', student);
-        this.selectedStudent = student;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Error fetching student details:', err);
-        this.isLoading = false;
-        alert('Erreur lors du chargement des détails de l\'étudiant.');
-      }
-    });
+    
   }
 
   public handleApplyClick(): void {

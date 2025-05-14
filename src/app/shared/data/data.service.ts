@@ -886,7 +886,6 @@ export class DataService {
       } else if (role === 'enseignant') {
         return this.TeacherSidebarData;
       } else if (role === 'parent') {
-        console.log('Parent children:', this.parentChildren);
         return this.getParentMenu(this.parentChildren || []);
       }
       else if (role === 'administration' || role === 'services_centraux' || role == 'ministre') {
@@ -1459,7 +1458,7 @@ export class DataService {
         page: '99',
         menu: [
           {
-            menuValue: 'Dashboard',
+            menuValue: 'Tableau de bord',
             icon: 'layout-2',
             base: 'dashboard',
             hasSubRoute: false,
@@ -1467,17 +1466,6 @@ export class DataService {
             route: routes.adminDashboard,
             customSubmenuTwo: false,
             subRoutes: [],
-          },
-          {
-            menuValue: 'Mes enfants Inscrit',
-            hasSubRouteThree: true,
-            icon: 'school',
-            page: 'students',
-            subMenus: childMenus.length ? childMenus : [{
-              menuValue: 'Aucun enfant inscrit',
-              customSubmenuThree: false,
-              route: ''
-            }]
           }
         ]
       }];
@@ -1500,7 +1488,7 @@ export class DataService {
       page: '99',
       menu: [
         {
-          menuValue: 'Dashboard',
+          menuValue: 'Dashboard221',
           icon: 'layout-2',
           route: routes.adminDashboard,
           hasSubRoute: false
@@ -1530,7 +1518,7 @@ export class DataService {
       page: '99',
       menu: [
         {
-          menuValue: 'Dashboard',
+          menuValue: 'Dashboard2222',
           icon: 'layout-2',
           base: 'dashboard',
           hasSubRoute: false,
@@ -1690,7 +1678,7 @@ export class DataService {
       page: '99',
       menu: [
         {
-          menuValue: 'Dashboard',
+          menuValue: 'Dashboard3333',
           icon: 'layout-2',
           base: 'dashboard',
           hasSubRoute: false,

@@ -91,7 +91,7 @@ export async function listInscriptions(f: FilterStudent) {
   if(f.statut != undefined){
     query.equalTo('isValid', f.statut);
   }
-  console.log("Query", f)
+  //console.log("Query", f)
   // Filtrer par année académique
   addFilter(query, "AcademicYear", "academicYear", f.yearId || '');
 
@@ -126,6 +126,7 @@ export async function listInscriptions(f: FilterStudent) {
   query.include('classe');
   query.include('classroom.classe');
   query.include('classroom.classe.section');
+  query.include('institution');
 
   try {
     const results = await query.find();

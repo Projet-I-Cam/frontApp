@@ -53,6 +53,7 @@ import {StudentReportCardComponent} from './student-report-card/student-report-c
     StudentsComponent,
     StudentGridComponent,
   ],
+  exports: [MyStudentsComponent],
   providers: [
     StudentService,
     PersonService

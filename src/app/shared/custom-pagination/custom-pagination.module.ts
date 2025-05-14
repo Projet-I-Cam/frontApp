@@ -12,3 +12,5 @@ import { CustomPaginationComponent } from './custom-pagination.component';
 export class CustomPaginationModule {
   @Input() dataSource: any;
 }
+
+
