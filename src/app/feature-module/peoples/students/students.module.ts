@@ -19,10 +19,21 @@ import { PersonService } from '../../../services/person.service';
 import { EditStudentModule } from './edit-student/edit-student.module';
 import { AddStudentComponent } from './add-student/add-student.component';
 import { MyStudentsComponent } from './my-students/my-students.component';
-
+import {StudentDetailsComponent} from './student-details/student-details.component'
+import {StudentTimeTableComponent} from './student-time-table/student-time-table.component'
+import {StudentLeavesComponent} from './student-leaves/student-leaves.component'
+import {StudentFeesComponent} from './student-fees/student-fees.component'
+import {StudentResultComponent} from './student-result/student-result.component'
+import {StudentReportCardComponent} from './student-report-card/student-report-card.component'
 @NgModule({
   declarations: [
-    MyStudentsComponent
+    MyStudentsComponent,
+    StudentDetailsComponent,
+    StudentTimeTableComponent,
+    StudentLeavesComponent,
+    StudentFeesComponent,
+    StudentResultComponent,
+    StudentReportCardComponent
   ],
   imports: [
     CommonModule,
@@ -46,5 +57,12 @@ import { MyStudentsComponent } from './my-students/my-students.component';
     StudentService,
     PersonService
   ],
+  exports:[
+     StudentTimeTableComponent,
+     StudentLeavesComponent,
+     StudentFeesComponent,
+     StudentResultComponent,
+     StudentReportCardComponent
+  ]
 })
 export class StudentsModule { }

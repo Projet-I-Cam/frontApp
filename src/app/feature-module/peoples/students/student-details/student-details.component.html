@@ -4,10 +4,8 @@
     <div class="row">
       <!-- Page Header -->
       <div class="col-md-12">
-        <div
-          class="d-md-flex d-block align-items-center justify-content-between mb-3"
-        >
-          <div class="my-auto mb-2">
+        <div class="d-md-flex d-block align-items-center justify-content-between mb-3">
+          <div class="my-auto mb-1">
             <h3 class="page-title mb-1">Détails de l'Élève</h3>
             <nav>
               <ol class="breadcrumb mb-0">
@@ -23,846 +21,459 @@
               </ol>
             </nav>
           </div>
-          <div
-            class="d-flex my-xl-auto right-content align-items-center flex-wrap"
-          >
-            <a
-              href="javascript:void(0);"
-              class="btn btn-light me-2 mb-2"
-              data-bs-toggle="modal"
-              data-bs-target="#login_detail"
-              ><i class="ti ti-lock me-2"></i>Détails de connexion</a
-            >
-            <a
-              [routerLink]="routes.editStudent"
-              class="btn btn-primary d-flex align-items-center mb-2"
-              ><i class="ti ti-edit-circle me-2"></i>Modifier l'Élève</a
-            >
+          <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
+            <a href="javascript:void(0);" class="btn btn-light me-2 mb-1" data-bs-toggle="modal"
+              data-bs-target="#login_detail"><i class="ti ti-lock me-2"></i>Détails de connexion</a>
+            <a [routerLink]="routes.editStudent" class="btn btn-primary d-flex align-items-center mb-1"><i
+                class="ti ti-edit-circle me-2"></i>Modifier l'Élève</a>
           </div>
         </div>
       </div>
       <!-- /Page Header -->
     </div>
-
     <div class="row">
-      <!-- Student Information -->
-      <div class="col-xxl-3 col-xl-4 theiaStickySidebar">
-        <div class="stickybar mb-4">
-        <div class="card border-white">
-          <div class="card-header">
-            <div class="d-flex align-items-center flex-wrap row-gap-3">
-              <div
-                class="d-flex align-items-center justify-content-center avatar avatar-xxl border border-dashed me-2 flex-shrink-0 text-dark frames"
-              >
-                <img
-                  src="assets/img/students/student-01.jpg"
-                  class="img-fluid"
-                  alt="img"
-                />
-              </div>
-              <div class="overflow-hidden">
-                <span
-                  class="badge badge-soft-success d-inline-flex align-items-center mb-1"
-                  ><i class="ti ti-circle-filled fs-5 me-1"></i>Actif</span
-                >
-                <h5 class="mb-1 text-truncate">Janet Daniel</h5>
-                <p class="text-primary">AD1256589</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Basic Information -->
-          <div class="card-body">
-            <h5 class="mb-3">Informations de base</h5>
-            <dl class="row mb-0">
-              <dt class="col-6 fw-medium text-dark mb-3">N° de matricule</dt>
-              <dd class="col-6 mb-3">35013</dd>
-              <dt class="col-6 fw-medium text-dark mb-3">Genre</dt>
-              <dd class="col-6 mb-3">Féminin</dd>
-              <dt class="col-6 fw-medium text-dark mb-3">Date de naissance</dt>
-              <dd class="col-6 mb-3">25 Jan 2008</dd>
-              <dt class="col-6 fw-medium text-dark mb-3">Groupe sanguin</dt>
-              <dd class="col-6 mb-3">O +</dd>
-              <dt class="col-6 fw-medium text-dark mb-3">Couleur préférée</dt>
-              <dd class="col-6 mb-3">Rouge</dd>
-              <dt class="col-6 fw-medium text-dark mb-3">Religion</dt>
-              <dd class="col-6 mb-3">Christianisme</dd>
-              <dt class="col-6 fw-medium text-dark mb-3">Caste</dt>
-              <dd class="col-6 mb-3">Catholique</dd>
-              <dt class="col-6 fw-medium text-dark mb-3">Catégorie</dt>
-              <dd class="col-6 mb-3">OBC</dd>
-              <dt class="col-6 fw-medium text-dark mb-3">Langue maternelle</dt>
-              <dd class="col-6 mb-3">Anglais</dd>
-              <dt class="col-6 fw-medium text-dark mb-3">Langues</dt>
-              <dd class="col-6 mb-3">
-                <span class="badge badge-light text-dark me-2">Anglais</span
-                ><span class="badge badge-light text-dark">Espagnol</span>
-              </dd>
-            </dl>
-            <a
-              href="javascript:void(0);"
-              data-bs-toggle="modal"
-              data-bs-target="#add_fees_collect"
-              class="btn btn-primary btn-sm w-100"
-              >Ajouter des frais</a
-            >
-          </div>
-          <!-- /Basic Information -->
+      <div class="card bg-dark">
+        <div class="overlay-img">
+          <img src="assets/img/bg/shape-04.png" alt="img" class="img-fluid shape-01">
+          <img src="assets/img/bg/shape-01.png" alt="img" class="img-fluid shape-02">
+          <img src="assets/img/bg/shape-02.png" alt="img" class="img-fluid shape-03">
+          <img src="assets/img/bg/shape-03.png" alt="img" class="img-fluid shape-04">
         </div>
+        <div class="card-body">
+          <div class="d-flex align-items-start flex-column flex-xl-row gap-4">
 
-        <!-- Primary Contact Info -->
-        <div class="card border-white">
-          <div class="card-body">
-            <h5 class="mb-3">Informations de contact</h5>
-            <div class="d-flex align-items-center mb-3">
-              <span
-                class="avatar avatar-md bg-light-300 rounded me-2 flex-shrink-0 text-default"
-                ><i class="ti ti-phone"></i
-              ></span>
-              <div>
-                <span class="text-dark fw-medium mb-1">Numéro de téléphone</span>
-                <p>+1 46548 84498</p>
-              </div>
-            </div>
-            <div class="d-flex align-items-center">
-              <span
-                class="avatar avatar-md bg-light-300 rounded me-2 flex-shrink-0 text-default"
-                ><i class="ti ti-mail"></i
-              ></span>
-              <div>
-                <span class="text-dark fw-medium mb-1">Adresse email</span>
-                <p>jan&#64;example.com</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- /Primary Contact Info -->
-
-        <!-- Sibiling Information -->
-        <div class="card border-white">
-          <div class="card-body">
-            <h5 class="mb-3">Informations sur les frères et sœurs</h5>
+            <!-- Avatar -->
             <div
-              class="d-flex align-items-center bg-light-300 rounded p-3 mb-3"
-            >
-              <span class="avatar avatar-lg">
-                <img
-                  src="assets/img/students/student-06.jpg"
-                  class="img-fluid rounded"
-                  alt="img"
-                />
-              </span>
-              <div class="ms-2">
-                <h5 class="fs-14">Ralph Claudia</h5>
-                <p>III, B</p>
-              </div>
+              class="d-flex align-items-center justify-content-center avatar avatar-xxxl border flex-shrink-0 text-dark frames">
+              <img src="assets/img/students/student-01.jpg" class="img-fluid" alt="Photo de l'étudiant" />
             </div>
-            <div class="d-flex align-items-center bg-light-300 rounded p-3">
-              <span class="avatar avatar-lg">
-                <img
-                  src="assets/img/students/student-07.jpg"
-                  class="img-fluid rounded"
-                  alt="img"
-                />
-              </span>
-              <div class="ms-2">
-                <h5 class="fs-14">Julie Scott</h5>
-                <p>V, A</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- /Sibiling Information -->
 
-        <!-- Transport Information -->
-        <div class="card border-white">
-          <div class="card-body pb-1">
-            <ul class="nav nav-tabs nav-tabs-bottom mb-3">
-              <li class="nav-item">
-                <a class="nav-link active" href="#hostel" data-bs-toggle="tab"
-                  >Internat</a
-                >
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#transport" data-bs-toggle="tab"
-                  >Transport</a
-                >
-              </li>
-            </ul>
-            <div class="tab-content">
-              <div class="tab-pane fade show active" id="hostel">
-                <div class="d-flex align-items-center mb-3">
-                  <span
-                    class="avatar avatar-md bg-light-300 rounded me-2 flex-shrink-0 text-default"
-                    ><i class="ti ti-building-fortress fs-16"></i
-                  ></span>
-                  <div>
-                    <h6 class="fs-14 mb-1">HI-Internat, Étage</h6>
-                    <p>3ème étage, 303</p>
-                  </div>
-                </div>
-                <div class="d-flex align-items-center">
-                  <span
-                    class="avatar avatar-md bg-light-300 rounded me-2 flex-shrink-0 text-default"
-                    ><i class="ti ti-bed fs-16"></i
-                  ></span>
-                  <div>
-                    <h6 class="fs-14 mb-1">Type de chambre</h6>
-                    <p>Dortoir mixte standard</p>
-                  </div>
-                </div>
+            <!-- Student Info Grid -->
+            <div class="w-100">
+              <div class="d-flex align-items-center flex-wrap mb-1">
+                <h4 class="text-white me-2 mb-0">Janet Daniel</h4>
+                <span class="badge badge-soft-success d-inline-flex align-items-center">
+                  <i class="ti ti-circle-filled  me-1"></i>Actif
+                </span>
               </div>
-              <div class="tab-pane fade" id="transport">
-                <div class="d-flex align-items-center mb-3">
-                  <span
-                    class="avatar avatar-md bg-light-300 rounded me-2 flex-shrink-0 text-default"
-                    ><i class="ti ti-car fs-16"></i
-                  ></span>
-                  <div>
-                    <h6 class="fs-14 mb-1">Véhicule</h6>
-                    <p>KL-54896-52</p>
-                  </div>
+
+              <div class="row">
+                <div class="col-md-4">
+                  <p class="text-white mb-1 "><strong>Matricule:</strong> AD1256589</p>
+                  <p class="text-white mb-1 "><strong>N°:</strong> 35013</p>
+                  <p class="text-white mb-1 "><strong>Genre:</strong> Féminin</p>
+                  <p class="text-white mb-1 "><strong>Date de naissance:</strong> 25 Jan 2008</p>
+                  <p class="text-white mb-1 "><strong>Groupe sanguin:</strong> O +</p>
                 </div>
-                <div class="d-flex align-items-center">
-                  <span
-                    class="avatar avatar-md bg-light-300 rounded me-2 flex-shrink-0 text-default"
-                    ><i class="ti ti-map-pin fs-16"></i
-                  ></span>
-                  <div>
-                    <h6 class="fs-14 mb-1">Point de départ</h6>
-                    <p>Quartier Liberté</p>
-                  </div>
+                <div class="col-md-4">
+                  <p class="text-white mb-1 "><strong>Religion:</strong> Christianisme</p>
+                  <p class="text-white mb-1 "><strong>Caste:</strong> Catholique</p>
+                  <p class="text-white mb-1 "><strong>Catégorie:</strong> OBC</p>
+                  <p class="text-white mb-1 "><strong>Langues:</strong>
+                    <span class="badge bg-light text-dark me-1">Anglais</span>
+                    <span class="badge bg-light text-dark">Espagnol</span>
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <!-- /Transport Information -->
       </div>
-      </div>
-      <!-- /Student Information -->
-
-      <div class="col-xxl-9 col-xl-8">
-        <div class="row">
-          <div class="col-md-12">
-            <!-- List -->
-            <ul class="nav nav-tabs nav-tabs-bottom mb-4">
-              <li>
-                <a [routerLink]="routes.studentDetails" class="nav-link active"
-                  ><i class="ti ti-school me-2"></i>Détails de l'Élève</a
-                >
-              </li>
-              <li>
-                <a [routerLink]="routes.studentTimeTable" class="nav-link"
-                  ><i class="ti ti-table-options me-2"></i>Emploi du temps</a
-                >
-              </li>
-              <li>
-                <a [routerLink]="routes.studentLeaves" class="nav-link"
-                  ><i class="ti ti-calendar-due me-2"></i>Congés & Présences</a
-                >
-              </li>
-              <li>
-                <a [routerLink]="routes.studentFees" class="nav-link"
-                  ><i class="ti ti-report-money me-2"></i>Frais</a
-                >
-              </li>
-              <li>
-                <a [routerLink]="routes.examResults" class="nav-link"
-                  ><i class="ti ti-bookmark-edit me-2"></i>Examens & Résultats</a
-                >
-              </li>
-              <li>
-                <a [routerLink]="routes.classHomeWork" class="nav-link" 
-                  ><i class="ti ti-calendar-due me-2"></i>Devoirs</a
-                >
-              </li>
-              <li>
-                <a [routerLink]="routes.studentLibrary" class="nav-link"
-                  ><i class="ti ti-books me-2"></i>Bibliothèque</a
-                >
-              </li>
-            </ul>
-            <!-- /List -->
-
-            <!-- Parents Information -->
-            <div class="card">
-              <div class="card-header">
-                <h5>Informations sur les parents</h5>
+      <p-tabView [(activeIndex)]="activeIndex" (onChange)="onTabChange($event)">
+        <p-tabPanel header="Détails de l'Élève" leftIcon="ti ti-school me-2">
+          <p-tabView [(activeIndex)]="activeSubIndex" (onChange)="onSubTabChange($event)">
+            <p-tabPanel header="Informations de base" leftIcon="ti ti-school me-2">
+              <!-- Basic Information -->
+              <div class="card border-white">
+                <div class="card-body">
+                  <h5 class="mb-4">Informations de base</h5>
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <div><strong class="text-dark">N° de matricule</strong></div>
+                      <div>35013</div>
+                    </div>
+                    <div class="col-md-6">
+                      <div><strong class="text-dark">Genre</strong></div>
+                      <div>Féminin</div>
+                    </div>
+                    <div class="col-md-6">
+                      <div><strong class="text-dark">Date de naissance</strong></div>
+                      <div>25 Jan 2008</div>
+                    </div>
+                    <div class="col-md-6">
+                      <div><strong class="text-dark">Groupe sanguin</strong></div>
+                      <div>O +</div>
+                    </div>
+                    <div class="col-md-6">
+                      <div><strong class="text-dark">Couleur préférée</strong></div>
+                      <div>Rouge</div>
+                    </div>
+                    <div class="col-md-6">
+                      <div><strong class="text-dark">Religion</strong></div>
+                      <div>Christianisme</div>
+                    </div>
+                    <div class="col-md-6">
+                      <div><strong class="text-dark">Caste</strong></div>
+                      <div>Catholique</div>
+                    </div>
+                    <div class="col-md-6">
+                      <div><strong class="text-dark">Catégorie</strong></div>
+                      <div>OBC</div>
+                    </div>
+                    <div class="col-md-6">
+                      <div><strong class="text-dark">Langue maternelle</strong></div>
+                      <div>Anglais</div>
+                    </div>
+                    <div class="col-md-6">
+                      <div><strong class="text-dark">Langues</strong></div>
+                      <div>
+                        <span class="badge bg-light text-dark me-1">Anglais</span>
+                        <span class="badge bg-light text-dark">Espagnol</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-4">
+                    <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_fees_collect"
+                      class="btn btn-primary w-100 btn-sm">Ajouter des frais</a>
+                  </div>
+                </div>
               </div>
-              <div class="card-body">
-                <div class="border rounded p-3 pb-0 mb-3">
-                  <div class="row">
-                    <div class="col-sm-6 col-lg-4">
-                      <div class="d-flex align-items-center mb-3">
-                        <span class="avatar avatar-lg flex-shrink-0">
-                          <img
-                            src="assets/img/parents/parent-13.jpg"
-                            class="img-fluid rounded"
-                            alt="img"
-                          />
-                        </span>
-                        <div class="ms-2 overflow-hidden">
-                          <h6 class="text-truncate">Jerald Vicinius</h6>
-                          <p class="text-primary">Père</p>
+            </p-tabPanel>
+
+            <p-tabPanel header="Informations sur les parents">
+              <!-- Parents Information -->
+              <div class="card">
+                <div class="card-header">
+                  <h5>Informations sur les parents</h5>
+                </div>
+                <div class="card-body">
+                  <div class="border rounded p-3 pb-0 mb-3">
+                    <div class="row">
+                      <div class="col-sm-6 col-lg-4">
+                        <div class="d-flex align-items-center mb-3">
+                          <span class="avatar avatar-lg flex-shrink-0">
+                            <img src="assets/img/parents/parent-13.jpg" class="img-fluid rounded" alt="img" />
+                          </span>
+                          <div class="ms-2 overflow-hidden">
+                            <h6 class="text-truncate">Jerald Vicinius</h6>
+                            <p class="text-primary">Père</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-6 col-lg-4">
+                        <div class="mb-3">
+                          <p class="text-dark fw-medium mb-1">Téléphone</p>
+                          <p>+1 45545 46464</p>
+                        </div>
+                      </div>
+                      <div class="col-sm-6 col-lg-4">
+                        <div class="d-flex align-items-center justify-content-between">
+                          <div class="mb-3 overflow-hidden me-3">
+                            <p class="text-dark fw-medium mb-1">Email</p>
+                            <p class="text-truncate">jera&#64;example.com</p>
+                          </div>
+                          <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top"
+                            aria-label="Print" data-bs-original-title="Réinitialiser le mot de passe"
+                            class="btn btn-dark btn-icon btn-sm mb-3"><i class="ti ti-lock-x"></i></a>
                         </div>
                       </div>
                     </div>
-                    <div class="col-sm-6 col-lg-4">
-                      <div class="mb-3">
-                        <p class="text-dark fw-medium mb-1">Téléphone</p>
-                        <p>+1 45545 46464</p>
-                      </div>
-                    </div>
-                    <div class="col-sm-6 col-lg-4">
-                      <div
-                        class="d-flex align-items-center justify-content-between"
-                      >
-                        <div class="mb-3 overflow-hidden me-3">
-                          <p class="text-dark fw-medium mb-1">Email</p>
-                          <p class="text-truncate">jera&#64;example.com</p>
-                        </div>
-                        <a
-                          href="javascript:void(0);"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          aria-label="Print"
-                          data-bs-original-title="Réinitialiser le mot de passe"
-                          class="btn btn-dark btn-icon btn-sm mb-3"
-                          ><i class="ti ti-lock-x"></i
-                        ></a>
-                      </div>
-                    </div>
                   </div>
-                </div>
-                <div class="border rounded p-3 pb-0 mb-3">
-                  <div class="row">
-                    <div class="col-lg-4 col-sm-6">
-                      <div class="d-flex align-items-center mb-3">
-                        <span class="avatar avatar-lg flex-shrink-0">
-                          <img
-                            src="assets/img/parents/parent-14.jpg"
-                            class="img-fluid rounded"
-                            alt="img"
-                          />
-                        </span>
-                        <div class="ms-2 overflow-hidden">
-                          <h6 class="text-truncate">Roberta Webber</h6>
-                          <p class="text-primary">Mère</p>
+                  <div class="border rounded p-3 pb-0 mb-3">
+                    <div class="row">
+                      <div class="col-lg-4 col-sm-6">
+                        <div class="d-flex align-items-center mb-3">
+                          <span class="avatar avatar-lg flex-shrink-0">
+                            <img src="assets/img/parents/parent-14.jpg" class="img-fluid rounded" alt="img" />
+                          </span>
+                          <div class="ms-2 overflow-hidden">
+                            <h6 class="text-truncate">Roberta Webber</h6>
+                            <p class="text-primary">Mère</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-4 col-sm-6">
+                        <div class="mb-3">
+                          <p class="text-dark fw-medium mb-1">Téléphone</p>
+                          <p>+1 46499 24357</p>
+                        </div>
+                      </div>
+                      <div class="col-lg-4 col-sm-6">
+                        <div class="d-flex align-items-center justify-content-between">
+                          <div class="mb-3 overflow-hidden me-3">
+                            <p class="text-dark fw-medium mb-1">Email</p>
+                            <p class="text-truncate">robe&#64;example.com</p>
+                          </div>
+                          <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top"
+                            aria-label="Print" data-bs-original-title="Réinitialiser le mot de passe"
+                            class="btn btn-dark btn-icon btn-sm mb-3"><i class="ti ti-lock-x"></i></a>
                         </div>
                       </div>
                     </div>
-                    <div class="col-lg-4 col-sm-6">
-                      <div class="mb-3">
-                        <p class="text-dark fw-medium mb-1">Téléphone</p>
-                        <p>+1 46499 24357</p>
-                      </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-6">
-                      <div
-                        class="d-flex align-items-center justify-content-between"
-                      >
-                        <div class="mb-3 overflow-hidden me-3">
-                          <p class="text-dark fw-medium mb-1">Email</p>
-                          <p class="text-truncate">robe&#64;example.com</p>
-                        </div>
-                        <a
-                          href="javascript:void(0);"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          aria-label="Print"
-                          data-bs-original-title="Réinitialiser le mot de passe"
-                          class="btn btn-dark btn-icon btn-sm mb-3"
-                          ><i class="ti ti-lock-x"></i
-                        ></a>
-                      </div>
-                    </div>
                   </div>
-                </div>
-                <div class="border rounded p-3 pb-0">
-                  <div class="row">
-                    <div class="col-lg-4 col-sm-6">
-                      <div class="d-flex align-items-center mb-3">
-                        <span class="avatar avatar-lg flex-shrink-0">
-                          <img
-                            src="assets/img/parents/parent-13.jpg"
-                            class="img-fluid rounded"
-                            alt="img"
-                          />
-                        </span>
-                        <div class="ms-2 overflow-hidden">
-                          <h6 class="text-truncate">Jerald Vicinius</h6>
-                          <p class="text-primary">Tuteur (Père)</p>
+                  <div class="border rounded p-3 pb-0">
+                    <div class="row">
+                      <div class="col-lg-4 col-sm-6">
+                        <div class="d-flex align-items-center mb-3">
+                          <span class="avatar avatar-lg flex-shrink-0">
+                            <img src="assets/img/parents/parent-13.jpg" class="img-fluid rounded" alt="img" />
+                          </span>
+                          <div class="ms-2 overflow-hidden">
+                            <h6 class="text-truncate">Jerald Vicinius</h6>
+                            <p class="text-primary">Tuteur (Père)</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-4 col-sm-6">
+                        <div class="mb-3">
+                          <p class="text-dark fw-medium mb-1">Téléphone</p>
+                          <p>+1 45545 46464</p>
+                        </div>
+                      </div>
+                      <div class="col-lg-4 col-sm-6">
+                        <div class="d-flex align-items-center justify-content-between">
+                          <div class="mb-3 overflow-hidden me-3">
+                            <p class="text-dark fw-medium mb-1">Email</p>
+                            <p class="text-truncate">jera&#64;example.com</p>
+                          </div>
+                          <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top"
+                            aria-label="Print" data-bs-original-title="Réinitialiser le mot de passe"
+                            class="btn btn-dark btn-icon btn-sm mb-3"><i class="ti ti-lock-x"></i></a>
                         </div>
                       </div>
                     </div>
-                    <div class="col-lg-4 col-sm-6">
-                      <div class="mb-3">
-                        <p class="text-dark fw-medium mb-1">Téléphone</p>
-                        <p>+1 45545 46464</p>
+                  </div>
+                  <!-- Address -->
+                  <div class="col-xxl-6 d-flex">
+                    <div class="card flex-fill">
+                      <div class="card-header">
+                        <h5>Adresse</h5>
                       </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-6">
-                      <div
-                        class="d-flex align-items-center justify-content-between"
-                      >
-                        <div class="mb-3 overflow-hidden me-3">
-                          <p class="text-dark fw-medium mb-1">Email</p>
-                          <p class="text-truncate">jera&#64;example.com</p>
+                      <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                          <span class="avatar avatar-md bg-light-300 rounded me-2 flex-shrink-0 text-default"><i
+                              class="ti ti-map-pin-up"></i></span>
+                          <div>
+                            <p class="text-dark fw-medium mb-1">Adresse actuelle</p>
+                            <p>3495 Red Hawk Road, Buffalo Lake, MN 55314</p>
+                          </div>
                         </div>
-                        <a
-                          href="javascript:void(0);"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          aria-label="Print"
-                          data-bs-original-title="Réinitialiser le mot de passe"
-                          class="btn btn-dark btn-icon btn-sm mb-3"
-                          ><i class="ti ti-lock-x"></i
-                        ></a>
+                        <div class="d-flex align-items-center">
+                          <span class="avatar avatar-md bg-light-300 rounded me-2 flex-shrink-0 text-default"><i
+                              class="ti ti-map-pins"></i></span>
+                          <div>
+                            <p class="text-dark fw-medium mb-1">Adresse permanente</p>
+                            <p>3495 Red Hawk Road, Buffalo Lake, MN 55314</p>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <!-- /Parents Information -->
-          </div>
+              <!-- /Parents Information -->
+            </p-tabPanel>
+            <p-tabPanel header="Etablissement" leftIcon="ti ti-table-building me-2">
+              <!-- Previous School Details -->
+              <div class="col-xxl-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h5>Détails de l'école précédente</h5>
+                  </div>
+                  <div class="card-body pb-1">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <p class="text-dark fw-medium mb-1">
+                            Nom de l'école précédente
+                          </p>
+                          <p>Oxford Matriculation, USA</p>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <p class="text-dark fw-medium mb-1">Adresse de l'école</p>
+                          <p>1852 Barnes Avenue, Cincinnati, OH 45202</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /Previous School Details -->
+              <div class="col-xxl-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h5>Détails de l'école précédente</h5>
+                  </div>
+                  <div class="card-body pb-1">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <p class="text-dark fw-medium mb-1">
+                            Nom de l'école précédente
+                          </p>
+                          <p>Oxford Matriculation, USA</p>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <p class="text-dark fw-medium mb-1">Adresse de l'école</p>
+                          <p>1852 Barnes Avenue, Cincinnati, OH 45202</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /Previous School Details -->
+            </p-tabPanel>
 
-          <!-- Documents -->
-          <div class="col-xxl-6 d-flex">
-            <div class="card flex-fill">
-              <div class="card-header">
-                <h5>Documents</h5>
-              </div>
-              <div class="card-body">
-                <div
-                  class="bg-light-300 border rounded d-flex align-items-center justify-content-between mb-3 p-2"
-                >
-                  <div class="d-flex align-items-center overflow-hidden">
-                    <span
-                      class="avatar avatar-md bg-white rounded flex-shrink-0 text-default"
-                      ><i class="ti ti-pdf fs-15"></i
-                    ></span>
-                    <div class="ms-2">
-                      <p class="text-truncate fw-medium text-dark">
-                        CertificatNaissance.pdf
-                      </p>
+            <p-tabPanel header="Document et autres">
+              <!-- Documents -->
+              <div class="col-xxl-6 d-flex">
+                <div class="card flex-fill">
+                  <div class="card-header">
+                    <h5>Documents</h5>
+                  </div>
+                  <div class="card-body">
+                    <div class="bg-light-300 border rounded d-flex align-items-center justify-content-between mb-3 p-2">
+                      <div class="d-flex align-items-center overflow-hidden">
+                        <span class="avatar avatar-md bg-white rounded flex-shrink-0 text-default"><i
+                            class="ti ti-pdf fs-15"></i></span>
+                        <div class="ms-2">
+                          <p class="text-truncate fw-medium text-dark">
+                            CertificatNaissance.pdf
+                          </p>
+                        </div>
+                      </div>
+                      <a href="javascript:void(0);" class="btn btn-dark btn-icon btn-sm"><i
+                          class="ti ti-download"></i></a>
+                    </div>
+                    <div class="bg-light-300 border rounded d-flex align-items-center justify-content-between p-2">
+                      <div class="d-flex align-items-center overflow-hidden">
+                        <span class="avatar avatar-md bg-white rounded flex-shrink-0 text-default"><i
+                            class="ti ti-pdf fs-15"></i></span>
+                        <div class="ms-2">
+                          <p class="text-truncate fw-medium text-dark">
+                            CertificatTransfert.pdf
+                          </p>
+                        </div>
+                      </div>
+                      <a href="javascript:void(0);" class="btn btn-dark btn-icon btn-sm"><i
+                          class="ti ti-download"></i></a>
                     </div>
                   </div>
-                  <a href="javascript:void(0);" class="btn btn-dark btn-icon btn-sm"
-                    ><i class="ti ti-download"></i
-                  ></a>
-                </div>
-                <div
-                  class="bg-light-300 border rounded d-flex align-items-center justify-content-between p-2"
-                >
-                  <div class="d-flex align-items-center overflow-hidden">
-                    <span
-                      class="avatar avatar-md bg-white rounded flex-shrink-0 text-default"
-                      ><i class="ti ti-pdf fs-15"></i
-                    ></span>
-                    <div class="ms-2">
-                      <p class="text-truncate fw-medium text-dark">
-                        CertificatTransfert.pdf
-                      </p>
-                    </div>
-                  </div>
-                  <a href="javascript:void(0);" class="btn btn-dark btn-icon btn-sm"
-                    ><i class="ti ti-download"></i
-                  ></a>
                 </div>
               </div>
-            </div>
-          </div>
-          <!-- /Documents -->
+              <!-- /Documents -->
+              <!-- Bank Details -->
+              <div class="col-xxl-6 d-flex">
+                <div class="card flex-fill">
+                  <div class="card-header">
+                    <h5>Coordonnées bancaires</h5>
+                  </div>
+                  <div class="card-body pb-1">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="mb-3">
+                          <p class="text-dark fw-medium mb-1">Nom de la banque</p>
+                          <p>Bank of America</p>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="mb-3">
+                          <p class="text-dark fw-medium mb-1">Agence</p>
+                          <p>Cincinnati</p>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="mb-3">
+                          <p class="text-dark fw-medium mb-1">Code IFSC</p>
+                          <p>BOA83209832</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /Bank Details -->
+              <!-- Other Info -->
+              <div class="col-xxl-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h5>Autres informations</h5>
+                  </div>
+                  <div class="card-body">
+                    <p>
+                      En fonction des besoins spécifiques de votre organisation ou
+                      système, des informations supplémentaires peuvent être collectées ou suivies.
+                      Il est important de s'assurer que toutes les données collectées sont conformes
+                      aux réglementations et politiques de confidentialité pour protéger les informations
+                      sensibles des Élèves.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- /Other Info -->
+            </p-tabPanel>
+            <p-tabPanel header="Informations medicaux">
+              <!-- Medical History -->
+              <div class="col-xxl-6 d-flex">
+                <div class="card flex-fill">
+                  <div class="card-header">
+                    <h5>Antécédents médicaux</h5>
+                  </div>
+                  <div class="card-body pb-1">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <p class="text-dark fw-medium mb-1">Allergies connues</p>
+                          <span class="badge bg-light text-dark">Éruptions cutanées</span>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <p class="text-dark fw-medium mb-1">Médicaments</p>
+                          <p>-</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /Medical History -->
+            </p-tabPanel>
 
-          <!-- Address -->
-          <div class="col-xxl-6 d-flex">
-            <div class="card flex-fill">
-              <div class="card-header">
-                <h5>Adresse</h5>
-              </div>
-              <div class="card-body">
-                <div class="d-flex align-items-center mb-3">
-                  <span
-                    class="avatar avatar-md bg-light-300 rounded me-2 flex-shrink-0 text-default"
-                    ><i class="ti ti-map-pin-up"></i
-                  ></span>
-                  <div>
-                    <p class="text-dark fw-medium mb-1">Adresse actuelle</p>
-                    <p>3495 Red Hawk Road, Buffalo Lake, MN 55314</p>
-                  </div>
-                </div>
-                <div class="d-flex align-items-center">
-                  <span
-                    class="avatar avatar-md bg-light-300 rounded me-2 flex-shrink-0 text-default"
-                    ><i class="ti ti-map-pins"></i
-                  ></span>
-                  <div>
-                    <p class="text-dark fw-medium mb-1">Adresse permanente</p>
-                    <p>3495 Red Hawk Road, Buffalo Lake, MN 55314</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- /Address -->
+            <p-tabPanel header="Historique Scolaire">
+              Historique Scolaire
+            </p-tabPanel>
+          </p-tabView>
+        </p-tabPanel>
 
-          <!-- Previous School Details -->
-          <div class="col-xxl-12">
-            <div class="card">
-              <div class="card-header">
-                <h5>Détails de l'école précédente</h5>
-              </div>
-              <div class="card-body pb-1">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <p class="text-dark fw-medium mb-1">
-                        Nom de l'école précédente
-                      </p>
-                      <p>Oxford Matriculation, USA</p>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <p class="text-dark fw-medium mb-1">Adresse de l'école</p>
-                      <p>1852 Barnes Avenue, Cincinnati, OH 45202</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- /Previous School Details -->
+        <p-tabPanel header="Emploi du temps" leftIcon="ti ti-table-options me-2">
+          <app-student-time-table></app-student-time-table>
+        </p-tabPanel>
 
-          <!-- Bank Details -->
-          <div class="col-xxl-6 d-flex">
-            <div class="card flex-fill">
-              <div class="card-header">
-                <h5>Coordonnées bancaires</h5>
-              </div>
-              <div class="card-body pb-1">
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="mb-3">
-                      <p class="text-dark fw-medium mb-1">Nom de la banque</p>
-                      <p>Bank of America</p>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="mb-3">
-                      <p class="text-dark fw-medium mb-1">Agence</p>
-                      <p>Cincinnati</p>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="mb-3">
-                      <p class="text-dark fw-medium mb-1">Code IFSC</p>
-                      <p>BOA83209832</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- /Bank Details -->
+        <p-tabPanel header="Congés & Présences" leftIcon="ti ti-calendar-due me-2">
+          <app-student-leaves></app-student-leaves>
+        </p-tabPanel>
 
-          <!-- Medical History -->
-          <div class="col-xxl-6 d-flex">
-            <div class="card flex-fill">
-              <div class="card-header">
-                <h5>Antécédents médicaux</h5>
-              </div>
-              <div class="card-body pb-1">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <p class="text-dark fw-medium mb-1">Allergies connues</p>
-                      <span class="badge bg-light text-dark">Éruptions cutanées</span>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <p class="text-dark fw-medium mb-1">Médicaments</p>
-                      <p>-</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- /Medical History -->
+        <p-tabPanel header="Frais" leftIcon="ti ti-report-money me-2">
+          <app-student-fees></app-student-fees>
+        </p-tabPanel>
 
-          <!-- Other Info -->
-          <div class="col-xxl-12">
-            <div class="card">
-              <div class="card-header">
-                <h5>Autres informations</h5>
-              </div>
-              <div class="card-body">
-                <p>
-                  En fonction des besoins spécifiques de votre organisation ou
-                  système, des informations supplémentaires peuvent être collectées ou suivies.
-                  Il est important de s'assurer que toutes les données collectées sont conformes
-                  aux réglementations et politiques de confidentialité pour protéger les informations
-                  sensibles des Élèves.
-                </p>
-              </div>
-            </div>
-          </div>
-          <!-- /Other Info -->
-        </div>
-      </div>
+        <p-tabPanel header="Examens & Résultats" leftIcon="ti ti-bookmark-edit me-2">
+         <app-student-result></app-student-result>
+         <app-student-report-card></app-student-report-card>
+        </p-tabPanel>
+
+        <p-tabPanel header="Devoirs" leftIcon="ti ti-calendar-due me-2">
+          Contenu Devoirs
+        </p-tabPanel>
+      </p-tabView>
     </div>
   </div>
 </div>
 <!-- /Page Wrapper -->
-
-<!-- Login Details -->
-<div class="modal fade" id="login_detail">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Détails de connexion</h4>
-        <button
-          type="button"
-          class="btn-close custom-btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        >
-          <i class="ti ti-x"></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="student-detail-info">
-          <span class="student-img"
-            ><img src="assets/img/students/student-01.jpg" alt="Img"
-          /></span>
-          <div class="name-info">
-            <h6>Janet <span>III, A</span></h6>
-          </div>
-        </div>
-        <div class="table-responsive custom-table no-datatable_length">
-          <table class="table datanew">
-            <thead class="thead-light">
-              <tr>
-                <th>Type d'utilisateur</th>
-                <th>Nom d'utilisateur</th>
-                <th>Mot de passe</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Parent</td>
-                <td>parent53</td>
-                <td>parent&#64;53</td>
-              </tr>
-              <tr>
-                <td>Élève</td>
-                <td>student20</td>
-                <td>stdt&#64;53</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <a href="javascript:void(0);" class="btn btn-light me-2" data-bs-dismiss="modal"
-          >Annuler</a
-        >
-      </div>
-    </div>
-  </div>
-</div>
-<!-- /Login Details -->
-<!-- Add Fees Collect -->
-<div class="modal fade" id="add_fees_collect">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <div class="d-flex align-items-center">
-          <h4 class="modal-title">Percevoir frais</h4>
-          <span class="badge badge-sm bg-primary ms-2">AD124556</span>
-        </div>
-        <button
-          type="button"
-          class="btn-close custom-btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        >
-          <i class="ti ti-x"></i>
-        </button>
-      </div>
-      <form>
-        <div class="modal-body">
-          <div class="bg-light-300 p-3 pb-0 rounded mb-4">
-            <div class="row align-items-center">
-              <div class="col-lg-3 col-md-6">
-                <div class="d-flex align-items-center mb-3">
-                  <a
-                    [routerLink]="routes.studentDetails"
-                    class="avatar avatar-md me-2"
-                  >
-                    <img src="assets/img/students/student-01.jpg" alt="img" />
-                  </a>
-                  <a
-                    [routerLink]="routes.studentDetails"
-                    class="d-flex flex-column"
-                    ><span class="text-dark">Janet</span>III, A</a
-                  >
-                </div>
-              </div>
-              <div class="col-lg-3 col-md-6">
-                <div class="mb-3">
-                  <span class="fs-12 mb-1">Total impayé</span>
-                  <p class="text-dark">2000</p>
-                </div>
-              </div>
-              <div class="col-lg-3 col-md-6">
-                <div class="mb-3">
-                  <span class="fs-12 mb-1">Date limite</span>
-                  <p class="text-dark">25 Mai 2024</p>
-                </div>
-              </div>
-              <div class="col-lg-3 col-md-6">
-                <div class="mb-3">
-                  <span class="badge badge-soft-danger"
-                    ><i class="ti ti-circle-filled me-2"></i>Non payé</span
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="mb-3">
-                <label class="form-label">Groupe de frais</label>
-
-                <p-dropdown
-                  [options]="[
-                    { label: 'Sélectionner', value: '' },
-                    { label: 'Classe 1 Général', value: 'Class 1 General' },
-                    { label: 'Frais mensuels', value: 'Monthly Fees' },
-                    { label: 'Frais d\'admission', value: 'Admission-Fees' },
-                    {
-                      label: 'Classe 1- Versement I',
-                      value: 'Class 1- I Installment'
-                    }
-                  ]"
-                  placeholder="Sélectionner"
-                  class="select"
-                ></p-dropdown>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="mb-3">
-                <label class="form-label">Type de frais</label>
-
-                <p-dropdown
-                  [options]="[
-                    { label: 'Sélectionner', value: '' },
-                    { label: 'Frais de scolarité', value: 'Tuition Fees' },
-                    { label: 'Frais mensuels', value: 'Monthly Fees' },
-                    { label: 'Frais d\'admission', value: 'Admission-Fees' },
-                    { label: 'Frais de transport', value: 'Bus Fees' }
-                  ]"
-                  placeholder="Sélectionner"
-                  class="select"
-                ></p-dropdown>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="mb-3">
-                <label class="form-label">Montant</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Saisir montant"
-                />
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="mb-3">
-                <label class="form-label">Date de perception</label>
-                <div class="date-pic">
-                  <input
-                    type="text"
-                    class="form-control datetimepicker"
-                    bsDatepicker
-                    container=".date-pic"
-                    placeholder="Sélectionner"
-                  />
-                  <span class="cal-icon"><i class="ti ti-calendar"></i></span>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="mb-3">
-                <label class="form-label">Type de paiement</label>
-
-                <p-dropdown
-                  [options]="[
-                    { label: 'Sélectionner', value: '' },
-                    { label: 'Paytm', value: 'Paytm' },
-                    { label: 'Paiement à la livraison', value: 'Cash On Delivery' }
-                  ]"
-                  placeholder="Sélectionner"
-                  class="select"
-                ></p-dropdown>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="mb-3">
-                <label class="form-label">N° de référence du paiement</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Saisir le n° de référence"
-                />
-              </div>
-            </div>
-            <div class="col-lg-12">
-              <div
-                class="modal-satus-toggle d-flex align-items-center justify-content-between mb-3"
-              >
-                <div class="status-title">
-                  <h5>Statut</h5>
-                  <p>Changer le statut avec le commutateur</p>
-                </div>
-                <div class="status-toggle modal-status">
-                  <input type="checkbox" id="user1" class="check" />
-                  <label for="user1" class="checktoggle"> </label>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-12">
-              <div class="mb-0">
-                <label class="form-label">Notes</label>
-                <textarea
-                  rows="4"
-                  class="form-control"
-                  placeholder="Ajouter des notes"
-                ></textarea>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <a
-            href="javascript:void(0);"
-            class="btn btn-light me-2"
-            data-bs-dismiss="modal"
-            >Annuler</a
-          >
-          <button type="button" data-bs-dismiss="modal" class="btn btn-primary">
-            Payer les frais
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-<!-- Add Fees Collect -->
-
 

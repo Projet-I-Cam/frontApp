@@ -38,6 +38,8 @@ import { InputIcon } from 'primeng/inputicon';
 import { IconField } from 'primeng/iconfield';
 import { Slider } from 'primeng/slider';
 import { ProgressBar } from 'primeng/progressbar';
+import { TabViewModule } from 'primeng/tabview';
+import { TabMenuModule } from 'primeng/tabmenu';
 
 
 import {
@@ -87,8 +89,9 @@ import { Router, RouterModule } from '@angular/router';
     NgCircleProgressModule,
     TableModule,
     ButtonModule,
-    StepsModule
-
+    StepsModule,
+    TabViewModule,
+    TabMenuModule
 
   ],
   exports: [
@@ -127,7 +130,9 @@ import { Router, RouterModule } from '@angular/router';
     GenericTableComponent,
     TableModule,
     ButtonModule,
-    StepsModule
+    StepsModule,
+    TabViewModule,
+    TabMenuModule
   ],
   providers: [
     provideNgxMask(),

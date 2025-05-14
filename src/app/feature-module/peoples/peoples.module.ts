@@ -9,7 +9,9 @@ import { InstitutionsModule } from './institutions/institutions.module';
 import { SkeletonModule } from 'primeng/skeleton';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    
+  ],
   imports: [
     CommonModule,
     RouterModule,

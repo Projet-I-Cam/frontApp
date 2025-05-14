@@ -901,6 +901,9 @@ export class DataService {
       else if (role === 'arrondissement') {
         return this.AdminInspectionSidebarData;
       }
+      else if (role === 'eleve') {
+        return this.studentSidebarData
+      }
       return this.AdminSidebarData;
     }
     return this.sidebarData1;
@@ -1537,11 +1540,38 @@ export class DataService {
           subRoutes: [],
         },
         {
-          menuValue: 'Mes enfants Inscrit',
-          hasSubRouteThree: true,
-          icon: 'school',
-          page: 'students',
-          subMenus: [],
+          menuValue: 'Mes Enfants',
+          icon: 'layout-2',
+          base: 'dashboard',
+          hasSubRoute: false,
+          showSubRoute: false,
+          route: routes.adminDashboard,
+          customSubmenuTwo: false,
+          subRoutes: [],
+        },
+      ],
+    },
+  ];
+
+  public studentSidebarData = [
+    {
+      tittle: 'Main',
+      showAsTab: false,
+      separateRoute: false,
+      hasSubRoute: false,
+      showSubRoute: false,
+      base: '',
+      page: '99',
+      menu: [
+        {
+          menuValue: 'Dashboard',
+          icon: 'layout-2',
+          base: 'dashboard',
+          hasSubRoute: false,
+          showSubRoute: false,
+          route: routes.studentDetails,
+          customSubmenuTwo: false,
+          subRoutes: [],
         },
       ],
     },
@@ -1964,7 +1994,7 @@ export class DataService {
           customSubmenuTwo: false,
           subRoutes: [],
         },
-         {
+        {
           menuValue: 'Annuaire',
           icon: 'phone',
           base: 'base',
@@ -1974,11 +2004,11 @@ export class DataService {
           customSubmenuTwo: false,
           subRoutes: [],
         },
-         {
-              menuValue: 'Liste des delegations departementale',
-              route: routes.departmentsList,
-              icon: 'office'
-            },
+        {
+          menuValue: 'Liste des delegations departementale',
+          route: routes.departmentsList,
+          icon: 'office'
+        },
       ],
     },
     {
@@ -2234,11 +2264,11 @@ export class DataService {
           customSubmenuTwo: false,
           subRoutes: [],
         },
-         {
-             menuValue: 'Liste des Inspection',
-              route: routes.municipalitiesList,
-              icon: 'office'
-            },
+        {
+          menuValue: 'Liste des Inspection',
+          route: routes.municipalitiesList,
+          icon: 'office'
+        },
       ],
     },
     {
