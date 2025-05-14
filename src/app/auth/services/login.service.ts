@@ -24,7 +24,6 @@ export class LoginService {
   async setUser(userData: any) {
     this.userSubject.next(userData);
     const person = await getPersonByUserId(userData.objectId);
-    console.log(person);
     localStorage.setItem('user', JSON.stringify(userData));
     localStorage.setItem('person', JSON.stringify(person));
   }
