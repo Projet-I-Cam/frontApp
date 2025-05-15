@@ -24,7 +24,8 @@ import {StudentTimeTableComponent} from './student-time-table/student-time-table
 import {StudentLeavesComponent} from './student-leaves/student-leaves.component'
 import {StudentFeesComponent} from './student-fees/student-fees.component'
 import {StudentResultComponent} from './student-result/student-result.component'
-import {StudentReportCardComponent} from './student-report-card/student-report-card.component'
+import {StudentReportCardComponent} from './student-report-card/student-report-card.component';
+import { StudentListHomeworksComponent } from './student-list-homeworks/student-list-homeworks.component'
 @NgModule({
   declarations: [
     MyStudentsComponent,
@@ -33,7 +34,8 @@ import {StudentReportCardComponent} from './student-report-card/student-report-c
     StudentLeavesComponent,
     StudentFeesComponent,
     StudentResultComponent,
-    StudentReportCardComponent
+    StudentReportCardComponent,
+    StudentListHomeworksComponent
   ],
   imports: [
     CommonModule,
@@ -63,7 +65,8 @@ import {StudentReportCardComponent} from './student-report-card/student-report-c
      StudentLeavesComponent,
      StudentFeesComponent,
      StudentResultComponent,
-     StudentReportCardComponent
+     StudentReportCardComponent,
+     StudentListHomeworksComponent
   ]
 })
 export class StudentsModule { }
