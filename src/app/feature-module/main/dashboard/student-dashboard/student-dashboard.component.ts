@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
     styleUrl: './student-dashboard.component.scss',
     standalone: false
 })
+
 export class StudentDashboardComponent implements OnInit{
   public routes = routes;
   activeIndex = 1;
