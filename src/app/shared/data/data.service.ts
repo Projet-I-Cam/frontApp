@@ -1557,7 +1557,7 @@ export class DataService {
           base: 'dashboard',
           hasSubRoute: false,
           showSubRoute: false,
-          route: routes.studentDetails,
+          route: routes.dashboard,
           customSubmenuTwo: false,
           subRoutes: [],
         },
