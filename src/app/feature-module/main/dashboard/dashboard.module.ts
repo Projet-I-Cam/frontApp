@@ -13,6 +13,7 @@ import { DashboardMainComponent } from './dashboard-main/dashboard-main.componen
 import { DashboardMinedubComponent } from './dashboard-minedub/dashboard-minedub.component';
 import { MyStudentsComponent } from '../../peoples/students/my-students/my-students.component';
 import { StudentsModule } from '../../peoples/students/students.module';
+import { StudentListHomeworksComponent } from '../../peoples/students/student-list-homeworks/student-list-homeworks.component';
 
 
 @NgModule({
