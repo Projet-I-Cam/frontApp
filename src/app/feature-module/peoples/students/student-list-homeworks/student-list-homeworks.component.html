@@ -1,1 +1,60 @@
-<p> Liste des devoirs </p>
+<div class="row">
+    <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between flex-wrap pb-0">
+            <h4 class="mb-3"> Devoirs </h4>
+            <div class="d-flex align-items-center flex-wrap">
+                <div class="dropdown mb-3 me-2">
+                    <a href="javascript:void(0);" class="btn btn-outline-light bg-white dropdown-toggle"
+                        data-bs-toggle="dropdown" data-bs-auto-close="outside"><i class="ti ti-calendar-due me-2"></i>
+                        Année Académique : 2024 / 2025</a>
+                    <ul class="dropdown-menu p-3">
+                        <li *ngFor="let year of academicYears">
+                            <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                                (click)="selectYear(year.objectId)" [class.active]="selectedYear === year.objectId">
+                                Année Académique : {{ year.libelle }}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <!-- Student Homeworks Grid -->
+            <div class="" *ngFor="let homework of homeworks">
+                <div class="homework-card">
+                    <table>
+                        <tr>
+                            <td><img src="" /></td>
+                            <td>
+                                <h3> Convertir en Litre</h3>
+                                <p class="late"> Date de Correction : {{ homework.submissionDate?.iso | date:'EEE d MMM y' }}</p>
+                                <p>{{homework.content}}</p>
+                                <p class = "createdDate">Crée le {{ homework.homeWorkDate?.iso | date:'MM/dd/yyyy à hh:mm:ss' }}</p>
+                                <p>
+                                <a href="{{homework.attachment?.url}}" class="btn btn-primary mb-3" target="_blank">
+                                    <span class="btn-text">Télécharger le devoir</span>
+                                    <span class="btn-icon"> ↓ </span>
+                                </a>
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!-- /Student Homeworks Grid -->
+
+            <div class="col-md-12 text-center" *ngIf="homeworks.length === 0 && !isLoading">
+                <div class="alert alert-info">
+                    Aucun devoir trouvé.
+                </div>
+            </div>
+
+            <div class="col-md-12 text-center" *ngIf="isLoading">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Chargement...</span>
+                </div>
+                <p class="mt-2">Chargement des devoirs...</p>
+            </div>
+        </div>
+    </div>
+</div>
