@@ -25,6 +25,7 @@ import {StudentLeavesComponent} from './student-leaves/student-leaves.component'
 import {StudentFeesComponent} from './student-fees/student-fees.component'
 import {StudentResultComponent} from './student-result/student-result.component'
 import {StudentReportCardComponent} from './student-report-card/student-report-card.component';
+import { StudentListHomeworksComponent } from './student-list-homeworks/student-list-homeworks.component'
 import { StudentInfosComponent } from './student-infos/student-infos.component';
 import { StudentSchoolComponent } from './student-school/student-school.component'
 @NgModule({
@@ -36,6 +37,7 @@ import { StudentSchoolComponent } from './student-school/student-school.componen
     StudentFeesComponent,
     StudentResultComponent,
     StudentReportCardComponent,
+    StudentListHomeworksComponent,
     StudentInfosComponent,
     StudentSchoolComponent,
   ],
@@ -68,6 +70,7 @@ import { StudentSchoolComponent } from './student-school/student-school.componen
      StudentFeesComponent,
      StudentResultComponent,
      StudentReportCardComponent,
+     StudentListHomeworksComponent,
      StudentInfosComponent,
     StudentDetailsComponent,
     StudentSchoolComponent,
