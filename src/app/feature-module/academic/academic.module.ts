@@ -16,6 +16,7 @@ import { AcademicYearComponent } from './academic-year/academic-year.component';
 import { SkeletonModule } from 'primeng/skeleton';
 import { EducationTypeComponent } from './education-type/education-type.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { StudentsModule } from "../peoples/students/students.module";
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
   imports: [
     CommonModule,
     AcademicRoutingModule,
-    SharedModule, SkeletonModule, NgSelectModule
-  ]
+    SharedModule, SkeletonModule, NgSelectModule,
+    StudentsModule
+]
 })
 export class AcademicModule { }

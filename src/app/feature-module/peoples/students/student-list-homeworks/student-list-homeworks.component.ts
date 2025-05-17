@@ -122,7 +122,7 @@ getDaysRemaining(submissionDate: Date): number {
 
   // Permet de lister les rôles ayant l'accès en modification sur un devoir.
   checkTaskName(taskName: string): boolean {
-  const allowedTasks = ['enseignant', 'etablissement', 'eleve'];
+  const allowedTasks = ['enseignant', 'etablissement'];
   return allowedTasks.includes(taskName);
 }
   hasValidUrl(attachment: any): boolean {
