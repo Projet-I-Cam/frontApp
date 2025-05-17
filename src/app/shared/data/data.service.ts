@@ -15,8 +15,6 @@ import { SettingsService } from '../settings/settings.service';
 export class DataService {
   constructor(private http: HttpClient, private loginService: LoginService) { }
 
-
-
   public getDataTable() {
     return this.http.get<apiResultFormat>('assets/json/data-tables.json').pipe(
       map((res: apiResultFormat) => {
@@ -886,7 +884,7 @@ export class DataService {
       } else if (role === 'enseignant') {
         return this.TeacherSidebarData;
       } else if (role === 'parent') {
-        return this.getParentMenu(this.parentChildren || []);
+        return this.ParentSidebarData
       }
       else if (role === 'administration' || role === 'services_centraux' || role == 'ministre') {
         return this.AdminSidebarData;
@@ -1358,153 +1356,6 @@ export class DataService {
 
   ];
 
-  parentChildren = [
-    {
-      name: "MBA TADA Sony Bruce",
-      school: {
-        name: "École Primaire de Yaoundé",
-        director: "M. Mbarga",
-        teacher: "Mme. Ngo"
-      },
-      class: {
-        name: "CP-A",
-        totalStudents: 30,
-        girls: 15,
-        boys: 15
-      }
-    },
-    {
-      name: "ABADA ATEBA Serge",
-      school: {
-        name: "Lycée Général Leclerc",
-        director: "M. Essomba",
-        teacher: "M. Tchouaga"
-      },
-      class: {
-        name: "6ème B",
-        totalStudents: 45,
-        girls: 20,
-        boys: 25
-      }
-    }
-  ];
-
-  // Updated getParentMenu method with proper formatting
-  getParentMenu(children: any[] = []) {
-    try {
-      // Validate input
-      const safeChildren = Array.isArray(children) ? children.filter(child =>
-        child && typeof child === 'object' && 'name' in child
-      ) : [];
-
-      // Generate child menus with proper structure
-      const childMenus = safeChildren.map(child => ({
-        menuValue: child?.name || 'Enfant sans nom',
-        hasSubRoute: true,
-        showSubRoute: true,
-        customSubmenuThree: true,
-        icon: 'user', // Added icon for consistency
-        subMenusTwo: [ // Changed from subMenusTwo to subMenus to match your structure
-          {
-            menuValue: 'Établissement',
-            customSubmenuFour: true,
-            subMenusThree: [
-              { menuValue: `Etablissement: ${child.school?.name || 'Non spécifié'}`, route: '', customSubmenuFour: false },
-              { menuValue: `Directeur: ${child.school?.director || 'Non spécifié'}`, route: '', customSubmenuFour: false },
-              { menuValue: `Enseignant: ${child.school?.teacher || 'Non spécifié'}`, route: '', customSubmenuFour: false },
-              { menuValue: `Classe: ${child.class?.name || 'Non spécifié'}`, route: '', customSubmenuFour: false },
-              { menuValue: `Effectif: ${child.class?.totalStudents || 'N/A'}`, route: '', customSubmenuFour: false },
-              { menuValue: `Filles: ${child.class?.girls || 'N/A'}`, route: '', customSubmenuFour: false },
-              { menuValue: `Garçons: ${child.class?.boys || 'N/A'}`, route: '', customSubmenuFour: false }
-            ]
-          },
-          {
-            menuValue: 'Informations Sanitaires',
-            customSubmenuFour: true,
-            subMenusThree: [
-              { menuValue: 'Etat de Santé', route: '', customSubmenuFour: false },
-              { menuValue: 'Certificat Médical', route: '', customSubmenuFour: false, },
-              { menuValue: 'Aptitude au Sport', route: '', customSubmenuFour: false }
-            ]
-          },
-          { menuValue: 'Programme des Cours', route: routes.classTimeTable, customSubmenuFour: false, },
-          { menuValue: 'Devoirs', route: '' },
-          { menuValue: 'Absences/Présences', route: '', customSubmenuFour: false },
-          { menuValue: 'Planning des Examens', route: routes.examSchedule, customSubmenuFour: false },
-          { menuValue: 'Notes / Bulletins', route: '', customSubmenuFour: false },
-          { menuValue: 'Etat de Payement', route: '', customSubmenuFour: false },
-          {
-            menuValue: 'Informations/planning',
-            customSubmenuFour: true,
-            subMenusThree: [
-              { menuValue: 'Permission/Congés', route: '', customSubmenuThree: false },
-              { menuValue: 'Convocations', route: '', customSubmenuThree: false },
-              { menuValue: 'Réunion des Parents', route: '', customSubmenuThree: false },
-              { menuValue: 'Jours sans cours', route: '', customSubmenuThree: false },
-              { menuValue: 'Activités Extrascolaires', route: '', customSubmenuThree: false }
-            ]
-          }
-        ]
-      }));
-
-      // Return properly formatted parent menu
-      return [{
-        tittle: 'Main',
-        showAsTab: false,
-        separateRoute: false,
-        hasSubRoute: false,
-        showSubRoute: false,
-        base: '',
-        page: '99',
-        menu: [
-          {
-            menuValue: 'Tableau de bord',
-            icon: 'layout-2',
-            base: 'dashboard',
-            hasSubRoute: false,
-            showSubRoute: false,
-            route: routes.adminDashboard,
-            customSubmenuTwo: false,
-            subRoutes: [],
-          }
-        ]
-      }];
-    } catch (error) {
-      console.error('Error generating parent menu:', error);
-      return this.getFallbackParentMenu();
-    }
-  }
-
-
-  // Updated fallback menu
-  private getFallbackParentMenu(): any[] {
-    return [{
-      tittle: 'Main',
-      showAsTab: false,
-      separateRoute: false,
-      hasSubRoute: false,
-      showSubRoute: false,
-      base: '',
-      page: '99',
-      menu: [
-        {
-          menuValue: 'Dashboard221',
-          icon: 'layout-2',
-          route: routes.adminDashboard,
-          hasSubRoute: false
-        },
-        {
-          menuValue: 'Mes enfants Inscrit',
-          icon: 'school',
-          subMenus: [{
-            menuValue: 'Erreur de chargement',
-            customSubmenuThree: false,
-            route: ''
-          }]
-        }
-      ]
-    }];
-  }
 
   // Rest of your existing menu definitions...
   public ParentSidebarData = [
@@ -1526,17 +1377,7 @@ export class DataService {
           route: routes.adminDashboard,
           customSubmenuTwo: false,
           subRoutes: [],
-        },
-        {
-          menuValue: 'Mes Enfants',
-          icon: 'layout-2',
-          base: 'dashboard',
-          hasSubRoute: false,
-          showSubRoute: false,
-          route: routes.adminDashboard,
-          customSubmenuTwo: false,
-          subRoutes: [],
-        },
+        }
       ],
     },
   ];

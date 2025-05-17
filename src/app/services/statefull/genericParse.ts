@@ -6,6 +6,7 @@ import { AuthService } from '../auth.service';
 
 
 export interface FilterStudent {
+  personId?: string,
   yearId?: string;
   genderId?: string
   statut?: boolean
@@ -92,6 +93,7 @@ export async function listInscriptions(f: FilterStudent) {
     query.equalTo('isValid', f.statut);
   }
   //console.log("Query", f)
+
   // Filtrer par année académique
   addFilter(query, "AcademicYear", "academicYear", f.yearId || '');
 
@@ -119,6 +121,8 @@ export async function listInscriptions(f: FilterStudent) {
 
   // Filtrer par région
   addFilter(query, "Region", "person.municipality.department.region", f.regionId || '');
+  // ✅ NEW: Filtrer par identifiant de l'élève
+  addFilter(query, "Person", "person", f.personId || '');
 
   // Inclure les données liées
   query.include('person');
@@ -130,6 +134,7 @@ export async function listInscriptions(f: FilterStudent) {
 
   try {
     const results = await query.find();
+    console.log(results);
     return results.map(result => result.toJSON()); // Retourne les résultats trouvés
   } catch (error) {
     console.error("Error fetching enrollments: ", error);

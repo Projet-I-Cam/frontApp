@@ -40,5 +40,7 @@ export default {
     Cote:  Parse.Object.extend("Cote"),
     TypeOfParent:  Parse.Object.extend("TypeOfParent"),
     Classe:  Parse.Object.extend("Classe"),
+     TeacherClassroom:  Parse.Object.extend("TeacherClassroom"),
+
 
 }

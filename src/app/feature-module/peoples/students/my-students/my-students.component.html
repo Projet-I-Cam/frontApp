@@ -1,128 +1,140 @@
 <!-- Page Wrapper -->
-    <div class="content content-two">
-        <!-- Enfants -->
-        <div class="col-xxl-12 col-xl-7 d-flex">
-            <div class="card flex-fill">
-                <div class="card-header d-flex align-items-center justify-content-between flex-wrap pb-0">
-                    <h4 class="card-title mb-3">Mes enfants ({{filteredStudents.length || 0}})</h4>
-                    <div class="d-flex align-items-center">
-                        <div class="dropdown me-3 mb-3">
-                            <a href="javascript:void(0);" class="bg-white dropdown-toggle"
-                                data-bs-toggle="dropdown"><i class="ti ti-calendar me-2"></i>Etablissements
-                            </a>
-                            <ul class="dropdown-menu mt-2 p-3">
-                                <li *ngFor="let school of schools">
-                                    <a class="dropdown-item rounded-1" (click)="onSchoolChange(school.objectId)">
-                                        {{school.name}}
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+<div class="content content-two">
+  <!-- Enfants -->
+  <div class="col-xxl-12 col-xl-7 d-flex">
+    <div class="card flex-fill">
+      <div class="card-header d-flex align-items-center justify-content-between flex-wrap pb-0">
+        <h4 class="card-title mb-3">Mes enfants ({{filteredStudents.length || 0}})</h4>
+        <div class="d-flex align-items-center">
+          <div class="dropdown me-3 mb-3">
+            <a href="javascript:void(0);" class="bg-white dropdown-toggle" data-bs-toggle="dropdown"><i
+                class="ti ti-calendar me-2"></i>Etablissements
+            </a>
+            <ul class="dropdown-menu mt-2 p-3">
+              <li *ngFor="let school of schools">
+                <a class="dropdown-item rounded-1" (click)="onSchoolChange(school.objectId)">
+                  {{school.name}}
+                </a>
+              </li>
+            </ul>
+          </div>
 
-                        <div class="dropdown mb-3">
-                            <a href="javascript:void(0);" class="bg-white dropdown-toggle"
-                                data-bs-toggle="dropdown"><i class="ti ti-calendar me-2"></i>Section
-                            </a>
-                            <ul class="dropdown-menu mt-2 p-3">
-                                <li *ngFor="let section of sections">
-                                    <a class="dropdown-item rounded-1" (click)="onSectionChange(section.objectId)">
-                                        {{section.name_fr}}
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+          <div class="dropdown mb-3">
+            <a href="javascript:void(0);" class="bg-white dropdown-toggle" data-bs-toggle="dropdown"><i
+                class="ti ti-calendar me-2"></i>Section
+            </a>
+            <ul class="dropdown-menu mt-2 p-3">
+              <li *ngFor="let section of sections">
+                <a class="dropdown-item rounded-1" (click)="onSectionChange(section.objectId)">
+                  {{section.name_fr}}
+                </a>
+              </li>
+            </ul>
+          </div>
 
-                        <div class="dropdown mb-3">
-                            <a href="javascript:void(0);" class="bg-white dropdown-toggle" data-bs-toggle="dropdown">
-                                <i class="ti ti-calendar me-2"></i>Classes
-                            </a>
-                            <ul class="dropdown-menu mt-2 p-3">
-                                <li *ngFor="let classe of classes">
-                                    <a class="dropdown-item rounded-1" (click)="onClasseChange(classe.objectId)">
-                                        {{ classe.name_fr }}
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <button class="btn btn-default btn-sm ms-3 mb-3" (click)="reset()" title="réinialiser les données"><i class="fa fa-refresh"></i></button>
-                    </div>
-                </div>
-                <div class="card-body px-0">
-                    <div class="custom-datatable-filter table-responsive">
-                        <!-- Student Grid -->
-                        <div class="col-xxl-3 col-xl-4 col-md-6 d-flex" *ngFor="let student of filteredStudents">
-                            <div class="card flex-fill">
-                                <div class="card-header d-flex align-items-center justify-content-between">
-                                    <a [routerLink]="routes.studentDetails" class="link-primary">{{ student.matricule || 'N/A' }}</a>
-                                    <div class="d-flex align-items-center">
-                                        <span class="badge badge-soft-success d-inline-flex align-items-center me-1" *ngIf="student.isValid === true"><i class="ti ti-circle-filled fs-5 me-1"></i>Valide</span>
-                                        <span class="badge badge-soft-danger d-inline-flex align-items-center me-1" *ngIf="student.isValid === false"><i class="ti ti-circle-filled fs-5 me-1"></i>Non valide</span>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="bg-light-300 rounded-2 p-3 mb-3">
-                                        <div class="d-flex align-items-center">
-                                            <a href="javascript:void(0);" (click)="viewDetails(student.id)" class="avatar avatar-lg flex-shrink-0">
-                                                <img [src]="student?.person.url || 'assets/img/profiles/avatar-01.jpg'" class="img-fluid rounded-circle" alt="img">
-                                            </a> 
-                                            <div class="ms-2">
-                                                <h5 class="mb-0" class="text-dark text-truncate">
-                                                    <a href="javascript:void(0);" (click)="viewDetails(student.id)">
-                                                        {{ student?.person?.firstName }} {{ student?.person?.lastName }}
-                                                    </a>
-                                                </h5>
-                                                <p>{{ student?.classroom?.name_fr || 'CM2' }}</p>
-                                            </div>
-                                        </div>	
-                                    </div>
-                                    <div class="d-flex align-items-center justify-content-between gx-2">
-                                        <div>
-                                            <p class="mb-0">Ecole</p>
-                                            <p class="text-dark">{{ student.institution.name || 'N/A' }}</p>
-                                        </div>
-                                        <div>
-                                            <p class="mb-0">Genre</p>
-                                            <p class="text-dark">{{ student?.person?.gender?.libelle_fr || 'N/A' }}</p>
-                                        </div>
-                                        <div>
-                                            <p class="mb-0">Section</p>
-                                            <p class="text-dark">{{ student?.classroom?.classe?.section?.name_fr || 'N/A' }}</p>
-                                        </div>
-                                        <!-- <div>
-                                            <p class="mb-0">Inscription</p>
-                                            <p class="text-dark">{{ student.joinDate | date:'dd MMM yyyy' }}</p>
-                                        </div> -->
-                                    </div>
-                                </div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <div class="d-flex align-items-center">
-                                        <a href="tel:{{ student?.person?.contryCode}} {{student?.person?.phone}}" class="btn btn-outline-light bg-white btn-icon d-flex align-items-center justify-content-center rounded-circle p-0 me-2"><i class="ti ti-phone"></i></a>
-                                        <a href="mailTo: {{student?.person?.email}}" class="btn btn-outline-light bg-white btn-icon d-flex align-items-center justify-content-center rounded-circle p-0 me-3"><i class="ti ti-mail"></i></a>
-                                    </div>
-                                    <!-- <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_fees_collect" class="btn btn-light btn-sm fw-semibold">Add Fees</a> -->
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /Student Grid -->
-
-                    <div class="col-md-12 text-center" *ngIf="students.length === 0 && !isLoading">
-                        <div class="alert alert-info">
-                            Aucun élève trouvé.
-                        </div>
-                    </div>
-
-                    <div class="col-md-12 text-center" *ngIf="isLoading">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Chargement...</span>
-                        </div>
-                        <p class="mt-2">Chargement des élèves...</p>
-                    </div>
-                </div>
-                </div>
-            </div>
+          <div class="dropdown mb-3">
+            <a href="javascript:void(0);" class="bg-white dropdown-toggle" data-bs-toggle="dropdown">
+              <i class="ti ti-calendar me-2"></i>Classes
+            </a>
+            <ul class="dropdown-menu mt-2 p-3">
+              <li *ngFor="let classe of classes">
+                <a class="dropdown-item rounded-1" (click)="onClasseChange(classe.objectId)">
+                  {{ classe.name_fr }}
+                </a>
+              </li>
+            </ul>
+          </div>
+          <button class="btn btn-default btn-sm ms-3 mb-3" (click)="reset()" title="réinialiser les données"><i
+              class="fa fa-refresh"></i></button>
         </div>
-            <!-- /Enfants-->
+      </div>
+      <div class="card-body px-0">
+        <div class="custom-datatable-filter table-responsive">
+          <!-- Student Grid Container -->
+          <div class="d-grid gap-4" style="
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+      ">
+            <!-- Student Card -->
+            <div class="card student-card shadow-sm border-0" *ngFor="let student of filteredStudents; let i = index"
+              [routerLink]="['/peoples/students/student-details', student.person.objectId]" style="cursor: pointer;">
+              <!-- Card Header -->
+              <div class="card-header d-flex align-items-center justify-content-between bg-white border-0">
+                <a class="fw-semibold text-primary text-truncate">{{ student.matricule || 'N/A' }}</a>
+                <span class="badge d-inline-flex align-items-center" [ngClass]="{
+              'badge-soft-success': student.isValid === true,
+              'badge-soft-danger': student.isValid === false
+            }">
+                  <i class="ti ti-circle-filled fs-6 me-1"></i>
+                  {{ student.isValid === true ? 'Valide' : 'Non valide' }}
+                </span>
+              </div>
+
+              <!-- Card Body -->
+              <div class="card-body">
+                <div class="bg-light rounded p-3 mb-3">
+                  <div class="d-flex align-items-center">
+                    <a (click)="viewDetails(student.id)" class="avatar avatar-lg me-3">
+                      <img [src]="student?.person?.url || 'assets/img/profiles/avatar-01.jpg'"
+                        class="img-fluid rounded-circle" alt="Photo" width="60" height="60" />
+                    </a>
+                    <div>
+                      <h6 class="mb-0 text-dark">
+                        <a (click)="viewDetails(student.id)">
+                          {{ student?.person?.firstName }} {{ student?.person?.lastName }}
+                        </a>
+                      </h6>
+                      <small class="text-muted">{{ student?.classroom?.name_fr || 'CM2' }}</small>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col text-center gx-2">
+                  <div class="d-flex flex-row p-2 gap-xl-5">
+                    <p class="mb-0 text-muted">École</p>
+                    <p class="fw-semibold text-dark">{{ student.institution?.name || 'N/A' }}</p>
+                  </div>
+                  <div class="d-flex flex-row p-2 gap-xl-5">
+                    <p class="mb-0 text-muted">Genre</p>
+                    <p class="fw-semibold text-dark">{{ student?.person?.gender?.libelle_fr || 'N/A' }}</p>
+                  </div>
+                  <div class="d-flex flex-row p-2 gap-xl-5">
+                    <p class="mb-0 text-muted">Section</p>
+                    <p class="fw-semibold text-dark">{{ student?.classroom?.classe?.section?.name_fr || 'N/A' }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card Footer -->
+              <div class="card-footer d-flex align-items-center justify-content-between bg-white border-0">
+                <div class="d-flex align-items-center">
+                  <a [href]="'tel:' + student?.person?.contryCode + student?.person?.phone"
+                    class="btn btn-light btn-icon rounded-circle me-2"><i class="ti ti-phone"></i></a>
+                  <a [href]="'mailto:' + student?.person?.email" class="btn btn-light btn-icon rounded-circle"><i
+                      class="ti ti-mail"></i></a>
+                </div>
+              </div>
+            </div>
+            <!-- /Student Card -->
+          </div>
+
+          <!-- Empty State -->
+          <div class="text-center mt-4" *ngIf="students.length === 0 && !isLoading">
+            <div class="alert alert-info">Aucun élève trouvé.</div>
+          </div>
+
+          <!-- Loading State -->
+          <div class="text-center mt-4" *ngIf="isLoading">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Chargement...</span>
+            </div>
+            <p class="mt-2">Chargement des élèves...</p>
+          </div>
+        </div>
+      </div>
+
     </div>
-
-
-
+  </div>
+  <!-- /Enfants-->
+</div>
