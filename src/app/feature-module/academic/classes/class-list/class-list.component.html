@@ -6,7 +6,7 @@
       class="d-md-flex d-block align-items-center justify-content-between mb-3"
     >
       <div class="my-auto mb-2">
-        <h3 class="page-title mb-1">Classes List</h3>
+        <h3 class="page-title mb-1">Liste de classe</h3>
         <nav>
           <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item">
@@ -16,7 +16,7 @@
               <a href="javascript:void(0);">Classes </a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-              All Classes
+              Tous les Classes
             </li>
           </ol>
         </nav>
@@ -29,7 +29,7 @@
             class="btn btn-primary"
             data-bs-toggle="modal"
             data-bs-target="#add_class"
-            ><i class="ti ti-square-rounded-plus-filled me-2"></i>Add Class</a
+            ><i class="ti ti-square-rounded-plus-filled me-2"></i>Ajouté une salle classe</a
           >
         </div>
       </div>
@@ -41,7 +41,7 @@
       <div
         class="card-header d-flex align-items-center justify-content-between flex-wrap pb-0"
       >
-        <h4 class="mb-3">Classes List</h4>
+        <h4 class="mb-3">Liste de salle classes </h4>
         <div class="d-flex align-items-center flex-wrap">
           <div class="input-icon-start mb-3 me-2 position-relative">
             <app-date-range-picker />
@@ -63,7 +63,7 @@
                   <div class="row">
                     <div class="col-md-12">
                       <div class="mb-3">
-                        <label class="form-label">Class</label>
+                        <label class="form-label">Classe</label>
 
                         <p-dropdown
                           [options]="class"
@@ -186,17 +186,15 @@
                     />
                   </div>
                 </th>
-                <th mat-sort-header="id">ID</th>
-                <th mat-sort-header="class">Class</th>
+                <th mat-sort-header="class">Classe</th>
                 <th mat-sort-header="section">Section</th>
-                <th mat-sort-header="students">No of Students</th>
-                <th mat-sort-header="subject">No of Subjects</th>
-                <th mat-sort-header="status">Status</th>
+                <th mat-sort-header="students">Capacité</th>
+                <!-- <th mat-sort-header="status">Status</th> -->
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              @for (table of tableData; track table) {
+              @for (table of classrooms; track table) {
               <tr>
                 <td>
                   <div class="form-check form-check-md">
@@ -213,14 +211,13 @@
                     class="link-primary"
                     data-bs-toggle="modal"
                     data-bs-target="#view_class"
-                    >{{ table.id }}</a
+                    >{{ table.name_fr }}</a
                   >
                 </td>
-                <td>{{ table.class }}</td>
-                <td>{{ table.section }}</td>
-                <td>{{ table.noOfStudents }}</td>
-                <td>{{ table.noOfSubjects }}</td>
-                <td>
+                <!-- <td>{{ table.classe?.name_fr }}</td> -->
+                <td>{{ table.classe?.section?.name_fr }}</td>
+                <td>{{ table.maxCapacity }}</td>
+                <!-- <td>
                   <span
                     class="badge d-inline-flex align-items-center"
                     [ngClass]="{
@@ -230,7 +227,7 @@
                     ><i class="ti ti-circle-filled fs-5 me-1"></i
                     >{{ table.status }}</span
                   >
-                </td>
+                </td> -->
                 <td>
                   <div class="d-flex align-items-center">
                     <div class="dropdown">
@@ -247,8 +244,8 @@
                           <a
                             class="dropdown-item rounded-1"
                             href="javascript:void(0);"
-                            data-bs-toggle="modal"
-                            data-bs-target="#edit_class"
+                            ddata-bs-toggle="modal"
+                            ddata-bs-target="#edit_class"
                             ><i class="ti ti-edit-circle me-2"></i>Edit</a
                           >
                         </li>
@@ -256,8 +253,8 @@
                           <a
                             class="dropdown-item rounded-1"
                             href="javascript:void(0);"
-                            data-bs-toggle="modal"
-                            data-bs-target="#delete-modal"
+                            ddata-bs-toggle="modal"
+                            ddata-bs-target="#delete-modal"
                             ><i class="ti ti-trash-x me-2"></i>Delete</a
                           >
                         </li>
@@ -285,7 +282,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Add Class</h4>
+        <h4 class="modal-title">Ajouté une classe</h4>
         <button
           type="button"
           class="btn-close custom-btn-close"
@@ -295,36 +292,33 @@
           <i class="ti ti-x"></i>
         </button>
       </div>
-      <form>
+      <form [formGroup]="classroomForm" (ngSubmit)="onSubmit()">
         <div class="modal-body">
           <div class="row">
             <div class="col-md-12">
               <div class="mb-3">
-                <label class="form-label">Class Name</label>
-                <input type="text" class="form-control" />
+                <label class="form-label">Nom de la classe <span class="login-danger">*</span></label>
+                <input type="text" class="form-control" formControlName="name_fr" />
               </div>
+
               <div class="mb-3">
-                <label class="form-label">Section</label>
-                
+                <label class="form-label">Nombre d'eleve</label>
+                <input type="number" class="form-control" formControlName="maxCapacity" />
+              </div>
+              
+              <div class="mb-3">
+                <label class="form-label">Classe</label>
                 <p-dropdown
-                [options]="section"
-                [(ngModel)]="selectedSection"
-                optionLabel="name"
-                [ngModelOptions]="{ standalone: true }"
-                placeholder="Select"
-              />
+                  [options]="classes"
+                  optionLabel="name"
+                  formControlName="classe"
+                  placeholder="Select"
+                />
               </div>
-              <div class="mb-3">
-                <label class="form-label">No of Students</label>
-                <input type="text" class="form-control" />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">No of Subjects</label>
-                <input type="text" class="form-control" />
-              </div>
-              <div class="d-flex align-items-center justify-content-between">
+
+              <!-- <div class="d-flex align-items-center justify-content-between">
                 <div class="status-title">
-                  <h5>Status</h5>
+                  <h5>Statut</h5>
                   <p>Change the Status by toggle</p>
                 </div>
                 <div class="form-check form-switch">
@@ -335,7 +329,7 @@
                     id="switch-sm"
                   />
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -343,10 +337,11 @@
           <a
             href="javascript:void(0);"
             class="btn btn-light me-2"
+            id="myModalCancel"
             data-bs-dismiss="modal"
             >Cancel</a
           >
-          <button type="submit" class="btn btn-primary">Add Class</button>
+          <button type="submit" class="btn btn-primary">Ajouté une Classe</button>
         </div>
       </form>
     </div>

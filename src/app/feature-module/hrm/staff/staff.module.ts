@@ -10,6 +10,7 @@ import { AddStaffComponent } from './add-staff/add-staff.component';
 import { SharedModule } from '../../../shared/shared.module';
 import { EditStaffComponent } from './edit-staff/edit-staff.component';
 import { StaffListComponent } from './staff-list/staff-list.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { StaffListComponent } from './staff-list/staff-list.component';
   imports: [
     CommonModule,
     StaffRoutingModule,
-    SharedModule
+    SharedModule,
+    NgSelectModule
   ]
 })
 export class StaffModule { }

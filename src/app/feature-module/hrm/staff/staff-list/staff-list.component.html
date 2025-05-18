@@ -172,45 +172,43 @@
                                         <input class="form-check-input" type="checkbox" id="select-all"(click)="selectAll(initChecked)"  [(ngModel)]="initChecked">
                                     </div>
                                 </th>
-                                <th mat-sort-header="id">ID</th>
-                            <th mat-sort-header="name">Name</th>
-                            <th mat-sort-header="department">Department</th>
-                            <th mat-sort-header="designation">Designation </th>
-                            <th mat-sort-header="phone">Phone</th>
-                            <th mat-sort-header="email">Email</th>
-                            <th mat-sort-header="join">Date of Join</th>
-                            <th>Action</th>
+                                <th mat-sort-header="name">Nom complet</th>
+                                <th mat-sort-header="department">classe</th>
+                                <th mat-sort-header="phone">Phone</th>
+                                <th mat-sort-header="email">Email</th>
+                                <th mat-sort-header="phone">Grade</th>
+                                <th mat-sort-header="phone">NIU</th>
+                                <th mat-sort-header="phone">Current position</th>
+                                <th mat-sort-header="phone">status</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @for (table of tableData; track table) {
+                            @for (table of staffs; track table) {
                             <tr>
                                 <td>
                                     <div class="form-check form-check-md">
-                                        <input class="form-check-input" type="checkbox"  [(ngModel)]="table.isSelected">
+                                        <input class="form-check-input" type="checkbox" >
                                     </div>
                                 </td>
-                                <td><a [routerLink] = "routes.staffDetails" class="link-primary">{{ table.id }}</a></td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <a [routerLink] = "routes.staffDetails" class="avatar avatar-md"><img
-                                                [src]="table.img"
-                                                class="img-fluid rounded-circle" alt="img"></a>
+                                        <!-- <a [routerLink] = "routes.staffDetails" class="avatar avatar-md"><img
+                                                [src]="table.photo"
+                                                class="img-fluid rounded-circle" alt="img"></a> -->
                                         <div class="ms-2">
-                                            <p class="text-dark mb-0"><a [routerLink] = "routes.staffDetails">{{table.name}}</a>
+                                            <p class="text-dark mb-0"><a [routerLink] = "routes.staffDetails">{{table.firstName}} {{table.lastName}}</a>
                                             </p>
                                         </div>
                                     </div>
                                 </td>
-                                <td>{{table.department}}</td>
-                                <td>{{table.designation}}</td>
+                                <td>{{table.classroom?.name_fr}}</td>
                                 <td>{{table.phone}}</td>
-                                <td>
-                                    {{table.email}}
-                                </td>
-                                <td>
-                                    {{table.dateOfJoin}}
-                                </td>
+                                <td>{{table.email}}</td>
+                                <td>{{table.profesionalBackground?.grade}}</td>
+                                <td>{{table.profesionalBackground?.currentPosition}}</td>
+                                <td>{{table.profesionalBackground?.status}}</td>
+                                <td>{{table.profesionalBackground?.NIU}}</td>
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <div class="dropdown">
@@ -240,7 +238,7 @@
                                 </td>
                             </tr>
                         }
-                        @if (tableData.length === 0) {
+                        @if (staffs.length === 0) {
                             <tr>
                               <td colspan="6">
                                 <h5 class="no-record text-center">No records found</h5>
