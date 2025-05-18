@@ -1,7 +1,7 @@
 <div class="row">
     <div class="card">
         <div class="card-header d-flex align-items-center justify-content-between flex-wrap pb-0">
-            <h4 class="mb-3"> Devoirs </h4>
+            <h4 class="mb-3"> Mes Devoirs </h4>
             <div class="d-flex align-items-center flex-wrap">
                 <div class="dropdown mb-3 me-2">
                     <a href="javascript:void(0);" class="btn btn-outline-light bg-white dropdown-toggle"
@@ -10,32 +10,82 @@
                     <ul class="dropdown-menu p-3">
                         <li *ngFor="let year of academicYears">
                             <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                                (click)="selectYear(year.objectId)" [class.active]="selectedYear === year.objectId">
+                                (click)="selectYear(year)" [class.active]="selectedYear === year.objectId">
                                 Année Académique : {{ year.libelle }}
                             </a>
                         </li>
                     </ul>
                 </div>
+                 <!-- Entête de Bouton -->
+                <app-tooltip-content />
+                <div class="mb-2" *ngIf="checkTaskName(currentUser?.role?.task_name)">
+                <a
+                    href="javascript:void(0);"
+                    class="btn btn-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#add-edit-modal"
+                    (click)="openModal('create')"
+                    ><i class="ti ti-square-rounded-plus-filled me-2"></i>Créer nouveau devoir</a
+                >
+                </div>
+                 <!-- Fin entête de Bouton -->
             </div>
         </div>
         <div class="card-body">
             <!-- Student Homeworks Grid -->
             <div class="" *ngFor="let homework of homeworks">
                 <div class="homework-card">
-                    <table>
+                    <table style = "width : 100%;">
                         <tr>
-                            <td><img src="" /></td>
-                            <td>
-                                <h3> Convertir en Litre</h3>
-                                <p class="late"> Date de Correction : {{ homework.submissionDate?.iso | date:'EEE d MMM y' }}</p>
-                                <p>{{homework.content}}</p>
-                                <p class = "createdDate">Crée le {{ homework.homeWorkDate?.iso | date:'MM/dd/yyyy à hh:mm:ss' }}</p>
+                            <td class = "td_contenu">
+                                <p *ngIf="homework.module" class = "module">[{{ homework.module?.description_fr }}]</p>
+                                <h3 *ngIf="homework.title; else noTitle"><img src="" /> {{ homework.title }}</h3>
+                                <ng-template #noTitle><h3> Devoir à faire</h3></ng-template>
+                                <p class="correctionDate"> Date de Correction : {{ homework.submissionDate?.iso | date:'EEE d MMM y' }}</p>
+                                <p class="limited-height">{{homework.content}}</p>
+                                <p class = "createdDate">Crée le {{ homework.homeWorkDate?.iso | date:'MM/dd/yyyy à hh:mm:ss' }} par {{ homework.teacher.lastName }}</p>
                                 <p>
-                                <a href="{{homework.attachment?.url}}" class="btn btn-primary mb-3" target="_blank">
+                                <a href="{{homework.attachment?.url}}" class="btn btn-primary mb-3" target="_blank" style = "margin-left:30%" *ngIf="hasValidUrl(homework.attachment)">
                                     <span class="btn-text">Télécharger le devoir</span>
                                     <span class="btn-icon"> ↓ </span>
                                 </a>
                                 </p>
+                            </td>
+                            <td class = "action" valign = "top">
+                                <div class="d-flex align-items-center" *ngIf="checkTaskName(currentUser?.role?.task_name)"> 
+                                    <div class="dropdown">
+                                    <a
+                                        href="javascript:void(0);"
+                                        class="btn btn-white btn-icon btn-sm d-flex align-items-center justify-content-center rounded-circle p-0"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                    >
+                                        <i class="ti ti-dots-vertical fs-14"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-right p-3">
+                                        <li>
+                                        <a
+                                            class="dropdown-item rounded-1"
+                                            href="javascript:void(0);"
+                                            data-bs-toggle= "#add-edit-modal"
+                                            data-bs-target= "{modalName}"
+                                            (click)="openModal('edit', homework)"
+                                            ><i class="ti ti-edit-circle me-2"></i>Modifier</a
+                                        >
+                                        </li>
+                                        <li>
+                                        <a
+                                            class="dropdown-item rounded-1"
+                                            href="javascript:void(0);"
+                                             data-bs-toggle="modal"
+                                            data-bs-target="#delete-modal"
+                                            (click)="openDeleteModal(homework)"
+                                            ><i class="ti ti-trash-x me-2"></i>Supprimer</a
+                                        >
+                                        </li>
+                                    </ul>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     </table>
@@ -55,6 +105,197 @@
                 </div>
                 <p class="mt-2">Chargement des devoirs...</p>
             </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Add and Edit Home Work -->
+<div class="modal fade" id="add-edit-modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title"> {{ entity.title && entity.title.trim().length > 0 ? 'Modifier' : 'Créer' }} un devoir</h4>
+            <button
+            type="button"
+            class="btn-close custom-btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            >
+            <i class="ti ti-x"></i>
+            </button>
+        </div>
+        <form>
+            <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label for="module">* Matière : </label>
+                            <select 
+                                id="module" 
+                                [(ngModel)]="selectedModule" required
+                                name="module" #module="ngModel"
+                                [ngClass]="{
+                                'border-danger': module.invalid && (module.dirty || module.touched),
+                                'border-success': module.valid && module.dirty
+                                }"
+                                 [ngClass]="{
+                                'border-danger': module.invalid && (module.dirty || module.touched),
+                                'border-success': module.valid && module.dirty
+                                }"
+                                >
+                                <option *ngFor="let md of modules" 
+                                        [value]="md.objectId">
+                                {{md.description_fr}}
+                                </option>
+                            </select>
+                            <div *ngIf="title.invalid && (title.dirty || title.touched)" class="text-danger">
+                                <div *ngIf="title.errors?.['required']">{{champRequis}}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label class="form-label">* Titre du devoir : </label>
+                            <input 
+                            type="text" 
+                            class="form-control" 
+                            [(ngModel)]="entity.title" required
+                            name="title" #title="ngModel"
+                            [ngClass]="{
+                            'border-danger': title.invalid && (title.dirty || title.touched),
+                            'border-success': title.valid && title.dirty
+                            }"
+                            >
+                            <div *ngIf="title.invalid && (title.dirty || title.touched)" class="text-danger">
+                                <div *ngIf="title.errors?.['required']">{{champRequis}}</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">* Date :</label>
+                        <div class="input-icon position-relative">
+                        <span class="input-icon-addon">
+                            <i class="ti ti-calendar"></i>
+                        </span> 
+                        <input
+                            type="text"
+                            class="form-control datetimepicker"
+                            placeholder="jj-mm-aaaa"
+                            bsDatepicker
+                            name="homeWorkDate" #homeWorkDate="ngModel"
+                            [(ngModel)]="entity.homeWorkDate" required
+                            [ngClass]="{
+                            'border-danger': homeWorkDate.invalid && (homeWorkDate.dirty || homeWorkDate.touched),
+                            'border-success': homeWorkDate.valid && homeWorkDate.dirty
+                            }"
+                            />
+                            <div *ngIf="homeWorkDate.invalid && (homeWorkDate.dirty || homeWorkDate.touched)" class="text-danger">
+                            <div *ngIf="homeWorkDate.errors?.['required']" class = "f08">{{champRequis}}</div>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">* Date de Correction :</label>
+                        <div class="input-icon position-relative">
+                        <span class="input-icon-addon">
+                            <i class="ti ti-calendar"></i>
+                        </span> 
+                        <input
+                            type="text"
+                            class="form-control datetimepicker"
+                            placeholder="jj-mm-aaaa"
+                            bsDatepicker
+                            name="submissionDate" #submissionDate="ngModel"
+                            [(ngModel)]="entity.submissionDate" required
+                            [ngClass]="{
+                            'border-danger': submissionDate.invalid && (submissionDate.dirty || submissionDate.touched),
+                            'border-success': submissionDate.valid && submissionDate.dirty
+                            }"
+                            />
+                            <div *ngIf="submissionDate.invalid && (submissionDate.dirty || submissionDate.touched)" class="text-danger">
+                                <div *ngIf="submissionDate.errors?.['required']" class = "f08">{{champRequis}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Document : Insérer le devoir en pièce jointe (.pdf, .doc, .docx, .xls, .txt)</label>
+                    <input 
+                    type="file" 
+                    class="form-control" 
+                    name="attachment" #attachment="ngModel"
+                    [(ngModel)]="entity.attachment"
+                    (change)="onFileSelect($event)"
+                    #fileInput
+                    accept=".pdf, .doc, .docx, .xls, .txt"
+                    />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">* Contenu :</label>
+                    <textarea 
+                    class="form-control" 
+                    rows="4" 
+                    name="content" #content="ngModel"
+                        [(ngModel)]="entity.content" required
+                        [ngClass]="{
+                        'border-danger': content.invalid && (content.dirty || content.touched),
+                        'border-success': content.valid && content.dirty
+                        }"
+                    ></textarea>
+                    <div *ngIf="content.invalid && (content.dirty || content.touched)" class="text-danger">
+                            <div *ngIf="content.errors?.['required']" class = "f08">{{champRequis}}</div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light me-2" type="button"  (click)="closeAddEditModal()">Annuler</button>
+                <button type="submit"  class="btn btn-primary" (click)="save()" [disabled]="isSubmited">
+                    <span *ngIf="isSubmited" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    {{ mode === 'edit' ? 'Mettre à jour' : 'Ajouter' }}
+                </button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+<!-- /Add and Edit Home Work -->
+
+
+<!-- Delete Modal -->
+<div class="modal fade" id="delete-modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        <form>
+            <div class="modal-body text-center">
+            <span class="delete-icon">
+                <i class="ti ti-trash-x"></i>
+            </span>
+            <h4>Confirmer la Suppression</h4>
+            <p>
+                Vous souhaitez supprimer cet élément ?
+            </p>
+            <div class="d-flex justify-content-center">
+                <a href="javascript:void(0);" class="btn btn-light me-3"(click)="closeDeleteModal()">Annuler</a>
+                <button type="button"  class="btn btn-danger" (click)="delete()" [disabled]="isSubmited">
+                    <span *ngIf="isSubmited" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Oui, Supprimer
+                </button>
+            </div>
+            </div>
+        </form>
         </div>
     </div>
 </div>

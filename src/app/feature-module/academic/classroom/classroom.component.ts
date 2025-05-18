@@ -12,6 +12,7 @@ import { AuthService } from '../../../services/auth.service';
 import { AlertService } from '../../../services/alertService';
 import { apiResultFormat } from '../../../shared/model/pages.model';
 import { Sort } from '@angular/material/sort';
+import { LoginService } from '../../../auth/services/login.service';
 
 declare var bootstrap: any;
 
@@ -39,6 +40,12 @@ export class ClassroomComponent implements OnInit {
   public pageSelection: pageSelection[] = [];
   public searchDataValue = '';
   dataSource!: MatTableDataSource<any>;
+
+  public selectedYear : any = null;
+  public academicYears : any[] = [];
+  currentUser : any = {};
+  currentPerson : any = {};
+
   isSubmited: boolean = false;
   entity: any = {};
   mode = 'create'; // Mode par défaut
@@ -49,20 +56,33 @@ export class ClassroomComponent implements OnInit {
     }
 
    constructor(
-     private data: DataService,
+     private loginService: LoginService,
      private utils: UtilsService,
      private authService: AuthService,
      private router: Router,
      private pagination: PaginationService,
-     private alertService: AlertService
+     private alertService: AlertService,
+     private data: DataService
    ) {}
  
-   ngOnInit(): void {
-     this.load=true;
-     this.loadData();
-     this.entity = {}
+   async ngOnInit() {
+     this.entity = {};
      this.isSubmited = false;
+    /*
+     this.currentUser = this.loginService.getUser();
+     this.currentPerson = this.loginService.getPerson();
+     this.academicYears = await globalGet({T: 'AcademicYear'});
+     this.selectedYear = 'dsiw02koq7'; //await getCurrentAcademicYear(); // A recupérer de façon dynamique
+     */
+     this.load = true;
+     this.loadData();
    }
+
+ // Permet de lister les rôles ayant l'accès en modification sur un devoir.
+  checkTaskName(taskName: string): boolean {
+  const allowedTasks = ['etablissement'];
+  return allowedTasks.includes(taskName);
+}
 
   private async loadData(): Promise<void> {
       try {

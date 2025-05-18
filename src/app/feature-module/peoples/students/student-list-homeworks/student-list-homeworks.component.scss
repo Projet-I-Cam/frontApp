@@ -3,6 +3,39 @@
   padding: 1rem;
   margin: 1rem;
   border-radius: 8px;
+  min-height: 300px;
+  max-height: 300px;
+  width: 30%;
+  float: left;
+}
+
+.correctionDate {
+  background-color: #ffcdd2; /* Rouge */
+  color: #b71c1c;
+  font-size: 1em;
+  font-weight: bold;
+  padding: 2px 10px 2px 10px;
+  margin: 15px 0px 15px 25px;
+  border-radius: 22px;
+}
+
+.createdDate{
+  font-style: italic;
+  font-size: 0.8em;
+  color: gray;
+}
+
+.td_contenu {
+  width: 98%;
+}
+
+.td_action{
+  width: 2%;
+}
+
+.limited-height {
+  max-height: 100px;
+  overflow-y: auto; /* ou 'scroll' pour toujours afficher la barre */
 }
 
 .date-info {
@@ -24,17 +57,28 @@
   font-weight: bold;
 }
 
-.late {
-  background-color: #ffcdd2; /* Rouge */
-  color: #b71c1c;
-  font-weight: bold;
-  padding: 2px 10px 2px 10px;
-  margin: 15px 0px 15px 25px;
-  border-radius: 25px;
+.f08{
+  font-size: 0.8em;
 }
 
-.createdDate{
-  font-style: italic;
-  font-size: 0.8em;
-  color: gray;
+.dropdown-container {
+  margin: 20px;
+  font-family: Arial, sans-serif;
+}
+
+select {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-left: 10px;
+  width: 70%;
+}
+
+select:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.module{
+  color :#5d767a;
 }
