@@ -49,6 +49,9 @@ export class StudentListHomeworksComponent implements OnInit {
   classroom: any = null;
   classroomId : any = null;
   teacherId : any = null;
+  //moduleId : any = null;
+  modules : any[] = []; // Liste des matières enseignées dans l'établissement
+  selectedModule : any; // représente le module sélectionné
 
   isSubmited: boolean = false;
   entity: any = {};
@@ -73,9 +76,11 @@ export class StudentListHomeworksComponent implements OnInit {
     this.academicYears = await globalGet({T: 'AcademicYear'});
     this.selectedYear = 'dsiw02koq7'; //await getCurrentAcademicYear(); // A recupérer de façon dynamique
     this.classroomId = 'gvJiOAkJ9p'; // A recupérer de façon dynamique
+    this.selectedModule = 'JXTPSD41wZ'; // A recupérer de façon dynamique
     console.log('User id : ', this.currentUser);
     this.teacherId =  'dcLJrWeoTQ'; // this.currentUser.objectId; // A recupérer de façon dynamique
     this.loadHomeworks(this.selectedYear.objectId, this.classroomId);
+    this.loadModules(this.selectedYear.objectId, this.classroomId);
   }
 
   async loadHomeworks(yearId : any, idclassroom : any = '') : Promise<void> {
@@ -91,6 +96,17 @@ export class StudentListHomeworksComponent implements OnInit {
             includes :  ['teacher']
         });
         console.log('load homeworks list', this.homeworks);
+     } catch (error) {
+        this.alertService.showError('Erreur lors du chargement des données');
+      }
+  }
+
+  async loadModules(yearId : any, idclassroom : any = '') : Promise<void> {
+    try { 
+        this.modules = await globalGet({
+          T: "Module"
+        });
+        console.log('chargement liste des modules / matières ', this.modules);
      } catch (error) {
         this.alertService.showError('Erreur lors du chargement des données');
       }
@@ -216,11 +232,11 @@ private getFileExtension(filename: string): string {
           
         console.log(this.entity, this.mode);
         const data : any =  {
-          //title: this.entity.title,
+          title: this.entity.title,
           homeWorkDate: this.entity.homeWorkDate,
           submissionDate: this.entity.submissionDate,
           //attachment: this.entity.attachment,
-          content: this.entity.content,
+          content: this.entity.content
         };
 
     try 
@@ -230,7 +246,7 @@ private getFileExtension(filename: string): string {
           T:'HomeWork', 
           dataObject: { 
             ...data,
-           // isClosed : false,
+            isClosed : false,
             teacher: { 
               className: "Person", 
               objectId: this.teacherId
@@ -238,6 +254,15 @@ private getFileExtension(filename: string): string {
             classroom: { 
               className: "Classroom", 
               objectId: this.classroomId
+            },
+            academicYear: {
+             className : "AcademicYear",
+             objectId : this.selectedYear,
+            },
+            module:
+            { 
+              className : "Module",
+              objectId : this.selectedModule
             }
           }
         });
@@ -251,7 +276,27 @@ private getFileExtension(filename: string): string {
         }
         const homeWork = await globalPut({
           T:'HomeWork', 
-          dataObject: data, 
+          dataObject: { 
+            ...data,
+            isClosed : false,
+            teacher: { 
+              className: "Person", 
+              objectId: this.teacherId
+            },
+            classroom: { 
+              className: "Classroom", 
+              objectId: this.classroomId
+            },
+            academicYear: {
+             className : "AcademicYear",
+             objectId : this.selectedYear,
+            },
+            module:
+            { 
+              className : "Module",
+              objectId : this.selectedModule
+            }
+          },
           objectId: this.entity.objectId
         });
       }

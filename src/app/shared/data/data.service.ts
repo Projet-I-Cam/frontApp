@@ -2740,7 +2740,7 @@ export class DataService {
           showSubRoute: false,
           subMenus: [
             { menuValue: 'Géolocalisation', route: routes.generalSettings },
-            { menuValue: 'Administration des Classes', route: routes.classReport },
+            { menuValue: 'Administration des Classes', route: routes.classRoom }, //routes.classReport },
             { menuValue: 'Parametrage Bulletins', route: routes.reportCard },
             { menuValue: 'Frais Scolaires', route: routes.feesMaster },
             { menuValue: 'Emploi du temps', route: routes.classTimeTable },
@@ -2827,11 +2827,11 @@ export class DataService {
           showSubRoute: false,
           subMenus: [
             { menuValue: 'Liste des classes', route: routes.classes },
-            { menuValue: 'Projet pédagogique', route: routes.classHomeWork },
+            { menuValue: 'Projet pédagogique', route : '' },
             { menuValue: 'Programme des cours', route: routes.scheduleClasses },
             { menuValue: 'Manuels au programme', route: '' },
             { menuValue: 'Matériel pédagogique', route: '' },
-            { menuValue: 'Devoirs/Exercices', route: '' },
+            { menuValue: 'Devoirs/Exercices', route: routes.classHomeWork },
             { menuValue: 'Contrôle/Examens', route: '' },
             { menuValue: 'Gestion des absences', route: '' },
             { menuValue: 'Suivi des élèves/Discipline', route: '' }

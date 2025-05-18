@@ -18,12 +18,6 @@
           </ol>
         </nav>
       </div>
-      <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
-        <div class="mb-2">
-          <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal"
-            (click)="openModal('create')"><i class="ti ti-square-rounded-plus-filled me-2"></i>Créer nouvelle Salle</a>
-        </div>
-      </div>
     </div>
 
     
@@ -31,6 +25,16 @@
           <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between flex-wrap pb-0">
               <h4 class="mb-3">Liste des Salles de classes</h4>
+              <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
+        <div class="mb-2" *ngIf="!checkTaskName(currentUser?.role?.task_name)">
+          <a 
+            href="javascript:void(0);" 
+            class="btn btn-primary" 
+            data-bs-toggle="modal"
+            (click)="openModal('create')"
+            ><i class="ti ti-square-rounded-plus-filled me-2"></i>Créer nouvelle Salle</a>
+        </div>
+      </div>
             </div>
             <div class="card-body p-0 py-3">
               <!-- Guardians List -->
@@ -201,7 +205,7 @@
                     </div>
                     <div class="col-md-12">
                       <div class="mb-3">
-                        <label class="form-label"> Capacité Maximum :  </label>
+                        <label class="form-label"> Capacité Maximum d'élèves :  </label>
                         <div style="display: inline-flex; align-items: center; gap: 5px;">
                           <!-- <button (click)="decrement()">-</button> -->
                           <input 

@@ -10,7 +10,7 @@
                     <ul class="dropdown-menu p-3">
                         <li *ngFor="let year of academicYears">
                             <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                                (click)="selectYear(year.objectId)" [class.active]="selectedYear === year.objectId">
+                                (click)="selectYear(year)" [class.active]="selectedYear === year.objectId">
                                 Année Académique : {{ year.libelle }}
                             </a>
                         </li>
@@ -38,6 +38,7 @@
                     <table style = "width : 100%;">
                         <tr>
                             <td class = "td_contenu">
+                                <p *ngIf="homework.module" class = "module">[{{ homework.module?.description_fr }}]</p>
                                 <h3 *ngIf="homework.title; else noTitle"><img src="" /> {{ homework.title }}</h3>
                                 <ng-template #noTitle><h3> Devoir à faire</h3></ng-template>
                                 <p class="correctionDate"> Date de Correction : {{ homework.submissionDate?.iso | date:'EEE d MMM y' }}</p>
@@ -129,6 +130,33 @@
             <div class="row">
                 <div class="col-md-12">
                 <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label for="module">* Matière : </label>
+                            <select 
+                                id="module" 
+                                [(ngModel)]="selectedModule" required
+                                name="module" #module="ngModel"
+                                [ngClass]="{
+                                'border-danger': module.invalid && (module.dirty || module.touched),
+                                'border-success': module.valid && module.dirty
+                                }"
+                                 [ngClass]="{
+                                'border-danger': module.invalid && (module.dirty || module.touched),
+                                'border-success': module.valid && module.dirty
+                                }"
+                                >
+                                <option *ngFor="let md of modules" 
+                                        [value]="md.objectId">
+                                {{md.description_fr}}
+                                </option>
+                            </select>
+                            <div *ngIf="title.invalid && (title.dirty || title.touched)" class="text-danger">
+                                <div *ngIf="title.errors?.['required']">{{champRequis}}</div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="col-md-12">
                         <div class="mb-3">
                             <label class="form-label">* Titre du devoir : </label>

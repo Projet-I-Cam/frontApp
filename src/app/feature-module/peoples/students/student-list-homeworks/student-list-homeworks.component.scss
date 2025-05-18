@@ -60,3 +60,25 @@
 .f08{
   font-size: 0.8em;
 }
+
+.dropdown-container {
+  margin: 20px;
+  font-family: Arial, sans-serif;
+}
+
+select {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-left: 10px;
+  width: 70%;
+}
+
+select:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.module{
+  color :#5d767a;
+}
