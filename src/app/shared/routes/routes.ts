@@ -271,7 +271,7 @@ export class routes {
     return this.academic + '/classes/schedule-classes';
   }
   public static get classes(): string {
-    return this.academic + '/classes/class-list';
+    return this.classRoom; //return this.academic + '/classes/class-list';
   }
   public static get classHomeWork(): string {
     return this.academic + '/class-home-work';
