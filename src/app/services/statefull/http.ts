@@ -5,10 +5,8 @@ import ParseClass from '../../parseClass';
 const CLASS: any = ParseClass
 
 function sanitizeFilename(filename: string) {
-  return filename
-    .replace(/[\\\/:*?"<>|]/g, '') // Remove invalid characters
-    .replace(/\s+/g, '_') // Replace spaces with underscores
-    .substring(0, 255); // Limit length
+    const withoutAccents = filename.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    return withoutAccents.replace(/[^a-zA-Z0-9.\-_]/g, "_").substring(0, 255);
 }
 export interface BaseGetIO {
     T: any; // la classe par de base. vous pouvez regarder app/parseClass.ts
