@@ -68,8 +68,8 @@
                     <tr>
                       <th mat-sort-header="id">#</th>
                      <!-- <th mat-sort-header="slug">Slug</th> -->
-                      <th mat-sort-header="name_fr">Libellé [FR]</th>
-                      <th mat-sort-header="nameEn">Libellé [EN]</th>
+                      <th mat-sort-header="name_fr">Libellé </th>
+                      <th mat-sort-header="nameEn"> Enseignant Principal </th>
                       <th mat-sort-header="maxCapacity">Capacité</th>
                       <th mat-sort-header="statut">Statut</th>
                       <th mat-sort-header="Addedon">Crée le</th>
@@ -93,7 +93,7 @@
                         <td>{{table.id}}</td>
                        <!-- <td>{{ table.slug }}</td> -->
                         <td>{{ table.name_fr }}</td>
-                        <td>{{ table.name_en }}</td>
+                        <td>{{ table.teacherChief?.lastName }}</td>
                         <td>{{ table.maxCapacity }}</td>
                         <td>
                           <span class="badge d-inline-flex align-items-center"
@@ -141,7 +141,7 @@
             </div>
           </div>
     
-    <!-- Add Entity -->
+    <!-- Add and Edit Entity -->
     <div class="modal fade" id="add-edit-modal">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
@@ -158,6 +158,44 @@
             <form>
                 <div class="modal-body">
                 <div class="row">
+                    <div class="dropdown mb-3 me-2">
+                      <label class="form-label"> Année Académique  : </label>
+                      <a href="javascript:void(0);" class="btn btn-outline-light bg-white dropdown-toggle"
+                          data-bs-toggle="dropdown" data-bs-auto-close="outside"><i class="ti ti-calendar-due me-2"></i>
+                          Année Académique : 2024 / 2025</a>
+                      <ul class="dropdown-menu p-3">
+                          <li *ngFor="let year of academicYears">
+                              <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                                  (click)="selectYear(year)" [class.active]="selectedYear === year.objectId">
+                                  Année Académique : {{ year.libelle }}
+                              </a>
+                          </li>
+                      </ul>
+                  </div>
+
+                  <div class="col-md-12">
+                        <div class="mb-3">
+                            <label for="section">* Section : </label>
+                            <select 
+                                id="section" 
+                                [(ngModel)]="selectedSection" required
+                                name="section" #section="ngModel"
+                                [ngClass]="{
+                                'border-danger': section.invalid && (section.dirty || section.touched),
+                                'border-success': section.valid && section.dirty
+                                }"
+                                >
+                                <option *ngFor="let item of sections" 
+                                        [value]="item.objectId">
+                                {{item.name_fr}}
+                                </option>
+                            </select>
+                            <div *ngIf="section.invalid && (section.dirty || section.touched)" class="text-danger">
+                                <div *ngIf="section.errors?.['required']">{{champRequis}}</div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="col-md-12">
                         <div class="mb-3">
                             <label class="form-label">Slug</label>
@@ -203,6 +241,46 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label for="teacherChief">* Enseignement Principal : </label>
+                            <select 
+                                id="teacherChief" 
+                                [(ngModel)]="selectedTeacherChief" required
+                                name="teacherChief" #teacherChief="ngModel"
+                                [ngClass]="{
+                                'border-danger': teacherChief.invalid && (teacherChief.dirty || teacherChief.touched),
+                                'border-success': teacherChief.valid && teacherChief.dirty
+                                }"
+                                >
+                                <option *ngFor="let item of teachers" 
+                                        [value]="item.objectId">
+                                 Matricule : {{item.registrationNumber }} | {{item.lastName}}
+                                </option>
+                            </select>
+                            <div *ngIf="teacherChief.invalid && (teacherChief.dirty || teacherChief.touched)" class="text-danger">
+                                <div *ngIf="teacherChief.errors?.['required']">{{champRequis}}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label for="teacherSecond"> Enseignement Suppléant : </label>
+                            <select 
+                                id="teacherSecond" 
+                                [(ngModel)]="selectedTeacherSecond"
+                                name="teacherSecond" #teacherSecond="ngModel"
+                                >
+                                <option *ngFor="let item of teachers" 
+                                        [value]="item.objectId">
+                                Matricule : {{item.registrationNumber }} | {{item.lastName}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="col-md-12">
                       <div class="mb-3">
                         <label class="form-label"> Capacité Maximum d'élèves :  </label>
@@ -247,6 +325,7 @@
           </div>
         </div>
     </div>
+    <!-- /Add and Edit Entity -->
     
     <!-- Delete Modal -->
     <div class="modal fade" id="delete-modal">
