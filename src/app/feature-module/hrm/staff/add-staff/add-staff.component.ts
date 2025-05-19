@@ -57,6 +57,8 @@ export class AddStaffComponent {
       birthPlace: ['', [Validators.required]],
       birthDate: [null, [Validators.required]],
       gender: ['', [Validators.required]],
+      photo: [null],
+      mutationActRef: [''],
       maritalStatus: ['', [Validators.required]],
       countryCode: ['', [Validators.required]],
       municipality: ['', [Validators.required]],
