@@ -156,21 +156,28 @@ getPersonsByStaffType(staffTypeId: string): Observable<any[]> {
     );
   }
 
-  async searchParentByKeyword(q: string): Promise<any> {
+  async searchParentByKeyword(q: string, isParent?: boolean): Promise<any> {
     try {
       const queries = ['firstName', 'lastName', 'phone', 'email'].map(field => {
         const qObj = new Parse.Query(this.PERSON_CLASS);
-        qObj.equalTo('isParent', true);
+        qObj.exists("user");
+        if(isParent){
+          qObj.equalTo('isParent', true);
+        }else{
+          qObj.doesNotExist("isStudent");
+        }
         qObj.matches(field, new RegExp(q, 'i'));
         return qObj;
       });
       const mainQuery = Parse.Query.or(...queries);
       mainQuery.limit(30);
-      mainQuery.select('firstName', 'lastName', 'email', 'phone');
+      // mainQuery.select('firstName', 'lastName', 'email', 'phone', "user.objectId");
       const results = await mainQuery.find();
+      // console.log(' results results ', results //?.map(r => r?.toJSON()))
+      console.log(' results results ', results?.[0]?.get("user")._getId())
       return results.map(person => ({
         label: `${person.get("firstName")} ${person.get("lastName")} - ${person.get("phone")}`,
-        value: person.id
+        value: person.get("user")?._getId()
       }));
     } catch (error) {
       console.error(' error searchParentByKeyword', error)

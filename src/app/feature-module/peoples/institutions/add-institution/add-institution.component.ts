@@ -222,8 +222,8 @@ export class AddInstitutionComponent implements OnInit {
         formData.phones = [];
       }
 
-      console.log('Form data prepared for API:', formData);
       console.log('Is edit mode:', this.isEditMode, 'Edit ID:', this.editId);
+       console.log('Form data prepared for API:', formData);
      
       if (this.isEditMode && this.editId) {
         // Appeler le service pour mettre à jour l'institution
@@ -271,7 +271,7 @@ export class AddInstitutionComponent implements OnInit {
     }
     this.loadingDrop = true;
     console.log('query query ', query)
-    const resp = await this.personService.searchParentByKeyword(query.toLowerCase())
+    const resp = await this.personService.searchParentByKeyword(query.toLowerCase(), false)
     console.log('RESP ', resp)
     this.filteredPerson = resp
     this.loadingDrop = false;
