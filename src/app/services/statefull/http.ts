@@ -4,6 +4,10 @@ import ParseClass from '../../parseClass';
 
 const CLASS: any = ParseClass
 
+function sanitizeFilename(filename: string) {
+    const withoutAccents = filename.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    return withoutAccents.replace(/[^a-zA-Z0-9.\-_]/g, "_").substring(0, 255);
+}
 export interface BaseGetIO {
     T: any; // la classe par de base. vous pouvez regarder app/parseClass.ts
     filters?: {}; //les contraintes
@@ -106,7 +110,7 @@ export const globalPost = async({T, dataObject} : BasePostIO): Promise<any> => {
                 });
         
             }else if(value instanceof File){
-                const parseFile = new Parse.File(value.name, value);
+                const parseFile = new Parse.File(sanitizeFilename(value.name), value);
                 query.set(key, parseFile);
             } else {
         

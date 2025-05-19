@@ -57,6 +57,7 @@ export class AddStaffComponent {
       birthPlace: ['', [Validators.required]],
       birthDate: [null, [Validators.required]],
       gender: ['', [Validators.required]],
+      photo: [null],
       maritalStatus: ['', [Validators.required]],
       countryCode: ['', [Validators.required]],
       municipality: ['', [Validators.required]],
@@ -65,6 +66,7 @@ export class AddStaffComponent {
       address: ['', [Validators.required]],
       classroom: ['', [Validators.required]],
       profesionalBackground: this.fb.group({
+        mutationActRef: [''],
         status: ['', [Validators.required]],
         registrationNumber: ['', [Validators.required]],
         NIU: [''],

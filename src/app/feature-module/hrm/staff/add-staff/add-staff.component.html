@@ -163,15 +163,16 @@
                       </ng-template>
 
                       <!-- Template pour l’élément sélectionné affiché dans le champ -->
-                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                      <ng-template  ng-label-tmp let-item="item" let-clear="clear">
                         <img 
                           [src]="item.flag" 
+                          *ngIf="item"
                           alt="{{item.nameFr}} drapeau" 
                           width="20" 
                           height="15" 
                           style="margin-right: 8px; vertical-align: middle;">
                         {{ item.nameFr }}
-                        <span (click)="clear(item)" class="ng-select-clear-button">&times;</span>
+                        <span *ngIf="item" (click)="clear(item)" class="ng-select-clear-button">&times;</span>
                       </ng-template>
                     </ng-select>
                   </div>
@@ -285,6 +286,13 @@
                   <div class="mb-3">
                     <label class="form-label">Position actuelle</label>
                     <input type="text" class="form-control" formControlName="currentPosition" [ngClass]="{'is-invalid': profesionalBackground.get('currentPosition')?.invalid && profesionalBackground.get('currentPosition')?.touched}" />
+                  </div>
+                </div>
+              
+                <div class="col-12 col-md-4">
+                  <div class="mb-3">
+                    <label class="form-label">Référence acte de mutation</label>
+                    <input type="text" class="form-control" formControlName="mutationActRef" />
                   </div>
                 </div>
                 <div class="col-12 col-md-4">

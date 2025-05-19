@@ -46,6 +46,13 @@ export class ClassroomComponent implements OnInit {
   currentUser : any = {};
   currentPerson : any = {};
 
+  sections : any[] = []; // Liste des différentes sections existantes
+  selectedSection : any; // représente la section sélectionné
+
+  teachers : any[] = []; // Représente la liste des enseignants de l'etablissement
+  selectedTeacherChief : any; // Représente l'enseignant principal
+  selectedTeacherSecond : any; // Représente l'enseignant secondaire
+
   isSubmited: boolean = false;
   entity: any = {};
   mode = 'create'; // Mode par défaut
@@ -71,11 +78,14 @@ export class ClassroomComponent implements OnInit {
     /*
      this.currentUser = this.loginService.getUser();
      this.currentPerson = this.loginService.getPerson();
+    */
      this.academicYears = await globalGet({T: 'AcademicYear'});
      this.selectedYear = 'dsiw02koq7'; //await getCurrentAcademicYear(); // A recupérer de façon dynamique
-     */
+    
      this.load = true;
      this.loadData();
+     this.loadSections();
+     this.loadTeachers();
    }
 
  // Permet de lister les rôles ayant l'accès en modification sur un devoir.
@@ -83,6 +93,28 @@ export class ClassroomComponent implements OnInit {
   const allowedTasks = ['etablissement'];
   return allowedTasks.includes(taskName);
 }
+
+ async loadSections() : Promise<void> {
+    try { 
+        this.sections = await globalGet({
+          T: "Section"
+        });
+        console.log('chargement liste des Sections : ', this.sections);
+     } catch (error) {
+        this.alertService.showError('Erreur lors du chargement des données');
+      }
+  }
+
+  async loadTeachers() : Promise<void> {
+    try { 
+        this.teachers = await globalGet({
+          T: "Person"
+        });
+        console.log('chargement liste des enseignants : ', this.teachers);
+     } catch (error) {
+        this.alertService.showError('Erreur lors du chargement des données');
+      }
+  }
 
   private async loadData(): Promise<void> {
       try {
@@ -168,7 +200,14 @@ export class ClassroomComponent implements OnInit {
       this.mode = mode;
       this.isSubmited = false;
       if (mode === 'edit' && entity) {
+        console.log(' entity check : ', this.entity);
+
         this.entity = { ...entity}
+        this.selectedYear = this.entity.academicYear?.objectId;
+        this.selectedSection = this.entity.section?.objectId;
+        this.selectedTeacherChief = this.entity.teacherChief?.objectId;
+        this.selectedTeacherSecond = this.entity.teacherSecond?.objectId;
+        
       } else {
         this.entity = { maxCapacity : 30, isActive : true };
       }
@@ -213,10 +252,39 @@ export class ClassroomComponent implements OnInit {
           name_en: this.entity.name_en,
           maxCapacity: this.entity.maxCapacity,
           isActive: this.entity.isActive,
+          
+          academicYear : this.selectedYear,
         };
         try {
           if (this.mode === 'create') {
-            const classRoom = await globalPost({T:'Classroom', dataObject: data});
+            const classRoom = await globalPost({
+              T:'Classroom', 
+              dataObject : 
+              {
+                ... data,
+
+                academicYear: {
+                  className : "AcademicYear",
+                  objectId : this.selectedYear,
+                },
+                
+                teacherChief : { 
+                  className: "Person", 
+                  objectId: this.selectedTeacherChief
+                },
+
+                teacherSecond : { 
+                  className: "Person", 
+                  objectId: this.selectedTeacherSecond
+                 },
+
+                 section : { 
+                  className: "Section", 
+                  objectId: this.selectedSection
+                 },
+              }
+            });
+
             console.log(classRoom);
           } else {
             if(!this.entity.objectId){
@@ -224,7 +292,35 @@ export class ClassroomComponent implements OnInit {
               this.isSubmited = false;
               return;
             }
-            const classRoom = await globalPut({T:'Classroom', dataObject: data, objectId: this.entity.objectId});
+            const classRoom = await globalPut({
+              T:'Classroom', 
+               dataObject : 
+              {
+                ... data,
+
+                academicYear: {
+                  className : "AcademicYear",
+                  objectId : this.selectedYear,
+                },
+                
+                teacherChief : { 
+                  className: "Person", 
+                  objectId: this.selectedTeacherChief
+                },
+
+                teacherSecond : { 
+                  className: "Person", 
+                  objectId: this.selectedTeacherSecond
+                },
+
+                 section : { 
+                  className: "Section", 
+                  objectId: this.selectedSection
+                 },
+              },
+              
+              objectId: this.entity.objectId
+            });
           }
           this.alertService.showSuccess();
           this.ngOnInit();
@@ -265,4 +361,10 @@ export class ClassroomComponent implements OnInit {
           this.entity.maxCapacity--;
         }
       }
+
+  selectYear(yearAcademicId: any): void {
+  this.selectedYear = yearAcademicId;
+  // Ajoutez ici toute autre logique nécessaire
+  console.log('Année sélectionnée:', this.selectedYear);
+  }
 }
