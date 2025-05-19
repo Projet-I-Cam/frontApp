@@ -33,11 +33,11 @@
     </div>
     <p-tabView [(activeIndex)]="activeIndex" (onChange)="onTabChange($event)" *ngIf="isDataLoading == false">
       <p-tabPanel header="Détails de l'Élève" leftIcon="ti ti-school me-2">
-        <app-student-infos [studentData]="studentData"></app-student-infos>
+        <app-student-infos [studentData]="studentData.person"></app-student-infos>
 
       </p-tabPanel>
       <p-tabPanel header="Etablissement" leftIcon="ti ti-table-building me-2">
-        <app-student-school></app-student-school>
+        <app-student-school [institutionData]="studentData.institution"></app-student-school>
       </p-tabPanel>
 
       <p-tabPanel header="Emploi du temps" leftIcon="ti ti-table-options me-2">
@@ -53,12 +53,20 @@
       </p-tabPanel>
 
       <p-tabPanel header="Examens & Résultats" leftIcon="ti ti-bookmark-edit me-2">
-        <app-student-result></app-student-result>
-        <app-student-report-card></app-student-report-card>
+        <p-tabView>
+          <p-tabPanel header="Resultats au examens">
+            <app-student-result></app-student-result>
+
+          </p-tabPanel>
+          <p-tabPanel header="Bulletin">
+            <app-student-report-card></app-student-report-card>
+
+          </p-tabPanel>
+        </p-tabView>
       </p-tabPanel>
 
       <p-tabPanel header="Devoirs" leftIcon="ti ti-calendar-due me-2">
-        Contenu Devoirs
+        <app-student-list-homeworks></app-student-list-homeworks>
       </p-tabPanel>
     </p-tabView>
   </div>

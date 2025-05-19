@@ -32,6 +32,7 @@ export class StudentInfosComponent {
   classRooms: any;
   teachers: any;
   optionMap: any;
+  parents: any;
 
   constructor(
     private fb: FormBuilder,
@@ -45,26 +46,46 @@ export class StudentInfosComponent {
 
   activeSubIndex = 0;
   async ngOnInit() {
-    this.userRole = this.loginService.getCurrentRole();
-    this.academicYear = await getCurrentAcademicYear();
-    const res = await listInscriptions({
-      yearId: this.academicYear.objectId,
-      personId: this.studentData.objectId
-    });
-    this.academicData = res[0];
-    console.log(this.academicData);
-    this.getClassRoomTeachers();
-    this.getClassRooms();
-    this.getSections();
-    this.getClasses();
-    this.getGenders();
-    this.initForm();
-    this.initAcademicForm();
-    this.optionMap = {
-    section: this.sections? this.sections: [],
-    classe: this.classes? this.classes: [],
-    classRoom: this.classRooms ? this.classRooms : [] ,
-  };
+    try {
+      this.userRole = this.loginService.getCurrentRole();
+      this.academicYear = await getCurrentAcademicYear();
+
+      const res = await listInscriptions({
+        yearId: this.academicYear.objectId,
+        personId: this.studentData.objectId
+      });
+
+      this.academicData = res[0] || {};
+      console.log('academicData', this.academicData);
+
+      this.initForm();
+      this.initAcademicForm();
+
+      // Load dependent data in sequence
+      await this.getGenders();
+      await this.getSections();
+      await this.getClasses();
+      await this.getClassRooms();
+      await this.getClassRoomTeachers();
+
+      // Initialize optionMap after all data is loaded
+      this.optionMap = {
+        section: (this.sections && this.sections.length > 0)
+          ? this.sections
+          : (this.academicData?.classroom?.classe?.section ? [this.academicData.classroom.classe.section] : []),
+
+        classe: (this.classes && this.classes.length > 0)
+          ? this.classes
+          : (this.academicData?.classroom?.classe ? [this.academicData.classroom.classe] : []),
+
+        classRoom: (this.classRooms && this.classRooms.length > 0)
+          ? this.classRooms
+          : (this.academicData?.classroom ? [this.academicData.classroom] : []),
+      };
+      console.log('parents',)
+    } catch (error) {
+      console.error('Initialization error:', error);
+    }
   }
   // In your component.ts
   get normalizedTeachers(): any[] {
@@ -87,16 +108,17 @@ export class StudentInfosComponent {
       phone: [{ value: this.studentData?.phone || '', disabled: true }, [Validators.pattern(/^\+?[0-9]{7,15}$/)]],
       email: [{ value: this.studentData?.email || '', disabled: true }, [Validators.email]]
     });
+
   }
 
   initAcademicForm(): void {
-  this.academicForm = this.fb.group({
-    registrationNumber: [{ value: this.academicData?.registrationNumber || '', disabled: true }, [Validators.required]],
-    section: [{ value: this.academicData?.section?.objectId || '', disabled: true },[Validators.required]],
-    classe: [{ value: this.academicData?.classRoom?.classe?.objectId || '', disabled: true }, [Validators.required]],
-    classRoom: [{ value: this.academicData?.classRoom?.objectId || '', disabled: true }, [Validators.required]]
-  });
-}
+    this.academicForm = this.fb.group({
+      registrationNumber: [{ value: this.academicData?.matricule|| '', disabled: true }, [Validators.required]],
+      section: [{ value: this.academicData?.classroom?.classe?.section?.objectId || '', disabled: true }, [Validators.required]],
+      classe: [{ value: this.academicData?.classroom?.classe?.objectId || '', disabled: true }, [Validators.required]],
+      classRoom: [{ value: this.academicData?.classroom?.objectId || '', disabled: true }, [Validators.required]]
+    });
+  }
 
 
   onSubTabChange(index: any) {
@@ -113,12 +135,12 @@ export class StudentInfosComponent {
     this.isEditMode = false;
     this.initForm();
   }
- toggleEditAcademic() {
-  this.isEditAcademic = true;
-  this.academicForm.enable();
-  // Disable read-only field again
-  this.academicForm.get('registrationNumber')?.disable();
-}
+  toggleEditAcademic() {
+    this.isEditAcademic = true;
+    this.academicForm.enable();
+    // Disable read-only field again
+    this.academicForm.get('registrationNumber')?.disable();
+  }
 
   cancelEditAcademic() {
     this.isEditAcademic = false;
@@ -142,7 +164,11 @@ export class StudentInfosComponent {
   async getSections() {
     const res: any = await globalGet({
       T: 'InstitutionSection',
-      filters: { institution: 'Institution', objectId: this.academicData.institution.objectId }
+      filters: {
+        institution: {
+          className: 'Institution', objectId: this.academicData.institution.objectId
+        }
+      }
     });
     this.sections = res;
     console.log(this.sections);
@@ -165,7 +191,8 @@ export class StudentInfosComponent {
       filters: {
         classe: { className: 'Classe', objectId: this.academicForm.get('classe')?.value },
         institution: { className: 'Institution', objectId: this.academicData.institution.objectId }
-      }
+      },
+      selects: ['objectId', 'name_fr', 'name_en']
     });
     this.classRooms = res;
     console.log(this.classRooms);

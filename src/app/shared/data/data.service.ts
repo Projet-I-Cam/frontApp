@@ -2595,7 +2595,7 @@ export class DataService {
           hasSubRoute: true,
           showSubRoute: false,
           subMenus: [
-            { menuValue: "Inscrire un Élèves", route: routes.studentsList },
+            { menuValue: "Inscrire un Élèves", route: routes.addStudent },
             { menuValue: "Liste des Élèves", route: routes.studentsList },
             { menuValue: 'Transferts', route: routes.studentTransfer },
             { menuValue: 'Élèves Inactifs', route: routes.studentsList },

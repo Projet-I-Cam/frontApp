@@ -38,3 +38,11 @@
   border: none;
   box-shadow: none;
 }
+
+.no-gap-top {
+  margin-top: 0 !important;
+}
+
+::ng-deep app-student-details.no-gap-top {
+  margin-top: 0 !important;
+}
