@@ -80,8 +80,9 @@
           </div>
         </div>
       </div>
-     <app-student-details></app-student-details>
     </div>
   </div>
 </div>
+<app-student-details [ngClass]="{ 'no-gap-top': userRole === 'eleve' }"></app-student-details>
+
 <!-- /Page Wrapper -->

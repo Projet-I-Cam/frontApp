@@ -6,6 +6,10 @@ import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../../../../auth/services/login.service';
 import { Location } from '@angular/common';
 import { PersonService } from '../../../../services/person.service';
+import { Institution } from '../../../../shared/model/institution.model';
+import { globalGet } from '../../../../services/statefull/http';
+import { FilterStudent, getCurrentAcademicYear, listInscriptions } from '../../../../services/statefull/genericParse';
+
 
 
 
@@ -24,6 +28,9 @@ export class StudentDetailsComponent implements OnInit {
   isLoginStudent = false;
   isDataLoading = false;
   loginUserRole = '';
+  institutionData : any;
+  userId: any;
+  academicYear: any;
 
 
   constructor(
@@ -35,18 +42,22 @@ export class StudentDetailsComponent implements OnInit {
     private personService: PersonService
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+      const user = this.loginService.getUser();
+            this.academicYear = await getCurrentAcademicYear();
 
-      this.loginUserRole = this.loginService.getCurrentRole();
+      const role = user?.role?.task_name || 'admin';
+      this.loginUserRole = role;
       if (this.loginUserRole == 'eleve') {
         this.isLoginStudent = true;
+        this.userId = user.objectId;
+        this.getStudentDetails(this.userId);
       }
       else {
         this.isLoginStudent = false;
         this.studentId = this.route.snapshot.paramMap.get('id') || '';
+        this.getStudentDetails(this.studentId);
       }
-      this.getStudentDetails(this.studentId);
-
   }
   onTabChange(index: any) {
     if (index !== -1) {
@@ -55,21 +66,46 @@ export class StudentDetailsComponent implements OnInit {
   }
 
 async getStudentDetails(id: string) {
-  console.log(id);
+  console.log('Student ID:', id);
   this.isDataLoading = true;
+  try {
+    const res: any = await globalGet({
+      T: 'Enrollment',
+      filters:
+      this.studentId ?
+        {
+          academicYear: { className: 'AcademicYear', objectId: this.academicYear.objectId },
+          person: { className: 'Person',objectId: this.studentId }
+        } :
+        {
+           academicYear: { className: 'AcademicYear', objectId: this.academicYear.objectId },
+           person: {className: 'Person', user: {className:'_User', objectId: this.userId}}
+        },
+      includes: [
+        'person',
+        'person.parents',
+        'person.enrollments',
+        'institution',
+        'institution.persons',
+        'institution.municipality',
+        'institution.municipality.department',
+        'institution.municipality.department.region',
+        'institution.educationOfferings',
+        'institution.educationOfferings.educationType',
+        'institution.owner'
+      ],
+    });
 
-  this.personService.getPersonById(id).subscribe({
-    next: (student: any) => {
-      this.studentData = student;
-      this.isDataLoading = false;
-      console.log(student)
-    },
-    error: (err) => {
-      console.error('Failed to fetch student details', err);
-      this.isDataLoading = false;
-    }
-  });
+    this.studentData = res[0] || {};
+    console.log('institutionData', this.studentData);
+  } catch (error) {
+    console.error('Error fetching student details:', error);
+  } finally {
+    this.isDataLoading = false;
+  }
 }
+
+
 
   goBack() {
     this.location.back();
