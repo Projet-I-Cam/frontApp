@@ -200,6 +200,10 @@ export class AddInstitutionComponent implements OnInit {
       });
     }
   }
+
+  sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
   // Méthode pour soumettre le formulaire
   onSubmit(): void {
     if (this.institutionForm.valid) {
@@ -231,10 +235,11 @@ export class AddInstitutionComponent implements OnInit {
         this.institutionService.updateInstitution(this.editId, formData)
           .pipe(finalize(() => this.submitting = false))
           .subscribe({
-            next: (response) => {
+            next: async(response) => {
               console.log('Institution mise à jour avec succès:', response);
               // Rediriger vers la liste des institutions
-              this.router.navigate(['/peoples/institutions/institutions-list']);
+              await this.sleep(3000)
+              this.router.navigate(['/peoples/institutions/institutions-list'])
             },
             error: (error) => {
               console.error('Erreur lors de la mise à jour de l\'institution:', error);
@@ -246,10 +251,11 @@ export class AddInstitutionComponent implements OnInit {
         this.institutionService.createInstitution(formData) 
           .pipe(finalize(() => this.submitting = false))
           .subscribe({
-            next: (response) => {
+            next: async(response) => {
               console.log('Institution créée avec succès:', response);
               // Rediriger vers la liste des institutions
-              this.router.navigate(['/peoples/institutions/institutions-list']);
+              await this.sleep(3000)
+              this.router.navigate(['/peoples/institutions/institutions-list'])
             },
             error: (error) => {
               console.error('Erreur lors de la création de l\'institution:', error);

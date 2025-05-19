@@ -171,13 +171,13 @@ getPersonsByStaffType(staffTypeId: string): Observable<any[]> {
       });
       const mainQuery = Parse.Query.or(...queries);
       mainQuery.limit(30);
+      mainQuery.include("user");
       // mainQuery.select('firstName', 'lastName', 'email', 'phone', "user.objectId");
       const results = await mainQuery.find();
-      // console.log(' results results ', results //?.map(r => r?.toJSON()))
-      console.log(' results results ', results?.[0]?.get("user")._getId())
+      console.log(' results results ', results?.map(r => r?.toJSON()))
       return results.map(person => ({
         label: `${person.get("firstName")} ${person.get("lastName")} - ${person.get("phone")}`,
-        value: person.get("user")?._getId()
+        value: person.id
       }));
     } catch (error) {
       console.error(' error searchParentByKeyword', error)
