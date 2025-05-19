@@ -49,7 +49,6 @@ export class StudentListHomeworksComponent implements OnInit {
   classroom: any = null;
   classroomId : any = null;
   teacherId : any = null;
-  //moduleId : any = null;
   modules : any[] = []; // Liste des matières enseignées dans l'établissement
   selectedModule : any; // représente le module sélectionné
 

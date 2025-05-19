@@ -141,18 +141,14 @@
                                 'border-danger': module.invalid && (module.dirty || module.touched),
                                 'border-success': module.valid && module.dirty
                                 }"
-                                 [ngClass]="{
-                                'border-danger': module.invalid && (module.dirty || module.touched),
-                                'border-success': module.valid && module.dirty
-                                }"
                                 >
                                 <option *ngFor="let md of modules" 
                                         [value]="md.objectId">
                                 {{md.description_fr}}
                                 </option>
                             </select>
-                            <div *ngIf="title.invalid && (title.dirty || title.touched)" class="text-danger">
-                                <div *ngIf="title.errors?.['required']">{{champRequis}}</div>
+                            <div *ngIf="module.invalid && (module.dirty || module.touched)" class="text-danger">
+                                <div *ngIf="module.errors?.['required']">{{champRequis}}</div>
                             </div>
                         </div>
                     </div>
