@@ -24,14 +24,22 @@ export class LoginService {
   async setUser(userData: any) {
     this.userSubject.next(userData);
     const person = await getPersonByUserId(userData.objectId);
-    console.log(person);
     localStorage.setItem('user', JSON.stringify(userData));
     localStorage.setItem('person', JSON.stringify(person));
   }
   getUser(): any {
     return this.userSubject.value;
   }
+  getCurrentRole(){
+    if(this.isLoggedIn()){
+      const user = this.getUser();
+      return user?.role?.task_name;
+    }
+    else{
+      return null;
+    }
 
+  }
   isLoggedIn(): boolean {
     return !!this.userSubject.value;
   }

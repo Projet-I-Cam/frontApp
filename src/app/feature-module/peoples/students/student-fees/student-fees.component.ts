@@ -24,11 +24,11 @@ import { SharedModule } from '../../../../shared/shared.module';
     selector: 'app-student-fees',
     templateUrl: './student-fees.component.html',
     styleUrl: './student-fees.component.scss',
-    imports: [CommonModule, RouterModule, FormsModule, MatSortModule, MatTableModule, CustomPaginationModule, BsDatepickerModule, DropdownModule, SharedModule]
+    standalone: false
 })
 export class StudentFeesComponent {
   public routes = routes;
-  
+
   bsValue = new Date();
   initChecked = false;
   public pageSize = 10;
@@ -65,7 +65,7 @@ export class StudentFeesComponent {
         }
       });
     });
-    
+
   }
 
   public handleApplyClick = () => {
@@ -77,7 +77,7 @@ export class StudentFeesComponent {
       }
     }
   };
- 
+
   private getTableData(pageOption: pageSelection): void {
     this.data.getFeesRecord().subscribe((apiRes: apiResultFormat) => {
       this.tableData = [];
@@ -93,7 +93,7 @@ export class StudentFeesComponent {
           this.tableData.push(res);
           this.tableDataCopy.push(res);
           this.serialNumberArray.push(serialNumber);
-          
+
         }
       });
       this.dataSource = new MatTableDataSource<FeesRecord>(this.actualData);

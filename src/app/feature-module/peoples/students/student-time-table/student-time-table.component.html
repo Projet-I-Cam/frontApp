@@ -2,36 +2,6 @@
 <div class="page-wrapper">
     <div class="content">
         <div class="row">
-            <!-- Page Header -->
-            <div class="col-md-12">
-                <div class="d-md-flex d-block align-items-center justify-content-between mb-3">
-                    <div class="my-auto mb-2">
-                        <h3 class="page-title mb-1">Student Details</h3>
-                        <nav>
-                            <ol class="breadcrumb mb-0">
-                                <li class="breadcrumb-item">
-                                    <a [routerLink]="routes.adminDashboard">Dashboard</a>
-                                </li>
-                                <li class="breadcrumb-item">
-                                    <a [routerLink]="routes.studentsList">Student</a>
-                                </li>
-                                <li class="breadcrumb-item active" aria-current="page">Student Details</li>
-                            </ol>
-                        </nav>
-                    </div>
-                    <div class="d-flex my-xl-auto right-content align-items-center  flex-wrap">
-                        <a href="javascript:void(0);" class="btn btn-light me-2 mb-2" data-bs-toggle="modal"
-                            data-bs-target="#login_detail"><i class="ti ti-lock me-2"></i>Login Details</a>
-                        <a [routerLink]="routes.editStudent" class="btn btn-primary d-flex align-items-center mb-2"><i
-                                class="ti ti-edit-circle me-2"></i>Edit Student</a>
-                    </div>
-                </div>
-            </div>
-            <!-- /Page Header -->
-
-        </div>
-
-        <div class="row">
 
             <!-- Student Information -->
             <div class="col-xxl-3 col-xl-4 theiaStickySidebar">
@@ -108,33 +78,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /Primary Contact Info -->
 
-                    <!-- Sibiling Information -->
-                    <div class="card border-white">
-                        <div class="card-body">
-                            <h5 class="mb-3">Sibiling Information</h5>
-                            <div class="d-flex align-items-center bg-light-300 rounded p-3 mb-3">
-                                <span class="avatar avatar-lg">
-                                    <img src="assets/img/students/student-06.jpg" class="img-fluid rounded" alt="img">
-                                </span>
-                                <div class="ms-2">
-                                    <h5 class="fs-14">Ralph Claudia</h5>
-                                    <p>III, B</p>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center bg-light-300 rounded p-3">
-                                <span class="avatar avatar-lg">
-                                    <img src="assets/img/students/student-07.jpg" class="img-fluid rounded" alt="img">
-                                </span>
-                                <div class="ms-2">
-                                    <h5 class="fs-14">Julie Scott</h5>
-                                    <p>V, A</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /Sibiling Information -->
 
                     <!-- Transport Information -->
                     <div class="card border-white">
@@ -216,6 +160,11 @@
                                 <a [routerLink]="routes.examResults" class="nav-link"><i
                                         class="ti ti-bookmark-edit me-2"></i>Exam & Results</a>
                             </li>
+                            <li>
+                                <a [routerLink]="routes.classHomeWork" class="nav-link"
+                                  ><i class="ti ti-calendar-due me-2"></i>Devoirs</a
+                                >
+                              </li>
                             <li>
                                 <a [routerLink]="routes.studentLibrary" class="nav-link"><i
                                         class="ti ti-books me-2"></i>Library</a>
@@ -974,7 +923,7 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label class="form-label">Fees Group</label>
-                              
+
                                 <p-dropdown [options]="[
                                 { label: 'Select', value: '' },
                                 { label: 'Class 1 General', value: 'Class 1 General' },
@@ -986,7 +935,7 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label class="form-label">Fees Type</label>
-                               
+
                                 <p-dropdown [options]="[
                                 { label: 'Select', value: '' },
                                 { label: 'Tuition Fees', value: 'Tuition Fees' },
@@ -1014,12 +963,12 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label class="form-label">Payment Type</label>
-                              
+
                                 <p-dropdown [options]="[
                                 { label: 'Select', value: '' },
                                 { label: 'Paytm', value: 'Paytm' },
                                 { label: 'Cash On Delivery', value: 'Cash On Delivery' },
-                               
+
                               ]" placeholder="Select" class="select"></p-dropdown>
                             </div>
                         </div>

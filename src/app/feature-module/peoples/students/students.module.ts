@@ -19,10 +19,26 @@ import { PersonService } from '../../../services/person.service';
 import { EditStudentModule } from './edit-student/edit-student.module';
 import { AddStudentComponent } from './add-student/add-student.component';
 import { MyStudentsComponent } from './my-students/my-students.component';
-
+import {StudentDetailsComponent} from './student-details/student-details.component'
+import {StudentTimeTableComponent} from './student-time-table/student-time-table.component'
+import {StudentLeavesComponent} from './student-leaves/student-leaves.component'
+import {StudentFeesComponent} from './student-fees/student-fees.component'
+import {StudentResultComponent} from './student-result/student-result.component'
+import {StudentReportCardComponent} from './student-report-card/student-report-card.component';
+import { StudentListHomeworksComponent } from './student-list-homeworks/student-list-homeworks.component'
+import { StudentInfosComponent } from './student-infos/student-infos.component';
+import { StudentSchoolComponent } from './student-school/student-school.component'
 @NgModule({
   declarations: [
-    MyStudentsComponent
+    MyStudentsComponent,
+    StudentDetailsComponent,
+    StudentTimeTableComponent,
+    StudentLeavesComponent,
+    StudentFeesComponent,
+    StudentReportCardComponent,
+    StudentListHomeworksComponent,
+    StudentInfosComponent,
+    StudentSchoolComponent,
   ],
   imports: [
     CommonModule,
@@ -41,10 +57,24 @@ import { MyStudentsComponent } from './my-students/my-students.component';
     AddStudentComponent,
     StudentsComponent,
     StudentGridComponent,
+    StudentResultComponent,
   ],
   providers: [
     StudentService,
     PersonService
   ],
+  exports:[
+    MyStudentsComponent,
+     StudentTimeTableComponent,
+     StudentLeavesComponent,
+     StudentFeesComponent,
+     StudentResultComponent,
+     StudentReportCardComponent,
+     StudentListHomeworksComponent,
+     StudentInfosComponent,
+    StudentDetailsComponent,
+    StudentSchoolComponent,
+
+  ]
 })
 export class StudentsModule { }

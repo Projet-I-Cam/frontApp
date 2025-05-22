@@ -20,7 +20,7 @@ import { SharedModule } from '../../../../shared/shared.module';
     selector: 'app-student-leaves',
     templateUrl: './student-leaves.component.html',
     styleUrl: './student-leaves.component.scss',
-    imports: [CommonModule, RouterModule, FormsModule, MatSortModule, MatTableModule, CustomPaginationModule, BsDatepickerModule, DropdownModule, SharedModule]
+    standalone: false
 })
 export class StudentLeavesComponent {
   public routes = routes;

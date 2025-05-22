@@ -4,8 +4,12 @@ import { routes } from '../../../shared/routes/routes';
 import { pageSelection, PaginationService, tablePageSize } from '../../../shared/custom-pagination/pagination.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { DataService } from '../../../shared/data/data.service';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
+import Parse from 'parse';
+
 import { Router } from '@angular/router';
 import { Sort } from '@angular/material/sort';
+import { globalGet, globalPost } from '../../../services/statefull/http';
 interface data {
   name: string;
   code: string;
@@ -18,13 +22,19 @@ interface data {
     standalone: false
 })
 export class ClassHomeWorkComponent {
+  
   initChecked = false;
+  submitting = false;
   public pageSize = 10;
+  public homeworkForm: FormGroup;
   public tableData: Array<classeHomework> = [];
   public tableDataCopy: Array<classeHomework> = [];
   public actualData: Array<classeHomework> = [];
   public routes = routes;
   public currentPage = 1;
+  person: any = null;
+  homework: any = [];
+  classroom: any = null;
   // pagination variables
   public skip = 0;
   public limit: number = this.pageSize;
@@ -39,7 +49,8 @@ export class ClassHomeWorkComponent {
   constructor(
     private data: DataService,
     private router: Router,
-    private pagination: PaginationService
+    private pagination: PaginationService,
+    private fb: FormBuilder,
   ) {
     this.data.getClassHomeWork().subscribe((apiRes: apiResultFormat) => {
       this.actualData = apiRes.data;
@@ -50,8 +61,56 @@ export class ClassHomeWorkComponent {
         }
       });
     });
+    this.homeworkForm = this.fb.group({
+      homeWorkDate: ['', [Validators.required]],
+      submissionDate: ['', [Validators.required]],
+      attachment: ['', [Validators.required]],
+      content: ['', [Validators.required]],
+    });
   }
 
+  async onSubmit(): Promise<any> {
+      
+    const formData = { ...this.homeworkForm.value };
+    console.log('formData ', formData)
+    if (this.homeworkForm.valid) {
+      this.submitting = true;
+      const r = await globalPost({
+        T: "HomeWork",
+        dataObject: {
+          ...formData,
+          teacher: {className: "Person", objectId: this.person?.objectId},
+          classroom: {className: "Classroom", objectId: this.classroom?.objectId}
+        }
+      })
+
+      const button = document.getElementById('myModal');
+      if(button) button.click();
+
+      globalGet({
+        T: "HomeWork",
+        filters: {
+          teacher: {className: "Person", objectId: this.person.objectId},
+        },
+        includes: ['classroom']
+      }).then(v =>{
+        console.log('homework homework homework homework ', v)
+        this.homework = v
+      })
+
+      this.submitting = false;
+    }
+  }
+
+  public onFileSelect(event: any) {
+    console.log('Changed')
+    const file: File = event.target.files[0];
+    if (file) {
+      this.homeworkForm.patchValue({
+        attachment: file
+      });
+    }
+  }
   private getTableData(pageOption: pageSelection): void {
     this.data.getClassHomeWork().subscribe((apiRes: apiResultFormat) => {
       this.tableData = [];
@@ -133,6 +192,7 @@ export class ClassHomeWorkComponent {
   subject: data[] | undefined;
   date: data[] | undefined;
   ngOnInit() {
+
     this.class = [
       { name: 'I', code: '1' },
       { name: 'II', code: '2' },
@@ -154,7 +214,36 @@ export class ClassHomeWorkComponent {
       { name: 'Wednesday', code: '2' },
     ];
    
-   
+    const user = Parse.User.current()
+    const data = {
+      T: "Person",
+      isOne: true,
+      filters: {
+        user: {className: "_User", objectId: user?._getId()}
+      }
+    }
+    globalGet(data).then(v =>{
+      console.log('GLOBAL GET ', v)
+      this.person = v
+      globalGet({
+        T: "HomeWork",
+        filters: {
+          teacher: {className: "Person", objectId: v?.objectId},
+        },
+        includes: ['classroom']
+      }).then(v =>{
+        console.log('homework homework homework homework ', v)
+        this.homework = v
+      })
+    })
+    globalGet({
+      T: "Classroom",
+      isOne: true,
+    }).then(v =>{
+      console.log('Classroom Classroom ', v)
+      this.classroom = v
+    })
+    
     
   }
 }

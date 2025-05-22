@@ -58,6 +58,7 @@ getPersonsByStaffType(staffTypeId: string): Observable<any[]> {
     query.include('parents');
     query.include('section');
     query.include('enrollment');
+    query.include('institution')
     return from(query.get(id)).pipe(
       map(person => this.parsePersonObject(person))
     );

@@ -1,0 +1,504 @@
+<p-tabView [(activeIndex)]="activeSubIndex" (onChange)="onSubTabChange($event)">
+  <p-tabPanel header="Informations de base" leftIcon="ti ti-school me-2">
+    <!-- Basic Information -->
+    <div class="card border-white">
+      <div class="card-body">
+        <div class="row g-3">
+          <!-- VIEW MODE -->
+          <div class="d-flex align-items-center justify-content-between">
+            <h4 class="">Informations Personnelles</h4>
+            <div class="col-4" *ngIf="['etablissement', 'parent', 'enseignant'].includes(userRole)">
+              <button *ngIf="!isEditMode" mat-raised-button color="primary" (click)="toggleEdit()">Modifier</button>
+              <div *ngIf="isEditMode">
+                <button mat-raised-button color="accent">Enregistrer</button>
+                <button mat-raised-button color="warn" class="ms-2" (click)="cancelEdit()">Annuler</button>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!isEditMode">
+            <div class="row g-3">
+              <div class="col-md-6 col-lg-4">
+                <div><strong>Nom</strong></div>
+                <div>{{ studentData.lastName }} {{ studentData.firstName }}</div>
+              </div>
+
+              <div class="col-md-6 col-lg-4">
+                <div><strong>Genre</strong></div>
+                <div>{{ studentData.gender.libelle_fr }}</div>
+              </div>
+
+              <div class="col-md-6 col-lg-4">
+                <div><strong>Date de naissance</strong></div>
+                <div>
+                  {{ studentData?.birthDate ?
+                  (studentData.birthDate.iso | date: 'dd MMM yyyy') : 'Non disponible' }}
+                </div>
+              </div>
+
+              <div class="col-md-6 col-lg-4">
+                <div><strong>Lieu de naissance</strong></div>
+                <div>{{ studentData.birthPlace || 'Non disponible'}}</div>
+              </div>
+
+              <div class="col-md-6 col-lg-4">
+                <div><strong>Adresse</strong></div>
+                <div>{{ studentData.address || 'Non disponible' }}</div>
+              </div>
+
+              <div class="col-md-6 col-lg-4">
+                <div><strong>Ville de résidence</strong></div>
+                <div>{{ studentData.cityOfResidence || 'Non disponible' }}</div>
+              </div>
+
+              <div class="col-md-6 col-lg-4">
+                <div><strong>Quartier</strong></div>
+                <div>{{ studentData.neighborhood || 'Non disponible' }}</div>
+              </div>
+
+              <div class="col-md-6 col-lg-4">
+                <div><strong>Téléphone</strong></div>
+                <div>{{ studentData.phone || 'Non disponible' }}</div>
+              </div>
+
+              <div class="col-md-6 col-lg-4">
+                <div><strong>Email</strong></div>
+                <div>{{ studentData.email || 'Non disponible' }}</div>
+              </div>
+            </div>
+          </div>
+          <form [formGroup]="studentForm" class="row g-3" *ngIf="isEditMode" (ngSubmit)="onSubmit()">
+            <div class="col-md-6 col-lg-4" *ngFor="let field of [
+      { label: 'Nom', control: 'lastName', type: 'text' },
+      { label: 'Prénom', control: 'firstName', type: 'text' },
+      { label: 'Genre', control: 'gender', type: 'select' },
+      { label: 'Date de naissance', control: 'birthDate', type: 'date' },
+      { label: 'Lieu de Naissance', control: 'birthPlace', type: 'text' },
+      { label: 'Adresse de résidence', control: 'address', type: 'text' },
+      { label: 'Ville', control: 'cityOfResidence', type: 'text' },
+      { label: 'Quartier', control: 'neighborhood', type: 'text' },
+      { label: 'Téléphone', control: 'phone', type: 'text' },
+      { label: 'Email', control: 'email', type: 'text' }
+    ]">
+              <!-- Standard input -->
+              <mat-form-field appearance="outline" class="w-100" *ngIf="field.type === 'text'">
+                <mat-label>{{ field.label }}</mat-label>
+                <input matInput [formControlName]="field.control" />
+                <mat-error *ngIf="studentForm.get(field.control)?.invalid && studentForm.get(field.control)?.touched">
+                  Champ invalide
+                </mat-error>
+              </mat-form-field>
+
+              <!-- Date picker -->
+              <mat-form-field appearance="outline" class="w-100" *ngIf="field.type === 'date'">
+                <mat-label>{{ field.label }}</mat-label>
+                <input matInput [matDatepicker]="picker" [formControlName]="field.control" />
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="studentForm.get(field.control)?.invalid && studentForm.get(field.control)?.touched">
+                  Date invalide
+                </mat-error>
+              </mat-form-field>
+
+              <!-- Select (genre) -->
+              <mat-form-field appearance="outline" class="w-100" *ngIf="field.type === 'select'">
+                <mat-label>{{ field.label }}</mat-label>
+                <mat-select [formControlName]="field.control">
+                  <mat-option *ngFor="let g of genders" [value]="g.objectId">
+                    {{ g.libelle_fr }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="studentForm.get(field.control)?.invalid && studentForm.get(field.control)?.touched">
+                  Sélection invalide
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </form>
+        </div>
+        <div class="row my-3 g-3">
+          <div class="d-flex align-items-center justify-content-between">
+            <h4 class="">Informations Scolaires</h4>
+            <div class="col-4" *ngIf="['etablissement','enseignant', 'parent'].includes(userRole)">
+              <button *ngIf="!isEditAcademic" mat-raised-button color="primary"
+                (click)="toggleEditAcademic()">Modifier</button>
+              <div *ngIf="isEditAcademic">
+                <button mat-raised-button color="accent">Enregistrer</button>
+                <button mat-raised-button color="warn" class="ms-2" (click)="cancelEditAcademic()">Annuler</button>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!isEditAcademic">
+            <div class="row g-3">
+              <div class="col-md-6 col-lg-4">
+                <div><strong>Annee Academique</strong></div>
+                <div>{{ academicData?.academicYear?.libelle || 'Non disponible' }}</div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div><strong>Matricule</strong></div>
+                <div>{{ academicData?.matricule || 'Non disponible' }}</div>
+              </div>
+
+              <div class="col-md-6 col-lg-4">
+                <div><strong>Etablissement</strong></div>
+                <div>{{ academicData?.institution?.name || 'Non disponible' }}</div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div><strong>Section</strong></div>
+                <div>{{ academicData?.classroom?.classe.section?.name_fr || 'Non disponible' }}</div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div><strong>Classe</strong></div>
+                <div>{{ academicData?.classroom?.classe.name_fr || 'Non disponible' }}</div>
+              </div>
+
+              <div class="col-md-6 col-lg-4">
+                <div><strong>Salle de classe</strong></div>
+                <div>{{ academicData?.classroom?.name_fr || 'Non disponible' }}</div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div><strong>Capacite de la salle</strong></div>
+                <div>{{ academicData?.classroom?.maxCapacity|| 'Non disponible' }}</div>
+              </div>
+
+              <div class="col-md-6 col-lg-4">
+                <div><strong>Enseignant Principale</strong></div>
+                <div *ngIf="teachers && teachers.length > 0">
+                  <div *ngFor="let teacher of normalizedTeachers">
+                    <div class="teacher-info">
+                      <p>{{ teacher?.firstName }} {{ teacher?.lastName }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="!teachers || teachers.length === 0">
+                  <div class="text-muted fst-italic">Aucun enseignant trouvé.</div>
+                </div>
+
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div><strong>Date d'inscription</strong></div>
+                <div>
+                  {{ academicData?.enrollmentDate ?
+                  (academicData.enrollmentDate.iso | date: 'dd MMM yyyy') : 'Non disponible' }}
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div><strong>Date de validation d'inscription</strong></div>
+                <div>
+                  {{ academicData?.validationDate ?
+                  (academicData.validationDate.iso | date: 'dd MMM yyyy') : 'Non disponible' }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <form [formGroup]="academicForm" class="row g-3" *ngIf="isEditAcademic" (ngSubmit)="onSubmit()">
+            <div class="col-md-6 col-lg-4" *ngFor="let field of [
+    { label: 'Matricule', control: 'registrationNumber', type: 'text' },
+    { label: 'Section', control: 'section', type: 'select' },
+    { label: 'Classe', control: 'classe', type: 'select' },
+    { label: 'Salle de classe', control: 'classRoom', type: 'select' },
+  ]">
+              <!-- Standard input -->
+               {{ academicForm.get('section')?.value }}
+              <mat-form-field appearance="outline" class="w-100" *ngIf="field.type === 'text'">
+                <mat-label>{{ field.label }}</mat-label>
+                <input matInput [formControlName]="field.control" />
+                <mat-error *ngIf="academicForm.get(field.control)?.invalid && academicForm.get(field.control)?.touched">
+                  Champ invalide
+                </mat-error>
+              </mat-form-field>
+
+              <!-- Select fields -->
+              <mat-form-field appearance="outline" class="w-100" *ngIf="field.type === 'select'">
+                <mat-label>{{ field.label }}</mat-label>
+                <mat-select [formControlName]="field.control">
+                  <mat-option *ngFor="let option of optionMap[field.control] || []" [value]="option.objectId">
+                    {{ option.name_fr || option.libelle_fr || option.label || option.name }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="academicForm.get(field.control)?.invalid && academicForm.get(field.control)?.touched">
+                  Sélection invalide
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </p-tabPanel>
+
+  <p-tabPanel header="Informations sur les parents">
+    <!-- Parents Information -->
+    <div class="card">
+      <div class="card-header">
+        <h5>Informations sur les parents</h5>
+      </div>
+      <div class="card-body">
+        <div class="border rounded p-3 pb-0 mb-3">
+          <div class="row">
+            <div class="col-sm-6 col-lg-4">
+              <div class="d-flex align-items-center mb-3">
+                <span class="avatar avatar-lg flex-shrink-0">
+                  <img src="assets/img/parents/parent-13.jpg" class="img-fluid rounded" alt="img" />
+                </span>
+                <div class="ms-2 overflow-hidden">
+                  <h6 class="text-truncate">Jerald Vicinius</h6>
+                  <p class="text-primary">Père</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+              <div class="mb-3">
+                <p class="text-dark fw-medium mb-1">Téléphone</p>
+                <p>+1 45545 46464</p>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="mb-3 overflow-hidden me-3">
+                  <p class="text-dark fw-medium mb-1">Email</p>
+                  <p class="text-truncate">jera&#64;example.com</p>
+                </div>
+                <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Print"
+                  data-bs-original-title="Réinitialiser le mot de passe" class="btn btn-dark btn-icon btn-sm mb-3"><i
+                    class="ti ti-lock-x"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="border rounded p-3 pb-0 mb-3">
+          <div class="row">
+            <div class="col-lg-4 col-sm-6">
+              <div class="d-flex align-items-center mb-3">
+                <span class="avatar avatar-lg flex-shrink-0">
+                  <img src="assets/img/parents/parent-14.jpg" class="img-fluid rounded" alt="img" />
+                </span>
+                <div class="ms-2 overflow-hidden">
+                  <h6 class="text-truncate">Roberta Webber</h6>
+                  <p class="text-primary">Mère</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+              <div class="mb-3">
+                <p class="text-dark fw-medium mb-1">Téléphone</p>
+                <p>+1 46499 24357</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="mb-3 overflow-hidden me-3">
+                  <p class="text-dark fw-medium mb-1">Email</p>
+                  <p class="text-truncate">robe&#64;example.com</p>
+                </div>
+                <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Print"
+                  data-bs-original-title="Réinitialiser le mot de passe" class="btn btn-dark btn-icon btn-sm mb-3"><i
+                    class="ti ti-lock-x"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="border rounded p-3 pb-0">
+          <div class="row">
+            <div class="col-lg-4 col-sm-6">
+              <div class="d-flex align-items-center mb-3">
+                <span class="avatar avatar-lg flex-shrink-0">
+                  <img src="assets/img/parents/parent-13.jpg" class="img-fluid rounded" alt="img" />
+                </span>
+                <div class="ms-2 overflow-hidden">
+                  <h6 class="text-truncate">Jerald Vicinius</h6>
+                  <p class="text-primary">Tuteur (Père)</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+              <div class="mb-3">
+                <p class="text-dark fw-medium mb-1">Téléphone</p>
+                <p>+1 45545 46464</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="mb-3 overflow-hidden me-3">
+                  <p class="text-dark fw-medium mb-1">Email</p>
+                  <p class="text-truncate">jera&#64;example.com</p>
+                </div>
+                <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Print"
+                  data-bs-original-title="Réinitialiser le mot de passe" class="btn btn-dark btn-icon btn-sm mb-3"><i
+                    class="ti ti-lock-x"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card border-white">
+          <div class="card-body">
+            <h5 class="mb-3">Sibiling Information</h5>
+            <div class="d-flex align-items-center bg-light-300 rounded p-3 mb-3">
+              <span class="avatar avatar-lg">
+                <img src="assets/img/students/student-06.jpg" class="img-fluid rounded" alt="img">
+              </span>
+              <div class="ms-2">
+                <h5 class="fs-14">Ralph Claudia</h5>
+                <p>III, B</p>
+              </div>
+            </div>
+            <div class="d-flex align-items-center bg-light-300 rounded p-3">
+              <span class="avatar avatar-lg">
+                <img src="assets/img/students/student-07.jpg" class="img-fluid rounded" alt="img">
+              </span>
+              <div class="ms-2">
+                <h5 class="fs-14">Julie Scott</h5>
+                <p>V, A</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Address -->
+        <div class="my-3 col-xxl-6 d-flex">
+          <div class="card flex-fill">
+            <div class="card-header">
+              <h5>Adresse</h5>
+            </div>
+            <div class="card-body">
+              <div class="d-flex align-items-center mb-3">
+                <span class="avatar avatar-md bg-light-300 rounded me-2 flex-shrink-0 text-default"><i
+                    class="ti ti-map-pin-up"></i></span>
+                <div>
+                  <p class="text-dark fw-medium mb-1">Adresse actuelle</p>
+                  <p>3495 Red Hawk Road, Buffalo Lake, MN 55314</p>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <span class="avatar avatar-md bg-light-300 rounded me-2 flex-shrink-0 text-default"><i
+                    class="ti ti-map-pins"></i></span>
+                <div>
+                  <p class="text-dark fw-medium mb-1">Adresse permanente</p>
+                  <p>3495 Red Hawk Road, Buffalo Lake, MN 55314</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /Parents Information -->
+  </p-tabPanel>
+  <p-tabPanel header="Document et autres">
+    <div class="">
+      <div class="mb-4 row">
+        <div class="card col-lg-5 ">
+          <div class="card-header">
+            <h5>Documents</h5>
+          </div>
+          <div class="card-body">
+            <div class="bg-light border rounded d-flex align-items-center justify-content-between mb-3 p-2">
+              <div class="d-flex align-items-center overflow-hidden">
+                <span class="avatar avatar-md bg-white rounded flex-shrink-0 text-default">
+                  <i class="ti ti-pdf fs-15"></i>
+                </span>
+                <div class="ms-2">
+                  <p class="text-truncate fw-medium text-dark mb-0">
+                    CertificatNaissance.pdf
+                  </p>
+                </div>
+              </div>
+              <a href="javascript:void(0);" class="btn btn-dark btn-icon btn-sm">
+                <i class="ti ti-download"></i>
+              </a>
+            </div>
+            <div class="bg-light border rounded d-flex align-items-center justify-content-between p-2">
+              <div class="d-flex align-items-center overflow-hidden">
+                <span class="avatar avatar-md bg-white rounded flex-shrink-0 text-default">
+                  <i class="ti ti-pdf fs-15"></i>
+                </span>
+                <div class="ms-2">
+                  <p class="text-truncate fw-medium text-dark mb-0">
+                    CertificatTransfert.pdf
+                  </p>
+                </div>
+              </div>
+              <a href="javascript:void(0);" class="btn btn-dark btn-icon btn-sm">
+                <i class="ti ti-download"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-1"></div>
+        <div class="card col-lg-5">
+          <div class="card-header">
+            <h5>Coordonnées bancaires</h5>
+          </div>
+          <div class="card-body pb-1">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <p class="text-dark fw-medium mb-1">Nom de la banque</p>
+                  <p>Bank of America</p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <p class="text-dark fw-medium mb-1">Agence</p>
+                  <p>Cincinnati</p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <p class="text-dark fw-medium mb-1">Code IFSC</p>
+                  <p>BOA83209832</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xxl-12">
+      <div class="card">
+        <div class="card-header">
+          <h5>Autres informations</h5>
+        </div>
+        <div class="card-body">
+          <p>
+            En fonction des besoins spécifiques de votre organisation ou
+            système, des informations supplémentaires peuvent être collectées ou suivies.
+            Il est important de s'assurer que toutes les données collectées sont conformes
+            aux réglementations et politiques de confidentialité pour protéger les informations
+            sensibles des Élèves.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- /Other Info -->
+  </p-tabPanel>
+  <p-tabPanel header="Informations medicaux">
+    <!-- Medical History -->
+    <div class="col-xxl-6 d-flex">
+      <div class="card flex-fill">
+        <div class="card-header">
+          <h5>Antécédents médicaux</h5>
+        </div>
+        <div class="card-body pb-1">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <p class="text-dark fw-medium mb-1">Allergies connues</p>
+                <span class="badge bg-light text-dark">Éruptions cutanées</span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <p class="text-dark fw-medium mb-1">Médicaments</p>
+                <p>-</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /Medical History -->
+  </p-tabPanel>
+
+  <p-tabPanel header="Historique Scolaire">
+    Historique Scolaire
+  </p-tabPanel>
+</p-tabView>

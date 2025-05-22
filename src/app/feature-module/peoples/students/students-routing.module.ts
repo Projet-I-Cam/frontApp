@@ -37,7 +37,7 @@ const routes: Routes = [
         component: StudentPromotionComponent,
       },
       {
-        path: 'student-details',
+        path: 'student-details/:id',
         component: StudentDetailsComponent,
       },
       {

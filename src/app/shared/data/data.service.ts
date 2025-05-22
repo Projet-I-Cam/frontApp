@@ -1,20 +1,19 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { routes } from '../routes/routes';
-import { Observable, map, from } from 'rxjs';
-import { apiResultFormat, classRoomData } from '../model/pages.model';
+import { from, map, Observable } from 'rxjs';
+
 import { LoginService } from '../../auth/services/login.service';
 import { globalGet } from '../../services/statefull/http';
-import { HttpClient } from '@angular/common/http';
-import { SettingsService } from '../settings/settings.service';
 import { Section } from '../model/institution.model';
+import { apiResultFormat, classRoomData } from '../model/pages.model';
+import { routes } from '../routes/routes';
+import { SettingsService } from '../settings/settings.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
   constructor(private http: HttpClient, private loginService: LoginService) { }
-
-
 
   public getDataTable() {
     return this.http.get<apiResultFormat>('assets/json/data-tables.json').pipe(
@@ -885,8 +884,7 @@ export class DataService {
       } else if (role === 'enseignant') {
         return this.TeacherSidebarData;
       } else if (role === 'parent') {
-        console.log('Parent children:', this.parentChildren);
-        return this.getParentMenu(this.parentChildren || []);
+        return this.ParentSidebarData
       }
       else if (role === 'administration' || role === 'services_centraux' || role == 'ministre') {
         return this.AdminSidebarData;
@@ -899,6 +897,9 @@ export class DataService {
       }
       else if (role === 'arrondissement') {
         return this.AdminInspectionSidebarData;
+      }
+      else if (role === 'eleve') {
+        return this.studentSidebarData
       }
       return this.AdminSidebarData;
     }
@@ -1355,138 +1356,10 @@ export class DataService {
 
   ];
 
-  parentChildren = [
+
+  // Rest of your existing menu definitions...
+  public ParentSidebarData = [
     {
-      name: "MBA TADA Sony Bruce",
-      school: {
-        name: "École Primaire de Yaoundé",
-        director: "M. Mbarga",
-        teacher: "Mme. Ngo"
-      },
-      class: {
-        name: "CP-A",
-        totalStudents: 30,
-        girls: 15,
-        boys: 15
-      }
-    },
-    {
-      name: "ABADA ATEBA Serge",
-      school: {
-        name: "Lycée Général Leclerc",
-        director: "M. Essomba",
-        teacher: "M. Tchouaga"
-      },
-      class: {
-        name: "6ème B",
-        totalStudents: 45,
-        girls: 20,
-        boys: 25
-      }
-    }
-  ];
-
-  // Updated getParentMenu method with proper formatting
-  getParentMenu(children: any[] = []) {
-    try {
-      // Validate input
-      const safeChildren = Array.isArray(children) ? children.filter(child =>
-        child && typeof child === 'object' && 'name' in child
-      ) : [];
-
-      // Generate child menus with proper structure
-      const childMenus = safeChildren.map(child => ({
-        menuValue: child?.name || 'Enfant sans nom',
-        hasSubRoute: true,
-        showSubRoute: true,
-        customSubmenuThree: true,
-        icon: 'user', // Added icon for consistency
-        subMenusTwo: [ // Changed from subMenusTwo to subMenus to match your structure
-          {
-            menuValue: 'Établissement',
-            customSubmenuFour: true,
-            subMenusThree: [
-              { menuValue: `Etablissement: ${child.school?.name || 'Non spécifié'}`, route: '', customSubmenuFour: false },
-              { menuValue: `Directeur: ${child.school?.director || 'Non spécifié'}`, route: '', customSubmenuFour: false },
-              { menuValue: `Enseignant: ${child.school?.teacher || 'Non spécifié'}`, route: '', customSubmenuFour: false },
-              { menuValue: `Classe: ${child.class?.name || 'Non spécifié'}`, route: '', customSubmenuFour: false },
-              { menuValue: `Effectif: ${child.class?.totalStudents || 'N/A'}`, route: '', customSubmenuFour: false },
-              { menuValue: `Filles: ${child.class?.girls || 'N/A'}`, route: '', customSubmenuFour: false },
-              { menuValue: `Garçons: ${child.class?.boys || 'N/A'}`, route: '', customSubmenuFour: false }
-            ]
-          },
-          {
-            menuValue: 'Informations Sanitaires',
-            customSubmenuFour: true,
-            subMenusThree: [
-              { menuValue: 'Etat de Santé', route: '', customSubmenuFour: false },
-              { menuValue: 'Certificat Médical', route: '', customSubmenuFour: false, },
-              { menuValue: 'Aptitude au Sport', route: '', customSubmenuFour: false }
-            ]
-          },
-          { menuValue: 'Programme des Cours', route: routes.classTimeTable, customSubmenuFour: false, },
-          { menuValue: 'Devoirs', route: '' },
-          { menuValue: 'Absences/Présences', route: '', customSubmenuFour: false },
-          { menuValue: 'Planning des Examens', route: routes.examSchedule, customSubmenuFour: false },
-          { menuValue: 'Notes / Bulletins', route: '', customSubmenuFour: false },
-          { menuValue: 'Etat de Payement', route: '', customSubmenuFour: false },
-          {
-            menuValue: 'Informations/planning',
-            customSubmenuFour: true,
-            subMenusThree: [
-              { menuValue: 'Permission/Congés', route: '', customSubmenuThree: false },
-              { menuValue: 'Convocations', route: '', customSubmenuThree: false },
-              { menuValue: 'Réunion des Parents', route: '', customSubmenuThree: false },
-              { menuValue: 'Jours sans cours', route: '', customSubmenuThree: false },
-              { menuValue: 'Activités Extrascolaires', route: '', customSubmenuThree: false }
-            ]
-          }
-        ]
-      }));
-
-      // Return properly formatted parent menu
-      return [{
-        tittle: 'Main',
-        showAsTab: false,
-        separateRoute: false,
-        hasSubRoute: false,
-        showSubRoute: false,
-        base: '',
-        page: '99',
-        menu: [
-          {
-            menuValue: 'Dashboard',
-            icon: 'layout-2',
-            base: 'dashboard',
-            hasSubRoute: false,
-            showSubRoute: false,
-            route: routes.adminDashboard,
-            customSubmenuTwo: false,
-            subRoutes: [],
-          },
-          {
-            menuValue: 'Mes enfants Inscrit',
-            hasSubRouteThree: true,
-            icon: 'school',
-            page: 'students',
-            subMenus: childMenus.length ? childMenus : [{
-              menuValue: 'Aucun enfant inscrit',
-              customSubmenuThree: false,
-              route: ''
-            }]
-          }
-        ]
-      }];
-    } catch (error) {
-      console.error('Error generating parent menu:', error);
-      return this.getFallbackParentMenu();
-    }
-  }
-
-
-  // Updated fallback menu
-  private getFallbackParentMenu(): any[] {
-    return [{
       tittle: 'Main',
       showAsTab: false,
       separateRoute: false,
@@ -1496,26 +1369,20 @@ export class DataService {
       page: '99',
       menu: [
         {
-          menuValue: 'Dashboard',
+          menuValue: 'Dashboard2222',
           icon: 'layout-2',
+          base: 'dashboard',
+          hasSubRoute: false,
+          showSubRoute: false,
           route: routes.adminDashboard,
-          hasSubRoute: false
-        },
-        {
-          menuValue: 'Mes enfants Inscrit',
-          icon: 'school',
-          subMenus: [{
-            menuValue: 'Erreur de chargement',
-            customSubmenuThree: false,
-            route: ''
-          }]
+          customSubmenuTwo: false,
+          subRoutes: [],
         }
-      ]
-    }];
-  }
+      ],
+    },
+  ];
 
-  // Rest of your existing menu definitions...
-  public ParentSidebarData = [
+  public studentSidebarData = [
     {
       tittle: 'Main',
       showAsTab: false,
@@ -1531,16 +1398,9 @@ export class DataService {
           base: 'dashboard',
           hasSubRoute: false,
           showSubRoute: false,
-          route: routes.adminDashboard,
+          route: routes.dashboard,
           customSubmenuTwo: false,
           subRoutes: [],
-        },
-        {
-          menuValue: 'Mes enfants Inscrit',
-          hasSubRouteThree: true,
-          icon: 'school',
-          page: 'students',
-          subMenus: [],
         },
       ],
     },
@@ -1575,7 +1435,7 @@ export class DataService {
             { menuValue: 'Programme des cours', route: routes.studentTransfer },
             { menuValue: 'Manuels au programme', route: '' },
             { menuValue: 'Matériel pédagogique', route: '' },
-            { menuValue: 'Devoirs/Exercices', route: '' },
+            { menuValue: 'Devoirs/Exercices', route: routes.classHomeWork },
             { menuValue: 'Contrôle/Examens', route: '' },
             { menuValue: 'Gestion des absences', route: routes.studentReportCard },
             { menuValue: 'Suivi des élèves/Discipline', route: routes.studentReportCard }
@@ -1659,7 +1519,7 @@ export class DataService {
       page: '99',
       menu: [
         {
-          menuValue: 'Dashboard',
+          menuValue: 'Dashboard3333',
           icon: 'layout-2',
           base: 'dashboard',
           hasSubRoute: false,
@@ -1963,7 +1823,7 @@ export class DataService {
           customSubmenuTwo: false,
           subRoutes: [],
         },
-         {
+        {
           menuValue: 'Annuaire',
           icon: 'phone',
           base: 'base',
@@ -1973,11 +1833,11 @@ export class DataService {
           customSubmenuTwo: false,
           subRoutes: [],
         },
-         {
-              menuValue: 'Liste des delegations departementale',
-              route: routes.departmentsList,
-              icon: 'office'
-            },
+        {
+          menuValue: 'Liste des delegations departementale',
+          route: routes.departmentsList,
+          icon: 'office'
+        },
       ],
     },
     {
@@ -2233,11 +2093,11 @@ export class DataService {
           customSubmenuTwo: false,
           subRoutes: [],
         },
-         {
-             menuValue: 'Liste des Inspection',
-              route: routes.municipalitiesList,
-              icon: 'office'
-            },
+        {
+          menuValue: 'Liste des Inspection',
+          route: routes.municipalitiesList,
+          icon: 'office'
+        },
       ],
     },
     {
@@ -2812,7 +2672,7 @@ export class DataService {
             { menuValue: 'Programme des cours', route: routes.scheduleClasses },
             { menuValue: 'Manuels au programme', route: '' },
             { menuValue: 'Matériel pédagogique', route: '' },
-            { menuValue: 'Devoirs/Exercices', route: routes.classHomeWork },
+            { menuValue: 'Devoirs/Exercices', route: '' },
             { menuValue: 'Contrôle/Examens', route: '' },
             { menuValue: 'Gestion des absences', route: '' },
             { menuValue: 'Suivi des élèves/Discipline', route: '' }

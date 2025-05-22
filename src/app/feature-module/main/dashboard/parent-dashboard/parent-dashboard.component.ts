@@ -36,33 +36,14 @@ import { LoginService } from '../../../../auth/services/login.service';
 })
 export class ParentDashboardComponent implements OnInit{
   public routes = routes;
-  @ViewChild('chart') chart!: ChartComponent;
-  public chartOptions: Partial<ChartOptions>;
-
   parent : any = {};
 
   constructor( private loginService: LoginService) {
-    this.chartOptions = {
-      chart: {
-        type: 'line',
-        height: 345,
-      },
-      series: [{
-        name: 'Avg. Exam Score',
-        data: [0, 32, 40, 50, 60, 52, 50,44,40,60,75,70] // Sample data
-      }, {
-        name: 'Avg. Attendance',
-        data: [0,35,43,34,30,28,25,50,60,75,77,80] // Sample data
-      }],
-      xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
-      },
-		
-    };   
+
   }
 
   async ngOnInit() {
     this.parent = this.loginService.getPerson();
   }
- 
+
 }

@@ -11,7 +11,7 @@ import { RouterModule } from '@angular/router';
     selector: 'app-student-report-card',
     templateUrl: './student-report-card.component.html',
     styleUrls: ['./student-report-card.component.scss'],
-    imports: [CommonModule, ReactiveFormsModule, RouterModule]
+    standalone: false
 })
 export class StudentReportCardComponent implements OnInit {
   public routes = routes;
@@ -19,7 +19,7 @@ export class StudentReportCardComponent implements OnInit {
   reportCards: StudentReportCard[] = [];
   selectedReport: StudentReportCard | null = null;
   isPrinting: boolean = false;
-  
+
   constructor(
     private fb: FormBuilder,
     private router: Router
@@ -102,16 +102,16 @@ export class StudentReportCardComponent implements OnInit {
       { subject: 'Histoire-Géographie', marksObtained: this.getRandomMark(), maxMarks: 100, grade: '' },
       { subject: 'Anglais', marksObtained: this.getRandomMark(), maxMarks: 100, grade: '' }
     ];
-    
+
     // Calcul des grades pour chaque matière
     subjects.forEach(subj => {
       subj.grade = this.calculateGrade(subj.marksObtained);
     });
-    
+
     // Calcul du total et du pourcentage
     const totalMarks = subjects.reduce((acc, subj) => acc + subj.marksObtained, 0);
     const percentage = totalMarks / (subjects.length * 100) * 100;
-    
+
     return {
       studentId: this.searchForm.get('studentId')?.value,
       academicYear: this.searchForm.get('academicYear')?.value,
@@ -134,11 +134,11 @@ export class StudentReportCardComponent implements OnInit {
       issuedDate: new Date().toISOString().split('T')[0]
     };
   }
-  
+
   getRandomMark(): number {
     return Math.floor(Math.random() * 31) + 70; // Entre 70 et 100
   }
-  
+
   calculateGrade(percentage: number): string {
     if (percentage >= 90) return 'A+';
     if (percentage >= 80) return 'A';
@@ -156,25 +156,25 @@ export class StudentReportCardComponent implements OnInit {
       const studentId = this.searchForm.get('studentId')?.value;
       const academicYear = this.searchForm.get('academicYear')?.value;
       const examType = this.searchForm.get('examType')?.value;
-      
+
       // Chercher un bulletin existant
       this.selectedReport = this.reportCards.find(
-        report => report.studentId === studentId && 
-                 report.academicYear === academicYear && 
+        report => report.studentId === studentId &&
+                 report.academicYear === academicYear &&
                  report.examType === examType
       ) || null;
-      
+
       // Si aucun bulletin n'est trouvé, on génère des données de test
       if (!this.selectedReport) {
         this.selectedReport = this.generateTestData();
-        
+
         // Calculer les jours d'absence et le pourcentage de présence
-        this.selectedReport.attendanceRecord.daysAbsent = 
+        this.selectedReport.attendanceRecord.daysAbsent =
           this.selectedReport.attendanceRecord.totalDays - this.selectedReport.attendanceRecord.daysPresent;
-        
-        this.selectedReport.attendanceRecord.percentage = 
+
+        this.selectedReport.attendanceRecord.percentage =
           (this.selectedReport.attendanceRecord.daysPresent / this.selectedReport.attendanceRecord.totalDays) * 100;
-        
+
         // Ajouter à la liste des bulletins
         this.reportCards.push(this.selectedReport);
       }
@@ -198,4 +198,4 @@ export class StudentReportCardComponent implements OnInit {
     this.selectedReport = null;
     this.searchForm.reset();
   }
-} 
+}

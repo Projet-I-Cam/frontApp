@@ -18,6 +18,7 @@ export class CustomPaginationComponent {
   @Input() currentPage = 1;
   @Output() onPageChange = new EventEmitter<number>();
   
+  
   public tableData: string[] = [];
   // pagination variables
   public lastIndex = 0;

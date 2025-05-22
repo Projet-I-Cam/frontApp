@@ -11,6 +11,9 @@ import { StudentDashboardComponent } from './student-dashboard/student-dashboard
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { DashboardMainComponent } from './dashboard-main/dashboard-main.component';
 import { DashboardMinedubComponent } from './dashboard-minedub/dashboard-minedub.component';
+import { MyStudentsComponent } from '../../peoples/students/my-students/my-students.component';
+import { StudentsModule } from '../../peoples/students/students.module';
+import { StudentListHomeworksComponent } from '../../peoples/students/student-list-homeworks/student-list-homeworks.component';
 
 
 @NgModule({
@@ -27,7 +30,7 @@ import { DashboardMinedubComponent } from './dashboard-minedub/dashboard-minedub
     CommonModule,
     DashboardRoutingModule,
     SharedModule,
-   
+    StudentsModule,
       //...
       NgCircleProgressModule.forRoot({
         "radius": 60,
@@ -46,11 +49,11 @@ import { DashboardMinedubComponent } from './dashboard-minedub/dashboard-minedub
         "clockwise": false,
         "startFromZero": false,
         "lazy": true})
-  
+
   ],
   exports: [
     DashboardMainComponent,
-    DashboardMinedubComponent
+    DashboardMinedubComponent,
   ]
 })
 export class DashboardModule { }

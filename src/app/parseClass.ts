@@ -21,6 +21,7 @@ export default {
     EducationType: Parse.Object.extend("EducationType"),
     Section: Parse.Object.extend("Section"),
     Classroom: Parse.Object.extend("Classroom"),
+    HomeWork: Parse.Object.extend("HomeWork"),
     Institution: Parse.Object.extend("Institution"),
     Campus: Parse.Object.extend("Campus"),
     InstitutionSection: Parse.Object.extend("InstitutionSection"),
@@ -39,5 +40,7 @@ export default {
     Cote:  Parse.Object.extend("Cote"),
     TypeOfParent:  Parse.Object.extend("TypeOfParent"),
     Classe:  Parse.Object.extend("Classe"),
+     TeacherClassroom:  Parse.Object.extend("TeacherClassroom"),
+
 
 }
