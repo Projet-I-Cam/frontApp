@@ -3,16 +3,13 @@
 			<div class="content">
 				<div class="d-md-flex d-block align-items-center justify-content-between border-bottom pb-3">
 					<div class="my-auto mb-2">
-						<h3 class="page-title mb-1">General Settings</h3>
+						<h3 class="page-title mb-1">Paramètre général de l'établissement</h3>
 						<nav>
 							<ol class="breadcrumb mb-0">
 								<li class="breadcrumb-item">
 									<a [routerLink] = "routes.adminDashboard">Dashboard</a>
 								</li>
-								<li class="breadcrumb-item">
-									<a href="javascript:void(0);">Settings</a>
-								</li>
-								<li class="breadcrumb-item active" aria-current="page">General Settings</li>
+								<li class="breadcrumb-item active" aria-current="page">Paramètre géneral </li>
 							</ol>
 						</nav>
 					</div>
@@ -25,19 +22,225 @@
 						</div>
 					</div>
 				</div>
+				
+
+
 				<div class="row">
-					<div class="col-xxl-2 col-xl-3">
-						<div class="pt-3 d-flex flex-column list-group mb-4">
-							<a [routerLink]="routes.profileSettings" routerLinkActive="active"  class="d-block rounded p-2 active">Profile Settings</a>
-							<a [routerLink] = "routes.securitySettings"  routerLinkActive="active" class="d-block rounded p-2">Security Settings</a>
-							<a [routerLink] = "routes.notificationsSettings" routerLinkActive="active" class="d-block rounded p-2">Notifications</a>
-							<a [routerLink] = "routes.connectedApps" routerLinkActive="active" class="d-block rounded p-2">Connected Apps</a>
+					<div class="col-sm-12">
+						<div class="card">
+							<div class="card-body">
+								<div class="row">
+									<div class="col-12">
+										<div class="form-heading">
+										<h4>{{ "Mettre a jour les données de l'établisseent" }}</h4>
+										</div>
+									</div>
+								</div>
+
+								<div *ngIf="loading" class="text-center py-4">
+									<div class="spinner-border text-primary" role="status">
+										<span class="visually-hidden">Loading...</span>
+									</div>
+									<p class="mt-2">Chargement des données...</p>
+								</div>
+
+								<div *ngIf="errorMessage" class="col-12 mb-3">
+									<div class="alert alert-danger" role="alert">
+										{{ "errorMessage" }}
+									</div>
+								</div>
+
+								<div class="col-12" *ngIf="!loading">
+									<form [formGroup]="institutionForm" (ngSubmit)="onSubmit()">
+										<div style="padding-top: 20px; padding-bottom: 20px;">
+											<p>
+												BONJOUR Mr {{institution?.owner?.lastName}} {{institution?.owner?.firstName}}  Directeur de {{institution?.name}}
+											</p>
+										</div>
+										<div class="row">
+											<div class="col-12 col-md-6 col-xl-6 mb-3">
+												<div class="form-group local-forms">
+													<label>MATRICULE DE L’ETABLISSEMENT <span class="login-danger">*</span></label>
+													<input 
+														type="text" 
+														class="form-control" 
+														placeholder="Enter institution name"
+														formControlName="registrationNumber"
+													>
+												</div>
+											</div>
+											
+											<div class="col-12 col-md-6 col-xl-6 mb-3">
+												<div class="form-group local-forms">
+													<label>ORDRE DE ENSEIGNEMENT <span class="login-danger">*</span></label>
+													<input 
+														type="text" 
+														class="form-control" 
+														placeholder="Enter institution name"
+														formControlName="teachOrder"
+													>
+												</div>
+											</div>
+											
+											<div class="col-12 col-md-6 col-xl-6 mb-3">
+												<div class="form-group local-forms">
+													<label>LAÏCITE DE L’ETABLISSEMENT <span class="login-danger">*</span></label>
+													<select 
+														class="form-select" 
+														formControlName="isInstitutionLaique"
+														required
+														>
+														<option value="">Sélectionner</option>
+														<option  value="Oui">Laïque</option>
+														<option  value="Non">Non Laïque</option>
+													</select>
+												</div>
+											</div>
+											<div class="col-12 col-md-6 col-xl-6 mb-3">
+												<div class="form-group local-forms">
+													<label>GROUPE RELIGIEUX <span class="login-danger">*</span></label>
+													<select 
+														class="form-select" 
+														formControlName="religiousGroup"
+														required
+														>
+														<option value="">Sélectionner</option>
+														<option  value="Catholique">Catholique</option>
+														<option  value="Protestant">Protestant</option>
+														<option  value="Musulman">Musulman</option>
+														<option  value="Athée">Athée</option>
+														<option  value="Autre">Autre</option>
+													</select>
+												</div>
+											</div>
+											<div class="col-12 col-md-6 col-xl-6 mb-3">
+												<div class="form-group local-forms">
+													<label>GROUPE D’ENSEIGNEMENT <span class="login-danger">*</span></label>
+													<input 
+														type="text" 
+														class="form-control" 
+														placeholder="Enter institution name"
+														formControlName="teachingGroup"
+													>
+												</div>
+											</div>
+											<div class="col-12 col-md-6 col-xl-6 mb-3">
+												<div class="form-group local-forms">
+													<label>TELEPHONES</label>
+													<input 
+														type="text" 
+														class="form-control" 
+														placeholder="Enter institution name"
+														formControlName="phones"
+													>
+												</div>
+											</div>
+											<div class="col-12 col-md-6 col-xl-6 mb-3">
+												<div class="form-group local-forms">
+													<label>E-MAIL </label>
+													<input 
+														type="text" 
+														class="form-control" 
+														placeholder="Enter an email"
+														formControlName="emails"
+													>
+												</div>
+											</div>
+											<div class="col-12 col-md-6 col-xl-6 mb-3">
+												<div class="form-group local-forms">
+													<label>BOITE POSTALE </label>
+													<input 
+														type="text" 
+														class="form-control" 
+														placeholder="Enter institution name"
+														formControlName="poBox"
+													>
+												</div>
+											</div>
+											
+											<div class="col-12 col-md-6 col-xl-6 mb-3">
+												<div class="form-group local-forms">
+													<label>Logo </label>
+													<input
+														type="file"
+														class="form-control image-sign"
+														multiple=""
+														(change)="onFileSelect($event)"
+														#fileInput
+													/>
+												</div>
+											</div>
+											<div class="col-12 col-md-6 col-xl-6 mb-3">
+												<div class="form-group local-forms">
+													<label>Photo de l'établisseent </label>
+													<input
+														type="file"
+														class="form-control image-sign"
+														multiple=""
+														(change)="onFileSelect($event, true)"
+														#fileInput
+													/>
+												</div>
+											</div>
+											
+											<div class="col-12 col-md-6 col-xl-6 mb-3">
+												<div class="form-group local-forms">
+													<label>DESCRIPTION </label>
+													<textarea rows="5" cols="30" 
+														type="text" 
+														class="form-control" 
+														placeholder="Entrer la courte description de l'etablissement"
+														formControlName="description"
+													>
+													</textarea>
+												</div>
+											</div>
+										</div>
+										<div class="col-12 " style="padding-top: 25px; padding-bottom: 15px;" >
+											<h4>Geolocalisation</h4>
+										</div>
+										<div class="row">
+											<div class="col-12 col-md-6 col-xl-6 mb-3">
+												<div class="form-group local-forms">
+													<label>Latitude <span class="login-danger">*</span></label>
+													<input 
+														type="number" 
+														class="form-control" 
+														placeholder="Entrer la latitude"
+														formControlName="latitude"
+													>
+												</div>
+											</div>
+											<div class="col-12 col-md-6 col-xl-6 mb-3">
+												<div class="form-group local-forms">
+													<label>Longitude <span class="login-danger">*</span></label>
+													<input 
+														type="number" 
+														class="form-control" 
+														placeholder="Entrer la longitude"
+														formControlName="longitude"
+													>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-12">
+												<div class="doctor-submit text-end">
+													<button type="submit" class="btn btn-primary" [disabled]="submitting">
+														<span *ngIf="submitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+														{{ submitting ? 'Enregistrement...' : 'Mettre à jour' }}
+													</button>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div class="col-xxl-10 col-xl-9">
-						<router-outlet></router-outlet>
-					</div>
 				</div>
+
+
 			</div>
 		</div>
 		<!-- /Page Wrapper -->

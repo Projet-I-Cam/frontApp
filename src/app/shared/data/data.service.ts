@@ -2580,7 +2580,7 @@ export class DataService {
           hasSubRoute: true,
           showSubRoute: false,
           subMenus: [
-            { menuValue: 'Géolocalisation', route: routes.generalSettings },
+            { menuValue: 'Paramètre generale', route: routes.generalSettings },
             { menuValue: 'Administration des Classes', route: routes.classRoom }, //routes.classReport },
             { menuValue: 'Parametrage Bulletins', route: routes.reportCard },
             { menuValue: 'Frais Scolaires', route: routes.feesMaster },
