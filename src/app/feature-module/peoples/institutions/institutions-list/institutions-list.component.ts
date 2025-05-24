@@ -65,7 +65,7 @@ export class InstitutionsListComponent implements OnInit {
     if (this.loginService.isLoggedIn()) {
       const user = this.loginService.getUser();
       const role = user?.role?.task_name || 'admin';
-      var person = this.loginService.getPerson();
+      var person =  await this.loginService.getPerson();
       if (role === 'administration' || role === 'services_centraux' || role == 'ministre') {
         res = await globalGet({
           T: 'Institution',
@@ -155,7 +155,7 @@ export class InstitutionsListComponent implements OnInit {
             ...filters,
              municipality: {
               className: 'Municipality',
-              objectId: person.municipality
+              objectId: person?.municipality
             }
           },
           includes: [

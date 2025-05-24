@@ -361,6 +361,18 @@ export class routes {
   public static get addStudent(): string {
     return this.peoples + '/students/add-student';
   }
+   public static get reinscrition(): string {
+    return this.peoples + '/students/reinscription';
+  }
+   public static get unactifStudent(): string {
+    return this.peoples + '/students/list-unregistered-students';
+  }
+    public static get tableAbscence(): string {
+    return this.peoples + '/students/absence-list';
+  }
+   public static get tableDiscipline(): string {
+    return this.peoples + '/students/discipline-list';
+  }
   public static get addInstitution(): string {
     return this.peoples + '/institutions/add-institution';
   }
@@ -383,7 +395,7 @@ export class routes {
     return this.peoples + '/teachers/teacher-details';
   }
   public static get studentsList(): string {
-    return this.peoples + '/students/student-grid';
+    return this.peoples + '/students/student-list';
   }
   public static get studentsGrid(): string {
     return this.peoples + '/students/student-grid';
@@ -424,6 +436,7 @@ export class routes {
   public static get myStudents(): string {
     return this.peoples + '/students/my-students';
   }
+
 
 
 
@@ -820,11 +833,11 @@ export class routes {
   public static get departmentsList(): string {
     return this.administrativeDivision + '/departments';
   }
-  
+
   public static get municipalitiesList(): string {
     return this.administrativeDivision + '/municipalities';
   }
-  
+
 
 
 
