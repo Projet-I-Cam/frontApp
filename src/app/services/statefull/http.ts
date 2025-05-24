@@ -20,13 +20,14 @@ export interface BaseGetIO {
 
 export interface BasePostIO {
     T: any;
-    dataObject: {}
+    dataObject: {},
 }
 
 export interface BasePutIO {
     T: any;
     objectId: string,
-    dataObject: {}
+    dataObject: {},
+    geoPoint?: any
 }
 
 export interface BaseDeleteIO {
@@ -131,17 +132,40 @@ export const globalPost = async({T, dataObject} : BasePostIO): Promise<any> => {
     }
 }
 
-export const globalPut = async({T, dataObject, objectId} : BasePutIO): Promise<any> => {
+export const globalPut = async({T, dataObject, objectId, geoPoint} : BasePutIO): Promise<any> => {
     try {
         const query = new Parse.Query(CLASS?.[T])
         const toUpdate = await query.get(objectId)
-        Object.entries(dataObject).forEach(([key, value]: any) => {
+        Object.entries(dataObject).forEach(([key, value]: [string, any]) => {
             if(typeof value === "string" || Array.isArray(value) || value instanceof Date && !isNaN(value.getTime()) || typeof value === "boolean" || typeof value === "number"){
-                toUpdate.set(key, value)
-            }else{
-                toUpdate.set(key, {"__type": "Pointer", "className": value?.className , "objectId": value?.objectId})
+        
+                toUpdate.set(key, value);
+        
+            } else if (value && typeof value === "object" && value.className && value.objectId) {
+        
+                toUpdate.set(key, {
+        
+                    __type: "Pointer",
+        
+                    className: value.className,
+        
+                    objectId: value.objectId
+        
+                });
+        
+            }else if(value instanceof File){
+                const parseFile = new Parse.File(sanitizeFilename(value.name), value);
+                toUpdate.set(key, parseFile);
+            } else {
+        
+                console.warn(`Invalid value for key "${key}":`, value);
+                return;
             }
+        
         });
+        if(geoPoint){
+            toUpdate.set(geoPoint?.field, geoPoint.value);
+        }
         const r =  await toUpdate.save()
         return {
             message: "Objet mise a jour",

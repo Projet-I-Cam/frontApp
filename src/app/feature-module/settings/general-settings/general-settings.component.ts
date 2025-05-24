@@ -1,6 +1,12 @@
-import { Component } from '@angular/core';
-import { routes } from '../../../shared/routes/routes';
+import { Component, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import Parse from 'parse'; // Ensure Parse is imported properly
+
 import { CommonService } from '../../../shared/common/common.service';
+import { routes } from '../../../shared/routes/routes';
+import { getPersonByUserId } from '../../../services/statefull/genericParse';
+import { globalGet, globalPost, globalPut } from '../../../services/statefull/http';
 
 @Component({
     selector: 'app-general-settings',
@@ -8,25 +14,141 @@ import { CommonService } from '../../../shared/common/common.service';
     styleUrl: './general-settings.component.scss',
     standalone: false
 })
-export class GeneralSettingsComponent {
-public routes = routes
+export class GeneralSettingsComponent implements OnInit {
+  public routes = routes;
+  public institutionForm: FormGroup;
+  public submitting = false;
+  public loading = false;
+  public errorMessage: string | null = null; 
+  public loadingDrop = false;
+  public pageTitle = 'Add Institution';
+  base = '';
+  page = '';
+  last = '';
+  institution: any = null;
+  person: any = null;
 
-base = '';
-page = '';
-last = '';
-constructor(
-  private common: CommonService
-) {
+  constructor(
+    private common: CommonService,
+    private fb: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
 
-  this.common.base.subscribe((res: string) => {
-    this.base = res;
-  });
-  this.common.page.subscribe((res: string) => {
-    this.page = res;
-  });
-  this.common.page.subscribe((res: string) => {
-    this.last = res;
-  });
-  
-}
+    this.common.base.subscribe((res: string) => {
+      this.base = res;
+    });
+    this.common.page.subscribe((res: string) => {
+      this.page = res;
+    });
+    this.common.page.subscribe((res: string) => {
+      this.last = res;
+    });
+    this.institutionForm = this.fb.group({
+      registrationNumber: ['', [Validators.required]],
+      teachOrder: ['', [Validators.required]],
+      isInstitutionLaique: ['', [Validators.required]],
+      religiousGroup: ['', [Validators.required]],
+      teachingGroup: ['', [Validators.required]],
+      longitude: ['', [Validators.required]],
+      latitude: ['', [Validators.required]],
+      description: [''],
+      logo: [null],
+      photo: [null],
+      emails: [''],
+      poBox: [''],
+      phones: [''],
+    });
+    
+  }
+
+    ngOnInit(): void {
+      const userId: string = Parse.User.current()?._getId() || ""
+      getPersonByUserId(userId).then(async (person: any) => {
+        console.log('Person found 2', person)
+        const institution = await globalGet({
+          T: "Institution",
+          filters: {
+            owner: { className: "Person", objectId: person?.objectId}
+          },
+          includes: ['owner'],
+          isOne: true
+        })
+        console.log('institution institution institution ', institution)
+        this.person = person
+        this.institution = institution
+
+        this.institutionForm.patchValue({
+          phones: institution?.phones?.join(', '),
+          emails: institution?.emails?.join(', '),
+          poBox: institution?.poBox,
+          registrationNumber: institution?.registrationNumber,
+          teachOrder: institution?.teachOrder,
+          isInstitutionLaique: institution?.isInstitutionLaique? "Oui" :  "Non",
+          religiousGroup: institution?.religiousGroup,
+          teachingGroup: institution?.teachingGroup,
+          description: institution?.description,
+          latitude: institution?.geoPoint?.latitude,
+          longitude: institution?.geoPoint?.longitude,
+        });
+      })
+    }
+
+    public onFileSelect(event: any, isSecond?: boolean) {
+    console.log('Changed')
+    const file: File = event.target.files[0];
+    if (file) {
+      if(isSecond){
+        return this.institutionForm.patchValue({
+          photo: file
+        });
+      }
+      this.institutionForm.patchValue({
+        logo: file
+      });
+    }
+  }
+    async onSubmit(): Promise<any> {
+      console.log('Form submited 1', this.institutionForm.value)
+      if (this.institutionForm.valid) {
+        try {
+          
+        
+          this.submitting = true;
+          this.errorMessage = null;
+          const formData = { 
+            ...this.institutionForm.value 
+          };
+          const geoPoint = new Parse.GeoPoint(formData?.latitude, formData?.longitude)
+          console.log('geoPoint geoPoint geoPoint ', geoPoint)
+          delete formData.latitude
+          delete formData.longitude
+          formData.phones = formData.phones ? [...formData.phones.split(',')] : []
+          formData.emails = formData.emails ? [...formData.emails.split(',')] : []
+          if(formData.isInstitutionLaique ===  "Oui"){
+            formData.isInstitutionLaique = true
+          }else{
+            formData.isInstitutionLaique = false
+          }
+
+          console.log('Form submited 2', formData)
+          const r = await globalPut({
+            T: "Institution",
+            dataObject: formData, 
+            objectId: this.institution?.objectId,
+            geoPoint: {
+              field: "geoPoint",
+              value: geoPoint
+            }
+          })
+          console.log('UPDATE RESULT ', r)
+          this.submitting = false;
+          this.errorMessage = null;
+        } catch (error) {
+           console.error(' error error ', error)
+            this.submitting = false;
+            this.errorMessage = null;
+        }
+      }
+    }
 }
