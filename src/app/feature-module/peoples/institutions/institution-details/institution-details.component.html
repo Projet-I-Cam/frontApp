@@ -1,1 +1,229 @@
-<p>institution-details works!</p>
+<div class="page-wrapper">
+  <div class="content">
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a [routerLink]="routes.adminDashboard">Dashboard </a>
+            </li>
+            <li class="breadcrumb-item"><i class="feather-chevron-right"></i></li>
+            <li class="breadcrumb-item">
+              <a [routerLink]="'/peoples/institutions/institutions-list'">Institutions</a>
+            </li>
+            <li class="breadcrumb-item"><i class="feather-chevron-right"></i></li>
+            <li class="breadcrumb-item active">{{ institution?.name }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12" style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="form-heading">
+                  <h4>{{ institution?.name }} - {{ institution?.registrationNumber }} </h4>
+                </div>
+                <img *ngIf="institution?.logo ; else notlogo" src="{{institution?.logo?.url}}" alt="Logo" width="150" height="150" >
+                <ng-template #notlogo>
+                    <i>Pas de logo</i>
+                </ng-template>
+              </div>
+            </div>
+
+            <div *ngIf="loading" class="text-center py-4">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-2">Chargement des données...</p>
+            </div>
+
+            <div class="col-12" *ngIf="!loading" style="margin-top: 25px;">
+              <form [formGroup]="institutionForm" >
+                <div class="row">
+                  <div class="col-12 col-md-6 col-xl-6 mb-3">
+                    <div class="form-group local-forms">
+                      <label>Institution Name <span class="login-danger">*</span></label>
+                      <input 
+                        type="text" 
+                        [disabled]="true"
+                        class="form-control" 
+                        placeholder="Enter institution name"
+                        formControlName="name"
+                      >
+                    </div>
+                  </div>
+
+                <div class="col-12 col-md-6 col-xl-6 mb-3">
+                    <div class="form-group local-forms">
+                      <label>Registration date</label>
+                      <div class="input-icon position-relative">
+                        <span class="input-icon-addon">
+                          <i class="ti ti-calendar"></i>
+                        </span> 
+                        <input
+                            type="text"
+                            class="form-control datetimepicker"
+                            placeholder="jj-mm-aaaa"
+                            bsDatepicker
+                            formControlName="registrationDate"
+                          />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-12 col-md-6 col-xl-6 mb-3">
+                    <div class="form-group local-forms">
+                      <label>Municipality </label>
+                      <p-dropdown
+                        formControlName="municipality"
+                        [options]="municipalities"
+                        [filter]="true"
+                        placeholder="Rechercher la comune"
+                        [virtualScroll]="true"
+                      >
+                      </p-dropdown>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-6 col-xl-6 mb-3">
+                    <div class="form-group local-forms">
+                      <label>Ordre de enseignement</label>
+                      <input 
+                        type="address" 
+                        class="form-control" 
+                        placeholder="Entrer l'Ordre de enseignement"
+                        formControlName="teachOrder"
+                      >
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-6 col-xl-6 mb-3">
+                    <div class="form-group local-forms">
+                      <label>Etablissement laïc</label>
+                      <input 
+                        type="address" 
+                        class="form-control" 
+                        placeholder="Electioner laïcité de l’établissement"
+                        formControlName="isInstitutionLaique"
+                      >
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6 col-xl-6 mb-3">
+                    <div class="form-group local-forms">
+                      <label>Groupe religieux</label>
+                      <input 
+                        type="address" 
+                        class="form-control" 
+                        placeholder="Selectionnez le roupe religieux"
+                        formControlName="religiousGroup"
+                      >
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6 col-xl-6 mb-3">
+                    <div class="form-group local-forms">
+                      <label>Groupe d’enseignement</label>
+                      <input 
+                        type="address" 
+                        class="form-control" 
+                        placeholder="Selectionnez le groupe d’enseignement"
+                        formControlName="teachingGroup"
+                      >
+                    </div>
+                  </div>
+                  
+                  <div class="col-12 col-md-6 col-xl-6 mb-3">
+                    <div class="form-group local-forms">
+                      <label>Address</label>
+                      <input 
+                        type="address" 
+                        class="form-control" 
+                        placeholder="Enter the address"
+                        formControlName="address"
+                      >
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-6 col-xl-6 mb-3">
+                    <div class="form-group local-forms">
+                      <label>Description</label>
+                      <textarea rows="3" cols="30" 
+                            type="text" 
+                            class="form-control" 
+                            placeholder="Entrer la courte description de l'etablissement"
+                            formControlName="description"
+                        >
+                        </textarea>
+                    </div>
+                  </div>
+
+                  
+                  
+
+                  
+                  <div class="col-12 mt-10" >
+                    <h4>Person responsible</h4>
+                  </div>
+                  <div class="col-12">
+                    <div style="margin-top: 20px;">
+                      <div class="row col-12" >
+                        <div class="row">
+                            <div class="col-12 col-md-6 ">
+                              <div class="form-group local-forms">
+                                <label>Nom complet</label>
+                                <input 
+                                  type="text" 
+                                  class="form-control" 
+                                  placeholder="Enter the phone number"
+                                  formControlName="ownerName"
+                                >
+                              </div>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-12 mt-10" style="margin-top: 35px;">
+                    <h4>Situation geographique</h4>
+                  </div>
+                  <div class="row" style="margin-top: 25px;">
+                    <div class="col-6">
+                        <iframe
+                            width="100%"
+                            height="400"
+                            frameborder="0"
+                            scrolling="no"
+                            [src]="generateMapUrl(institution?.geoPoint?.latitude, institution?.geoPoint?.longitude)">
+                        </iframe>
+                    </div>
+                    <div class="col-6">
+                        <img *ngIf="institution?.photo ; else notPhoto" src="{{institution?.photo?.url}}" alt="Logo" style="width: 100%; height: 400px;"  >
+                        <ng-template #notPhoto>
+                            <i>Pas de photo</i>
+                        </ng-template>
+                    </div>
+                  </div>
+                  <!-- <div class="col-12">
+                    <div class="doctor-submit text-end">
+                      <button type="button" class="btn btn-secondary me-2" (click)="cancel()">
+                        Annuler
+                      </button>
+                      <button type="submit" class="btn btn-primary" [disabled]="submitting">
+                        <span *ngIf="submitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        {{ submitting ? 'Enregistrement...' : (isEditMode ? 'Mettre à jour' : 'Enregistrer') }}
+                      </button>
+                    </div>
+                  </div> -->
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
