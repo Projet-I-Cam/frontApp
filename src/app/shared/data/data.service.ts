@@ -2575,37 +2575,40 @@ export class DataService {
       showAsTab: false,
       menu: [
         {
-          menuValue: 'Paramétrage',
-          icon: 'school',
-          hasSubRoute: true,
-          showSubRoute: false,
-          subMenus: [
-            { menuValue: 'Paramètre generale', route: routes.generalSettings },
-            { menuValue: 'Administration des Classes', route: routes.classRoom }, //routes.classReport },
-            { menuValue: 'Parametrage Bulletins', route: routes.reportCard },
-            { menuValue: 'Frais Scolaires', route: routes.feesMaster },
-            { menuValue: 'Emploi du temps', route: routes.classTimeTable },
-            { menuValue: "Conseil d'etablissement", route: routes.classSyllabus },
-            { menuValue: "Bureau APEE", route: routes.classSyllabus }
-          ]
-        },
-        {
           menuValue: 'Gestion Élèves',
           icon: 'school',
           hasSubRoute: true,
           showSubRoute: false,
           subMenus: [
-            { menuValue: "Inscrire un Élèves", route: routes.addStudent },
-            { menuValue: "Liste des Élèves", route: routes.studentsList },
-            { menuValue: 'Transferts', route: routes.studentTransfer },
-            { menuValue: 'Élèves Inactifs', route: routes.studentsList },
-            { menuValue: 'Tableau Absences', route: routes.studentsList },
-            { menuValue: 'Suivi Discipline', route: routes.studentsList },
+            { menuValue: "Inscription", route: routes.addStudent },
+            { menuValue: "Réinscription", route: routes.reinscrition },
+            { menuValue: "Liste des inscrits", route: routes.studentsList },
+            { menuValue: 'Liste des Non-inscrits', route: routes.unactifStudent },
+            { menuValue: 'Liste des transferts', route: routes.studentTransfer },
             { menuValue: 'Promotions', route: routes.studentPromotion },
+            { menuValue: 'Tableau Absences', route: routes.tableAbscence },
+            { menuValue: 'Suivi Discipline', route: routes.tableDiscipline },
+          ]
+        },
+         {
+          menuValue: 'Gestion des classes',
+          icon: 'school-bell',
+          hasSubRoute: true,
+          showSubRoute: false,
+          subMenus: [
+            { menuValue: 'Liste des classes', route: routes.classes },
+            { menuValue: 'Projet pédagogique', route : '' },
+            { menuValue: 'Programme des cours', route: routes.scheduleClasses },
+            { menuValue: 'Manuels au programme', route: '' },
+            { menuValue: 'Matériel pédagogique', route: '' },
+            { menuValue: 'Devoirs/Exercices', route: routes.classHomeWork },
+            { menuValue: 'Contrôle/Examens', route: '' },
+            { menuValue: 'Gestion des absences', route: '' },
+            { menuValue: 'Suivi des élèves/Discipline', route: '' }
           ]
         },
         {
-          menuValue: 'Notes',
+          menuValue: 'Gestion des Notes',
           icon: 'notes',
           hasSubRoute: true,
           showSubRoute: false,
@@ -2616,7 +2619,7 @@ export class DataService {
           ]
         },
         {
-          menuValue: 'Gestion des Personnels',
+          menuValue: 'Gestion du Personnels',
           icon: 'peoples',
           showSubRoute: false,
           page: 'base',
@@ -2662,23 +2665,6 @@ export class DataService {
           ]
         },
         {
-          menuValue: 'Gestion des classes',
-          icon: 'school-bell',
-          hasSubRoute: true,
-          showSubRoute: false,
-          subMenus: [
-            { menuValue: 'Liste des classes', route: routes.classes },
-            { menuValue: 'Projet pédagogique', route : '' },
-            { menuValue: 'Programme des cours', route: routes.scheduleClasses },
-            { menuValue: 'Manuels au programme', route: '' },
-            { menuValue: 'Matériel pédagogique', route: '' },
-            { menuValue: 'Devoirs/Exercices', route: routes.classHomeWork },
-            { menuValue: 'Contrôle/Examens', route: '' },
-            { menuValue: 'Gestion des absences', route: '' },
-            { menuValue: 'Suivi des élèves/Discipline', route: '' }
-          ]
-        },
-        {
           menuValue: 'Gestion des parents',
           icon: 'people',
           hasSubRoute: true,
@@ -2708,6 +2694,21 @@ export class DataService {
               route: 'peoples/minebase/staffs',
             },
           ],
+        },
+         {
+          menuValue: 'Paramétrage',
+          icon: 'school',
+          hasSubRoute: true,
+          showSubRoute: false,
+          subMenus: [
+            { menuValue: 'Géolocalisation', route: routes.generalSettings },
+            { menuValue: 'Administration des Classes', route: routes.classRoom }, //routes.classReport },
+            { menuValue: 'Parametrage Bulletins', route: routes.reportCard },
+            { menuValue: 'Frais Scolaires', route: routes.feesMaster },
+            { menuValue: 'Emploi du temps', route: routes.classTimeTable },
+            { menuValue: "Conseil d'etablissement", route: routes.classSyllabus },
+            { menuValue: "Bureau APEE", route: routes.classSyllabus }
+          ]
         },
         {
           menuValue: 'Rapports',

@@ -28,7 +28,7 @@ import { StudentsModule } from "../peoples/students/students.module";
     ClassRoutineComponent,
     ClassSectionComponent,
     ClassSubjectComponent,
-    ClassSyllabusComponent, 
+    ClassSyllabusComponent,
     ClassTimeTableComponent, AcademicYearComponent, EducationTypeComponent
   ],
   imports: [
