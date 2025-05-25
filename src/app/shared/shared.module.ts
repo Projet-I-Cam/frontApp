@@ -40,6 +40,7 @@ import { Slider } from 'primeng/slider';
 import { ProgressBar } from 'primeng/progressbar';
 import { TabViewModule } from 'primeng/tabview';
 import { TabMenuModule } from 'primeng/tabmenu';
+import { FileUploadModule } from 'primeng/fileupload';
 
 
 import {
@@ -91,7 +92,8 @@ import { Router, RouterModule } from '@angular/router';
     ButtonModule,
     StepsModule,
     TabViewModule,
-    TabMenuModule
+    TabMenuModule,
+    FileUploadModule
 
   ],
   exports: [
@@ -132,7 +134,8 @@ import { Router, RouterModule } from '@angular/router';
     ButtonModule,
     StepsModule,
     TabViewModule,
-    TabMenuModule
+    TabMenuModule,
+    FileUploadModule
   ],
   providers: [
     provideNgxMask(),

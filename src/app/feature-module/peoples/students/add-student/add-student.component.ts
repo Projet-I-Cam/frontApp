@@ -81,7 +81,7 @@ constructor(
   // Load current person
   this.loginService.getPerson().then(person => {
     this.currentPerson = person;
-    console.log('currentPerson', this.currentPerson);
+    console.log('currentInstitution', this.currentPerson?.institution.objectId);
     this.loadingPerson = false;
     this.checkInitializationComplete();
   }).catch(() => {

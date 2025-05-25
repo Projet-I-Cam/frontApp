@@ -32,7 +32,9 @@ import { StudentListComponent } from './student-list/student-list.component';
 import { StudentReinscriptionComponent } from './student-reinscription/student-reinscription.component';
 import { StudentUnregisteredListComponent } from './student-unregistered-list/student-unregistered-list.component';
 import { StudentsAbscenceListComponent } from './students-abscence-list/students-abscence-list.component';
-import { StudentsBehaviourListComponent } from './students-behaviour-list/students-behaviour-list.component'
+import { StudentsBehaviourListComponent } from './students-behaviour-list/students-behaviour-list.component';
+import { AddStudentTransfertComponent } from './add-student-transfert/add-student-transfert.component'
+import { StudentTransferComponent } from './student-transfer/student-transfer.component';
 @NgModule({
   declarations: [
     MyStudentsComponent,
@@ -51,6 +53,9 @@ import { StudentsBehaviourListComponent } from './students-behaviour-list/studen
     StudentUnregisteredListComponent,
     StudentsAbscenceListComponent,
     StudentsBehaviourListComponent,
+    AddStudentTransfertComponent,
+    StudentTransferComponent,
+    AddStudentTransfertComponent
   ],
   imports: [
     CommonModule,
@@ -90,7 +95,9 @@ import { StudentsBehaviourListComponent } from './students-behaviour-list/studen
      StudentUnregisteredListComponent,
      StudentsAbscenceListComponent,
      StudentsBehaviourListComponent,
-
+     AddStudentTransfertComponent,
+    StudentTransferComponent,
+    AddStudentTransfertComponent
   ]
 })
 export class StudentsModule { }
