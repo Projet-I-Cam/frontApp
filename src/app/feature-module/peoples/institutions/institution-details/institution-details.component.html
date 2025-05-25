@@ -112,7 +112,7 @@
                       >
                     </div>
                   </div>
-                  <div class="col-12 col-md-6 col-xl-6 mb-3">
+                  <div *ngIf="institution?.isInstitutionLaique"  class="col-12 col-md-6 col-xl-6 mb-3">
                     <div class="form-group local-forms">
                       <label>Groupe religieux</label>
                       <input 

@@ -66,7 +66,7 @@ export class InstitutionDetailsComponent implements OnInit{
             ...institution,
             registrationDate: new Date(institution?.registrationDate?.iso),
             municipality: institution?.municipality?.objectId,
-            isInstitutionLaique: institution?.isInstitutionLaique ? "Oui" : "Non",
+            isInstitutionLaique: institution?.isInstitutionLaique ? "Laïque" : "Confessionnel",
             ownerName: institution?.owner?.firstName + " " + institution?.owner?.lastName
           });
           this.loading = false
