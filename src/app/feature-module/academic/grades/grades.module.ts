@@ -15,10 +15,11 @@ import { MatInputModule } from '@angular/material/input';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { DropdownModule } from 'primeng/dropdown';
 import { CustomPaginationModule } from '../../../shared/custom-pagination/custom-pagination.module';
+import {GradeModalComponent} from "../../../grade-modal/grade-modal.component";
 
 @NgModule({
   declarations: [
-    GradesComponent
+    GradesComponent,
   ],
   imports: [
     CommonModule,
@@ -36,7 +37,8 @@ import { CustomPaginationModule } from '../../../shared/custom-pagination/custom
     CustomPaginationModule,
     GradeEntryComponent,
     GradeCalculationComponent,
-    ReportCardComponent
+    ReportCardComponent,
+    GradeModalComponent
   ]
 })
-export class GradesModule { } 
+export class GradesModule { }

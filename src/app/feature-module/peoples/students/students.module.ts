@@ -42,7 +42,6 @@ import { StudentTransferComponent } from './student-transfer/student-transfer.co
     StudentTimeTableComponent,
     StudentLeavesComponent,
     StudentFeesComponent,
-    StudentResultComponent,
     StudentReportCardComponent,
     StudentListHomeworksComponent,
     StudentInfosComponent,
@@ -73,6 +72,7 @@ import { StudentTransferComponent } from './student-transfer/student-transfer.co
     EditStudentModule,
     StudentsComponent,
     StudentGridComponent,
+    StudentResultComponent,
   ],
   providers: [
     StudentService,

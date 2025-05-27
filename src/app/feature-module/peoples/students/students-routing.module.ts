@@ -18,6 +18,7 @@ import { StudentReinscriptionComponent } from './student-reinscription/student-r
 import { StudentUnregisteredListComponent } from './student-unregistered-list/student-unregistered-list.component';
 import { StudentsAbscenceListComponent } from './students-abscence-list/students-abscence-list.component';
 import { StudentsBehaviourListComponent } from './students-behaviour-list/students-behaviour-list.component';
+import {StudentResultComponent} from "./student-result/student-result.component";
 
 const routes: Routes = [
   {
@@ -92,6 +93,10 @@ const routes: Routes = [
         path: 'discipline-list',
         component: StudentsBehaviourListComponent,
       },
+      {
+        path: 'student-result',
+        component: StudentResultComponent,
+      }
     ],
   },
 ];

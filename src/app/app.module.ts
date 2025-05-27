@@ -17,17 +17,18 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { DialogModule } from '@angular/cdk/dialog';
+import { GradeModalComponent } from './grade-modal/grade-modal.component';
 
 
 
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, AppRoutingModule, SharedModule, SiteModule, HttpClientModule,
-    FormsModule, ToastModule, ReactiveFormsModule,   
+    FormsModule, ToastModule, ReactiveFormsModule,
   ],
   providers: [
     provideAnimationsAsync(),
-    MessageService, ConfirmationService, 
+    MessageService, ConfirmationService,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent],

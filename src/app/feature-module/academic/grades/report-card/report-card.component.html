@@ -65,124 +65,163 @@
             </div>
         </div>
 
-        <!-- Report Card -->
-        <div class="row" *ngIf="showBulletin">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-12 text-end mb-3">
-                                <button class="btn btn-primary me-2" (click)="showBulletin = false">Retour</button>
-                                <button class="btn btn-success" (click)="printBulletin()">Imprimer</button>
-                            </div>
-                        </div>
-                        
-                        <!-- Bulletin Content -->
-                        <div class="bulletin-container">
-                            <!-- Header -->
-                            <div class="bulletin-header">
-                                <div class="school-info">
-                                    <h2>{{ studentData?.schoolName }}</h2>
-                                    <p>Année scolaire: {{ studentData?.schoolYear }}</p>
-                                    <h3>BULLETIN DE NOTES</h3>
-                                    <p>{{ studentData?.term }}</p>
-                                </div>
-                                <div class="student-photo">
-                                    <img [src]="studentData?.image" alt="Photo de l'élève">
-                                </div>
-                            </div>
-                            
-                            <!-- Student Info -->
-                            <div class="student-info">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <p><strong>Nom de l'élève:</strong> {{ studentData?.name }}</p>
-                                        <p><strong>Numéro d'admission:</strong> {{ studentData?.admissionNo }}</p>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p><strong>Classe:</strong> {{ studentData?.class }}</p>
-                                        <p><strong>Classement:</strong> {{ studentData?.rank }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Grades Table -->
-                            <div class="grades-table">
-                                <h4>Résultats</h4>
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Matière</th>
-                                            <th>Note /20</th>
-                                            <th>Appréciation</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let subject of studentData?.subjects">
-                                            <td>{{ subject.name }}</td>
-                                            <td>{{ subject.grade }}</td>
-                                            <td>{{ subject.appreciation }}</td>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr class="table-primary">
-                                            <td><strong>Moyenne générale</strong></td>
-                                            <td><strong>{{ studentData?.average }}/20</strong></td>
-                                            <td><strong>Moyenne de classe: {{ studentData?.classAverage }}/20</strong></td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            
-                            <!-- Additional Info -->
-                            <div class="additional-info">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <p><strong>Assiduité:</strong> {{ studentData?.attendance }}</p>
-                                        <p><strong>Conduite:</strong> {{ studentData?.conduct }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Remarks -->
-                            <div class="remarks">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h5>Remarques du professeur principal:</h5>
-                                        <p>{{ studentData?.teacherRemarks }}</p>
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-md-12">
-                                        <h5>Observations du directeur:</h5>
-                                        <p>{{ studentData?.principalRemarks }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Signatures -->
-                            <div class="signatures">
-                                <div class="row">
-                                    <div class="col-md-4 text-center">
-                                        <div class="signature-line"></div>
-                                        <p>Professeur principal</p>
-                                    </div>
-                                    <div class="col-md-4 text-center">
-                                        <div class="signature-line"></div>
-                                        <p>Parent / Tuteur</p>
-                                    </div>
-                                    <div class="col-md-4 text-center">
-                                        <div class="signature-line"></div>
-                                        <p>Directeur</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /Bulletin Content -->
-                    </div>
-                </div>
-            </div>
+      <!-- Report Card -->
+      <!-- report-card.component.html -->
+      <div class="d-flex justify-content-end mb-3">
+        <button class="btn btn-outline-primary" (click)="printBulletin()">
+          <i class="bi bi-printer"></i> Imprimer le bulletin
+        </button>
+      </div>
+      <div id="bulletin-content" class="container my-4" *ngIf="showBulletin && studentData" style="font-family: Arial, sans-serif;">
+
+        <div class="text-center mb-4">
+          <h4 class="text-primary fw-bold">{{ studentData.schoolName }}</h4>
+          <p class="text-secondary">Année Scolaire : {{ studentData.schoolYear }}</p>
         </div>
-        <!-- /Report Card -->
+
+        <div class="row mb-1 bg-light rounded p-3 shadow-sm">
+          <div class="col-md-2 text-center">
+            <img [src]="studentData.profileImage" alt="Photo de l'élève" class="img-thumbnail" style="width: 100%; height: 190px; object-fit: cover;">
+          </div>
+          <div class="col-md-5">
+            <p><strong>Nom :</strong> {{ studentData.name }}</p>
+            <p><strong>Date de naissance :</strong> {{ studentData.dob }}</p>
+            <p><strong>Sexe :</strong> {{ studentData.gender ? studentData.gender : '---' }}</p>
+            <p><strong>État de santé :</strong> <span class="text-success">APTE</span></p>
+            <p><strong>Contact :</strong> {{ studentData.phone ? studentData.phone : '---' }}</p>
+          </div>
+          <div class="col-md-4">
+            <p><strong>Classe :</strong> {{ studentData.class }}</p>
+            <p><strong>Section :</strong> {{ studentData.section }}</p>
+            <p><strong>Niveau :</strong> II</p>
+            <p><strong>Admission No :</strong> {{ studentData.admissionNo }}</p>
+            <p><strong>Trimestre :</strong> {{ studentData.term }}</p>
+          </div>
+        </div>
+
+        <div *ngFor="let comp of competences" class="mb-1">
+          <div class="competence-title bg-primary text-white rounded p-2 mb-1">{{ comp.title }} ({{ comp.totalPoints }} Points)</div>
+
+          <div *ngFor="let mod of comp.modules" class="mb-1">
+            <div class="section-title bg-secondary text-white rounded p-1 mb-1">{{ mod.title }} ({{ mod.totalPoints }} Points)</div>
+
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped align-middle">
+                <thead class="table-primary">
+                <tr>
+                  <th rowspan="2" class="text-center align-middle">Unité d’Apprentissage</th>
+                  <th colspan="2" *ngFor="let ua of mod.unites" class="text-center">{{ ua.name }}</th>
+                </tr>
+                <tr>
+                  <ng-container *ngFor="let ua of mod.unites">
+                    <th class="text-center">Note</th>
+                    <th class="text-center">Cote</th>
+                  </ng-container>
+                </tr>
+                </thead>
+                <tbody>
+                <ng-container *ngIf="evaluationTypes.slice(0, mod.unites[0].evaluations.length) as shownTypes">
+                  <tr *ngFor="let type of shownTypes" class="table-light">
+                    <td class="fw-semibold">{{ type.label }} ({{ type.points }} pts)</td>
+                    <ng-container *ngFor="let ua of mod.unites">
+                      <td class="text-center">{{ getEvaluationNote(ua.evaluations, type.value) }}</td>
+                      <td class="text-center">{{ getEvaluationCote(ua.evaluations, type.value) }}</td>
+                    </ng-container>
+                  </tr>
+
+                  <!-- Ligne des totaux -->
+                  <tr class="fw-bold bg-info text-white">
+                    <td>Total des points</td>
+                    <ng-container *ngFor="let ua of mod.unites">
+                      <td class="text-center">{{ getTotalNote(ua, shownTypes) }}</td>
+                      <td class="text-center">{{ getAverageCote(ua, shownTypes) }}</td>
+                    </ng-container>
+                  </tr>
+
+                  <!-- Ligne des moyennes -->
+                  <tr class="fw-bold bg-info text-white">
+                    <td>Cote moyenne</td>
+                    <ng-container *ngFor="let ua of mod.unites">
+                      <td class="text-center" colspan="2">
+                        {{ getAverageCote(ua, shownTypes) }}
+                      </td>
+                    </ng-container>
+                  </tr>
+
+                  <!-- Ligne de la cote globale -->
+                  <tr class="fw-bold bg-primary text-white">
+                    <td>Cote Module</td>
+                    <td [attr.colspan]="mod.unites.length * 2">{{ mod.coteModule }}</td>
+                  </tr>
+                </ng-container>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-1">
+          <h5 class="mb-1 border-bottom pb-2 text-primary">Résumé et Observations</h5>
+          <table class="table table-bordered">
+            <tbody>
+            <tr>
+              <!-- Colonne QR code ajoutée ici -->
+              <td rowspan="7" class="text-center align-middle">
+                <div class="col-md-12 text-center">
+                  <img [src]="studentData.profileImage" alt="QR Code" class="img-thumbnail" style="width: 100%; height: 100px; object-fit: cover;">
+                </div>
+              </td>
+              <th>Discipline</th>
+              <td>{{ studentData.conduct }}</td>
+              <th>Total des Absences</th>
+              <td>{{ attendanceData && attendanceData[1] ? attendanceData[1].absent : '---' }}</td>
+            </tr>
+            <tr>
+              <th>Absences Justifiées</th>
+              <td>--</td>
+              <th>Absences Non Justifiées</th>
+              <td>--</td>
+            </tr>
+            <tr>
+              <th>Travail Elève</th>
+              <td>{{ result }}</td>
+              <th>Rang</th>
+              <td>{{ studentData.rank }}</td>
+            </tr>
+            <tr>
+              <th>Cote du 2ème Trimestre Elève</th>
+              <td>{{ studentData.average }}</td>
+              <th>Cote de la classe</th>
+              <td>{{ studentData.classAverage }}</td>
+            </tr>
+            <tr>
+              <th>Premier(e)</th>
+              <td>--</td>
+              <th>Dernier(e)</th>
+              <td>--</td>
+            </tr>
+            <tr>
+              <th>Observations 2ème Trimestre</th>
+              <td colspan="3">{{ studentData.teacherRemarks }}</td>
+            </tr>
+            </tbody>
+          </table>
+
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-md-4">
+            <strong>Signature Enseignant(e)</strong><br><br><br>
+          </div>
+          <div class="col-md-4 text-center">
+            <strong>A+ | A | ECA | NA</strong>
+          </div>
+          <div class="col-md-4">
+            <strong>Signature Parent</strong><br><br><br>
+          </div>
+        </div>
+      </div>
+      <!-- /Report Card -->
     </div>
-</div> 
+</div>

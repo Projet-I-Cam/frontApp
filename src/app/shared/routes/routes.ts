@@ -347,7 +347,7 @@ export class routes {
     return this.peoples + '/guardians/guardian-grid';
   }
   public static get studentResult(): string {
-    return this.peoples + '/student/student-result';
+    return this.peoples + '/students/student-result';
   }
   public static get editStudent(): string {
     return this.peoples + '/students/edit-student';

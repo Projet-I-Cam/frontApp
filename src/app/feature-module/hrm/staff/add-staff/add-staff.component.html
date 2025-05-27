@@ -1,6 +1,6 @@
 <!-- Page Wrapper -->
 <div class="page-wrapper">
-  <div class="content content-two"> 
+  <div class="content content-two">
     <!-- Page Header -->
     <div
       class="d-md-flex d-block align-items-center justify-content-between mb-3"
@@ -55,7 +55,7 @@
                       <div class="profile-upload">
                         <div class="profile-uploader d-flex align-items-center">
                           <div class="drag-upload-btn mb-3">
-                            Upload 
+                            Upload
                             <input
                               type="file"
                               class="form-control image-sign"
@@ -79,7 +79,7 @@
                 </div>
                 <div class="row">
                   <div class="col-12 col-md-4">
-                    <div class="mb-3"> 
+                    <div class="mb-3">
                       <label class="form-label">Nom<span class="login-danger">*</span></label>
                       <input type="text" class="form-control" formControlName="firstName" [ngClass]="{'is-invalid': staffForm.get('firstName')?.invalid && staffForm.get('firstName')?.touched}" />
                     </div>
@@ -90,7 +90,7 @@
                       <input type="text" class="form-control" formControlName="lastName" [ngClass]="{'is-invalid': staffForm.get('lastName')?.invalid && staffForm.get('lastName')?.touched}" />
                     </div>
                   </div>
-                  
+
                   <div class="col-12 col-md-4">
                     <div class="mb-3">
                       <label class="form-label">Date de naissance<span class="login-danger">*</span></label>
@@ -153,23 +153,23 @@
 
                       <!-- Template pour l’option dans la liste déroulante -->
                       <ng-template ng-option-tmp let-item="item" let-index="index">
-                        <img 
-                          [src]="item.flag" 
-                          alt="{{item.nameFr}} drapeau" 
-                          width="20" 
-                          height="15" 
+                        <img
+                          [src]="item.flag"
+                          alt="{{item.nameFr}} drapeau"
+                          width="20"
+                          height="15"
                           style="margin-right: 8px; vertical-align: middle;">
                         {{ item.nameFr }}
                       </ng-template>
 
                       <!-- Template pour l’élément sélectionné affiché dans le champ -->
                       <ng-template  ng-label-tmp let-item="item" let-clear="clear">
-                        <img 
-                          [src]="item.flag" 
+                        <img
+                          [src]="item.flag"
                           *ngIf="item"
-                          alt="{{item.nameFr}} drapeau" 
-                          width="20" 
-                          height="15" 
+                          alt="{{item.nameFr}} drapeau"
+                          width="20"
+                          height="15"
                           style="margin-right: 8px; vertical-align: middle;">
                         {{ item.nameFr }}
                         <span *ngIf="item" (click)="clear(item)" class="ng-select-clear-button">&times;</span>
@@ -257,7 +257,7 @@
                         { label: 'Maître', value: 'maître' }
                       ]"
                       [ngClass]="{'is-invalid': profesionalBackground.get('status')?.invalid && profesionalBackground.get('status')?.touched}"
-                      formControlName="status" 
+                      formControlName="status"
                       placeholder="Select"
                       class="select"
                     ></p-dropdown>
@@ -288,7 +288,7 @@
                     <input type="text" class="form-control" formControlName="currentPosition" [ngClass]="{'is-invalid': profesionalBackground.get('currentPosition')?.invalid && profesionalBackground.get('currentPosition')?.touched}" />
                   </div>
                 </div>
-              
+
                 <div class="col-12 col-md-4">
                   <div class="mb-3">
                     <label class="form-label">Référence acte de mutation</label>
@@ -298,7 +298,7 @@
                 <div class="col-12 col-md-4">
                   <div class="mb-3">
                     <label class="form-label">Ref acte de nomination</label>
-                    <input type="file" class="form-control" 
+                    <input type="file" class="form-control"
                       (change)="onFileSelect($event, 'refActeIntegration')"
                         #fileInput
                      />
@@ -322,7 +322,7 @@
                       </div>
                     </div>
                   </div>
-                  
+
                   <div class="col-12 col-md-4">
                     <div class="mb-3">
                       <label class="form-label">Date d'entrée a la FP<span class="login-danger">*</span></label>
@@ -345,9 +345,9 @@
                   <div class="col-12 col-md-4">
                     <div class="mb-3">
                       <label class="form-label">Ref acte d'integration</label>
-                      <input type="file" class="form-control" 
+                      <input type="file" class="form-control"
                         (change)="onFileSelect($event, 'nominationActRef')"
-                        #fileInput 
+                        #fileInput
                         />
                     </div>
                   </div>

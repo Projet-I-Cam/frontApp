@@ -16,7 +16,7 @@ import { globalGet } from '../../../../services/statefull/http';
     standalone: false
 })
 export class StaffListComponent {
-  initChecked = false; 
+  initChecked = false;
   public pageSize = 10;
   public tableData: Array<any> = [];
   public staffs: any = [];

@@ -34,6 +34,8 @@ interface StudentData {
   term: string;
   image: string;
   admissionNo: string;
+  gender: string;
+  phone: string;
 }
 
 interface GradeData {
@@ -76,6 +78,35 @@ interface StudentSearchResult {
   section: string;
 }
 
+export interface Evaluation {
+  note: number | null;
+  cote: string | null;
+  type: string; // dynamique depuis BD
+  points: number;
+}
+
+
+interface UniteApprentissage {
+  name: 'UA1' | 'UA2' | 'UA3' | 'TRIMESTRE';
+  evaluations: Evaluation[];
+}
+
+interface Module {
+  title: string;
+  totalPoints: number;
+  unites: UniteApprentissage[];
+  totalModulePoints: number;
+  coteModule: string;
+}
+
+interface Competence {
+  id: number;
+  title: string;
+  totalPoints: number;
+  modules: Module[];
+}
+
+
 @Component({
     selector: 'app-report-card',
     templateUrl: './report-card.component.html',
@@ -96,18 +127,18 @@ interface StudentSearchResult {
 })
 export class ReportCardComponent implements OnInit {
   public routes = routes;
-  
+
   // Options pour les dropdowns
   classes: ClassData[] = [];
   sections: SectionData[] = [];
   exams: ExamData[] = [];
-  
+
   // Sélections actuelles
   selectedClass: ClassData | undefined;
   selectedSection: SectionData | undefined;
   selectedExam: ExamData | undefined;
   searchQuery: string = '';
-  
+
   // Données de l'élève et du bulletin
   studentData: StudentData | null = null;
   gradeData: GradeData[] = [];
@@ -118,55 +149,607 @@ export class ReportCardComponent implements OnInit {
   rank: string = '';
   result: string = '';
   remarks: string = '';
-  
+
   // État du composant
   isLoading: boolean = false;
   isSearchMode: boolean = true;
   showBulletin: boolean = false;
   searchResults: StudentSearchResult[] = [];
-  
+
   // Données pour l'année scolaire
-  academicYear: string = '2023-2024';
+  academicYear: string = '2024-2025';
   reportDate: Date = new Date();
-  
+
   // Données exemple pour les élèves
   students = [
-    { id: 1, name: 'Jean Dupont', image: 'assets/img/profiles/avatar-01.jpg' },
-    { id: 2, name: 'Marie Martin', image: 'assets/img/profiles/avatar-02.jpg' },
-    { id: 3, name: 'Pierre Durand', image: 'assets/img/profiles/avatar-03.jpg' }
+    { id: 1, name: this.getRandomName(), image: 'assets/img/profiles/avatar-01.jpg' },
+    { id: 2, name: this.getRandomName(), image: 'assets/img/profiles/avatar-02.jpg' },
+    { id: 3, name: this.getRandomName(), image: 'assets/img/profiles/avatar-03.jpg' },
+    { id: 4, name: this.getRandomName(), image: 'assets/img/profiles/avatar-01.jpg' },
+    { id: 5, name: this.getRandomName(), image: 'assets/img/profiles/avatar-02.jpg' },
+    { id: 6, name: this.getRandomName(), image: 'assets/img/profiles/avatar-03.jpg' },
+    { id: 7, name: this.getRandomName(), image: 'assets/img/profiles/avatar-01.jpg' },
+    { id: 8, name: this.getRandomName(), image: 'assets/img/profiles/avatar-02.jpg' },
+    { id: 9, name: this.getRandomName(), image: 'assets/img/profiles/avatar-03.jpg' }
   ];
-  
+
   // Données exemple pour les périodes
   terms = [
     { name: '1er Trimestre', value: 'trimestre1' },
     { name: '2ème Trimestre', value: 'trimestre2' },
-    { name: '3ème Trimestre', value: 'trimestre3' }
+    { name: '3ème Trimestre', value: 'trimestre3' },
+    { name: 'Annuel', value: 'YEAR' }
   ];
-  
+
   // Sélections pour le formulaire
   selectedStudent: any;
   selectedTerm: any;
-  
-  constructor() {}
-  
+
+  evaluationTypes = [
+    { label: 'Orale', value: 'Orale', points: 12 },
+    { label: 'Écrite', value: 'Écrite', points: 15 },
+    { label: 'Savoir-être', value: 'Savoir-être', points: 3 },
+    { label: 'Pratique', value: 'Pratique', points: 6 }
+  ];
+
+
+  competences: {
+    totalPoints: number;
+    id: number;
+    title: string;
+    modules: {
+      unites: {
+        evaluations: ({ note: number | null; cote: string | null; type: string; points: number })[];
+        name: string
+      }[];
+      totalPoints: number;
+      coteModule: string;
+      totalModulePoints: number;
+      title: string
+    }[]
+  }[];
+
+
+
+  constructor() {
+    this.competences = [
+      {
+        id: 1,
+        title: 'COMMUNIQUER EN FRANÇAIS ET EN ANGLAIS ET PRATIQUER AU MOINS UNE LANGUE NATIONALE ',
+        totalPoints: 80,
+        modules: [
+          {
+            title: 'COMMUNIQUER EN FRANÇAIS',
+            totalPoints: 30,
+            totalModulePoints: 0,
+            coteModule: 'A',
+            unites: [
+              {
+                name: 'UA1',
+                evaluations: [
+                  { type: 'Orale', points: 12, note: 10, cote: 'B' },
+                  { type: 'Écrite', points: 15, note: 13, cote: 'A' },
+                  { type: 'Savoir-être', points: 3, note: 3, cote: 'A' },
+                ],
+              },
+              {
+                name: 'UA2',
+                evaluations: [
+                  { type: 'Orale', points: 12, note: 11, cote: 'B' },
+                  { type: 'Écrite', points: 15, note: 12, cote: 'B' },
+                  { type: 'Savoir-être', points: 3, note: 2, cote: 'B' },
+                ],
+              },
+              {
+                name: 'UA3',
+                evaluations: [
+                  { type: 'Orale', points: 12, note: 9, cote: 'C' },
+                  { type: 'Écrite', points: 15, note: 14, cote: 'A' },
+                  { type: 'Savoir-être', points: 3, note: 3, cote: 'A' },
+                ],
+              },
+              {
+                name: 'TRIMESTRE',
+                evaluations: [
+                  { type: 'Orale', points: 12, note: 10, cote: 'B' },
+                  { type: 'Écrite', points: 15, note: 13, cote: 'A' },
+                  { type: 'Savoir-être', points: 3, note: 3, cote: 'A' },
+                ],
+              },
+            ],
+          },
+          {
+            title: 'COMMUNICATE IN ENGLISH',
+            totalPoints: 30,
+            totalModulePoints: 0,
+            coteModule: 'B',
+            unites: [
+              {
+                name: 'UA1',
+                evaluations: [
+                  { type: 'Orale', points: 12, note: 11, cote: 'B' },
+                  { type: 'Écrite', points: 15, note: 10, cote: 'B' },
+                  { type: 'Savoir-être', points: 3, note: 3, cote: 'A' },
+                ],
+              },
+              {
+                name: 'UA2',
+                evaluations: [
+                  { type: 'Orale', points: 12, note: 12, cote: 'A' },
+                  { type: 'Écrite', points: 15, note: 13, cote: 'A' },
+                  { type: 'Savoir-être', points: 3, note: 3, cote: 'A' },
+                ],
+              },
+              {
+                name: 'UA3',
+                evaluations: [
+                  { type: 'Orale', points: 12, note: 9, cote: 'C' },
+                  { type: 'Écrite', points: 15, note: 11, cote: 'B' },
+                  { type: 'Savoir-être', points: 3, note: 2, cote: 'B' },
+                ],
+              },
+              {
+                name: 'TRIMESTRE',
+                evaluations: [
+                  { type: 'Orale', points: 12, note: 10, cote: 'B' },
+                  { type: 'Écrite', points: 15, note: 12, cote: 'B' },
+                  { type: 'Savoir-être', points: 3, note: 3, cote: 'A' },
+                ],
+              },
+            ],
+          },
+          {
+            title: 'PRATIQUER UNE LANGUE NATIONALE',
+            totalPoints: 20,
+            totalModulePoints: 0,
+            coteModule: 'A',
+            unites: [
+              {
+                name: 'UA1',
+                evaluations: [
+                  { type: 'Orale', points: 10, note: 7, cote: 'B' },
+                  { type: 'Écrite', points: 6, note: 9, cote: 'A' },
+                  { type: 'Savoir-être', points: 2, note: 2, cote: 'A' },
+                  { type: 'Pratique', points: 2, note: 2, cote: 'A' },
+                ],
+              },
+              {
+                name: 'UA2',
+                evaluations: [
+                  { type: 'Orale', points: 10, note: 8, cote: 'A' },
+                  { type: 'Écrite', points: 6, note: 9, cote: 'A' },
+                  { type: 'Savoir-être', points: 2, note: 2, cote: 'A' },
+                  { type: 'Pratique', points: 2, note: 2, cote: 'A' },
+                ],
+              },
+              {
+                name: 'UA3',
+                evaluations: [
+                  { type: 'Orale', points: 10, note: 7, cote: 'B' },
+                  { type: 'Écrite', points: 10, note: 8, cote: 'B' },
+                  { type: 'Savoir-être', points: 2, note: 2, cote: 'A' },
+                  { type: 'Pratique', points: 2, note: 2, cote: 'A' },
+                ],
+              },
+              {
+                name: 'TRIMESTRE',
+                evaluations: [
+                  { type: 'Orale', points: 10, note: 8, cote: 'A' },
+                  { type: 'Écrite', points: 10, note: 9, cote: 'A' },
+                  { type: 'Savoir-être', points: 2, note: 2, cote: 'A' },
+                  { type: 'Pratique', points: 2, note: 2, cote: 'A' },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: 2,
+        title: 'UTILISER LES NOTIONS DE BASE EN MATHEMATIQUES, SCIENCES ET TECHNOLOGIES ',
+        totalPoints: 80,
+        modules: [
+          {
+            title: 'UTILISER  LES NOTIONS DE BASE EN MATHEMATIQUES',
+            totalPoints: 40,
+            totalModulePoints: 0,
+            coteModule: 'B',
+            unites: [
+              {
+                name: 'UA1',
+                evaluations: [
+                  { type: 'Orale', points: 8, note: 6, cote: 'B' },
+                  { type: 'Écrite', points: 28, note: 28, cote: 'A' },
+                  { type: 'Savoir-être', points: 4, note: 4, cote: 'A' },
+                ],
+              },
+              {
+                name: 'UA2',
+                evaluations: [
+                  { type: 'Orale', points: 8, note: 6, cote: 'B' },
+                  { type: 'Écrite', points: 28, note: 28, cote: 'A' },
+                  { type: 'Savoir-être', points: 4, note: 4, cote: 'A' },
+                ],
+              },
+              {
+                name: 'UA3',
+                evaluations: [
+                  { type: 'Orale', points: 8, note: 6, cote: 'B' },
+                  { type: 'Écrite', points: 28, note: 28, cote: 'A' },
+                  { type: 'Savoir-être', points: 4, note: 4, cote: 'A' },
+                ],
+              },
+              {
+                name: 'TRIMESTRE',
+                evaluations: [
+                  { type: 'Orale', points: 8, note: 6, cote: 'B' },
+                  { type: 'Écrite', points: 28, note: 28, cote: 'A' },
+                  { type: 'Savoir-être', points: 4, note: 4, cote: 'A' },
+                ],
+              },
+            ],
+          },
+          {
+            title: 'UTILISER  LES NOTIONS DE BASE EN SCIENCES ET TECHNOLOGIE ',
+            totalPoints: 40,
+            totalModulePoints: 0,
+            coteModule: 'A',
+            unites: [
+              {
+                name: 'UA1',
+                evaluations: [
+                  { type: 'Orale', points: 6, note: 4, cote: 'B' },
+                  { type: 'Écrite', points: 7, note: 7, cote: 'A' },
+                  { type: 'Savoir-être', points: 7, note: 7, cote: 'A' },
+                  { type: 'Pratique', points: 20, note: 20, cote: 'A' },
+                ],
+              },
+              {
+                name: 'UA2',
+                evaluations: [
+                  { type: 'Orale', points: 6, note: 4, cote: 'B' },
+                  { type: 'Écrite', points: 7, note: 7, cote: 'A' },
+                  { type: 'Savoir-être', points: 7, note: 7, cote: 'A' },
+                  { type: 'Pratique', points: 20, note: 20, cote: 'A' },
+                ],
+              },
+              {
+                name: 'UA3',
+                evaluations: [
+                  { type: 'Orale', points: 6, note: 4, cote: 'B' },
+                  { type: 'Écrite', points: 7, note: 7, cote: 'A' },
+                  { type: 'Savoir-être', points: 7, note: 7, cote: 'A' },
+                  { type: 'Pratique', points: 20, note: 20, cote: 'A' },
+                ],
+              },
+              {
+                name: 'TRIMESTRE',
+                evaluations: [
+                  { type: 'Orale', points: 6, note: 4, cote: 'B' },
+                  { type: 'Écrite', points: 7, note: 7, cote: 'A' },
+                  { type: 'Savoir-être', points: 7, note: 7, cote: 'A' },
+                  { type: 'Pratique', points: 20, note: 20, cote: 'A' },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: 3,
+        title: 'PRATIQUER LES VALEURS SOCIALES ET CITOYENNES ',
+        totalPoints: 40,
+        modules: [
+          {
+            title: 'PRATIQUER LES VALEURS SOCIALES ',
+            totalPoints: 40,
+            totalModulePoints: 0,
+            coteModule: 'B',
+            unites: [
+              {
+                name: 'UA1',
+                evaluations: [
+                  { type: 'Orale', points: 3, note: 2, cote: 'B' },
+                  { type: 'Écrite', points: 8, note: 8, cote: 'A' },
+                  { type: 'Savoir-être', points: 4, note: 4, cote: 'A' },
+                  { type: 'Pratique', points: 5, note: 5, cote: 'A' },
+                ],
+              },
+              {
+                name: 'UA2',
+                evaluations: [
+                  { type: 'Orale', points: 3, note: 2, cote: 'B' },
+                  { type: 'Écrite', points: 8, note: 8, cote: 'A' },
+                  { type: 'Savoir-être', points: 4, note: 4, cote: 'A' },
+                  { type: 'Pratique', points: 5, note: 5, cote: 'A' },
+                ],
+              },
+              {
+                name: 'UA3',
+                evaluations: [
+                  { type: 'Orale', points: 3, note: 2, cote: 'B' },
+                  { type: 'Écrite', points: 8, note: 8, cote: 'A' },
+                  { type: 'Savoir-être', points: 4, note: 4, cote: 'A' },
+                  { type: 'Pratique', points: 5, note: 5, cote: 'A' },
+                ],
+              },
+              {
+                name: 'TRIMESTRE',
+                evaluations: [
+                  { type: 'Orale', points: 3, note: 2, cote: 'B' },
+                  { type: 'Écrite', points: 8, note: 8, cote: 'A' },
+                  { type: 'Savoir-être', points: 4, note: 4, cote: 'A' },
+                  { type: 'Pratique', points: 5, note: 5, cote: 'A' },
+                ],
+              },
+            ],
+          },
+          {
+            title: 'PRATIQUER LES VALEURS CITOYENNES ',
+            totalPoints: 40,
+            totalModulePoints: 0,
+            coteModule: 'A',
+            unites: [
+              {
+                name: 'UA1',
+                evaluations: [
+                  { type: 'Orale', points: 3, note: 2, cote: 'B' },
+                  { type: 'Écrite', points: 9, note: 9, cote: 'A' },
+                  { type: 'Savoir-être', points: 3, note: 3, cote: 'A' },
+                  { type: 'Pratique', points: 5, note: 5, cote: 'A' },
+                ],
+              },
+              {
+                name: 'UA2',
+                evaluations: [
+                  { type: 'Orale', points: 3, note: 2, cote: 'B' },
+                  { type: 'Écrite', points: 9, note: 9, cote: 'A' },
+                  { type: 'Savoir-être', points: 3, note: 3, cote: 'A' },
+                  { type: 'Pratique', points: 5, note: 5, cote: 'A' },
+                ],
+              },
+              {
+                name: 'UA3',
+                evaluations: [
+                  { type: 'Orale', points: 3, note: 2, cote: 'B' },
+                  { type: 'Écrite', points: 9, note: 9, cote: 'A' },
+                  { type: 'Savoir-être', points: 3, note: 3, cote: 'A' },
+                  { type: 'Pratique', points: 5, note: 5, cote: 'A' },
+                ],
+              },
+              {
+                name: 'TRIMESTRE',
+                evaluations: [
+                  { type: 'Orale', points: 3, note: 2, cote: 'B' },
+                  { type: 'Écrite', points: 9, note: 9, cote: 'A' },
+                  { type: 'Savoir-être', points: 3, note: 3, cote: 'A' },
+                  { type: 'Pratique', points: 5, note: 5, cote: 'A' },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: 4,
+        title: 'DEMONTRER L’AUTONOMIE, L’ESPRIT D’INITIATIVE ET DE CREATIVITE ET D’ENTREPRENEURIAT ',
+        totalPoints: 20,
+        modules: [
+          {
+            title: 'DEMONTRER L’AUTONOMIE, L’ESPRIT D’INITIATIVE ET DE CREATIVITE ET D’ENTREPRENEURIAT ',
+            totalPoints: 20,
+            totalModulePoints: 0,
+            coteModule: 'B',
+            unites: [
+              {
+                name: 'UA1',
+                evaluations: [
+                  { type: 'Orale', points: 3, note: 2, cote: 'B' },
+                  { type: 'Écrite', points: 9, note: 9, cote: 'A' },
+                  { type: 'Savoir-être', points: 3, note: 3, cote: 'A' },
+                  { type: 'Pratique', points: 5, note: 5, cote: 'A' },
+                ],
+              },
+              {
+                name: 'UA2',
+                evaluations: [
+                  { type: 'Orale', points: 3, note: 2, cote: 'B' },
+                  { type: 'Écrite', points: 9, note: 9, cote: 'A' },
+                  { type: 'Savoir-être', points: 3, note: 3, cote: 'A' },
+                  { type: 'Pratique', points: 5, note: 5, cote: 'A' },
+                ],
+              },
+              {
+                name: 'UA3',
+                evaluations: [
+                  { type: 'Orale', points: 3, note: 2, cote: 'B' },
+                  { type: 'Écrite', points: 9, note: 9, cote: 'A' },
+                  { type: 'Savoir-être', points: 3, note: 3, cote: 'A' },
+                  { type: 'Pratique', points: 5, note: 5, cote: 'A' },
+                ],
+              },
+              {
+                name: 'TRIMESTRE',
+                evaluations: [
+                  { type: 'Orale', points: 3, note: 2, cote: 'B' },
+                  { type: 'Écrite', points: 9, note: 9, cote: 'A' },
+                  { type: 'Savoir-être', points: 3, note: 3, cote: 'A' },
+                  { type: 'Pratique', points: 5, note: 5, cote: 'A' },
+                ],
+              },
+            ],
+          }
+        ],
+      },
+      {
+        id: 5,
+        title: 'UTILISER LES CONCEPTES DE BASE ET LES OUTILS DE TECHNOLOGIE DE L’INFOMATION ET DE LA COMMUNICATION ',
+        totalPoints: 40,
+        modules: [
+          {
+            title: 'UTILISER LES CONCEPTES DE BASE ET LES OUTILS DES TIC ',
+            totalPoints: 40,
+            totalModulePoints: 0,
+            coteModule: 'B',
+            unites: [
+              {
+                name: 'UA1',
+                evaluations: [
+                  { type: 'Orale', points: 2, note: 1, cote: 'B' },
+                  { type: 'Écrite', points: 2, note: 2, cote: 'A' },
+                  { type: 'Savoir-être', points: 4, note: 4, cote: 'A' },
+                  { type: 'Pratique', points: 12, note: 12, cote: 'A' },
+                ],
+              },
+              {
+                name: 'UA2',
+                evaluations: [
+                  { type: 'Orale', points: 2, note: 1, cote: 'B' },
+                  { type: 'Écrite', points: 2, note: 2, cote: 'A' },
+                  { type: 'Savoir-être', points: 4, note: 4, cote: 'A' },
+                  { type: 'Pratique', points: 12, note: 12, cote: 'A' },
+                ],
+              },
+              {
+                name: 'UA3',
+                evaluations: [
+                  { type: 'Orale', points: 2, note: 1, cote: 'B' },
+                  { type: 'Écrite', points: 2, note: 2, cote: 'A' },
+                  { type: 'Savoir-être', points: 4, note: 4, cote: 'A' },
+                  { type: 'Pratique', points: 12, note: 12, cote: 'A' },
+                ],
+              },
+              {
+                name: 'TRIMESTRE',
+                evaluations: [
+                  { type: 'Orale', points: 2, note: 1, cote: 'B' },
+                  { type: 'Écrite', points: 2, note: 2, cote: 'A' },
+                  { type: 'Savoir-être', points: 4, note: 4, cote: 'A' },
+                  { type: 'Pratique', points: 12, note: 12, cote: 'A' },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: 6,
+        title: 'PRATIQUER LES ACTIVITES PHYSIQUES, SPORTIVES ET ARTISTQUES ',
+        totalPoints: 40,
+        modules: [
+          {
+            title: 'PRATIQUER LES ACTIVITES PHYSIQUES ET SPORTIVES POUR LES APPRENANTS ',
+            totalPoints: 20,
+            totalModulePoints: 0,
+            coteModule: 'B',
+            unites: [
+              {
+                name: 'UA1',
+                evaluations: [
+                  { type: 'Orale', points: 2, note: 1, cote: 'B' },
+                  { type: 'Écrite', points: 2, note: 2, cote: 'A' },
+                  { type: 'Savoir-être', points: 4, note: 4, cote: 'A' },
+                  { type: 'Pratique', points: 12, note: 12, cote: 'A' },
+                ],
+              },
+              {
+                name: 'UA2',
+                evaluations: [
+                  { type: 'Orale', points: 2, note: 1, cote: 'B' },
+                  { type: 'Écrite', points: 2, note: 2, cote: 'A' },
+                  { type: 'Savoir-être', points: 4, note: 4, cote: 'A' },
+                  { type: 'Pratique', points: 12, note: 12, cote: 'A' },
+                ],
+              },
+              {
+                name: 'UA3',
+                evaluations: [
+                  { type: 'Orale', points: 2, note: 1, cote: 'B' },
+                  { type: 'Écrite', points: 2, note: 2, cote: 'A' },
+                  { type: 'Savoir-être', points: 4, note: 4, cote: 'A' },
+                  { type: 'Pratique', points: 12, note: 12, cote: 'A' },
+                ],
+              },
+              {
+                name: 'TRIMESTRE',
+                evaluations: [
+                  { type: 'Orale', points: 2, note: 1, cote: 'B' },
+                  { type: 'Écrite', points: 2, note: 2, cote: 'A' },
+                  { type: 'Savoir-être', points: 4, note: 4, cote: 'A' },
+                  { type: 'Pratique', points: 12, note: 12, cote: 'A' },
+                ],
+              },
+            ],
+          },
+          {
+            title: 'PRATIQUER LES ACTIVITES ARTISTIQUES ',
+            totalPoints: 20,
+            totalModulePoints: 0,
+            coteModule: 'A',
+            unites: [
+              {
+                name: 'UA1',
+                evaluations: [
+                  { type: 'Orale', points: 2, note: 1, cote: 'B' },
+                  { type: 'Écrite', points: 4, note: 4, cote: 'A' },
+                  { type: 'Savoir-être', points: 2, note: 2, cote: 'A' },
+                  { type: 'Pratique', points: 12, note: 12, cote: 'A' },
+                ],
+              },
+              {
+                name: 'UA2',
+                evaluations: [
+                  { type: 'Orale', points: 2, note: 1, cote: 'B' },
+                  { type: 'Écrite', points: 4, note: 4, cote: 'A' },
+                  { type: 'Savoir-être', points: 2, note: 2, cote: 'A' },
+                  { type: 'Pratique', points: 12, note: 12, cote: 'A' },
+                ],
+              },
+              {
+                name: 'UA3',
+                evaluations: [
+                  { type: 'Orale', points: 2, note: 1, cote: 'B' },
+                  { type: 'Écrite', points: 4, note: 4, cote: 'A' },
+                  { type: 'Savoir-être', points: 2, note: 2, cote: 'A' },
+                  { type: 'Pratique', points: 12, note: 12, cote: 'A' },
+                ],
+              },
+              {
+                name: 'TRIMESTRE',
+                evaluations: [
+                  { type: 'Orale', points: 2, note: 1, cote: 'B' },
+                  { type: 'Écrite', points: 4, note: 4, cote: 'A' },
+                  { type: 'Savoir-être', points: 2, note: 2, cote: 'A' },
+                  { type: 'Pratique', points: 12, note: 12, cote: 'A' },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ];
+  }
+
   ngOnInit(): void {
     this.loadDropdownOptions();
   }
-  
+
   // Fonction pour générer le bulletin
   generateBulletin() {
     this.showBulletin = true;
     // Simuler des données de bulletin
+    console.log(this.selectedStudent);
+
     this.studentData = {
-      id: 1,
-      name: 'Jean Dupont',
+      id: this.selectedStudent.id,
+      name: this.selectedStudent.name,
       rollNo: 'S001',
-      class: 'Sixième A',
+      class: (this.selectedClass?.name)? this.selectedClass?.name.toString() : this.getRandomClass().toString(),
       section: 'A',
       dob: '15/05/2007',
-      parentName: 'Jean Dupont Sr.',
-      address: '123 Rue de Paris, 75001 Paris',
-      profileImage: 'assets/img/profiles/avatar-01.jpg',
+      parentName: this.selectedStudent.name + ' Sr.',
+      address: 'Biyem Assi',
+      profileImage: this.selectedStudent.image,
       rank: '3/25',
       subjects: [
         { name: 'Mathématiques', grade: 16, appreciation: 'Excellent travail, continue ainsi!' },
@@ -182,30 +765,39 @@ export class ReportCardComponent implements OnInit {
       teacherRemarks: 'Élève sérieux et appliqué. Félicitations!',
       principalRemarks: 'Bon trimestre dans l\'ensemble. Continue tes efforts.',
       schoolName: 'École Primaire La Fontaine',
-      schoolYear: '2023-2024',
-      term: '1er Trimestre',
-      image: 'assets/img/profiles/avatar-01.jpg',
-      admissionNo: 'ADM-001'
+      schoolYear: '2024-2025',
+      term: this.selectedTerm.name,
+      image: this.selectedStudent.image,
+      admissionNo: 'ADM-001',
+      gender: 'Masculin',
+      phone: '+237 6 55 98 45 18'
     };
   }
-  
+
   // Fonction pour imprimer le bulletin
   printBulletin() {
-    window.print();
+    const printContents = document.getElementById('bulletin-content')?.innerHTML;
+    const originalContents = document.body.innerHTML;
+
+    if (printContents) {
+      document.body.innerHTML = printContents;
+      window.print();
+      document.body.innerHTML = originalContents;
+      window.location.reload(); // recharger pour restaurer l'état Angular
+    }
   }
-  
+
   loadDropdownOptions(): void {
     // Options pour les classes
     this.classes = [
-      { name: 'Sixième', code: '6' },
-      { name: 'Cinquième', code: '5' },
-      { name: 'Quatrième', code: '4' },
-      { name: 'Troisième', code: '3' },
-      { name: 'Seconde', code: '2' },
-      { name: 'Première', code: '1' },
-      { name: 'Terminale', code: 'T' }
+      { name: 'SIL', code: '6' },
+      { name: 'CP', code: '5' },
+      { name: 'CE 1', code: '4' },
+      { name: 'CE 2', code: '3' },
+      { name: 'CM 1', code: '2' },
+      { name: 'CM 2', code: '1' }
     ];
-    
+
     // Options pour les sections
     this.sections = [
       { name: 'A', code: 'A' },
@@ -215,7 +807,7 @@ export class ReportCardComponent implements OnInit {
       { name: 'ES', code: 'ES' },
       { name: 'L', code: 'L' }
     ];
-    
+
     // Options pour les examens
     this.exams = [
       { name: 'Premier Trimestre', code: 'T1' },
@@ -224,15 +816,15 @@ export class ReportCardComponent implements OnInit {
       { name: 'Bulletin Annuel', code: 'YEAR' }
     ];
   }
-  
+
   searchStudents(): void {
     if ((!this.selectedClass || !this.selectedSection) && !this.searchQuery) {
       // Alerte: veuillez sélectionner une classe et une section ou entrer un terme de recherche
       return;
     }
-    
+
     this.isLoading = true;
-    
+
     // Dans un cas réel, vous feriez un appel API ici
     // Simulons des données pour notre exemple
     setTimeout(() => {
@@ -246,14 +838,14 @@ export class ReportCardComponent implements OnInit {
           section: this.selectedSection ? this.selectedSection.name : this.getRandomSection()
         };
       });
-      
+
       this.isLoading = false;
     }, 800);
   }
-  
+
   viewReportCard(student: StudentSearchResult): void {
     this.isLoading = true;
-    
+
     // Dans un cas réel, vous feriez un appel API ici pour récupérer les données du bulletin
     // Simulons des données pour notre exemple
     setTimeout(() => {
@@ -280,18 +872,33 @@ export class ReportCardComponent implements OnInit {
         schoolYear: '',
         term: '',
         image: '',
-        admissionNo: ''
+        admissionNo: '',
+        gender: 'Masculin',
+        phone: '+237 6 55 98 45 18'
       };
-      
+
       // Données des notes par matière
-      const subjects = ['Mathématiques', 'Français', 'Histoire-Géographie', 'Physique-Chimie', 'Anglais', 'SVT', 'Éducation Physique'];
+      const subjects = [
+        { name: 'Communiquer en français', code: 'MATH', points : 30},
+        { name: 'Communicate in english', code: 'FR', points : 30},
+        { name: 'Pratiquer une langue nationale', code: 'HIST', points : 20 },
+        { name: 'Utiliser les notions de base en mathématiques', code: 'PHYS', points : 40},
+        { name: 'Utiliser les notions de base en sciences et technologies', code: 'SVT', points : 40},
+        { name: 'Pratiquer les valeurs sociales', code: 'ENG', points : 20},
+        { name: 'Pratiquer les valeurs citoyennes', code: 'EPS', points : 20},
+        { name: "Démontrer l'autonomie, l'esprit d'initiative et de créativité et d'entrepreneuriat", code: 'EPS', points : 20},
+        { name: 'Utiliser les concepts de base des les outils des TIC', code: 'EPS', points : 40},
+        { name: 'Pratiquer les activités physiques et sportives pour les apprenants', code: 'EPS', points : 20},
+        { name: 'Pratiquer les activités artistiques', code: 'EPS', points : 20}
+      ];
+
       this.gradeData = subjects.map(subject => {
         const marks = Math.floor(Math.random() * 40) + 60; // Notes entre 60 et 100
         const maxMarks = 100;
         const percentage = (marks / maxMarks) * 100;
-        
+
         return {
-          subject: subject,
+          subject: subject.name,
           marks: marks,
           maxMarks: maxMarks,
           percentage: percentage,
@@ -299,17 +906,17 @@ export class ReportCardComponent implements OnInit {
           remarks: this.getRemarkForGrade(this.calculateGradeFromMarks(marks))
         };
       });
-      
+
       // Calcul des totaux
       this.obtainedMarks = this.gradeData.reduce((sum, item) => sum + item.marks, 0);
       this.totalMarks = this.gradeData.reduce((sum, item) => sum + item.maxMarks, 0);
       this.percentage = parseFloat(((this.obtainedMarks / this.totalMarks) * 100).toFixed(2));
-      
+
       // Rang, résultat et remarques
       this.rank = `${Math.floor(Math.random() * 10) + 1} / 30`;
       this.result = this.percentage >= 50 ? 'ADMIS' : 'RECALÉ';
       this.remarks = this.getOverallRemarks(this.percentage);
-      
+
       // Données de présence
       this.attendanceData = [
         {
@@ -334,13 +941,13 @@ export class ReportCardComponent implements OnInit {
           percentage: 95
         }
       ];
-      
+
       this.isSearchMode = false;
       this.showBulletin = true;
       this.isLoading = false;
     }, 1000);
   }
-  
+
   calculateGradeFromMarks(marks: number): string {
     if (marks >= 90) return 'A+';
     if (marks >= 80) return 'A';
@@ -349,7 +956,7 @@ export class ReportCardComponent implements OnInit {
     if (marks >= 50) return 'D';
     return 'F';
   }
-  
+
   getRemarkForGrade(grade: string): string {
     switch(grade) {
       case 'A+': return 'Excellent';
@@ -360,7 +967,7 @@ export class ReportCardComponent implements OnInit {
       default: return 'Insuffisant';
     }
   }
-  
+
   getOverallRemarks(percentage: number): string {
     if (percentage >= 90) return 'Excellent travail ! Continue ainsi.';
     if (percentage >= 80) return 'Très bon travail, continue tes efforts.';
@@ -369,7 +976,7 @@ export class ReportCardComponent implements OnInit {
     if (percentage >= 50) return 'Résultats moyens, des efforts sérieux sont nécessaires.';
     return 'Résultats insuffisants, un travail beaucoup plus soutenu est indispensable.';
   }
-  
+
   getGradeClass(grade: string): string {
     switch(grade) {
       case 'A+': return 'grade-a-plus';
@@ -380,20 +987,20 @@ export class ReportCardComponent implements OnInit {
       default: return 'grade-f';
     }
   }
-  
+
   getResultClass(result: string): string {
     return result === 'ADMIS' ? 'text-success' : 'text-danger';
   }
-  
+
   printReportCard(): void {
     window.print();
   }
-  
+
   exportAsPDF(): void {
     // Logique pour l'export PDF (à implémenter avec une bibliothèque comme jspdf)
     console.log('Export PDF déclenché');
   }
-  
+
   backToSearch(): void {
     this.isSearchMode = true;
     this.showBulletin = false;
@@ -401,22 +1008,47 @@ export class ReportCardComponent implements OnInit {
     this.gradeData = [];
     this.attendanceData = [];
   }
-  
+
   // Noms fictifs pour la démo
   private getRandomName(): string {
     const firstNames = ['Jean', 'Marie', 'Pierre', 'Sophie', 'Thomas', 'Emma', 'Lucas', 'Camille', 'Hugo', 'Chloé', 'Léa', 'Maxime'];
-    const lastNames = ['Dupont', 'Martin', 'Durand', 'Lefebvre', 'Moreau', 'Bernard', 'Thomas', 'Robert', 'Richard', 'Petit', 'Leroy', 'Simon'];
-    
+    const lastNames = ['NLEME', 'NOUKAP', 'ONANA', 'MBARGA', 'ETOGA', 'OBIANG', 'NGONO', 'BISAI', 'ABOUBAKAR', 'TEKENG', 'AYISSI', 'ESSONO'];
+
     return `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`;
   }
-  
+
   private getRandomClass(): string {
-    const classes = ['Sixième', 'Cinquième', 'Quatrième', 'Troisième', 'Seconde', 'Première', 'Terminale'];
+    const classes = ['SIL', 'CP', 'CE 1', 'CE 2', 'CM 1', 'CM 2'];
     return classes[Math.floor(Math.random() * classes.length)];
   }
-  
+
   private getRandomSection(): string {
     const sections = ['A', 'B', 'C', 'S', 'ES', 'L'];
     return sections[Math.floor(Math.random() * sections.length)];
   }
-} 
+
+  getEvaluationNote(evaluations: Evaluation[], typeValue: string): string {
+    const evalFound = evaluations.find(e => e.type === typeValue);
+    return evalFound ? String(evalFound.note ?? '') : '';
+  }
+
+  getEvaluationCote(evaluations: Evaluation[], typeValue: string): string {
+    const evalFound = evaluations.find(e => e.type === typeValue);
+    return evalFound ? evalFound.cote ?? '' : '';
+  }
+
+  getTotalNote(ua: any, shownTypes: any[]): number {
+    return shownTypes.reduce((sum, type) => {
+      const note = Number(this.getEvaluationNote(ua.evaluations, type.value));
+      return sum + note;
+    }, 0);
+  }
+
+  getAverageCote(ua: any, shownTypes: any[]): string {
+    const cotes = ['A', 'B'];
+    const index = Math.floor(Math.random() * cotes.length);
+    return cotes[index];
+  }
+
+
+}
