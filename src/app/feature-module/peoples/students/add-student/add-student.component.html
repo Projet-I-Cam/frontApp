@@ -59,6 +59,16 @@
                 </div>
 
                 <!-- Personal Info Fields -->
+                 <div class="col-md-4">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Nom</mat-label>
+                    <input matInput formControlName="lastName" required />
+                    <mat-error *ngIf="studentForm.get('lastName')?.invalid">
+                      Ce champ est requis
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                
                 <div class="col-md-4">
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Prénom</mat-label>
@@ -69,15 +79,7 @@
                   </mat-form-field>
                 </div>
 
-                <div class="col-md-4">
-                  <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Nom</mat-label>
-                    <input matInput formControlName="lastName" required />
-                    <mat-error *ngIf="studentForm.get('lastName')?.invalid">
-                      Ce champ est requis
-                    </mat-error>
-                  </mat-form-field>
-                </div>
+                
 
                 <div class="col-md-4">
                   <mat-form-field appearance="outline" class="w-100">

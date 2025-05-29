@@ -20,9 +20,15 @@
               <ul>
                 @for (menu of mainTittle?.menu; track menu) {
                 @if (menu?.hasSubRoute === false) {
-                <li [class.active]="base === menu.base || page === menu.base || page === menu.base2 || page === menu.base3 || page === menu.base4 || page === menu.base5
-                || page === menu.base6 || page === menu.base7 || page === menu.base8 || page === menu.base9">
-                  <a   (click)="expandSubMenus(menu)"  [routerLink]="menu?.route" ><i class="ti" [class]="'ti-' + menu.icon"></i>
+                <li [class.active]="menu.route === currentPath">
+                  <a   
+                    (click)="expandSubMenus(menu)"  
+                    [routerLink]="menu?.route" 
+                  >
+                    <i *ngIf="menu.icon; else anotherIcon" class="ti" [class]="'ti-'+menu.icon"></i>
+                    <ng-template #anotherIcon>
+                      <i   [class]="menu.anotherIcon"></i>
+                    </ng-template>
                     <span>{{ menu?.menuValue }}</span>
                   </a>
                 </li>
@@ -32,7 +38,10 @@
                   <a  href="javascript:void(0)" (click)="expandSubMenus(menu)"
                     [ngClass]="{ 'subdrop': menu.showSubRoute === true}"
                     [class.active]="base === menu.base1 || base === menu.base || page === menu.page ">
-                    <i class="ti" [class]="'ti-' + menu.icon"></i>
+                    <i *ngIf="menu.icon; else anotherIcon" class="ti" [class]="'ti-'+menu.icon"></i>
+                    <ng-template #anotherIcon>
+                      <i   [class]="menu.anotherIcon"></i>
+                    </ng-template>
                     <span>{{ menu.menuValue }}</span>
                     <span class="menu-arrow"></span>
                   </a>
@@ -53,8 +62,13 @@
                 @if (menu.hasSubRouteTwo === true) {
                 <li class="submenu">
                   <a href="javascript:void(0);" (click)="openMenu(menu)" [ngClass]="{'subdrop' : openMenuItem === menu}"
-                    [class.active]="base === menu.base"><i class="ti" [class]="'ti-' + menu.icon"></i><span>
-                      {{menu.menuValue }}</span><span class="menu-arrow"></span></a>
+                    [class.active]="base === menu.base">
+                      <i *ngIf="menu.icon; else anotherIcon" class="ti" [class]="'ti-'+menu.icon"></i>
+                      <ng-template #anotherIcon>
+                        <i   [class]="menu.anotherIcon"></i>
+                      </ng-template>
+                      <span>{{menu.menuValue }}</span><span class="menu-arrow"></span>
+                  </a>
                   <ul [ngClass]="openMenuItem === menu ? 'd-block' : 'd-none'">
                     @for (subMenus of menu.subMenus; track subMenus) {
                     @if (subMenus.customSubmenuTwo === false) {

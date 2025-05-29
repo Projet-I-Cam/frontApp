@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { OwlOptions } from 'ngx-owl-carousel-o';
-
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -41,6 +40,7 @@ export class DashboardMinedubComponent implements OnInit{
    public routes = routes;
     value!: Date;
     person : any = {};
+    user: any = null;
     public student: OwlOptions = {
       loop: true,
       margin: 24,
@@ -409,6 +409,7 @@ export class DashboardMinedubComponent implements OnInit{
       this.time2.setHours(6);
       this.time2.setMinutes(30);
       const isRtl = this.router.url.includes('dashboard/layout-rtl');
+      this.user = this.loginService.getUser();
       this.student = {
         loop: true,
         margin: 24,

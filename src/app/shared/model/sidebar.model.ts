@@ -4,6 +4,7 @@ export interface sidebarData {
     icon: string;
     showSubRoute: boolean;
     route: string;
+    anotherIcon?: boolean,
     activeRoute: string;
     subRoutes: sidebarData[];
   }
@@ -20,6 +21,7 @@ export interface sidebarData {
     menuValue: string;
     route: string;
     hasSubRoute: boolean;
+    anotherIcon?: boolean,
     showSubRoute: boolean;
     icon: string;
     base: string;

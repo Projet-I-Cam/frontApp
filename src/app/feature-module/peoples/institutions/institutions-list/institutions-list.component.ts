@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { globalPost, globalGet, globalPut, globalDelete } from './../../../../services/statefull/http'
 import { LoginService } from '../../../../auth/services/login.service';
 import { Municipality } from '../../../../shared/model/institution.model';
-
+import Parse from 'parse'
 
 declare var bootstrap: any;
 
@@ -66,6 +66,7 @@ export class InstitutionsListComponent implements OnInit {
       const user = this.loginService.getUser();
       const role = user?.role?.task_name || 'admin';
       var person =  await this.loginService.getPerson();
+      console.log('Person ', person)
       if (role === 'administration' || role === 'services_centraux' || role == 'ministre') {
         res = await globalGet({
           T: 'Institution',
@@ -75,21 +76,25 @@ export class InstitutionsListComponent implements OnInit {
         });
       }
       else if (role === 'regional') {
-        const regionId = ''
-        const regionPointer = {
-          __type: "Pointer",
+        const departementQuery = new Parse.Query("Department");
+        const regPointer = {
           className: "Region",
-          objectId: regionId
-        };
-        // Get institutions where:
-        // 1. The institution's municipality's department's region matches our region
-        // 2. The institution is active
+         __type: "Pointer",
+          objectId: person?.municipality?.department?.region?.objectId
+        }
+        departementQuery.equalTo('region', regPointer);
+
+        const arrondissementQuery = new Parse.Query("Municipality");
+        arrondissementQuery.matchesQuery('department', departementQuery);
+        
         res = await globalGet({
           T: "Institution",
           filters: {
             ...filters,
-            "municipality.department.region": regionPointer,
             isActive: true
+          },
+          matches: {
+            municipality: arrondissementQuery
           },
           includes: [
             "municipality",
@@ -111,12 +116,13 @@ export class InstitutionsListComponent implements OnInit {
         });
       }
       else if (role === 'departemental') {
-        const departmentId = ''
-        const departmentPointer = {
-          __type: "Pointer",
+        const depPointer = {
           className: "Department",
-          objectId: departmentId
-        };
+         __type: "Pointer",
+          objectId: person?.municipality?.department?.objectId
+        }
+        const arrondissementQuery = new Parse.Query("Municipality");
+        arrondissementQuery.equalTo('department', depPointer);
         // Get institutions where:
         // 1. The institution's municipality's  matches our departmen
         // 2. The institution is active
@@ -124,8 +130,10 @@ export class InstitutionsListComponent implements OnInit {
           T: "Institution",
           filters: {
             ...filters,
-            "municipality.department": departmentPointer,
             isActive: true
+          },
+          matches: {
+            municipality: arrondissementQuery
           },
           includes: [
             "municipality",
@@ -155,7 +163,7 @@ export class InstitutionsListComponent implements OnInit {
             ...filters,
              municipality: {
               className: 'Municipality',
-              objectId: person?.municipality
+              objectId: person?.municipality?.objectId
             }
           },
           includes: [

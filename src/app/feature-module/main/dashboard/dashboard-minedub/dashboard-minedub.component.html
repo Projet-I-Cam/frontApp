@@ -35,7 +35,7 @@
             </div>
             <button type="button" class="btn-close p-0" data-bs-dismiss="alert" aria-label="Close"><span><i
                   class="ti ti-x"></i></span></button>
-          </div>
+          </div> 
         </div> -->
 
         <!-- Dashboard Content -->
@@ -64,11 +64,11 @@
                 <div class="mt-1">
                   <h4 class="text-white">Age : 38 ans | AFP : 15 ans | APA : 03 ans</h4>
                 </div>
-                <div class="mt-1">
+                <div class="mt-1"> 
                   <h4 class="text-white">Membre depuis le 08/08/2025</h4>
                 </div>
                 <div class="mt-1">
-                  <h4 class="text-white">Fonction : Délégué Départemental</h4>
+                  <h4 class="text-white">Fonction : {{user?.role?.name}}</h4>
                 </div>
               </div>
             </div>
@@ -82,8 +82,8 @@
     <div class="row">
 
       <!-- Total institution -->
-      <div class="col-12 col-sm-6 d-flex">
-        <div class="card flex-fill animate-card border-0 bg-success-subtle">
+      <div class="col-12 col-sm-6 d-flex" *ngIf="['ministre', 'services_centraux', 'super', 'administration'].includes(user?.role?.task_name)">
+        <div  class="card flex-fill animate-card border-0 bg-success-subtle">
           <div class="card-body">
             <div class="d-flex align-items-center">
               <div class="avatar avatar-lg me-2 p-1">

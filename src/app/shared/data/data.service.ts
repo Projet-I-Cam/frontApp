@@ -878,6 +878,7 @@ export class DataService {
     if (this.loginService.isLoggedIn()) {
       const user = this.loginService.getUser();
       const role = user?.role?.task_name || 'admin';
+      console.log('ROLE data role ', role)
       console.log('the user role is', role);
       if ((role === 'etablissement')) {
         return this.AdminSchoolSidebarData;
@@ -1823,20 +1824,24 @@ export class DataService {
           customSubmenuTwo: false,
           subRoutes: [],
         },
-        {
+        { 
           menuValue: 'Annuaire',
           icon: 'phone',
-          base: 'base',
           hasSubRoute: false,
-          showSubRoute: false,
+          showSubRoute: false, 
           route: '',
           customSubmenuTwo: false,
           subRoutes: [],
         },
         {
-          menuValue: 'Liste des delegations departementale',
+          menuValue: 'Liste de departements',
+          anotherIcon: 'si si-layers',
+          hasSubRoute: false,
           route: routes.departmentsList,
-          icon: 'office'
+          showSubRoute: false,
+          customSubmenuTwo: false,
+          subRoutes: [],
+
         },
       ],
     },
@@ -1912,7 +1917,7 @@ export class DataService {
           showSubRoute: false,
           page: 'base',
           hasSubRouteTwo: true,
-          icon: 'staff',
+          anotherIcon: 'si si-people',
           subMenus: [
             {
               menuValue: 'Ajouter un personnel',
@@ -2002,13 +2007,8 @@ export class DataService {
           showSubRoute: true,
           page: 'base',
           hasSubRoute: true,
-          icon: 'speaker',
+          anotherIcon: 'si si-envelope-open',
           subMenus: [
-            {
-              menuValue: 'Pour les delegues Regionaux',
-              route: 'peoples/minebase/staffs',
-
-            },
             {
               menuValue: 'Pour les delegues departementaux',
               route: 'peoples/minebase/staffs',
