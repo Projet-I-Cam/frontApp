@@ -1657,12 +1657,12 @@ export class DataService {
           subMenus: [
             {
               menuValue: 'Ajouter un personnel',
-              route: 'peoples/minebase/staffs',
+              route: routes.addStaff,
               customSubmenuTwo: false,
             },
             {
               menuValue: 'Liste du Personnel',
-              route: 'peoples/minebase/staffs',
+              route: routes.staffList,
               customSubmenuTwo: false,
             },
             {
@@ -1921,12 +1921,12 @@ export class DataService {
           subMenus: [
             {
               menuValue: 'Ajouter un personnel',
-              route: 'peoples/minebase/staffs',
+              route: routes.addStaff,
               customSubmenuTwo: false,
             },
             {
               menuValue: 'Liste du Personnel',
-              route: 'peoples/minebase/staffs',
+              route: routes.staffList,
               customSubmenuTwo: false,
             },
             {
@@ -2176,12 +2176,12 @@ export class DataService {
           subMenus: [
             {
               menuValue: 'Ajouter un personnel',
-              route: 'peoples/minebase/staffs',
+              route: routes.addStaff,
               customSubmenuTwo: false,
             },
             {
               menuValue: 'Liste du Personnel',
-              route: 'peoples/minebase/staffs',
+              route: routes.staffList,
               customSubmenuTwo: false,
             },
             {
@@ -2431,12 +2431,12 @@ export class DataService {
           subMenus: [
             {
               menuValue: 'Ajouter un personnel',
-              route: 'peoples/minebase/staffs',
+              route: routes.addStaff,
               customSubmenuTwo: false,
             },
             {
               menuValue: 'Liste du Personnel',
-              route: 'peoples/minebase/staffs',
+              route: routes.staffList,
               customSubmenuTwo: false,
             },
             {
