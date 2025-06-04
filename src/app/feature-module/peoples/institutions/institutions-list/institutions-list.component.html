@@ -76,6 +76,12 @@
                 <p-sortIcon field="registrationNumber"></p-sortIcon>
               </div>
             </th>
+            <th pSortableColumn="registrationNumber">
+              <div class="flex justify-between items-center">
+                Ecole Publique
+                <p-sortIcon field="registrationNumber"></p-sortIcon>
+              </div>
+            </th>
             <th pSortableColumn="isActive">
               <div class="flex justify-between items-center">
                 Registration Date
@@ -104,6 +110,7 @@
           <tr>
             <td>{{ institution.name }}</td>
             <td>{{ institution.registrationNumber || 'N/A' }}</td>
+            <td>{{ typeof institution.isPrivateInstituion ==="boolean" ? institution.isPrivateInstituion ? "Non" : 'Oui' : "N/A" }}</td>
             <td>{{ institution.registrationDate?.iso | date:'dd/MM/yyyy' }}</td>
             <td>{{ institution.municipality?.name || 'N/A' }}</td>
             <td>{{ institution.owner?.lastName + " "+institution.owner?.firstName }}</td>

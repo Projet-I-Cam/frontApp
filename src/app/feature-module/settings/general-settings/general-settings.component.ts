@@ -53,7 +53,7 @@ export class GeneralSettingsComponent implements OnInit {
       teachingGroup: ['', [Validators.required]],
       longitude: ['', [Validators.required]],
       latitude: ['', [Validators.required]],
-      isPublicInstituion: ['public'],
+      isPrivateInstituion: ['public'],
       description: [''],
       sections: this.fb.array([]),
       logo: [null],
@@ -62,16 +62,7 @@ export class GeneralSettingsComponent implements OnInit {
       poBox: [''],
       phones: [''],
     });
-    globalGet({
-      T: "Section",
-      filters: {}
-    }).then(sections => {
-      console.log('sections sections sections ', sections)
-      this.options = sections?.map((sect: any) =>({value: sect?.objectId, label: sect?.name_fr}))
-      this.institutionForm.patchValue({
-        sections: sections.map(() => false),
-      });
-    })
+    
     
   }
 
@@ -110,10 +101,19 @@ onCheckboxChange(event: any, option: any) {
           includes: ['owner', 'sections'],
           isOne: true
         })
-        console.log('institution institution institution ', institution)
+        console.log('institution institution institution ', institution?.sections)
         this.person = person
         this.institution = institution
 
+        const sections = await globalGet({
+          T: "Section",
+          filters: {}
+        })
+        console.log('sections sections sections ', sections)
+        this.options = sections?.map((sect: any) =>({value: sect?.objectId, label: sect?.name_fr}))
+        const selectedOptionsArray = this.selectedOptionsArray;
+        institution?.sections?.map((s: any) => selectedOptionsArray.push(new FormControl(s.objectId)))
+        
         this.institutionForm.patchValue({
           phones: institution?.phones?.join(', '),
           emails: institution?.emails?.join(', '),
@@ -126,7 +126,8 @@ onCheckboxChange(event: any, option: any) {
           description: institution?.description,
           latitude: institution?.geoPoint?.latitude,
           longitude: institution?.geoPoint?.longitude,
-          sections: institution?.sections?.map((s: any) => s.objectId)
+          isPrivateInstituion: institution?.isPrivateInstituion? 'private' :  'public',
+          sections: selectedOptionsArray
         });
       })
     }
@@ -175,8 +176,19 @@ onCheckboxChange(event: any, option: any) {
           }else{
             formData.isInstitutionLaique = false
           }
+          if(formData.isPrivateInstituion ===  "private"){
+            formData.isPrivateInstituion = true
+          }else{
+            formData.isPrivateInstituion = false
+          }
 
           console.log('Form submited 2', formData)
+          Object.keys(formData).forEach(key => {
+            if ( typeof formData[key] !=="boolean" &&  !formData[key]) {
+              delete formData[key];
+            }
+          });
+          console.log('Form submited 3', formData)
           const r = await globalPut({
             T: "Institution",
             dataObject: formData, 
