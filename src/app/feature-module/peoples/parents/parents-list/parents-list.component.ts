@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import {
   apiResultFormat,
@@ -15,7 +15,7 @@ import { DataService } from '../../../../shared/data/data.service';
 import { Router } from '@angular/router';
 import { Sort } from '@angular/material/sort';
 import { UtilsService } from '../../../../services/utilis.service';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { globalDelete, globalGet, globalPost } from '../../../../services/statefull/http';
 import { AuthService } from '../../../../services/auth.service';
 import Parse from 'parse';
@@ -24,6 +24,9 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { environment } from '../../../../../environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ParentsModalComponent } from '../Modals/Parents-modal.component';
+import { AlertService } from '../../../../services/alertService';
+import { Editor, Toolbar } from 'ngx-editor';
+
 
 
 
@@ -34,10 +37,12 @@ import { ParentsModalComponent } from '../Modals/Parents-modal.component';
     styleUrl: './parents-list.component.scss',
     standalone: false
 })
-export class ParentsListComponent implements OnInit {
+export class ParentsListComponent implements OnInit , OnDestroy {
   load: boolean = true;
   deleteDialog: boolean = false;
-
+  sendMailEnabled = false;
+  showEmailForm = false;
+  emailContent: string = '';
 
   initChecked = false;
   public pageSize = 10;
@@ -56,9 +61,27 @@ export class ParentsListComponent implements OnInit {
   dataSource!: MatTableDataSource<parentList>;
   public searchDataValue = '';
 
+  isLoading : boolean = false;
+
+  selectedParents: any[] = [];
+
   parent: any = {};
   titlePage = "Liste des parents"
 
+  selectedEmails: string[] = [];
+  sendMessage = '';
+
+  editor!: Editor;
+  toolbar: Toolbar = [
+    ['bold', 'italic'],
+    ['underline', 'strike'],
+    ['code', 'blockquote'],
+    ['ordered_list', 'bullet_list'],
+    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+    ['link', 'image'],
+    ['text_color', 'background_color'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+  ];
 
 
 
@@ -68,12 +91,20 @@ export class ParentsListComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private pagination: PaginationService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private alertService: AlertService
   ) {}
 
     ngOnInit(): void {
       this.load=true;
       this.loadParentList();
+      this.editor = new Editor();
+      this.isLoading = false;
+      this.showEmailForm = false;
+    }
+
+    ngOnDestroy(): void {
+      this.editor.destroy();
     }
 
 
@@ -182,6 +213,7 @@ export class ParentsListComponent implements OnInit {
           if (index >= pageOption.skip && serialNumber <= pageOption.limit) {
             res.id = serialNumber;
             res.Addedon = this.utils.getDate(res.cratedAt);
+            res.isSelected = false;
             this.tableData.push(res);
             this.serialNumberArray.push(serialNumber);
             this.tableDataCopy.push(res);
@@ -245,11 +277,34 @@ export class ParentsListComponent implements OnInit {
       this.tableData.forEach((f) => {
         f.isSelected = true;
       });
+      this.updateSendMailButton();
     } else {
       this.tableData.forEach((f) => {
         f.isSelected = false;
+        this.updateSendMailButton();
       });
     }
+  }
+
+  toggleUserSelection(parent: any) {
+    parent.isSelected = !parent.isSelected;
+    this.updateSendMailButton();
+  }
+
+  updateSendMailButton() {
+    this.sendMailEnabled = this.tableData.some(user => user.isSelected);
+  }
+
+  openEmailForm(){
+    const selected = this.tableData.filter(p => p.isSelected);
+    if (selected.length === 0) {
+      this.alertService.showError('Veuillez sélectionner au moins un parent.');
+      return;
+    }
+    this.selectedParents = selected;
+    this.selectedEmails = selected.map(u => u.email);
+    this.showEmailForm = true;
+    this.sendMessage = '';
   }
 
   showDeleteForm : boolean = false;
@@ -265,6 +320,58 @@ export class ParentsListComponent implements OnInit {
   showDelete(parent: any){
     this.showDeleteForm = true;
     this.parent = parent;
+  }
+
+  onFormSubmit(data: any) {
+    console.log('Données reçues du formulaire email:', data);
+    // Ici tu peux appeler ton service d'envoi d'email avec les données du formulaire
+    this.sendMessage = `Email envoyé avec succès à : ${data.recipients.join(', ')}`;
+    this.showEmailForm = false;
+    // Réinitialiser la sélection si besoin
+    this.tableData.forEach(p => p.isSelected = false);
+  }
+
+  onFormCancel() {
+    this.showEmailForm = false;
+  }
+
+  async sendEmail() {
+    // Check if the editor content is empty
+    if (!this.emailContent || this.emailContent.trim() === '') {
+      this.alertService.showError('Veuillez écrire un message avant d\'envoyer.');
+      return; // Exit the function if the content is empty
+    }
+    this.isLoading = true;
+
+   try {
+      this.isLoading = true; // Set loading state to true
+      for (const p of this.selectedParents) {
+        if (p.email) {
+          const options = {
+            "to": p.email,
+            "subject": "M/Mme " + p.lastName,
+            "html": "<p>" + this.emailContent + "</p>",
+            "data": {
+              "name": p.firstName
+            }
+          };
+
+          try {
+            const r = await Parse.Cloud.run('sendEmail', { ...options });
+            console.log('sendEmail response:', r);
+            this.ngOnInit()
+          } catch (emailError : any) {
+            console.error('Error sending email to', p.email, emailError);
+            this.alertService.showError(`Erreur lors de l'envoi de l'email à ${p.email}: ${emailError.message}`);
+          }
+        }
+      }
+  
+    } catch (error : any) {
+      this.isLoading = false; // Ensure loading state is reset on error
+      this.alertService.showError(error.message || 'Une erreur est survenue.');
+    }
+    this.isLoading = false;    
 
   }
 

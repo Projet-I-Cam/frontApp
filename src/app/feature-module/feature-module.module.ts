@@ -8,6 +8,7 @@ import { SidebarComponent } from './common/sidebar/sidebar.component';
 import { SharedModule } from '../shared/shared.module';
 import { LayoutComponent } from './common/layout/layout.component';
 import { FormsModule } from '@angular/forms';
+import { EmailFormComponent } from './common/email-form/email-form.component';
 
 
 
