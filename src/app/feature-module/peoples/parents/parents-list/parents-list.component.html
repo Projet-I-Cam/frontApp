@@ -49,26 +49,31 @@
 
 <div class="row" *ngIf="showEmailForm">
   <!-- Editor -->
-  <div class="col-md-12">
-    <div class="card">
-      <div class="card-header">
-        <h5 class="card-title">Ecrire votre mail</h5>
-      </div>
-      <div class="card-body editors">
-        <ngx-editor [(ngModel)]="emailContent" [editor]="editor">
-          <ngx-editor-menu [editor]="editor" [toolbar]="toolbar">
-          </ngx-editor-menu>
+<div class="col-md-12">
+  <div class="card">
+    <div class="card-header">
+      <h5 class="card-title">Ecrire votre mail</h5>
+    </div>
+    <div class="card-body editors">
+      <!-- Editor wrapper with fixed height and scroll -->
+      <div class="editor-wrapper" style="height: 300px; overflow-y: auto; border: 1px solid #ced4da; border-radius: 4px; padding: 8px; box-sizing: border-box;">
+        <ngx-editor [(ngModel)]="emailContent" [editor]="editor" style="height: 100%; min-height: 480px; box-sizing: border-box;">
+          <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"></ngx-editor-menu>
         </ngx-editor>
-        <!-- Centered Send Button -->
-        <div class="text-center mt-3">
-          <button class="btn btn-primary" (click)="sendEmail()">
-            Envoyer
-            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-          </button>
-        </div>
+      </div>
+      <!-- Centered Send Button -->
+      <div class="text-center mt-3">
+        <button class="btn btn-primary" (click)="sendEmail()" [disabled]="isLoading">
+          Envoyer
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true"></span>
+        </button>
       </div>
     </div>
   </div>
+</div>
+
+
+
   <!-- /Editor -->
 </div>
 

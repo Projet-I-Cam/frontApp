@@ -44,7 +44,7 @@ export class StudentDetailsComponent implements OnInit {
 
   async ngOnInit() {
       const user = this.loginService.getUser();
-            this.academicYear = await getCurrentAcademicYear();
+      this.academicYear = await getCurrentAcademicYear();
 
       const role = user?.role?.task_name || 'admin';
       this.loginUserRole = role;
@@ -75,7 +75,7 @@ async getStudentDetails(id: string) {
       this.studentId ?
         {
           academicYear: { className: 'AcademicYear', objectId: this.academicYear.objectId },
-          person: { className: 'Person',objectId: this.studentId }
+          person: { className: 'Person', objectId: this.studentId }
         } :
         {
            academicYear: { className: 'AcademicYear', objectId: this.academicYear.objectId },
@@ -97,7 +97,8 @@ async getStudentDetails(id: string) {
     });
 
     this.studentData = res[0] || {};
-    console.log('institutionData', this.studentData);
+    console.log('res', res);
+    console.log('studentData', this.studentData);
   } catch (error) {
     console.error('Error fetching student details:', error);
   } finally {

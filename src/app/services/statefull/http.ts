@@ -11,6 +11,7 @@ function sanitizeFilename(filename: string) {
 export interface BaseGetIO {
     T: any; // la classe par de base. vous pouvez regarder app/parseClass.ts
     filters?: {}; //les contraintes
+    matches?: {}; //les contraintes
     includes?: Array<String>; // les jointures
     curentPage?: number; // pour la pagination. le currentpage peu etre 1 ou 2 pour la page 1 et 2
     size?: number; // le size le nombre max a recuperer par exemple je veux une pagination 10 par 10
@@ -35,7 +36,7 @@ export interface BaseDeleteIO {
     objectId: string
 }
 
-export const globalGet = async({T, filters, includes, curentPage, size, selects, isOne} : BaseGetIO): Promise<any> => {
+export const globalGet = async({T, filters, includes, curentPage, size, selects, isOne, matches} : BaseGetIO): Promise<any> => {
     try {
         const query = new Parse.Query(CLASS?.[T])
         if(filters){
@@ -45,6 +46,11 @@ export const globalGet = async({T, filters, includes, curentPage, size, selects,
                 }else{
                     query.equalTo(key, {"__type": "Pointer", "className": value?.className , "objectId": value?.objectId})
                 }
+            });
+        }
+        if(matches){
+            Object.entries(matches).forEach(([key, value]: any) => {
+                query.matchesQuery(key, value)
             });
         }
         if(includes && includes.length){

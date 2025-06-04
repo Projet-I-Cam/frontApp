@@ -350,7 +350,7 @@ export class ParentsListComponent implements OnInit , OnDestroy {
           const options = {
             "to": p.email,
             "subject": "M/Mme " + p.lastName,
-            "html": "<p>" + this.emailContent + "</p>",
+            "html": "M/Mme " + p.firstName +" "+  p.lastName + "<br><p>" + this.emailContent + "</p>",
             "data": {
               "name": p.firstName
             }

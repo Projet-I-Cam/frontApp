@@ -1,4 +1,3 @@
-<!-- Page Wrapper -->
 <div class="page-wrapper">
   <div class="content">
     <!-- Page Header -->
@@ -7,7 +6,7 @@
         <div class="col-sm-12">
           <ul class="breadcrumb">
             <li class="breadcrumb-item">
-              <a [routerLink]="routes.adminDashboard">Dashboard </a>
+              <a [routerLink]="routes.adminDashboard">Dashboard</a>
             </li>
             <li class="breadcrumb-item">
               <a [routerLink]="routes.studentsList">Élèves</a>
@@ -17,181 +16,137 @@
         </div>
       </div>
     </div>
-    <!-- /Page Header -->
 
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-12">
         <div class="card bg-white">
-          <div class="card-header">
-            <h5 class="card-title">Demande de transfert d'Élève</h5>
-          </div>
           <div class="card-body">
-            <form [formGroup]="transferForm" (ngSubmit)="onSubmit()">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group mb-3">
-                    <label class="form-label">ID Élève <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" formControlName="studentId">
-                    <div *ngIf="transferForm.get('studentId')?.invalid && transferForm.get('studentId')?.touched" class="text-danger mt-1">
-                      L'ID Élève est requis
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group mb-3">
-                    <label class="form-label">Date de transfert <span class="text-danger">*</span></label>
-                    <div class="input-icon position-relative">
-                      <span class="input-icon-addon">
-                        <i class="ti ti-calendar"></i>
-                      </span>
-                      <input type="date" class="form-control" formControlName="transferDate">
-                    </div>
-                    <div *ngIf="transferForm.get('transferDate')?.invalid && transferForm.get('transferDate')?.touched" class="text-danger mt-1">
-                      La date de transfert est requise
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group mb-3">
-                    <label class="form-label">École d'origine <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" formControlName="fromSchool">
-                    <div *ngIf="transferForm.get('fromSchool')?.invalid && transferForm.get('fromSchool')?.touched" class="text-danger mt-1">
-                      L'école d'origine est requise
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group mb-3">
-                    <label class="form-label">École de destination <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" formControlName="toSchool">
-                    <div *ngIf="transferForm.get('toSchool')?.invalid && transferForm.get('toSchool')?.touched" class="text-danger mt-1">
-                      L'école de destination est requise
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-12">
-                  <div class="form-group mb-3">
-                    <label class="form-label">Raison du transfert <span class="text-danger">*</span></label>
-                    <textarea class="form-control" rows="3" formControlName="reason"></textarea>
-                    <div *ngIf="transferForm.get('reason')?.invalid && transferForm.get('reason')?.touched" class="text-danger mt-1">
-                      La raison du transfert est requise
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group mb-3">
-                    <label class="form-label">N° du certificat de transfert <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" formControlName="transferCertificateNumber">
-                    <div *ngIf="transferForm.get('transferCertificateNumber')?.invalid && transferForm.get('transferCertificateNumber')?.touched" class="text-danger mt-1">
-                      Le numéro du certificat est requis
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group mb-3">
-                    <label class="form-label">Statut <span class="text-danger">*</span></label>
-                    <select class="form-select" formControlName="status">
-                      <option value="En attente">En attente</option>
-                      <option value="En cours">En cours</option>
-                      <option value="Approuvé">Approuvé</option>
-                      <option value="Rejeté">Rejeté</option>
-                      <option value="Terminé">Terminé</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-12">
-                  <div class="form-group mb-3">
-                    <label class="form-label">Documents</label>
-                    <div class="input-group">
-                      <input type="file" class="form-control" multiple (change)="uploadDocument($event)">
-                      <button class="btn btn-outline-secondary" type="button">Télécharger</button>
-                    </div>
-                    <small class="form-text text-muted">Formats acceptés: PDF, JPG, PNG (max 5MB)</small>
-                    <div *ngIf="transferForm.get('documents')?.value?.length" class="mt-2">
-                      <span *ngFor="let doc of transferForm.get('documents')?.value" class="badge bg-info me-2 mb-2">
-                        {{ doc }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-12 text-end">
-                  <button type="submit" class="btn btn-primary">Soumettre la demande</button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+            <!-- Toast for notifications -->
+            <p-toast></p-toast>
 
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card bg-white">
-          <div class="card-header">
-            <h5 class="card-title">Liste des transferts</h5>
-          </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th>ID Élève</th>
-                    <th>Date</th>
-                    <th>De</th>
-                    <th>Vers</th>
-                    <th>Statut</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let transfer of studentTransfers">
-                    <td>{{ transfer.studentId }}</td>
-                    <td>{{ transfer.transferDate }}</td>
-                    <td>{{ transfer.fromSchool }}</td>
-                    <td>{{ transfer.toSchool }}</td>
-                    <td>
-                      <span class="badge" 
-                            [ngClass]="{
-                              'bg-warning': transfer.status === 'En attente',
-                              'bg-info': transfer.status === 'En cours',
-                              'bg-success': transfer.status === 'Terminé' || transfer.status === 'Approuvé',
-                              'bg-danger': transfer.status === 'Rejeté'
-                            }">
-                        {{ transfer.status }}
-                      </span>
-                    </td>
-                    <td>
-                      <div class="dropdown dropdown-action">
-                        <a href="javascript:void(0)" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                          <i class="ti ti-dots-vertical"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                          <a class="dropdown-item" href="javascript:void(0)" (click)="updateTransferStatus(transfer.studentId, 'Approuvé')">
-                            <i class="ti ti-check me-2"></i> Approuver
-                          </a>
-                          <a class="dropdown-item" href="javascript:void(0)" (click)="updateTransferStatus(transfer.studentId, 'Terminé')">
-                            <i class="ti ti-circle-check me-2"></i> Marquer comme terminé
-                          </a>
-                          <a class="dropdown-item" href="javascript:void(0)" (click)="updateTransferStatus(transfer.studentId, 'Rejeté')">
-                            <i class="ti ti-x me-2"></i> Rejeter
-                          </a>
-                          <a class="dropdown-item text-danger" href="javascript:void(0)" (click)="deleteTransfer(transfer.studentId)">
-                            <i class="ti ti-trash me-2"></i> Supprimer
-                          </a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr *ngIf="studentTransfers.length === 0">
-                    <td colspan="6" class="text-center">Aucun transfert trouvé</td>
-                  </tr>
-                </tbody>
-              </table>
+            <!-- Header actions -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title mb-0">Liste des transferts</h5>
+              <button pButton icon="pi pi-plus" label="Nouveau transfert" (click)="openAddTransferDialog()"
+                class="p-button-sm p-button-primary"></button>
             </div>
+
+            <!-- Data Table -->
+            <p-table #dt [value]="filteredTransfers" [loading]="loading" [paginator]="true" [rows]="10"
+              [rowsPerPageOptions]="[5,10,25]"
+              [globalFilterFields]="['studentId', 'studentName', 'fromSchool', 'toSchool', 'status']"
+              responsiveLayout="scroll" class="custom-p-table" styleClass="p-datatable-striped"
+              [tableStyle]="{'min-width': '75rem'}"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+
+              <!-- Table Header -->
+              <ng-template pTemplate="caption">
+                <div class="container-fluid d-flex justify-content-between align-items-center">
+                  <app-tooltip-content></app-tooltip-content>
+                  <div>
+                    <span class="p-input-icon-left">
+                      <i class="pi pi-search"></i>
+                      <input type="text" pInputText [(ngModel)]="searchValue" (input)="applyFilters()"
+                        placeholder="Rechercher par nom ou matricule" />
+                    </span>
+                    <!-- Clear button (only visible when a filter is applied) -->
+                    <button *ngIf="searchValue && searchValue.trim().length > 0" (click)="dt.clear(); searchValue='';"
+                      class="btn btn-primary btn-sm me-2">
+                      <i class="ti ti-x me-2"></i>Clear
+                    </button>
+                  </div>
+                </div>
+                <div class="d-flex flex-row align-items-center gap-3">
+                  <div class="col-12 col-md-4 ">
+                    <label class="mx-2">Nom</label>
+                    <input pInputText type="text" [(ngModel)]="studentNameFilter" (input)="applyFilters()"
+                      placeholder="Filtrer Nom">
+                  </div>
+                  <!-- <div class="col-12 md:col-2">
+                <label>École d'origine</label>
+                <input pInputText type="text" [(ngModel)]="fromSchoolFilter"
+                       (input)="applyFilters()" placeholder="Filtrer École">
+              </div>
+              <div class="col-12 md:col-2">
+                <label>École de destination</label>
+                <input pInputText type="text" [(ngModel)]="toSchoolFilter"
+                       (input)="applyFilters()" placeholder="Filtrer Destination">
+              </div>
+              <div class="col-12 md:col-2">
+                <label>Statut</label>
+                <p-dropdown [options]="statuses" [(ngModel)]="statusFilter"
+                           (onChange)="applyFilters()" optionLabel="label" optionValue="value">
+                </p-dropdown>
+              </div> -->
+                </div>
+              </ng-template>
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="studentId">
+                    ID Élève <p-sortIcon field="studentId"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="studentName">
+                    Nom Élève <p-sortIcon field="studentName"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="transferDate">
+                    Date <p-sortIcon field="transferDate"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="fromSchool">
+                    De <p-sortIcon field="fromSchool"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="toSchool">
+                    Vers <p-sortIcon field="toSchool"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="status">
+                    Statut <p-sortIcon field="status"></p-sortIcon>
+                  </th>
+                  <th>Actions</th>
+                </tr>
+
+              </ng-template>
+
+              <!-- Table Body -->
+              <ng-template pTemplate="body" let-transfer>
+                <tr>
+                  <td>{{ transfer.studentId }}</td>
+                  <td>{{ transfer.studentName }}</td>
+                  <td>{{ transfer.transferDate | date: 'dd/MM/yyyy' }}</td>
+                  <td>{{ transfer.fromSchool }}</td>
+                  <td>{{ transfer.toSchool }}</td>
+                  <td>
+                    <span class="badge" [ngClass]="{
+    'bg-success': transfer.status === 'Terminé' || transfer.status === 'Approuvé',
+    'bg-warning': transfer.status === 'En attente',
+    'bg-danger': transfer.status === 'Rejeté',
+    'bg-info': transfer.status === 'En cours'
+  }">
+                      {{ transfer.status }}
+                    </span>
+                  </td>
+                  <td>
+                    <button pButton icon="ti ti-pencil-code" class="p-button-rounded p-button-text p-button-sm mr-2"
+                      (click)="updateTransferStatus(transfer.studentId, 'Approuvé')" pTooltip="Approuver"
+                      tooltipPosition="top"></button>
+                    <button pButton icon="ti ti-pencil" class="p-button-rounded p-button-text p-button-sm mr-2"
+                      (click)="updateTransferStatus(transfer.studentId, 'Terminé')" pTooltip="Terminer"
+                      tooltipPosition="top"></button>
+                    <button pButton icon="ti ti-trash"
+                      class="p-button-rounded p-button-text p-button-danger p-button-sm"
+                      (click)="confirmDelete(transfer.studentId)" pTooltip="Supprimer" tooltipPosition="top"></button>
+                  </td>
+                </tr>
+              </ng-template>
+
+              <!-- Empty Message -->
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="7" class="text-center">Aucun transfert trouvé</td>
+                </tr>
+              </ng-template>
+            </p-table>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<!-- /Page Wrapper --> 

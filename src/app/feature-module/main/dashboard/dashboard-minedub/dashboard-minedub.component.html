@@ -35,7 +35,7 @@
             </div>
             <button type="button" class="btn-close p-0" data-bs-dismiss="alert" aria-label="Close"><span><i
                   class="ti ti-x"></i></span></button>
-          </div>
+          </div> 
         </div> -->
 
         <!-- Dashboard Content -->
@@ -64,11 +64,11 @@
                 <div class="mt-1">
                   <h4 class="text-white">Age : 38 ans | AFP : 15 ans | APA : 03 ans</h4>
                 </div>
-                <div class="mt-1">
+                <div class="mt-1"> 
                   <h4 class="text-white">Membre depuis le 08/08/2025</h4>
                 </div>
                 <div class="mt-1">
-                  <h4 class="text-white">Fonction : Délégué Départemental</h4>
+                  <h4 class="text-white">Fonction : {{user?.role?.name}}</h4>
                 </div>
               </div>
             </div>
@@ -82,8 +82,8 @@
     <div class="row">
 
       <!-- Total institution -->
-      <div class="col-12 col-sm-6 d-flex">
-        <div class="card flex-fill animate-card border-0 bg-success-subtle">
+      <div class="col-12 col-sm-6 d-flex" *ngIf="['ministre', 'services_centraux', 'super', 'administration'].includes(user?.role?.task_name)">
+        <div  class="card flex-fill animate-card border-0 bg-success-subtle">
           <div class="card-body">
             <div class="d-flex align-items-center">
               <div class="avatar avatar-lg me-2 p-1">
@@ -445,7 +445,7 @@
       <div class="col-xxl-8 col-xl-6 d-flex">
         <div class="card flex-fill">
           <div class="card-header  d-flex align-items-center justify-content-between">
-            <h4 class="card-title">Success Rates</h4>
+            <h4 class="card-title">Taux de success</h4>
             <div class="dropdown">
               <a href="javascript:void(0);" class="bg-white dropdown-toggle" data-bs-toggle="dropdown"><i
                   class="ti ti-calendar  me-2"></i>Last 8 Quater
@@ -453,12 +453,12 @@
               <ul class="dropdown-menu mt-2 p-3">
                 <li>
                   <a href="javascript:void(0);" class="dropdown-item rounded-1">
-                    This Month
+                    Ce mois
                   </a>
                 </li>
                 <li>
                   <a href="javascript:void(0);" class="dropdown-item rounded-1">
-                    This Year
+                    Cette année
                   </a>
                 </li>
                 <li>
@@ -468,7 +468,7 @@
                 </li>
                 <li>
                   <a href="javascript:void(0);" class="dropdown-item rounded-1">
-                    Last 16 Quater
+                    Ces 16 dernier mois
                   </a>
                 </li>
               </ul>
@@ -518,12 +518,12 @@
             </div>
           </div>
           <div class="card-body">
-            <div class="alert alert-success d-flex align-items-center mb-24" role="alert">
+            <!-- <div class="alert alert-success d-flex align-items-center mb-24" role="alert">
               <i class="ti ti-info-square-rounded me-2 fs-14"></i>
               <div class="fs-14">
                 These Result are obtained from the syllabus completion on the respective Class
               </div>
-            </div>
+            </div> -->
             <ul class="list-group">
               <li class="list-group-item">
                 <div class="row align-items-center">

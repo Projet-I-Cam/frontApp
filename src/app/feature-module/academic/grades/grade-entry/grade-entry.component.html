@@ -27,16 +27,16 @@
               <div class="col-12">
                 <h5 class="form-title"><span>Critères de sélection</span></h5>
               </div>
-              
+
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Classe <span class="text-danger">*</span></label>
-                  <p-dropdown 
-                    [options]="classes" 
-                    [(ngModel)]="selectedClass" 
-                    optionLabel="name" 
-                    [filter]="true" 
-                    filterBy="name" 
+                  <p-dropdown
+                    [options]="classes"
+                    [(ngModel)]="selectedClass"
+                    optionLabel="name"
+                    [filter]="true"
+                    filterBy="name"
                     [showClear]="true"
                     placeholder="Sélectionner une classe"
                     styleClass="w-100"
@@ -44,16 +44,16 @@
                   ></p-dropdown>
                 </div>
               </div>
-              
+
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Section <span class="text-danger">*</span></label>
-                  <p-dropdown 
-                    [options]="sections" 
-                    [(ngModel)]="selectedSection" 
-                    optionLabel="name" 
-                    [filter]="true" 
-                    filterBy="name" 
+                  <p-dropdown
+                    [options]="sections"
+                    [(ngModel)]="selectedSection"
+                    optionLabel="name"
+                    [filter]="true"
+                    filterBy="name"
                     [showClear]="true"
                     placeholder="Sélectionner une section"
                     styleClass="w-100"
@@ -61,16 +61,16 @@
                   ></p-dropdown>
                 </div>
               </div>
-              
+
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Matière <span class="text-danger">*</span></label>
-                  <p-dropdown 
-                    [options]="subjects" 
-                    [(ngModel)]="selectedSubject" 
-                    optionLabel="name" 
-                    [filter]="true" 
-                    filterBy="name" 
+                  <p-dropdown
+                    [options]="subjects"
+                    [(ngModel)]="selectedSubject"
+                    optionLabel="name"
+                    [filter]="true"
+                    filterBy="name"
                     [showClear]="true"
                     placeholder="Sélectionner une matière"
                     styleClass="w-100"
@@ -78,22 +78,22 @@
                   ></p-dropdown>
                 </div>
               </div>
-              
+
               <div class="col-12 text-end mt-3">
-                <button 
-                  *ngIf="!hasLoaded" 
-                  class="btn btn-primary" 
-                  (click)="loadStudents()" 
+                <button
+                  *ngIf="!hasLoaded"
+                  class="btn btn-primary"
+                  (click)="loadStudents()"
                   [disabled]="!selectedClass || !selectedSection || !selectedSubject || isLoading"
                 >
                   <i class="fas fa-search" *ngIf="!isLoading"></i>
                   <i class="fas fa-spinner fa-spin" *ngIf="isLoading"></i>
                   Charger les Élèves
                 </button>
-                
-                <button 
-                  *ngIf="hasLoaded" 
-                  class="btn btn-danger" 
+
+                <button
+                  *ngIf="hasLoaded"
+                  class="btn btn-danger"
                   (click)="saveGrades()"
                   [disabled]="isSubmitting"
                 >
@@ -112,7 +112,7 @@
                   <h5>Saisie des notes : {{ selectedClass?.name }} {{ selectedSection?.name }} - {{ selectedSubject?.name }}</h5>
                 </div>
               </div>
-              
+
               <div class="table-responsive">
                 <table class="table border-0 star-student table-hover table-center mb-0 table-striped">
                   <thead class="student-thread">
@@ -131,10 +131,10 @@
                       <td>
                         <h2 class="table-avatar">
                           <a href="javascript:void(0);" class="avatar avatar-sm me-2">
-                            <img 
+                            <img
                               *ngIf="students[i].image"
-                              class="avatar-img rounded-circle" 
-                              [src]="students[i].image" 
+                              class="avatar-img rounded-circle"
+                              [src]="students[i].image"
                               alt="Student Image"
                             >
                           </a>
@@ -143,22 +143,28 @@
                       </td>
                       <td>{{ grade.studentRollNo }}</td>
                       <td>
-                        <div class="form-group mb-0">
-                          <input 
-                            type="number" 
-                            class="form-control" 
-                            [(ngModel)]="grade.marks" 
+                        <div class="form-group mb-0 position-relative">
+                          <input
+                            type="number"
+                            class="form-control"
+                            [(ngModel)]="grade.marks"
                             (ngModelChange)="onMarksChange(grade)"
                             placeholder="0"
                             min="0"
                             [max]="grade.outOf"
+                            [attr.data-bs-toggle]="'popover'"
+                            [attr.data-bs-content]="'Oral: ' + (grade.subGrades?.oral || 0) + ', Écrit: ' + (grade.subGrades?.ecrit || 0) + ', Pratique: ' + (grade.subGrades?.pratique || 0) + ', Savoir-être: ' + (grade.subGrades?.savoirEtre || 0)"
+                            data-bs-trigger="hover focus"
                           >
                           <small class="form-text text-muted">Sur {{ grade.outOf }}</small>
+                          <button type="button" class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0" (click)="openGradeModal(grade)">
+                            <i class="fas fa-edit"></i>
+                          </button>
                         </div>
                       </td>
                       <td>
-                        <span 
-                          class="badge" 
+                        <span
+                          class="badge"
                           [ngClass]="{
                             'bg-success': grade.grade === 'A+' || grade.grade === 'A',
                             'bg-primary': grade.grade === 'B',
@@ -171,10 +177,10 @@
                         </span>
                       </td>
                       <td>
-                        <input 
-                          type="text" 
-                          class="form-control" 
-                          [(ngModel)]="grade.remarks" 
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="grade.remarks"
                           placeholder="Appréciation (optionnel)"
                         >
                       </td>
@@ -182,12 +188,12 @@
                   </tbody>
                 </table>
               </div>
-              
+
               <div class="row mt-3">
                 <div class="col-12 text-end">
-                  <button 
-                    class="btn btn-primary" 
-                    (click)="saveGrades()" 
+                  <button
+                    class="btn btn-primary"
+                    (click)="saveGrades()"
                     [disabled]="isSubmitting"
                   >
                     <i class="fas fa-save" *ngIf="!isSubmitting"></i>
@@ -198,7 +204,7 @@
               </div>
             </div>
             <!-- /Grade Entry Form -->
-            
+
             <!-- Empty State -->
             <div *ngIf="!hasLoaded && !isLoading" class="row justify-content-center mt-4">
               <div class="col-md-6 text-center">
@@ -210,7 +216,7 @@
               </div>
             </div>
             <!-- /Empty State -->
-            
+
             <!-- Loading State -->
             <div *ngIf="isLoading" class="row justify-content-center mt-4">
               <div class="col-md-6 text-center">
@@ -228,4 +234,8 @@
     </div>
   </div>
 </div>
-<!-- /Page Wrapper --> 
+<!-- /Page Wrapper -->
+<app-grade-modal
+  [grade]="selectedGrade"
+  (marksUpdated)="updateMarks($event)">
+</app-grade-modal>

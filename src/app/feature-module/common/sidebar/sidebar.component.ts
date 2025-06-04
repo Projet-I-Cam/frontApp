@@ -5,7 +5,8 @@ import { DataService } from '../../../shared/data/data.service';
 import { NavigationStart, Router, Event as RouterEvent } from '@angular/router';
 import { CommonService } from '../../../shared/common/common.service';
 import { MenuItem, SubMenu, subMenus, url, sidebarData } from '../../../shared/model/sidebar.model';
-
+import { NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sidebar',
@@ -20,7 +21,7 @@ export class SidebarComponent {
   last = '';
   public expandMenu = false;
   currentUrl = '';
-
+  currentPath: any = null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public side_bar_data: any = [];
 
@@ -44,6 +45,7 @@ export class SidebarComponent {
     this.common.last.subscribe((res: string) => {
       this.last = res;
     });
+    
   }
 
   public miniSideBarMouseHover(position: string): void {
@@ -116,5 +118,13 @@ export class SidebarComponent {
   multiLevelThree() {
     this.multiLevel3 = !this.multiLevel3;
   }
-  ngOnInit() { }
+  ngOnInit() { 
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      // Code à exécuter à chaque changement de route
+      this.currentPath = this.router.url;
+      console.log('Route changée, sidebar réagit ici', this.router.url);
+    });
+  }
 }

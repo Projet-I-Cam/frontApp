@@ -27,7 +27,14 @@ import {StudentResultComponent} from './student-result/student-result.component'
 import {StudentReportCardComponent} from './student-report-card/student-report-card.component';
 import { StudentListHomeworksComponent } from './student-list-homeworks/student-list-homeworks.component'
 import { StudentInfosComponent } from './student-infos/student-infos.component';
-import { StudentSchoolComponent } from './student-school/student-school.component'
+import { StudentSchoolComponent } from './student-school/student-school.component';
+import { StudentListComponent } from './student-list/student-list.component';
+import { StudentReinscriptionComponent } from './student-reinscription/student-reinscription.component';
+import { StudentUnregisteredListComponent } from './student-unregistered-list/student-unregistered-list.component';
+import { StudentsAbscenceListComponent } from './students-abscence-list/students-abscence-list.component';
+import { StudentsBehaviourListComponent } from './students-behaviour-list/students-behaviour-list.component';
+import { AddStudentTransfertComponent } from './add-student-transfert/add-student-transfert.component'
+import { StudentTransferComponent } from './student-transfer/student-transfer.component';
 @NgModule({
   declarations: [
     MyStudentsComponent,
@@ -35,11 +42,19 @@ import { StudentSchoolComponent } from './student-school/student-school.componen
     StudentTimeTableComponent,
     StudentLeavesComponent,
     StudentFeesComponent,
-    StudentResultComponent,
     StudentReportCardComponent,
     StudentListHomeworksComponent,
     StudentInfosComponent,
     StudentSchoolComponent,
+    AddStudentComponent,
+    StudentListComponent,
+    StudentReinscriptionComponent,
+    StudentUnregisteredListComponent,
+    StudentsAbscenceListComponent,
+    StudentsBehaviourListComponent,
+    AddStudentTransfertComponent,
+    StudentTransferComponent,
+    AddStudentTransfertComponent
   ],
   imports: [
     CommonModule,
@@ -55,9 +70,9 @@ import { StudentSchoolComponent } from './student-school/student-school.componen
     MatPaginatorModule,
     MatSortModule,
     EditStudentModule,
-    AddStudentComponent,
     StudentsComponent,
     StudentGridComponent,
+    StudentResultComponent,
   ],
   providers: [
     StudentService,
@@ -72,9 +87,17 @@ import { StudentSchoolComponent } from './student-school/student-school.componen
      StudentReportCardComponent,
      StudentListHomeworksComponent,
      StudentInfosComponent,
-    StudentDetailsComponent,
-    StudentSchoolComponent,
-
+     StudentDetailsComponent,
+     StudentSchoolComponent,
+     AddStudentComponent,
+     StudentListComponent,
+     StudentReinscriptionComponent,
+     StudentUnregisteredListComponent,
+     StudentsAbscenceListComponent,
+     StudentsBehaviourListComponent,
+     AddStudentTransfertComponent,
+    StudentTransferComponent,
+    AddStudentTransfertComponent
   ]
 })
 export class StudentsModule { }

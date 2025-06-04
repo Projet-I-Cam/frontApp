@@ -49,7 +49,7 @@ import { StudentListHomeworksComponent } from '../../peoples/students/student-li
         "clockwise": false,
         "startFromZero": false,
         "lazy": true})
-  
+
   ],
   exports: [
     DashboardMainComponent,

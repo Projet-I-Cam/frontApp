@@ -12,7 +12,6 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ParentsModalComponent } from './Modals/Parents-modal.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { UiSweetalertsRoutingModule } from '../../ui-interface/base-ui/ui-sweetalerts/ui-sweetalerts-routing.module';
-import { EmailFormComponent } from '../../common/email-form/email-form.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +19,6 @@ import { EmailFormComponent } from '../../common/email-form/email-form.component
     ParentsListComponent,
     ParentGridComponent,
     ParentsModalComponent,
-    EmailFormComponent
   ],
   imports: [
     CommonModule,

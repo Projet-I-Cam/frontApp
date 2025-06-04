@@ -4,93 +4,122 @@ import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } fr
 import { Router, RouterModule } from '@angular/router';
 import Parse from 'parse';
 import { finalize } from 'rxjs/operators';
-
 import { ClassService } from '../../../../services/class.service';
 import { PersonService } from '../../../../services/person.service';
 import { StudentService } from '../../../../services/student.service';
 import { UtilsService } from '../../../../services/utilis.service';
-import { Class, Person, Student } from '../../../../shared/model/student.model';
+import { Class, Person, Student, AcademicYear } from '../../../../shared/model/student.model';
 import { routes } from '../../../../shared/routes/routes';
 import { SharedModule } from '../../../../shared/shared.module';
+import { FilterStudent, getCurrentAcademicYear, listInscriptions } from '../../../../services/statefull/genericParse';
+import { globalGet } from '../../../../services/statefull/http';
+import { LoginService } from '../../../../auth/services/login.service';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Institution } from '../../../../shared/model/institution.model';
 
 @Component({
-    selector: 'app-add-student',
-    templateUrl: './add-student.component.html',
-    styleUrl: './add-student.component.scss',
-    imports: [CommonModule, ReactiveFormsModule, RouterModule, SharedModule]
+  selector: 'app-add-student',
+  templateUrl: './add-student.component.html',
+  styleUrls: ['./add-student.component.scss'],
+  standalone: false,
 })
 export class AddStudentComponent implements OnInit {
   public routes = routes;
-  values: string[] = ['English', 'Spanish'];
-  studentForm: FormGroup;
-  formData: any[] = [];
-  values2: string[] = ['Allergy', 'Skin Allergy'];
-  values3: string[] = ['Medecine Name'];
-  bloodGroups: string[] = ['O +ve', 'O -ve', 'A +ve', 'A -ve', 'B +ve', 'B -ve', 'AB +ve', 'AB -ve'];
-  
-  // Add new properties
-  classes: Class[] = [];
+  studentForm!: FormGroup;
+  classes: any[] = [];
   sections: any = [];
   sexes: any = [];
-  parents: any = [
-    { label: 'New York', value: 'NY' },
-    { label: 'Rome', value: 'RM' },
-    { label: 'London', value: 'LDN' },
-    { label: 'Istanbul', value: 'IST' },
-    { label: 'Paris', value: 'PRS' }
-  ];
+  classRooms: any = [];
   filteredPerson: any[] = [];
   loading = false;
   isLoading = false;
   isSubmitting = false;
-  errorMessage = '';
-  
-  constructor(
-    private router: Router,
-    private fb: FormBuilder,
-    private studentService: StudentService,
-    private personService: PersonService,
-    private classService: ClassService
-  ) {
-    UtilsService.getSection().then(sections => {
-      this.sections = sections?.map((sec: any) => {
-        return {
-          label: sec?.get('name_fr'),
-          value: sec?._getId()
-        }
-      })
-    })
-    UtilsService.getGender().then(sexes => {
-      this.sexes = sexes?.map((sex: any) => {
-        return {
-          label: sex?.get('libelle_fr'),
-          value: sex?._getId()
-        }
-      })
-    })
+  errorMessage: any;;
+  academicYear: any;
+  bloodGroups: string[] = ['O +ve', 'O -ve', 'A +ve', 'A -ve', 'B +ve', 'B -ve', 'AB +ve', 'AB -ve'];
+  currentPerson: any;
+  parents: any[] = [];
+  isInitializing = true; // Tracks overall initialization status
+ loadingSections = true;
+ loadingGenders = true;
+ loadingPerson = true;
+
+constructor(
+  private router: Router,
+  private fb: FormBuilder,
+  private studentService: StudentService,
+  private personService: PersonService,
+  private classService: ClassService,
+  private loginService: LoginService,
+) {
+  // Load sections
+  UtilsService.getSection().then(sections => {
+    this.sections = sections?.map((sec: any) => ({
+      label: sec?.get('name_fr'),
+      value: sec?._getId()
+    })) || [];
+    this.loadingSections = false;
+    this.checkInitializationComplete();
+  }).catch(() => {
+    this.loadingSections = false;
+    this.checkInitializationComplete();
+  });
+
+  // Load genders
+  UtilsService.getGender().then(sexes => {
+    this.sexes = sexes?.map((sex: any) => ({
+      label: sex?.get('libelle_fr'),
+      value: sex?._getId()
+    })) || [];
+    this.loadingGenders = false;
+    this.checkInitializationComplete();
+  }).catch(() => {
+    this.loadingGenders = false;
+    this.checkInitializationComplete();
+  });
+
+  // Load current person
+  this.loginService.getPerson().then(person => {
+    this.currentPerson = person;
+    console.log('currentInstitution', this.currentPerson?.institution.objectId);
+    this.loadingPerson = false;
+    this.checkInitializationComplete();
+  }).catch(() => {
+    this.loadingPerson = false;
+    this.checkInitializationComplete();
+  });
+}
+
+// Helper method to check if all data is loaded
+private checkInitializationComplete() {
+  this.isInitializing = this.loadingSections || this.loadingGenders || this.loadingPerson;
+}
+
+  async ngOnInit() {
+    this.initializeForm();
+    this.academicYear = await getCurrentAcademicYear();
+    this.studentForm.get('academicYear')?.patchValue(this.academicYear?.objectId || '');
+    this.generateRegistrationNumber();
+    this.setupFormListeners();
+  }
+
+  initializeForm() {
     this.studentForm = this.fb.group({
-      // Person information
+      academicYear: [{ value: '', disabled: true }, [Validators.required]],
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       gender: ['', [Validators.required]],
       dateOfBirth: ['', [Validators.required]],
       section: ['', [Validators.required]],
-      academicYear: [''],
       admissionDate: [''],
       classroom: [''],
-      placeOfBirth: [''],
+      class: [''],
+      placeOfBirth: ['',[Validators.required]],
       photo: [null],
       email: [''],
       phoneNumber: ['', [Validators.required]],
       address: [''],
       status: ['Active', [Validators.required]],
-      
-      // Student information
-      // registrationNumber: ['', [Validators.required]],
-      // joinDate: ['', [Validators.required]],
-      // classId: ['', [Validators.required]],
-      
-      // Additional information
       bloodGroup: [''],
       religion: [''],
       nationality: [''],
@@ -98,83 +127,102 @@ export class AddStudentComponent implements OnInit {
       state: [''],
       country: [''],
       zipCode: [''],
-      
-      // Academic information
       previousSchool: [''],
       previousSchoolAddress: [''],
       transferCertificateNumber: [''],
       transferDate: [''],
-      
-      // Medical information
       medicalConditions: [''],
       allergies: this.fb.array([]),
       medications: this.fb.array([]),
       emergencyContactName: [''],
       emergencyContactPhone: [''],
       emergencyContactRelation: [''],
-      
-      // Parent/Guardian information
-      // parentGuardianInfo: ['']
-      parentGuardianInfo: this.fb.array([this.createParentGroup()])
+      parentGuardianInfo: this.fb.array([this.createParentGroup()]),
+      registrationNumber: ['']
     });
   }
 
-  async searchParent(event: any) {
-    const query = event.filter;
-    if (query?.length < 2) {
-      this.filteredPerson = [];
-      return;
-    }
-    this.loading = true;
-    console.log('query query ', query)
-    const resp = await this.personService.searchParentByKeyword(query.toLowerCase())
-    console.log('RESP ', resp)
-    this.filteredPerson = resp
-    this.loading = false;
-  }
+  async getClasses() {
+    const sectionId = this.studentForm.get('section')?.value;
+    if (!sectionId) return;
 
-  ngOnInit(): void {
-    // Generate a registration number
-    this.generateRegistrationNumber();
-    
-    // Load active classes
-    this.loadClasses();
-  }
-  
-  loadClasses(): void {
-    this.isLoading = true;
-    this.classService.getActiveClasses()
-      .pipe(
-        finalize(() => {
-          this.isLoading = false;
-        })
-      )
-      .subscribe(
-        (classes) => {
-          this.classes = classes; 
-        },
-        (error) => {
-          console.error('Error loading classes:', error);
-          this.errorMessage = 'Failed to load classes. Please try again.';
+    try {
+      const res: any = await globalGet({
+        T: 'Classe',
+        filters: {
+          section: { className: 'Section', objectId: sectionId }
         }
-      );
+      });
+      this.classes = res || [];
+      console.log('Classes loaded:', this.classes);
+    } catch (error) {
+      console.error('Error loading classes:', error);
+      this.classes = [];
+    }
   }
 
+  async getClassRooms() {
+    const classId = this.studentForm.get('class')?.value;
+    const institutionId = this.currentPerson?.institution?.objectId;
+
+    // if (!classId || !institutionId) return;
+
+    try {
+      const res: any = await globalGet({
+        T: 'Classroom',
+        filters: {
+          classe: { className: 'Classe', objectId: classId },
+          // institution: { className: 'Institution', objectId: institutionId }
+        },
+        selects: ['objectId', 'name_fr', 'name_en']
+      });
+      this.classRooms = res || [];
+      console.log('Classrooms loaded:', this.classRooms);
+    } catch (error) {
+      console.error('Error loading classrooms:', error);
+      this.classRooms = [];
+    }
+  }
+
+  setupFormListeners() {
+    // With 300ms debounce to prevent rapid changes
+    this.studentForm.get('section')?.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    ).subscribe(sectionId => {
+      if (sectionId) {
+        this.getClasses();
+      } else {
+        this.classes = [];
+        this.studentForm.get('class')?.reset();
+      }
+    });
+
+    this.studentForm.get('class')?.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    ).subscribe(classId => {
+      if (classId) {
+        this.getClassRooms();
+      } else {
+        this.classRooms = [];
+      }
+    });
+  }
   generateRegistrationNumber(): void {
     const date = new Date();
     const year = date.getFullYear().toString().substr(-2);
     const randomID = Math.floor(1000 + Math.random() * 9000);
-    this.studentForm.get('registrationNumber')?.setValue(`ST-${year}-${randomID}`);
+    this.studentForm.patchValue({
+      registrationNumber: `ST-${year}-${randomID}`
+    });
   }
 
   createParentGroup(): FormGroup {
     const form = this.fb.group({
-      // relation: ['', [Validators.required]],
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       gender: ['', [Validators.required]],
-      // occupation: [''],
-      // education: [''],
       email: [''],
       fatherObjectId: [''],
       LinkExistedParent: [false],
@@ -184,36 +232,20 @@ export class AddStudentComponent implements OnInit {
     });
 
     form.get('LinkExistedParent')?.valueChanges.subscribe(linked => {
-      const firstName = form.get('firstName');
-      const lastName = form.get('lastName');
-      const gender = form.get('gender');
-      const phoneNumber = form.get('phoneNumber');
-      const fatherObjectId = form.get('fatherObjectId');
-
-      // fullName is required only if NOT a company
-      if (!linked) {
-        firstName?.setValidators([Validators.required]);
-        lastName?.setValidators([Validators.required]);
-        phoneNumber?.setValidators([Validators.required]);
-        gender?.setValidators([Validators.required]);
-        fatherObjectId?.clearValidators();
-      } else {
-        fatherObjectId?.setValidators([Validators.required]);
-        firstName?.clearValidators();
-        lastName?.clearValidators();
-        phoneNumber?.clearValidators();
-        gender?.clearValidators();
-      }
-      fatherObjectId?.updateValueAndValidity();
-      firstName?.updateValueAndValidity();
-      lastName?.updateValueAndValidity();
-      phoneNumber?.updateValueAndValidity();
-      gender?.updateValueAndValidity();
+      const controls = ['firstName', 'lastName', 'phoneNumber', 'gender'];
+      controls.forEach(control => {
+        const ctrl = form.get(control);
+        linked ? ctrl?.clearValidators() : ctrl?.setValidators([Validators.required]);
+        ctrl?.updateValueAndValidity();
+      });
+      form.get('fatherObjectId')?.[linked ? 'setValidators' : 'clearValidators']([Validators.required]);
+      form.get('fatherObjectId')?.updateValueAndValidity();
     });
 
-    return form
+    return form;
   }
 
+  // Form array getters
   get allergiesArray(): FormArray {
     return this.studentForm.get('allergies') as FormArray;
   }
@@ -226,6 +258,7 @@ export class AddStudentComponent implements OnInit {
     return this.studentForm.get('parentGuardianInfo') as FormArray;
   }
 
+  // Array manipulation methods
   addAllergy(): void {
     this.allergiesArray.push(this.fb.control(''));
   }
@@ -254,139 +287,124 @@ export class AddStudentComponent implements OnInit {
     }
   }
 
-  public onFileSelect(event: any) {
-    console.log('Changed')
-    const file: File = event.target.files[0];
-    if (file) {
+  public onFileSelect(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length) {
       this.studentForm.patchValue({
-        photo: file
+        photo: input.files[0]
       });
     }
   }
 
-  public async onSubmit() {
-     console.log('Submited', this.studentForm.valid, this.studentForm.value)
-    if (this.studentForm.valid) {
-      this.isSubmitting = true;
-      this.errorMessage = '';
-      
-      // Extract form values
-      const formValues = this.studentForm.value;
-      
-      const parentGuardianInfo = formValues?.parentGuardianInfo
-      const parents = await this.personService.createSimpleParent(parentGuardianInfo)
-      console.log(' parents parents ', parents)
-      // Create person data
-      const personData: Partial<Person> = {
-        firstName: formValues.firstName,
-        lastName: formValues.lastName,
-        gender: formValues.gender,
-        dateOfBirth: formValues.dateOfBirth,
-        placeOfBirth: formValues.placeOfBirth,
-        email: formValues.email,
-        phone: formValues.phoneNumber,
-        section: formValues.section,
-        address: formValues.address,
-        photo: formValues.photo,
-        isStudent: true,
-        parents: parents,
-        registrationNumber: UtilsService.getStudentMatricule(),
-        // registrationNumber: UtilsService.getStudentMatricule(),
-        classroom: formValues.classroom,
-        roleId: null
-      };
-      
-      // First create the person
-      this.personService.createPerson(personData)
-        .pipe(
-          finalize(() => {
-            this.isSubmitting = false;
-          })
-        )
-        .subscribe(
-          (person) => {
-            console.log('Person created here ', person)
-            this.router.navigate([routes.studentsList]);
-            // Now create the student with the person reference
-            // const studentData: any = {
-            //   registrationNumber: formValues.registrationNumber,
-            //   status: formValues.status,
-            //   joinDate: formValues.joinDate,
-            //   additionalInfo: JSON.stringify({
-            //     bloodGroup: formValues.bloodGroup,
-            //     religion: formValues.religion,
-            //     nationality: formValues.nationality,
-            //     academicInfo: {
-            //       previousSchool: formValues.previousSchool,
-            //       previousSchoolAddress: formValues.previousSchoolAddress,
-            //       transferCertificateNumber: formValues.transferCertificateNumber,
-            //       transferDate: formValues.transferDate
-            //     },
-            //     medicalInfo: {
-            //       medicalConditions: formValues.medicalConditions,
-            //       allergies: formValues.allergies,
-            //       medications: formValues.medications,
-            //       emergencyContact: {
-            //         name: formValues.emergencyContactName,
-            //         phone: formValues.emergencyContactPhone,
-            //         relation: formValues.emergencyContactRelation
-            //       }
-            //     },
-            //     parentGuardianInfo: formValues.parentGuardianInfo
-            //   }),
-            //   person: {
-            //     objectId: person.id
-            //   }
-            // };
-            
-            // // Add class reference if selected
-            // if (formValues.classId) {
-            //   studentData.class = {
-            //     objectId: formValues.classId
-            //   };
-            // }
-            
-            // Create the sother specific data to student here
-            // this.studentService.createStudent(studentData)
-            //   .subscribe(
-            //     (student) => {
-            //       console.log('Student created successfully:', student);
-            //       this.router.navigate([routes.studentsList]);
-            //     },
-            //     (error) => {
-            //       console.error('Error creating student:', error);
-            //       this.errorMessage = 'Failed to create student. Please try again.';
-            //     }
-            //   );
-          },
-          (error) => {
-            console.error('Error creating person:', error);
-            this.errorMessage = 'Failed to create person. Please try again.';
-          }
-        );
-    } else {
-      this.markFormGroupTouched(this.studentForm);
+  async searchParent(event: any): Promise<void> {
+    const query = event?.filter || '';
+    if (query.length < 2) {
+      this.filteredPerson = [];
+      return;
+    }
+    this.loading = true;
+    try {
+      const resp = await this.personService.searchParentByKeyword(query.toLowerCase());
+      this.filteredPerson = resp || [];
+    } catch (error) {
+      console.error('Error searching parents:', error);
+      this.filteredPerson = [];
+    } finally {
+      this.loading = false;
     }
   }
 
-  private markFormGroupTouched(formGroup: FormGroup): void {
-    Object.keys(formGroup.controls).forEach(key => {
-      const control = formGroup.get(key);
-      control?.markAsTouched();
-      if (control instanceof FormGroup) {
+ public async onSubmit(): Promise<void> {
+  this.markFormGroupTouched(this.studentForm);
+
+  if (this.studentForm.invalid || this.isSubmitting) {
+    return;
+  }
+
+  this.isSubmitting = true;
+  this.errorMessage = '';
+
+  try {
+    const formValues = this.studentForm.getRawValue();
+
+    // Create parents first
+    if(!this.parents ){
+        try {
+      this.parents = await this.personService.createSimpleParent(formValues.parentGuardianInfo);
+    } catch (parentError) {
+      this.errorMessage = parentError;
+      console.error('Error creating parents:', parentError);
+      this.loading = false;
+      this.errorMessage = 'Erreur lors de la création des parents. Veuillez vérifier les informations.';
+      return;
+    }
+
+    }
+
+    const personData: Partial<Person> = {
+      firstName: formValues.firstName,
+      lastName: formValues.lastName,
+      gender: formValues.gender,
+      dateOfBirth: formValues.dateOfBirth,
+      placeOfBirth: formValues.placeOfBirth,
+      email: formValues.email,
+      phone: formValues.phoneNumber,
+      section: formValues.section,
+      address: formValues.address,
+      photo: formValues.photo,
+      isStudent: true,
+      parents: this.parents,
+      registrationNumber: UtilsService.getStudentMatricule(),
+      classroom: formValues.classroom,
+      roleId: null,
+      academicYear: formValues.academicYear,
+      class: formValues.class,
+      admissionDate: formValues.admissionDate,
+      status: formValues.status,
+      institution: this.currentPerson?.institution?.objectId,
+    };
+
+    this.personService.createPerson(personData).subscribe({
+      next: () => {
+        this.router.navigate([routes.studentsList]);
+      },
+      error: (error) => {
+        console.error('Error creating person:', error);
+        this.errorMessage = error
+        this.isSubmitting = false;
+
+        // More specific error messages based on error type
+        // if (error.code === 202) { // Username already taken
+        //   this.errorMessage = 'Cette adresse email ou numéro de téléphone est déjà utilisée.';
+        // } else if (error.code === 203) { // Email already taken
+        //   this.errorMessage = 'Cette adresse email est déjà utilisée.';
+        // } else if (error.code === 125) { // Invalid email
+        //   this.errorMessage = 'Adresse email invalide.';
+        // } else {
+        //   this.errorMessage = 'Une erreur est survenue lors de l\'enregistrement. Veuillez réessayer.';
+        // }
+      },
+      complete: () => {
+        this.isSubmitting = false;
+      }
+    });
+  } catch (error) {
+    console.error('Unexpected error:', error);
+    this.errorMessage = 'Une erreur inattendue est survenue. Veuillez contacter l\'administrateur.';
+    this.isSubmitting = false;
+  }
+}
+
+  private markFormGroupTouched(formGroup: FormGroup | FormArray): void {
+    Object.values(formGroup.controls).forEach(control => {
+      control.markAsTouched();
+
+      if (control instanceof FormGroup || control instanceof FormArray) {
         this.markFormGroupTouched(control);
-      }else if (control instanceof FormArray) {
-        control.controls.forEach((ctrl) => {
-          ctrl.markAsTouched(); // Marquer chaque contrôle dans le FormArray comme touché
-          if (ctrl instanceof FormGroup) {
-            this.markFormGroupTouched(ctrl); // Appel récursif pour les FormGroup dans le FormArray
-          }
-        });
       }
     });
   }
 
-  // Helper method to get a class by ID
   getClassById(classId: string): Class | undefined {
     return this.classes.find(c => c.id === classId);
   }
