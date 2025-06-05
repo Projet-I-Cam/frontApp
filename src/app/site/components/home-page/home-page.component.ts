@@ -100,30 +100,28 @@ export class HomePageComponent {
 
   testimonials = [
     {
-      name: 'Marie Dubois',
+      name: 'MBOUOMBO Thérèse',
       position: 'Directrice d\'école primaire',
       text: 'Cette application a révolutionné notre gestion scolaire. Le suivi des élèves, les communications avec les parents et la gestion administrative sont maintenant centralisés et simplifiés.',
-      avatar: 'https://randomuser.me/api/portraits/women/44.jpg'
+      avatar: 'https://randomuser.me/api/portraits/women/69.jpg'
     },
     {
-      name: 'Jean Martin',
+      name: 'CHAHI Thomas',
       position: 'Enseignant CE2',
       text: 'La plateforme est intuitive et complète. Je peux facilement gérer mes cahiers de texte, évaluer les élèves et communiquer avec les parents, le tout depuis un seul outil.',
-      avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
+      avatar: 'https://randomuser.me/api/portraits/men/54.jpg'
     },
     {
-      name: 'Sophie Lambert',
+      name: 'ATATA Sophie',
       position: 'Présidente d\'association de parents',
       text: 'En tant que parent, j\'apprécie particulièrement la transparence et les fonctionnalités de suivi. Je peux voir les progrès de mon enfant et communiquer facilement avec les enseignants.',
-      avatar: 'https://randomuser.me/api/portraits/women/68.jpg'
+      avatar: 'https://randomuser.me/api/portraits/women/16.jpg'
     },
     {
-      name: 'Thomas Roux',
+      name: 'TAPIGUE Delphin',
       position: 'Responsable périscolaire',
       text: 'La gestion des activités périscolaires est devenue beaucoup plus simple. Nous pouvons coordonner nos plannings avec ceux des enseignants et avoir une vision globale des emplois du temps.',
-      avatar: 'https://randomuser.me/api/portraits/men/75.jpg'
+      avatar: 'https://randomuser.me/api/portraits/men/80.jpg'
     }
   ]
-
-
 }
