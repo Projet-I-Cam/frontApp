@@ -188,8 +188,8 @@ export class ReportCardComponent implements OnInit {
   evaluationTypes = [
     { label: 'Orale', value: 'Orale', points: 12 },
     { label: 'Écrite', value: 'Écrite', points: 15 },
-    { label: 'Savoir-être', value: 'Savoir-être', points: 3 },
-    { label: 'Pratique', value: 'Pratique', points: 6 }
+    { label: 'Pratique', value: 'Pratique', points: 6 },
+    { label: 'Savoir-être', value: 'Savoir-être', points: 3 }
   ];
 
 
@@ -249,7 +249,7 @@ export class ReportCardComponent implements OnInit {
                 ],
               },
               {
-                name: 'TRIMESTRE',
+                name: "TRIMESTRE",
                 evaluations: [
                   { type: 'Orale', points: 12, note: 10, cote: 'B' },
                   { type: 'Écrite', points: 15, note: 13, cote: 'A' },
@@ -1049,6 +1049,20 @@ export class ReportCardComponent implements OnInit {
     const index = Math.floor(Math.random() * cotes.length);
     return cotes[index];
   }
+
+  filteredEvaluationTypes(mod: any): any[] {
+    return this.evaluationTypes.filter(type => this.hasData(mod.unites, type));
+  }
+
+  hasData(unites: any[], type: any): boolean {
+    return unites.some(ua => {
+      const note = this.getEvaluationNote(ua.evaluations, type.value);
+      const cote = this.getEvaluationCote(ua.evaluations, type.value);
+      return (note !== null && note !== '') || (cote !== null && cote !== '');
+    });
+  }
+
+
 
 
 }
