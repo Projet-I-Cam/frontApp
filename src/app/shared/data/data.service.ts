@@ -442,12 +442,20 @@ export class DataService {
     }
   }
 
-  public async getClassRoomList(): Promise<apiResultFormat> {
-
+  public async getClassRoomList(institution? : any): Promise<apiResultFormat> {
+    const filters: any = {}
+    console.log('institution institution institution ', institution)
+    if(institution){
+      filters.institution = {
+        objectId: institution?.objectId,
+        className: "Institution"
+      }
+    }
+    console.log('institution institution institution ', institution, filters.institution)
     const data: any = await globalGet({
       T: 'Classroom',
-      filters: {},
-      includes: [],
+      filters: filters,
+      includes: ['classe', 'teacherChief', 'teacherSecond', 'institution'],
       curentPage: 1,
       size: undefined,
     });

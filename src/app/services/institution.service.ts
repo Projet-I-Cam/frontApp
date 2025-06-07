@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as Parse from 'parse';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { globalPost } from './statefull/http';
+import { globalPost, globalPut } from './statefull/http';
 
 @Injectable({
   providedIn: 'root'
@@ -153,6 +153,16 @@ export class InstitutionService {
         console.log('Here owners final saving')
         institution.set('owner', ownnerClass)
         await institution.save()
+        await globalPut({
+          T: 'Person',
+          dataObject: {
+            institution: {
+              className: "Institution",
+              objectId: institution?.id
+            }
+          },
+          objectId: ownnerClass?.objectId || ownnerClass?.id
+        })
       }
     });
     return from(institution.save()).pipe(

@@ -6,7 +6,7 @@ import { globalPost, globalGet, globalPut, globalDelete } from '../../../service
 import { Validators } from 'ngx-editor';
 import { pageSelection, PaginationService, tablePageSize } from '../../../shared/custom-pagination/pagination.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { DataService } from '../../../shared/data/data.service';
+import { DataService } from '../../../shared/data/data.service';  
 import { UtilsService } from '../../../services/utilis.service';
 import { AuthService } from '../../../services/auth.service';
 import { AlertService } from '../../../services/alertService';
@@ -47,6 +47,7 @@ export class ClassroomComponent implements OnInit {
   currentPerson : any = {};
 
   sections : any[] = []; // Liste des différentes sections existantes
+  classes : any[] = []; // Liste des différentes sections existantes
   selectedSection : any; // représente la section sélectionné
 
   teachers : any[] = []; // Représente la liste des enseignants de l'etablissement
@@ -77,15 +78,19 @@ export class ClassroomComponent implements OnInit {
      this.isSubmited = false;
     /*
      this.currentUser = this.loginService.getUser();
-     this.currentPerson = this.loginService.getPerson();
-    */
-     this.academicYears = await globalGet({T: 'AcademicYear'});
-     this.selectedYear = 'dsiw02koq7'; //await getCurrentAcademicYear(); // A recupérer de façon dynamique
+     */
+    this.academicYears = await globalGet({T: 'AcademicYear'});
+    this.classes = await globalGet({T: 'Classe'});
+    this.selectedYear = 'dsiw02koq7'; //await getCurrentAcademicYear(); // A recupérer de façon dynamique
     
-     this.load = true;
-     this.loadData();
-     this.loadSections();
-     this.loadTeachers();
+    this.load = true;
+    this.loadSections();
+    this.loadTeachers();
+    this.loginService.getPerson().then((p: any) => {
+      this.loadData(p);
+      this.currentPerson = p
+    });
+    console.log('this.currentPerson this.currentPerson ', this.currentPerson)
    }
 
  // Permet de lister les rôles ayant l'accès en modification sur un devoir.
@@ -108,7 +113,9 @@ export class ClassroomComponent implements OnInit {
   async loadTeachers() : Promise<void> {
     try { 
         this.teachers = await globalGet({
-          T: "Person"
+          T: "Person",
+          filters: {
+          }
         });
         console.log('chargement liste des enseignants : ', this.teachers);
      } catch (error) {
@@ -116,13 +123,14 @@ export class ClassroomComponent implements OnInit {
       }
   }
 
-  private async loadData(): Promise<void> {
+  private async loadData(p: any): Promise<void> {
       try {
-        const apiRes: apiResultFormat = await this.data.getClassRoomList();
-        this.actualData = apiRes.data;
+        console.log('p p p p p ', p)
+        const apiRes: apiResultFormat = await this.data.getClassRoomList(p?.institution);
+        this.actualData = apiRes.data //?.filter((classe: any) => classe.institution?.objectId === p?.institution?.objectId);
         this.pagination.tablePageSize.subscribe((res: tablePageSize) => {
           if (this.router.url === this.routes.classRoom) {
-            this.getTableData({ skip: res.skip, limit: res.limit });
+            this.getTableData({ skip: res.skip, limit: res.limit }, p);
             this.pageSize = res.pageSize;
           }
         });
@@ -131,8 +139,8 @@ export class ClassroomComponent implements OnInit {
       }
     }
 
-    getTableData(pageOption: pageSelection): void {
-      this.data.getClassRoomList().then((apiRes: any) => {
+    getTableData(pageOption: pageSelection, p: any): void {
+      this.data.getClassRoomList(p?.institution).then((apiRes: any) => {
         this.load = false;
         this.tableData = [];
         this.tableDataCopy = [];
@@ -239,7 +247,7 @@ export class ClassroomComponent implements OnInit {
 
        async save(): Promise<void> {
         this.isSubmited = true;
-        if(!this.entity.slug?.trim() || !this.entity.name_fr.trim() || !this.entity.name_en.trim()){
+        if(!this.entity.name_fr.trim() ){
           this.alertService.showError("Veuilez remplir tous les champs");
           this.isSubmited = false;
           return;
@@ -249,7 +257,7 @@ export class ClassroomComponent implements OnInit {
         const data : any =  {
           slug: this.entity.slug,
           name_fr: this.entity.name_fr,
-          name_en: this.entity.name_en,
+          name_en: this.entity.name_fr,
           maxCapacity: this.entity.maxCapacity,
           isActive: this.entity.isActive,
           
@@ -278,10 +286,14 @@ export class ClassroomComponent implements OnInit {
                   objectId: this.selectedTeacherSecond
                  },
 
-                 section : { 
-                  className: "Section", 
+                 classe : { 
+                  className: "Classe", 
                   objectId: this.selectedSection
                  },
+                 institution: {
+                  className: "Institution", 
+                  objectId: this.currentPerson?.institution?.objectId
+                 }
               }
             });
 
