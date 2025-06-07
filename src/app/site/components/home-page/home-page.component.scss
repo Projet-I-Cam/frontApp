@@ -1,3 +1,72 @@
+#fhome{
+  margin-bottom: 2%;
+}
+#fhome table {
+  width: 100%;
+}
+
+.td_Bdesc_fhome{
+  width: 40%;
+}
+
+.Bdesc_fhome{
+  float: left;
+  text-align: center;
+  vertical-align: middle;
+  text-shadow: 5px 5px 5px white;
+  color: black;
+  width: 100%;
+}
+
+.desc_fhome{
+  font-size: 2.5em;
+  font-weight: bold;
+}
+
+.Bimg_fhome{
+  width: 100%;
+  display: block;
+}
+
+.Bimg_fhome img{
+  width: 32%;
+  height: 400px;
+  margin-left: 0.7%;
+  float: inline-start;
+  border-radius: 5%;
+}
+
+.fade-image {
+  transition: opacity 1.5s ease-in-out;
+  opacity: 1;
+}
+
+.Bimg_fhome .student{
+  margin-top: 10%;
+}
+
+.Bimg_fhome .teacher {
+  margin-top: 6%;
+}
+
+.Bimg_fhome .father {
+  margin-top: 1%;
+}
+
+.etsPartner {
+  position:relative;
+  top:-80px;
+  left:5%;
+  display: inline-block;
+  width: 90%;
+  padding: 2%;
+  background-color: rgb(1, 110, 50);
+  text-align: center;
+  font-weight: bold;
+  font-size: 2em;
+  border-radius: 5px;
+  color:white;
+}
 
 .lead {
   color: #aaa;

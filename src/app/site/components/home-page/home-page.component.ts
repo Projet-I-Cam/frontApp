@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home-page',
@@ -6,7 +7,64 @@ import { Component } from '@angular/core';
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss'
 })
-export class HomePageComponent {
+export class HomePageComponent implements OnInit {
+ imageSets = [
+    {
+      student: './assets/img/home/student.png',
+      teacher: './assets/img/home/teacher.png',
+      father: './assets/img/home/father.png'
+    },
+    {
+      student: './assets/img/home/teacher.png',
+      teacher: './assets/img/home/father.png',
+      father: './assets/img/home/student.png'
+    },
+    // Ajoutez d'autres sets d'images si nécessaire
+  ];
+
+  currentSetIndex = 0;
+  activeImages = this.imageSets[0];
+  private subscription: Subscription = new Subscription();
+
+  ngOnInit() {
+    /*
+    // Change le set complet toutes les 10s
+    const mainTimer$ = interval(10000);
+    
+    this.subscription = mainTimer$.subscribe(() => {
+      this.currentSetIndex = (this.currentSetIndex + 1) % this.imageSets.length;
+      
+      // Change student après 5s
+      setTimeout(() => {
+        this.activeImages = {
+          ...this.activeImages,
+          student: this.imageSets[this.currentSetIndex].student
+        };
+      }, 5000);
+      
+      // Change teacher après 10s
+      setTimeout(() => {
+        this.activeImages = {
+          ...this.activeImages,
+          teacher: this.imageSets[this.currentSetIndex].teacher
+        };
+      }, 10000);
+      
+      // Change father après 15s (mais le cycle recommence avant)
+      setTimeout(() => {
+        this.activeImages = {
+          ...this.activeImages,
+          father: this.imageSets[this.currentSetIndex].father
+        };
+      }, 15000);
+    });
+    */
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
   usages = [
     {
       'icon': 'fa fa-building',
