@@ -1,0 +1,39 @@
+.student-table {
+  width: 100%;
+  border: 1px solid #dee2e6;
+  font-size: 0.9rem;
+}
+.student-table td, .student-table th {
+  border: 1px solid #dee2e6;
+  padding: 6px;
+  vertical-align: top;
+}
+.photo-cell {
+  width: 90px;
+  height: 100px;
+  text-align: center;
+  background-color: #ccc;
+  font-size: 0.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.no-print {
+  margin-bottom: 20px;
+}
+@media print {
+  .no-print {
+    display: none;
+  }
+}
+
+.table-inner {
+  margin: 0;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table-inner td, .table-inner th {
+  border: 1px solid #dee2e6;
+  padding: 4px 6px;
+}

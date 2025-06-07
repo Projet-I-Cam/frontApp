@@ -1,7 +1,7 @@
 		<!-- Page Wrapper -->
 		<div class="page-wrapper">
 			<div class="content content-two">
-				
+
 				<!-- Page Header -->
 				<div class="d-md-flex d-block align-items-center justify-content-between mb-3">
 					<div class="my-auto mb-2">
@@ -19,18 +19,18 @@
                       	</nav>
                     </div>
                     <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
-                        <app-tooltip-content></app-tooltip-content>                 
+                        <app-tooltip-content></app-tooltip-content>
                       	<div class="mb-2">
 							<a [routerLink]="routes.addStudent" class="btn btn-primary d-flex align-items-center"><i class="ti ti-square-rounded-plus me-2"></i>Ajouter un Élève</a>
                       	</div>
                     </div>
                 </div>
 				<!-- /Page Header -->
-				
+
 				<!-- Filter -->
 				<div class="bg-white p-3 border rounded-1 d-flex align-items-center justify-content-between flex-wrap mb-4 pb-0">
 					<h4 class="mb-3">Grille des Élèves</h4>
-					<div class="d-flex align-items-center flex-wrap">		
+					<div class="d-flex align-items-center flex-wrap">
 						<div class="input-icon-start mb-3 me-2 position-relative">
 							<!-- <app-date-range-picker></app-date-range-picker> -->
 						</div>
@@ -46,7 +46,7 @@
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Classe</label>
-                                                 
+
                                                     <select class="form-select" [(ngModel)]="selectedClasse" name="classe">
                                                         <option value="">Sélectionner</option>
                                                         <option *ngFor="let item of classes" [value]="item.objectId" >{{ item?.name_fr }}</option>
@@ -56,31 +56,31 @@
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Section</label>
-                                                   
+
                                                     <select class="form-select" [(ngModel)]="selectedSection" name="section">
                                                         <option value="">Sélectionner</option>
                                                         <option *ngFor="let item of sections" [value]="item.objectId">{{item.name_fr}}</option>
-    
+
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Genre</label>
-                                                   
+
                                                     <select class="form-select" [(ngModel)]="selectedGender" name="gender">
                                                         <option value="">Sélectionner</option>
-                                                        <option  *ngFor="let item of genders" [value]="item.objectId">{{item.libelle_fr}}</option>    
+                                                        <option  *ngFor="let item of genders" [value]="item.objectId">{{item.libelle_fr}}</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Statut</label>
-                                                 
+
 													<select class="form-select" [(ngModel)]="selectedStatut" name="statut">
                                                         <option value="">Sélectionner</option>
-                                                        <option  *ngFor="let s of statuts" [value]="s.value">{{s.item}}</option>    
+                                                        <option  *ngFor="let s of statuts" [value]="s.value">{{s.item}}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -90,7 +90,7 @@
 										<a href="javascript:void(0);" class="btn btn-light me-3" (click)="resetFilters()">Réinitialiser</a>
 										<button type="button" (click)="handleApplyClick()" class="btn btn-primary">Appliquer</button>
 									</div>
-								</form>									
+								</form>
 							</div>
 						</div>
 						<div class="d-flex align-items-center bg-white border rounded-2 p-1 mb-3 me-2">
@@ -122,11 +122,165 @@
 								</li>
 							</ul>
 						</div>
-					</div>	
+					</div>
+          <!-- Bouton imprimer -->
+          <div class="no-print text-end">
+            <button class="btn btn-primary" (click)="printListStudent()">🖨️ Imprimer</button>
+          </div>
 				</div>
 				<!-- /Filter -->
 
-				<div class="row">
+        <div id="list-student-content"  class="row">
+
+          <!-- En-tête -->
+          <div class="row text-center mb-1">
+            <div class="col-md-6 text-start fs-10">
+              <div class="text-center">
+                <strong>MINISTERE DE L’ÉDUCATION DE BASE</strong><br>
+                ************<br>
+                DELEGATION REGIONALE DU CENTRE<br>
+                ************<br>
+                DELEGATION DEPARTEMENTALE DU MFOUNDI<br>
+                ************<br>
+                INSPECTION D’ARRONDISSEMENT DE YAOUNDE 3EME<br>
+                ************
+              </div>
+            </div>
+            <div class="col-md-6 text-end fs-10">
+              <div class="text-center">
+                <strong>REPUBLIQUE DU CAMEROUN</strong><br>
+                Paix - Travail - Patrie<br>
+                ************
+              </div>
+            </div>
+          </div>
+
+          <!-- Informations classe -->
+          <div class="text-center mb-2">
+            <div class="border rounded p-2 mb-1 bg-light">
+              <h5 class="fw-bold text-uppercase mb-0">Liste Provisoire des Élèves</h5>
+            </div>
+            <span><strong>{{ academicName }}</strong></span><br>
+            <span><strong>Classe : CM2</strong> | Année scolaire : 2024–2025</span>
+          </div>
+
+          <!-- Cartes élèves -->
+          <div class="row">
+            <!-- Exemple avec 4 élèves, à dupliquer ou générer dynamiquement -->
+            <!-- Élève 1 -->
+            <div class="col-md-6 mb-4" *ngFor="let student of students; let modIndex = index">
+              <table class="table table-bordered align-middle text-center">
+                <thead class="table-secondary">
+                <tr>
+                  <th style="width: 5%;">N°</th>
+                  <th style="width: 15%;">PHOTO</th>
+                  <th class="d-flex align-items-center justify-content-between">
+                    <span>NOMS ET PRENOMS</span>
+                    <div class="dropdown ms-2">
+                      <a href="javascript:void(0);" class="btn btn-white btn-icon btn-sm d-flex align-items-center justify-content-center rounded-circle p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="ti ti-dots-vertical fs-14"></i>
+                      </a>
+                      <ul class="dropdown-menu dropdown-menu-end p-3">
+                        <li>
+                          <a class="dropdown-item rounded-1" href="javascript:void(0);" (click)="viewDetails(student.person.objectId)">
+                            <i class="ti ti-menu me-2"></i>Voir l'Élève
+                          </a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item rounded-1" [routerLink]="routes.editStudent">
+                            <i class="ti ti-edit-circle me-2"></i>Modifier
+                          </a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item rounded-1" [routerLink]="routes.studentPromotion">
+                            <i class="ti ti-arrow-ramp-right-2 me-2"></i>Promouvoir l'Élève
+                          </a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item rounded-1" href="javascript:void(0);" (click)="deleteStudent(student.id)">
+                            <i class="ti ti-trash-x me-2"></i>Supprimer
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <!-- Colonne 1 -->
+                  <td rowspan="4">{{modIndex + 1}}</td>
+
+                  <!-- Colonne 2 -->
+                  <td rowspan="4" style="background-color: #ccc; height: 100px;">
+                    <a href="javascript:void(0);" (click)="viewDetails(student.person.objectId)" class="avatar avatar-lg flex-shrink-0">
+                      <img [src]="student?.person?.photo?.url || 'assets/img/profiles/avatar-01.jpg'" class="img-fluid rounded-circle" alt="img">
+                    </a>
+                  </td>
+
+                  <!-- Colonne 3 : Ligne 1 (Nom complet) -->
+                  <td class="text-start fw-bold fst-italic">
+                    <a href="javascript:void(0);" (click)="viewDetails(student.id)">
+                    {{ student?.person?.firstName }} {{ student?.person?.lastName }}
+                    </a>
+                  </td>
+                </tr>
+
+                <!-- Ligne 2 : Né(e) le / Lieu -->
+                <tr>
+                  <td class="p-0">
+                    <table class="table-inner">
+                      <tr>
+                        <td class="text-start" style="width: 50%;"><strong>Né(e) le :</strong></td>
+                        <td class="text-center fst-italic fw-bold">A</td>
+                      </tr>
+                      <tr>
+                        <td class="text-start" style="width: 50%;"><span class="fst-italic fw-bold">
+                          {{ student?.person?.birthDate ?
+                          (student?.person?.birthDate.iso | date: 'dd MMM yyyy') : 'Non disponible' }}</span></td>
+                        <td class="text-center fst-italic fw-bold">{{ student?.person?.birthPlace }}</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+
+                <!-- Ligne 3 : Matricule / Statut / ESP -->
+                <tr>
+                  <td class="p-0">
+                    <table class="table-inner">
+                      <tr>
+                        <th class="text-center">Matricule</th>
+                        <th class="text-center">Statut</th>
+                        <th class="text-center">ESP</th>
+                      </tr>
+                      <tr>
+                        <td class="text-center fst-italic fw-bold">{{ student.matricule || 'N/A' }}</td>
+                        <td class="text-center fst-italic fw-bold">NAAC</td>
+                        <td class="text-center fst-italic fw-bold">APTE</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-md-12 text-center" *ngIf="students.length === 0 && !isLoading">
+            <div class="alert alert-info">
+              Aucun élève trouvé.
+            </div>
+          </div>
+
+          <div class="col-md-12 text-center" *ngIf="isLoading">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Chargement...</span>
+            </div>
+            <p class="mt-2">Chargement des élèves...</p>
+          </div>
+        </div>
+
+				<div class="row d-none">
 					<!-- Student Grid -->
 					<div class="col-xxl-3 col-xl-4 col-md-6 d-flex" *ngFor="let student of students">
 						<div class="card flex-fill">
@@ -152,7 +306,7 @@
 											<li>
 												<a class="dropdown-item rounded-1" href="javascript:void(0);" (click)="deleteStudent(student.id)"><i class="ti ti-trash-x me-2"></i>Supprimer</a>
 											</li>
-										</ul>	
+										</ul>
 									</div>
 								</div>
 							</div>
@@ -161,7 +315,7 @@
 									<div class="d-flex align-items-center">
 										<a href="javascript:void(0);" (click)="viewDetails(student.person.objectId)" class="avatar avatar-lg flex-shrink-0">
 											<img [src]="student?.person?.photo?.url || 'assets/img/profiles/avatar-01.jpg' " class="img-fluid rounded-circle" alt="img">
-										</a> 
+										</a>
 										<div class="ms-2">
 											<h5 class="mb-0" class="text-dark text-truncate">
 												<a href="javascript:void(0);" (click)="viewDetails(student.id)">
@@ -170,7 +324,7 @@
 											</h5>
 											<p>{{ student?.classroom?.name_fr || 'CM2' }}</p>
 										</div>
-									</div>	
+									</div>
 								</div>
 								<div class="d-flex align-items-center justify-content-between gx-2">
 									<div>
@@ -267,10 +421,10 @@
 				<p>Affichage des résultats {{ length * currentPage + 1 }} - {{ (totalItems > length * (currentPage + 1)) ? length * (currentPage + 1) : totalItems }} sur {{ totalItems }} entrées</p>
 				</div>
 				<div class="col-lg-6 col-md-6 col-sm-12">
-				<app-custom-pagination 
-					[totalData]="totalItems" 
-					[currentPage]="currentPage+1" 
-					[pageSize]="length" 
+				<app-custom-pagination
+					[totalData]="totalItems"
+					[currentPage]="currentPage+1"
+					[pageSize]="length"
 					(onPageChange)="changePage($event-1)"
 				></app-custom-pagination>
 				</div>
@@ -328,7 +482,7 @@
 								<div class="col-lg-6">
 									<div class="mb-3">
 										<label class="form-label">Fees Group</label>
-									  
+
 										<select class="form-select">
 											<option value="">Select</option>
 											<option value="Class 1 General">Class 1 General</option>
@@ -341,7 +495,7 @@
 								<div class="col-lg-6">
 									<div class="mb-3">
 										<label class="form-label">Fees Type</label>
-									  
+
 										<select class="form-select">
 											<option value="">Select</option>
 											<option value="Tuition Fees">Tuition Fees</option>
@@ -361,7 +515,7 @@
 									<div class="mb-3">
 										<label class="form-label">Collection Date</label>
 										<div class="date-pic">
-											<input type="text" class="form-control datetimepicker" bsDatepicker 
+											<input type="text" class="form-control datetimepicker" bsDatepicker
 											container=".date-pic" placeholder="Select">
 											<span class="cal-icon"><i class="ti ti-calendar"></i></span>
 										</div>
@@ -370,7 +524,7 @@
 								<div class="col-lg-6">
 									<div class="mb-3">
 										<label class="form-label">Payment Type</label>
-									  
+
 										<select class="form-select">
 											<option value="">Select</option>
 											<option value="Paytm">Paytm</option>
@@ -485,7 +639,7 @@
 											</div>
 										</div>
 									</div>
-									
+
 									<!-- Informations supplémentaires -->
 									<div *ngIf="selectedStudent.parents?.length" class="mt-4">
 										<h5 class="border-bottom pb-2">Parents / Tuteurs</h5>
@@ -511,7 +665,7 @@
 											</div>
 										</div>
 									</div>
-									
+
 									<!-- Informations supplémentaires -->
 									<div *ngIf="selectedStudent.additionalInfo" class="mt-4">
 										<h5 class="border-bottom pb-2">Informations supplémentaires</h5>
