@@ -1,7 +1,8 @@
 #Logo {
  font-size : 2.5em;
  font-style: italic;
- font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+ font-family: 'Perpetua', 'century gothic', 'Brush script mt', 'trebuchet ms', 'Garamond';
+ font-weight: bold;
 }
 
 #Logo .i {
@@ -16,6 +17,11 @@
 
 #Logo .school {
   color : red;
+}
+
+.boxSG {
+  border-bottom: 2px solid green;
+  box-shadow: 0 4px 8px rgba(250, 1, 1, 0.10);
 }
 
 .nav-item {
