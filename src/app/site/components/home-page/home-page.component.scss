@@ -1,56 +1,32 @@
 #fhome{
-  margin-bottom: 2%;
-}
-#fhome table {
-  width: 100%;
+  padding-top: 5%;
 }
 
-.td_Bdesc_fhome{
-  width: 40%;
-}
-
-.Bdesc_fhome{
-  float: left;
-  text-align: center;
-  vertical-align: middle;
-  text-shadow: 5px 5px 5px white;
-  color: black;
-  width: 100%;
-}
-
-.desc_fhome{
-  font-size: 2.5em;
-  font-weight: bold;
-}
-
-.Bimg_fhome{
-  width: 100%;
-  display: block;
-}
-
-.Bimg_fhome img{
+.fade-image {
+  opacity: 1;
+  max-width: 32%; //150px
+  float:inline-start;
+  height: auto;
+  transition: all 0.5s ease; // opacity 0.5s ease-in-out;
   width: 32%;
-  height: 400px;
   margin-left: 0.7%;
   float: inline-start;
   border-radius: 5%;
 }
 
-.fade-image {
-  transition: opacity 1.5s ease-in-out;
-  opacity: 1;
-}
-
 .Bimg_fhome .student{
   margin-top: 10%;
+  height: 400px;
 }
 
 .Bimg_fhome .teacher {
   margin-top: 6%;
+  height: 400px;
 }
 
 .Bimg_fhome .father {
   margin-top: 1%;
+  height: 400px;
 }
 
 .etsPartner {
@@ -67,6 +43,81 @@
   border-radius: 5px;
   color:white;
 }
+
+/* Styles de base */
+.responsive-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.content-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-section {
+  flex: 1;
+  min-width: 300px;
+  width: 30%;
+  float: left;
+  text-align: center;
+  vertical-align: middle;
+  text-shadow: 2px 2px 2px rgb(179, 179, 179);
+  color: rgb(0, 162, 255);
+  font-weight: bold;
+  font-size: 2rem;
+  line-height: 1.3;
+  color: green;
+}
+
+.image-section {
+  flex:2;
+  min-width: 300px;
+  float: left;
+}
+
+/* Media Queries pour le responsive */
+@media (max-width: 768px) {
+  .content-wrapper {
+    flex-direction: column;
+  }
+  
+  .desc_fhome {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+  }
+  
+  .Bimg_fhome {
+    min-height: 400px;
+  } 
+}
+
+@media (max-width: 480px) {
+  .desc_fhome {
+    font-size: 1.2rem;
+  }
+  
+  .fade-image {
+    max-width: 200px;
+  }
+  
+  .student {
+    left: 5%;
+  }
+  .teacher {
+    right: 5%;
+  }
+  .father {
+    left: 10%;
+  }
+}
+
+
+
 
 .lead {
   color: #aaa;
