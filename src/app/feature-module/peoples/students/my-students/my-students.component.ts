@@ -83,7 +83,7 @@ export class MyStudentsComponent implements OnInit{
 
     try {
       // Charger les inscriptions avec les filtres appliqués
-      this.students = await listInscriptions({yearId: f.yearId, parentId: f.parentId});
+      this.students = await listInscriptions({yearId: f.yearId, parentId: f.parentId}); 
       this.totalItems = this.students?.length || 0;
       this.rows = this.students?.length || 0;
       this.filteredStudents = this.students;
