@@ -43,7 +43,7 @@ export class ParentDashboardComponent implements OnInit{
   }
 
   async ngOnInit() {
-    this.parent = this.loginService.getPerson();
+    this.parent = await this.loginService.getPerson();
   }
 
 }
