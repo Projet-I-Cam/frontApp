@@ -15,10 +15,21 @@ export class HomePageComponent implements OnInit {
       father: './assets/img/home/father.png'
     },
     {
-      student: './assets/img/home/teacher.png',
-      teacher: './assets/img/home/father.png',
-      father: './assets/img/home/student.png'
+      student: './assets/img/home/student2.png',
+      teacher: './assets/img/home/teacher2.png',
+      //father: './assets/img/home/father2.png'
     },
+    {
+      student: './assets/img/home/student3.png',
+      teacher: './assets/img/home/teacher3.png',
+     //father: './assets/img/home/father3.png'
+    },
+    {
+      student: './assets/img/home/student4.jpg',
+      teacher: './assets/img/home/teacher4.png',
+      //father: './assets/img/home/father4.png'
+    },
+    
     // Ajoutez d'autres sets d'images si nécessaire
   ];
 
@@ -27,38 +38,36 @@ export class HomePageComponent implements OnInit {
   private subscription: Subscription = new Subscription();
 
   ngOnInit() {
-    /*
     // Change le set complet toutes les 10s
     const mainTimer$ = interval(10000);
     
     this.subscription = mainTimer$.subscribe(() => {
       this.currentSetIndex = (this.currentSetIndex + 1) % this.imageSets.length;
       
-      // Change student après 5s
+      // Change student après 0s
       setTimeout(() => {
         this.activeImages = {
           ...this.activeImages,
           student: this.imageSets[this.currentSetIndex].student
         };
-      }, 5000);
+      }, 0);
       
-      // Change teacher après 10s
+      // Change teacher après 5s
       setTimeout(() => {
         this.activeImages = {
           ...this.activeImages,
           teacher: this.imageSets[this.currentSetIndex].teacher
         };
-      }, 10000);
-      
+      }, 5000);
+      /*
       // Change father après 15s (mais le cycle recommence avant)
       setTimeout(() => {
         this.activeImages = {
           ...this.activeImages,
           father: this.imageSets[this.currentSetIndex].father
         };
-      }, 15000);
+      }, 15000);*/
     });
-    */
   }
 
   ngOnDestroy() {

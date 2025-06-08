@@ -1,30 +1,27 @@
 <section class="container">
+  <!--
   <div class="row">
-        <div class="col text-center my-5">
-            <h1 class="display-6 font-weight-bolder" style="font-family:Bookman old style;">Bienvenue sur la plateforme <i style="font-weight: bold;"><span style="color: green;"><span style="font-size:66px">I</span>cam</span><span style="color:red">School</span></i></h1>
-            <p class="lead" style="font-family: Arial, Helvetica, sans-serif; color:rgb(85, 143, 9);font-size:large"> </p>
-        </div>
+    <div class="col text-center my-5">
+          <h1 class="display-6 font-weight-bolder" style="font-family:Bookman old style;">Bienvenue sur la plateforme <i style="font-weight: bold;"><span style="color: green;"><span style="font-size:66px">I</span>cam</span><span style="color:red">School</span></i></h1>
+          <p class="lead" style="font-family: Arial, Helvetica, sans-serif; color:rgb(85, 143, 9);font-size:large"> </p>
+      </div>
+  </div>  
+  -->  
+<div id="fhome" class="responsive-container">
+  <div class="content-wrapper">
+    <div class="text-section">
+        <span class="desc_fhome">Pour un suivi scolaire <br /> idéal et en toute sérénité</span>
+    </div>
+    <div class="image-section">
+      <div class="Bimg_fhome">
+        <img [src]="activeImages.student" class="student fade-image" />
+        <img [src]="activeImages.teacher" class="teacher fade-image" />
+        <img [src]="activeImages.father" class="father fade-image" />
+      </div>
+      <div class="etsPartner">Plus de 1.000 établissements scolaires partenaires</div>
+    </div>
   </div>
-
-  <div id="fhome">
-  <table>
-    <tr>
-      <td class="td_Bdesc_fhome">
-        <div class="Bdesc_fhome">
-          <span class="desc_fhome">Pour un suivi scolaire <br /> idéal et en toute sérénité</span>
-        </div>
-      </td>
-      <td>
-        <div class="Bimg_fhome">
-          <img [src]="activeImages.student" class="student fade-image" />
-          <img [src]="activeImages.teacher" class="teacher fade-image" />
-          <img [src]="activeImages.father" class="father fade-image" />
-        </div>
-        <div class="etsPartner">Plus de 1.000 établissements scolaires partenaires</div>
-      </td>
-    </tr>
-  </table>
-  </div>
+</div>
 
   <div class="row">
     <div class="col-sm-12 col-md-6 col-lg-4" *ngFor="let item of usages">
