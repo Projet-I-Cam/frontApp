@@ -1378,7 +1378,7 @@ export class DataService {
       page: '99',
       menu: [
         {
-          menuValue: 'Dashboard2222',
+          menuValue: 'Dashboard',
           icon: 'layout-2',
           base: 'dashboard',
           hasSubRoute: false,

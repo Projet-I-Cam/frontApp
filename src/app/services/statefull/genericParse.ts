@@ -131,6 +131,7 @@ export async function listInscriptions(f: FilterStudent) {
   query.include('classroom.classe');
   query.include('classroom.classe.section');
   query.include('institution');
+  query.descending('createdAt')
 
   try {
     const results = await query.find();
