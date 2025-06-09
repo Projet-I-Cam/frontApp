@@ -1,11 +1,16 @@
 <nav class="navbar navbar-expand-lg boxSG">
   <div class="container">
-    <span id="Logo"><span class="i">I</span><span class="cam">cam</span><span class="school">School</span></span>
-    <!--
-    <a href="#" class="navbar-brand">
-      <img src="favicon.ico" height="20" alt="CoolBrand" style="height: 60px;">
-    </a>
-    -->
+    <span id="Logo">
+      <!--
+      <a href="#" class="navbar-brand">
+        <img src="favicon.ico" height="20" alt="CoolBrand" style="height: 60px;">
+      </a>
+      -->
+      <img src="./assets/img/icam_logoText.png" *ngIf="imageLoaded" (load)="onImageLoad()" />
+      <span *ngIf="!imageLoaded">
+        <span class="i">i</span><span class="cam">-CAM</span><span class="school">School</span>
+      </span>
+    </span>
     <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
       <span class="navbar-toggler-icon"></span>
     </button>
