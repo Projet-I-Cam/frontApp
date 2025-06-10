@@ -16,6 +16,7 @@ export class Register3Component {
   errorMessage: string = '';
   passwordVisible = false;
   confirmPasswordVisible = false;
+  min2kr = 'veuillez saisir minimum 2 caractères';
 
     constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
       this.registerForm = this.fb.group({
