@@ -10,8 +10,7 @@
       <a id="toggle_btn" href="javascript:void(0);" (click)="toggleSidebar()">
           <i class="ti ti-menu-deep"></i>
       </a>
-  </div>
-
+    </div>
     <!-- /Logo -->
 
     <a id="mobile_btn" class="mobile_btn" href="javascript:void(0);" (click)="togglesMobileSideBar()" >
@@ -47,11 +46,11 @@
                 <div class="dropdown me-2">
                     <a href="javascript:void(0);" class="btn btn-outline-light fw-normal bg-white d-flex align-items-center p-2"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="ti ti-calendar-due me-1"></i>Année académique
+                        <i class="ti ti-calendar-due me-1"></i>  Année Académique : {{anneeEnCours?.libelle || 'Année académique'}}
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" *ngFor="let annee of annees">
-                            <span>Année Académique</span> : {{annee.libelle}}
+                            Année Académique : {{annee.libelle}}
                         </a>
                     </div>
                 </div>
