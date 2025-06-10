@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { routes } from '../../../shared/routes/routes';
 import { LoginService } from '../../../auth/services/login.service';
 import { globalGet } from '../../../services/statefull/http';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
     selector: 'app-header',
@@ -18,9 +19,11 @@ export class HeaderComponent implements OnInit{
   public showDark = false;
   public darkTheme = false;
   annees : any[] = [];
+  currentUser : any = {};
 
   async ngOnInit(){
       this.annees = await globalGet({T: 'AcademicYear'});
+      this.currentUser = this.loginService.getUser();
   }
 
   toggleNotification() {

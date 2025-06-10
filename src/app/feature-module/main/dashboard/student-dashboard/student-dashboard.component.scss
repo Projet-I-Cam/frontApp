@@ -15,10 +15,10 @@
 
 /* Style the active (selected) tab */
 ::ng-deep .p-tabview .p-tabview-nav li.p-highlight {
-  background-color: #0d6efd !important; /* Bootstrap primary */
+  background-color:green !important; /* Bootstrap primary */
   color: white !important;
   font-weight: bold;
-  border-color: #0d6efd;
+  border-color: #02b345;
 }
 
 /* Active tab link */

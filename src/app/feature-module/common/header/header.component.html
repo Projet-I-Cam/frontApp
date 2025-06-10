@@ -33,7 +33,7 @@
                     </a>
                     <form action="#" class="dropdown">
                         <div class="searchinputs" id="dropdownMenuClickable">
-                            <input type="text" placeholder="Search">
+                            <input type="text" placeholder="Recherchez ...">
                             <div class="search-addon">
                                 <button type="submit"><i class="ti ti-command"></i></button>
                             </div>
@@ -60,12 +60,12 @@
                         <a href="javascript:void(0);"
                             class="btn btn-outline-light bg-white btn-icon d-flex align-items-center me-1 p-2"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="assets/img/flags/us.png" alt="Language" class="img-fluid rounded-pill">
+                            <img src="assets/img/flags/fr.png" alt="Langue" class="img-fluid rounded-pill">
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <a href="javascript:void(0);" class="dropdown-item active d-flex align-items-center">
                                 <img class="me-2 rounded-pill" src="assets/img/flags/fr.png" alt="Img"
-                                    height="22" width="22"> French
+                                    height="22" width="22"> Français
                             </a>
                             <a href="javascript:void(0);"
                                 class="dropdown-item  d-flex align-items-center">
@@ -75,6 +75,8 @@
                         </div>
                     </div>
                 </div>
+
+                <!--
                 <div class="pe-1">
                     <div class="dropdown">
                         <a href="javascript:void(0);" class="btn btn-outline-light bg-white btn-icon me-1"
@@ -136,6 +138,7 @@
                         </div>
                     </div>
                 </div>
+                -->
                 <div class="pe-1">
                     <a href="javascript:void(0);" id="dark-mode-toggle"
                         class="dark-mode-toggle activate btn btn-outline-light bg-white btn-icon me-1" (click)="themeChange()">
@@ -151,6 +154,8 @@
                         <i class="ti ti-brightness-up"></i>
                     </a> -->
                 </div>
+
+                <!--
                 <div class="pe-1" [ngClass]="{'notification-item-show': isNotificationVisible}" id="notification_item">
                     <a href="javascript:void(0);" class="btn btn-outline-light bg-white btn-icon position-relative me-1" (click)="toggleNotification()"
                         id="notification_popup">
@@ -265,6 +270,8 @@
                         </div>
                     </div>
                 </div>
+            
+
                 <div class="pe-1">
                     <a [routerLink] = "routes.chat" class="btn btn-outline-light bg-white btn-icon position-relative me-1">
                         <i class="ti ti-brand-hipchat"></i>
@@ -276,6 +283,8 @@
                         <i class="ti ti-chart-bar"></i>
                     </a>
                 </div>
+                -->
+
                 <div class="pe-1">
                     <a href="javascript:void(0);" class="btn btn-outline-light bg-white btn-icon me-1" id="btnFullscreen" (click)="fullscreen()">
                         <i class="ti ti-maximize"></i>
@@ -295,18 +304,18 @@
                                     <img src="assets/img/profiles/avatar-27.jpg" alt="img">
                                 </span>
                                 <div>
-                                    <h6 class="">Kevin Larry</h6>
-                                    <p class="text-primary mb-0">Administrator</p>
+                                    <h6 class="">{{this.currentUser.username}}</h6>
+                                    <p class="text-primary mb-0">{{this.currentUser.role?.name}}</p>
                                 </div>
                             </div>
                             <hr class="m-0">
                             <a class="dropdown-item d-inline-flex align-items-center p-2" [routerLink] = "routes.profile">
-                                <i class="ti ti-user-circle me-2"></i>My Profile</a>
+                                <i class="ti ti-user-circle me-2"></i>Mon Profil</a>
                             <a class="dropdown-item d-inline-flex align-items-center p-2"
-                                [routerLink] = "routes.profileSettings"><i class="ti ti-settings me-2"></i>Settings</a>
+                                [routerLink] = "routes.profileSettings"><i class="ti ti-settings me-2"></i>Configurations</a>
                             <hr class="m-0">
                             <a class="dropdown-item d-inline-flex align-items-center p-2" (click)="logout()"><i
-                                    class="ti ti-login me-2"></i>Logout</a>
+                                    class="ti ti-login me-2"></i>Se déconnecter</a>
                         </div>
                     </div>
                 </div>
@@ -320,9 +329,9 @@
         <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
             aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
         <div class="dropdown-menu dropdown-menu-end">
-            <a class="dropdown-item" [routerLink] = "routes.profile">My Profile</a>
-            <a class="dropdown-item" [routerLink] = "routes.profileSettings">Settings</a>
-            <a class="dropdown-item" [routerLink] = "routes.login">Logout</a>
+            <a class="dropdown-item" [routerLink] = "routes.profile">Mon Profil</a>
+            <a class="dropdown-item" [routerLink] = "routes.profileSettings">Configurations</a>
+            <a class="dropdown-item" [routerLink] = "routes.login">Se déconnecter</a>
         </div>
     </div>
     <!-- /Mobile Menu -->
