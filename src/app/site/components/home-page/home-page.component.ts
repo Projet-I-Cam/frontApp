@@ -82,7 +82,7 @@ export class HomePageComponent implements OnInit {
     },
     {
       'icon': 'fa fa-bullseye',
-      'title': 'Éducation au MINEBASE',
+      'title': 'Éducation au MINEDUB',
       'description': 'Focus sur les missions du Ministère de l’Éducation de Base et l’organisation de l’année scolaire.',
     },
     {

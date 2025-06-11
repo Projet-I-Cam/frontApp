@@ -1,17 +1,53 @@
-#fhome{
-  padding-top: 5%;
+.minedub {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.fixed-text {
+  position: fixed;
+  bottom: 20px;    /* Distance depuis le haut */
+  left: 20px;  /* Distance depuis la droite */
+  z-index: 100; /* S'assure qu'il reste au-dessus des autres éléments */
+  background: white; /* Fond pour améliorer la lisibilité */
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.vertical-text {
+  writing-mode: vertical-rl; /* vertical-rl (right-to-left) ou vertical-lr */
+  text-orientation: mixed;
+  transform: rotate(180deg);
+}
+
+.vminedub{
+  display: none;
 }
 
 .fade-image {
   opacity: 1;
-  max-width: 32%; //150px
+  width: 100%;
   float:inline-start;
   height: auto;
   transition: all 0.5s ease; // opacity 0.5s ease-in-out;
-  width: 32%;
   margin-left: 0.7%;
-  float: inline-start;
   border-radius: 5%;
+}
+
+/* Affiche le div uniquement quand la largeur est >= 1024px */
+@media (min-width: 1024px) {
+  .vminedub {
+    display: block; /* ou flex, grid, etc. selon vos besoins */
+  }
+
+  .fade-image {
+    max-width: 32%;
+    width:  32%;
+  }
+}
+
+#fhome{
+  padding-top: 5%;
 }
 
 .Bimg_fhome .student{
@@ -21,12 +57,12 @@
 
 .Bimg_fhome .teacher {
   margin-top: 6%;
-  height: 400px;
+  height: 430px;
 }
 
 .Bimg_fhome .father {
   margin-top: 1%;
-  height: 400px;
+  height: 470px;
 }
 
 .etsPartner {
@@ -69,7 +105,7 @@
   text-shadow: 2px 2px 2px rgb(179, 179, 179);
   color: rgb(0, 162, 255);
   font-weight: bold;
-  font-size: 2rem;
+  font-size: 2.5em;
   line-height: 1.3;
   color: green;
 }
@@ -86,11 +122,6 @@
     flex-direction: column;
   }
   
-  .desc_fhome {
-    font-size: 1.5rem;
-    margin-bottom: 30px;
-  }
-  
   .Bimg_fhome {
     min-height: 400px;
   } 
@@ -98,13 +129,8 @@
 
 @media (max-width: 480px) {
   .desc_fhome {
-    font-size: 1.2rem;
+    font-size: 1.1em;
   }
-  
-  .fade-image {
-    max-width: 200px;
-  }
-  
   .student {
     left: 5%;
   }
@@ -115,9 +141,6 @@
     left: 10%;
   }
 }
-
-
-
 
 .lead {
   color: #aaa;

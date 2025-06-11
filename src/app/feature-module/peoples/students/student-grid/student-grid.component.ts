@@ -385,4 +385,16 @@ export class StudentGridComponent implements OnInit {
     }
   }
 
+  // Fonction pour imprimer la liste des élèves
+  printListStudentNoPic() {
+    const printContents = document.getElementById('list-student-content-no-pic')?.innerHTML;
+    const originalContents = document.body.innerHTML;
+
+    if (printContents) {
+      document.body.innerHTML = printContents;
+      window.print();
+      document.body.innerHTML = originalContents;
+      window.location.reload(); // recharger pour restaurer l'état Angular
+    }
+  }
 }

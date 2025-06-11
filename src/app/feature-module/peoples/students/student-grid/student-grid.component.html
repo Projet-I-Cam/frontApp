@@ -19,10 +19,26 @@
                       	</nav>
                     </div>
                     <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
-                        <app-tooltip-content></app-tooltip-content>
-                      	<div class="mb-2">
-							<a [routerLink]="routes.addStudent" class="btn btn-primary d-flex align-items-center"><i class="ti ti-square-rounded-plus me-2"></i>Ajouter un Élève</a>
-                      	</div>
+                      <div class="dropdown me-2 mb-2">
+                        <a href="javascript:void(0);"
+                           class="dropdown-toggle btn btn-light fw-medium d-inline-flex align-items-center"
+                           data-bs-toggle="dropdown">
+                          <i class="ti ti-file-export me-2"></i>Etats Impression
+                        </a>
+                        <ul class="dropdown-menu  dropdown-menu-end p-3">
+                          <li>
+                            <a href="javascript:void(0);" (click)="printListStudent()" class="dropdown-item rounded-1"><i
+                              class="ti ti-file-type-pdf me-1"></i>Liste avec Photo</a>
+                          </li>
+                          <li>
+                            <a href="javascript:void(0);" (click)="printListStudentNoPic()" class="dropdown-item rounded-1"><i
+                              class="ti ti-file-type-xls me-1"></i>Liste sans Photo</a>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="mb-2">
+                        <a [routerLink]="routes.addStudent" class="btn btn-primary d-flex align-items-center"><i class="ti ti-square-rounded-plus me-2"></i>Ajouter un Élève</a>
+                      </div>
                     </div>
                 </div>
 				<!-- /Page Header -->
@@ -123,14 +139,10 @@
 							</ul>
 						</div>
 					</div>
-          <!-- Bouton imprimer -->
-          <div class="no-print text-end">
-            <button class="btn btn-primary" (click)="printListStudent()">🖨️ Imprimer</button>
-          </div>
 				</div>
 				<!-- /Filter -->
 
-        <div id="list-student-content"  class="row">
+        <div id="list-student-content" class="row d-none">
 
           <!-- En-tête -->
           <div class="row text-center mb-1">
@@ -279,8 +291,93 @@
             <p class="mt-2">Chargement des élèves...</p>
           </div>
         </div>
+        <div id="list-student-content-no-pic" class="row d-none">
 
-				<div class="row d-none">
+          <!-- En-tête -->
+          <div class="row text-center mb-1">
+            <div class="col-md-6 text-start fs-10">
+              <div class="text-center">
+                <strong>MINISTERE DE L’ÉDUCATION DE BASE</strong><br>
+                ************<br>
+                DELEGATION REGIONALE DU CENTRE<br>
+                ************<br>
+                DELEGATION DEPARTEMENTALE DU MFOUNDI<br>
+                ************<br>
+                INSPECTION D’ARRONDISSEMENT DE YAOUNDE 3EME<br>
+                ************
+              </div>
+            </div>
+            <div class="col-md-6 text-end fs-10">
+              <div class="text-center">
+                <strong>REPUBLIQUE DU CAMEROUN</strong><br>
+                Paix - Travail - Patrie<br>
+                ************
+              </div>
+            </div>
+          </div>
+
+          <!-- Informations classe -->
+          <div class="text-center mb-2">
+            <div class="border rounded p-2 mb-1 bg-light">
+              <h5 class="fw-bold text-uppercase mb-0">Liste Provisoire des Élèves</h5>
+            </div>
+            <span><strong>{{ academicName }}</strong></span><br>
+            <span><strong>Classe : CM2</strong> | Année scolaire : 2024–2025</span>
+          </div>
+
+          <!-- Cartes élèves -->
+          <div class="row">
+            <!-- Exemple avec 4 élèves, à dupliquer ou générer dynamiquement -->
+            <!-- Élève 1 -->
+            <div class="row">
+              <div class="col-md-6 mb-4" *ngFor="let student of students; let modIndex = index">
+                <table class="table table-bordered align-middle text-center student-table">
+                  <thead class="table-secondary">
+                  <tr>
+                    <th style="width: 5%;">N°</th>
+                    <th style="width: 30%;">NOMS ET PRÉNOMS<br>Matricule</th>
+                    <th style="width: 20%;">Date de <br>Naissance</th>
+                    <th style="width: 20%;">Lieu de <br>Naissance</th>
+                    <th style="width: 10%;">EPS</th>
+                    <th style="width: 10%;">Statut</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td rowspan="4">{{ modIndex + 1 }}</td>
+                    <td class="text-start fw-bold fst-italic">
+                      <a href="javascript:void(0);" (click)="viewDetails(student.id)">
+                        {{ student?.person?.firstName }} {{ student?.person?.lastName }}<br>
+                        <small>{{ student.matricule || 'N/A' }}</small>
+                      </a>
+                    </td>
+                    <td class="text-start fst-italic fw-bold">
+                      {{ student?.person?.birthDate ? (student.person.birthDate.iso | date: 'dd MMM yyyy') : 'Non disponible' }}
+                    </td>
+                    <td class="text-center fst-italic fw-bold">{{ student?.person?.birthPlace }}</td>
+                    <td class="text-center fst-italic fw-bold">NAAC</td>
+                    <td class="text-center fst-italic fw-bold">APTE</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 text-center" *ngIf="students.length === 0 && !isLoading">
+            <div class="alert alert-info">
+              Aucun élève trouvé.
+            </div>
+          </div>
+
+          <div class="col-md-12 text-center" *ngIf="isLoading">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Chargement...</span>
+            </div>
+            <p class="mt-2">Chargement des élèves...</p>
+          </div>
+        </div>
+
+				<div class="row">
 					<!-- Student Grid -->
 					<div class="col-xxl-3 col-xl-4 col-md-6 d-flex" *ngFor="let student of students">
 						<div class="card flex-fill">
