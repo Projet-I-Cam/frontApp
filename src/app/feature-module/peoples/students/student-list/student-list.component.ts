@@ -6,9 +6,10 @@ import { Table } from 'primeng/table';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { globalGet } from '../../../../services/statefull/http';
 import { UtilsService } from '../../../../services/utilis.service';
-import { LoginService } from '../../../../auth/services/login.service';
+import { LoginService } from '../../../../auth/services/login.service'; 
 import { routes } from '../../../../shared/routes/routes';
 import {  getCurrentAcademicYear } from '../../../../services/statefull/genericParse';
+import Parse from 'parse';
 
 
 
@@ -29,9 +30,11 @@ export class StudentListComponent implements OnInit {
   sections: any[] = [];
   classes: any[] = [];
   classRooms: any[] = [];
+  classroomArray: any[] = [];
   sexes: any[] = [];
   academicYear: any = {};
   currentPerson: any = {};
+  person: any = {};
 
   // Filter properties
   searchValue: string = '';
@@ -63,6 +66,7 @@ export class StudentListComponent implements OnInit {
     try {
       await this.initializeData();
       await this.loadData();
+      
     } catch (error) {
       this.handleError(error);
     }
@@ -70,7 +74,7 @@ export class StudentListComponent implements OnInit {
 
   private async initializeData(): Promise<void> {
     const [person, sections, sexes, academicYear] = await Promise.all([
-      this.loginService.getPerson(),
+      this.loginService.getPerson(), 
       UtilsService.getSection(),
       UtilsService.getGender(),
       getCurrentAcademicYear()
@@ -116,6 +120,18 @@ export class StudentListComponent implements OnInit {
 
   async getClassRooms() {
     try {
+      console.log('this.currentPerson?.user =================> ', this.currentPerson, this.currentPerson?.user?.task_name)
+      if(this.currentPerson?.user?.role?.task_name === "enseignant"){
+        const queries = ['teacherChief', 'teacherSecond'].map((k: string) => {
+          const q = new Parse.Query('Classroom')
+          q.equalTo(k, {"__type": "Pointer", "className": "Person" , "objectId": this.currentPerson?.objectId})
+          return q
+        })
+        const query = Parse.Query.or(...queries);
+        const result = await query.find()
+        console.log('Classroom Classroom Classroom Classroom ', result)
+        this.classroomArray = result
+      }
       const institutionId = this.currentPerson?.institution?.objectId;
       if (!institutionId) return;
 
@@ -138,34 +154,55 @@ export class StudentListComponent implements OnInit {
 
   async getTableData(currentPage: number): Promise<void> {
     try {
+      console.log('this.currentPerson this.currentPerson ', this.currentPerson)
       this.idParam = this.route.snapshot.paramMap.get('id') || '';
-
-      const requestConfig: any = {
-        T: 'Enrollment',
-        includes: ['person', 'person.gender', 'classroom', 'classroom.classe', 'classroom.classe.section'],
-        currentPage: currentPage,
-        filters: {
-          academicYear: {
-            className: 'AcademicYear',
-            objectId: this.academicYear?.objectId
-          },
-          institution: {
-            className: 'Institution',
-            objectId: this.idParam == '' ? this.currentPerson?.institution?.objectId : this.idParam
-          },
-          isValid: true
-        },
-      };
-
-      const res: any = await globalGet(requestConfig);
-
-      if (res?.error) {
-        throw new Error(res.message);
+      const includes = ['person', 'person.gender', 'classroom', 'classroom.classe', 'classroom.classe.section', 'person.section']
+      const classesR = this.classroomArray
+      let queries: any = []
+      if(classesR.length && this.currentPerson?.user?.role?.task_name === "enseignant"){
+        queries = classesR.map((classr: any) => {
+          const q = new Parse.Query('Enrollment')
+          q.equalTo('classroom', classr)
+          return q
+        })
       }
+      const mainQuery = classesR.length && this.currentPerson?.user?.role?.task_name === "enseignant" ? Parse.Query.or(...queries) : new Parse.Query('Enrollment');
+      includes.forEach(include => {
+        mainQuery.include(include)
+      });
+      if(!classesR.length && this.currentPerson?.user?.role?.task_name !== "enseignant"){
+        mainQuery.equalTo("institution", {"__type": "Pointer", "className": "Institution" , "objectId": this.idParam == '' ? this.currentPerson?.institution?.objectId : this.idParam})
+      }
+      mainQuery.equalTo("academicYear", {"__type": "Pointer", "className": "AcademicYear" , "objectId": this.academicYear?.objectId})
+      mainQuery.equalTo("isValid", true)
+      const results = await mainQuery.find()   
+      const json = results?.map(r => r?.toJSON())
+      console.log('DATAT DATAT DATAT DTA =>>>> ', results?.map(r => r?.toJSON()))
+      // const requestConfig: any = {
+      //   T: 'Enrollment',
+      //   includes: ['person', 'person.gender', 'classroom', 'classroom.classe', 'classroom.classe.section', 'person.section'],
+      //   currentPage: currentPage,
+      //   filters: {
+      //     academicYear: {
+      //       className: 'AcademicYear',
+      //       objectId: this.academicYear?.objectId
+      //     },
+      //     institution: {
+      //       className: 'Institution',
+      //       objectId: this.idParam == '' ? this.currentPerson?.institution?.objectId : this.idParam
+      //     },
+      //     isValid: true
+      //   },
+      // };
+      // const res: any = await globalGet(requestConfig);
 
-      this.tableData = res || [];
+      // if (res?.error) {
+      //   throw new Error(res.message);
+      // }
+      // console.log('STudent => ', res)
+      this.tableData = json // res || [];
       this.filteredStudents = [...this.tableData];
-      this.totalRecords = res?.count || res?.length || 0;
+      this.totalRecords = json?.length//res?.count || res?.length || 0;
     } catch (error) {
       throw error;
     }
