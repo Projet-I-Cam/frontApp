@@ -1,0 +1,85 @@
+<div class="page-wrapper">
+  <div class="content content-two">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">Procès verbal</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a [routerLink]="routes.procesVerbal">Tableau de bord</a>
+            </li>
+            <li class="breadcrumb-item"><a>Gestion des notes</a></li>
+            <li class="breadcrumb-item active">Procès Verbal</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+
+
+    <div class="d-flex justify-content-end mb-3">
+      <button class="btn btn-outline-primary" (click)="print()">
+        <i class="bi bi-printer"></i> Imprimer le Procès Verbal
+      </button>
+    </div>
+    <div id="container-proces-verbal">
+      <h5 class="text-center mb-2">ECOLE PUBLIQUE DU CENTRE ADMINISTRATIF</h5>
+      <h4 class="section-title">PROCÈS VERBAL DES RÉSULTATS</h4>
+
+      <div class="row g-3 mb-5">
+        <div class="col-md-6">
+          <p><strong>Module :</strong> ____________________________</p>
+        </div>
+        <div class="col-md-6">
+          <p><strong>Classe :</strong> COURS MOYEN 1 (CM1)</p>
+        </div>
+      </div>
+      <div class="row signature-zone">
+        <div class="col-md-6">
+          <p><strong>Enseignante 1 :</strong> ____________________________</p>
+          <p><strong>Téléphone :</strong> _________ / _________</p>
+        </div>
+        <div class="col-md-6">
+          <p><strong>Enseignante 2 :</strong> ____________________________</p>
+          <p><strong>Téléphone :</strong> _________ / _________</p>
+        </div>
+      </div>
+
+      <table class="table table-bordered">
+        <thead class="table-light">
+        <tr>
+          <th rowspan="2">N°</th>
+          <th rowspan="2">Noms et Prénoms</th>
+          <th colspan="2">UA1</th>
+          <th colspan="2">UA2</th>
+          <th colspan="2">UA3</th>
+          <th colspan="2">Trimestre</th>
+          <th rowspan="2">Observations</th>
+        </tr>
+        <tr>
+          <th>Moyenne</th><th>Cote</th>
+          <th>Moyenne</th><th>Cote</th>
+          <th>Moyenne</th><th>Cote</th>
+          <th>Moyenne</th><th>Cote</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Exemple de ligne d'élève -->
+        <tr>
+          <td>1</td>
+          <td>Jean KAMGA</td>
+          <td>14</td><td>B</td>
+          <td>13.5</td><td>B</td>
+          <td>15</td><td>A</td>
+          <td>14.2</td><td>B</td>
+          <td>ADMIS</td>
+        </tr>
+        <!-- Ajouter d'autres lignes ici -->
+        </tbody>
+      </table>
+    </div>
+
+
+  </div>
+</div>

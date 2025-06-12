@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FeatureModuleComponent } from './feature-module.component';
 import { AdminDashboardComponent } from './main/dashboard/admin-dashboard/admin-dashboard.component';
+import {ProcesVerbalComponent} from "../proces-verbal/proces-verbal.component";
+import {ReleveNotesComponent} from "../releve-notes/releve-notes.component";
+import {StatsResultsComponent} from "../stats-results/stats-results.component";
 
 
 const routes: Routes = [
@@ -220,6 +223,10 @@ const routes: Routes = [
 
       { path: 'layout-box', component: AdminDashboardComponent },
       { path: 'layout-dark', component: AdminDashboardComponent },
+
+      { path: 'proces-verbal', component: ProcesVerbalComponent},
+      { path: 'releve-notes', component: ReleveNotesComponent},
+      { path: 'stats-results', component: StatsResultsComponent},
 
 
 

@@ -1471,10 +1471,12 @@ export class DataService {
           showSubRoute: false,
           subMenus: [
             { menuValue: 'Saisie des notes', route: routes.gradeEntry },
-            { menuValue: 'Relevé de notes et notes', route: '' },
+            { menuValue: 'Procès Verbal', route: routes.procesVerbal },
+            { menuValue: 'Relevé de notes et notes', route: routes.releveNotes },
             { menuValue: 'Traitement des notes', route: '' },
             { menuValue: 'Bulletins de notes', route: routes.reportCard },
-            { menuValue: 'Livret scolaire', route: '' }
+            { menuValue: 'Livret scolaire', route: '' },
+            { menuValue: 'Statistiques des résultats', route: routes.statsResults }
           ]
         },
         {
@@ -1832,11 +1834,11 @@ export class DataService {
           customSubmenuTwo: false,
           subRoutes: [],
         },
-        { 
+        {
           menuValue: 'Annuaire',
           icon: 'phone',
           hasSubRoute: false,
-          showSubRoute: false, 
+          showSubRoute: false,
           route: '',
           customSubmenuTwo: false,
           subRoutes: [],

@@ -1041,6 +1041,15 @@ export class routes {
   public static get pupilManagementTransfers(): string {
     return this.pupilManagement + '/transfers';
   }
+  public static get procesVerbal(): string {
+    return this.baseUrl + '/proces-verbal';
+  }
+  public static get releveNotes(): string {
+    return this.baseUrl + '/releve-notes';
+  }
+  public static get statsResults(): string {
+    return this.baseUrl + '/stats-results';
+  }
 
 }
 

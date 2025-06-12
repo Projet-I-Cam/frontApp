@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
 import { fetchCurrentPerson } from '../../../../services/statefull/genericParse';
 import { LoginService } from '../../../../auth/services/login.service';
+import {globalGet} from "../../../../services/statefull/http";
 export type ChartOptions = {
   series: ApexAxisChartSeries | any;
   chart: ApexChart | any;
@@ -146,6 +147,11 @@ export class DashboardMinedubComponent implements OnInit{
     public chartOptions5: Partial<ChartOptions> | any;
     public chartOptions6: Partial<ChartOptions> | any;
     public chartOptions7: Partial<ChartOptions> | any;
+    public globalData : any = {};
+    public currentPage = 1;
+    public loading: boolean = true;
+    public error: string | null = null;
+    public stats : any = {};
 
     constructor(private router: Router, private loginService: LoginService) {
       this.chartOptions = {
@@ -447,8 +453,32 @@ export class DashboardMinedubComponent implements OnInit{
           },
         },
       };
-
       this.person = this.loginService.getPerson();
+      this.stats.totalPublic = 0;
+      this.stats.totalPrive = 0;
+      this.stats.totalPublicActive = 0;
+      this.stats.totalPublicInactive = 0;
+      this.stats.totalPriveLaic= 0;
+      this.stats.totalPriveConfess = 0;
+      this.stats.totalPriveAgree = 0;
+      this.stats.totalPriveClando = 0;
+      this.stats.totalHommeSActif = 0;
+      this.stats.totalFemmeSActif = 0;
+      this.stats.totalHommeEActif = 0;
+      this.stats.totalFemmeSEctif = 0;
+      this.stats.totalHommeElActif = 0;
+      this.stats.totalFemmeElActif = 0;
+
+      this.loading = true;
+      this.error = null;
+      try {
+        this.loadData(this.currentPage, null, ['municipality', 'owner']);
+      } catch (err) {
+        this.error = 'An error occurred while loading data.';
+      } finally {
+        this.loading = false;
+      }
+
     }
 
     tasks: Task[] = [
@@ -490,4 +520,48 @@ export class DashboardMinedubComponent implements OnInit{
     customFormattingFn(value: number): string {
       return value.toString();
     }
+
+    public async loadData(currentPage: number, filters?: any, includes?: any)
+    {
+      this.globalData = null;
+      this.globalData = await globalGet({
+        T: 'Institution',
+        filters: filters || {},
+        includes: includes || [],
+        curentPage: currentPage,
+      });
+      console.log("Global Data : ");
+      console.log(this.globalData);
+
+      if(this.globalData)
+      {
+        for(let i=0; i<this.globalData.length; i++)
+        {
+          if(this.globalData[i].isPrivateInstituion)
+            this.stats.totalPrive++;
+          if(!this.globalData[i].isPrivateInstituion)
+            this.stats.totalPublic++;
+
+          if(this.globalData[i].laique && this.globalData[i].isPrivateInstituion)
+            this.stats.totalPriveLaic++;
+          if(!this.globalData[i].laique && this.globalData[i].isPrivateInstituion)
+            this.stats.totalPriveConfess++;
+
+          if(this.globalData[i].isActive && !this.globalData[i].isPrivateInstituion)
+            this.stats.totalPublicActive++;
+          if(!this.globalData[i].isActive && !this.globalData[i].isPrivateInstituion)
+            this.stats.totalPublicInactive++;
+
+          if(this.globalData[i].isActive && this.globalData[i].isPrivateInstituion)
+            this.stats.totalPriveAgree++;
+          if(!this.globalData[i].isActive && !this.globalData[i].isPrivateInstituion)
+            this.stats.totalPriveClando++;
+          // console.log(this.globalData[i]);
+        }
+      }
+
+      this.stats.totalPrive = this.stats.total
+
+    }
+
 }

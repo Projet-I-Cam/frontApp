@@ -35,7 +35,7 @@
             </div>
             <button type="button" class="btn-close p-0" data-bs-dismiss="alert" aria-label="Close"><span><i
                   class="ti ti-x"></i></span></button>
-          </div> 
+          </div>
         </div> -->
 
         <!-- Dashboard Content -->
@@ -59,12 +59,12 @@
                       class="ti ti-edit text-white"></i></a>
                 </div>
                 <div class="mt-1">
-                  <h4 class="text-white">Grade : Professeur des Lycées ESG</h4>
+                  <h4 class="text-white">Grade : Responsable MINEDUB</h4>
                 </div>
                 <div class="mt-1">
                   <h4 class="text-white">Age : 38 ans | AFP : 15 ans | APA : 03 ans</h4>
                 </div>
-                <div class="mt-1"> 
+                <div class="mt-1">
                   <h4 class="text-white">Membre depuis le 08/08/2025</h4>
                 </div>
                 <div class="mt-1">
@@ -96,7 +96,7 @@
               </div>
             </div>
             <div class="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
-              <h4>TOTAL ETABLISSEMENT : <span class="counters" [countUp]="3654" [options]="{
+              <h4>TOTAL ETABLISSEMENT : <span class="counters" [countUp]="stats.totalPublic+stats.totalPrive" [options]="{
                 duration: 10,
                 formattingFn: customFormattingFn
               }">
@@ -106,7 +106,7 @@
             </div>
             <div class="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
               <h4 class="mb-0">Publics :
-                <span class="counters" [countUp]="3654" [options]="{
+                <span class="counters" [countUp]="stats.totalPublic" [options]="{
                             duration: 10,
                             formattingFn: customFormattingFn
                           }">
@@ -115,7 +115,7 @@
               </h4>
               <span class="text-light">|</span>
               <h4>Privés :
-                <span class="counters" [countUp]="3654" [options]="{
+                <span class="counters" [countUp]="stats.totalPrive" [options]="{
                               duration: 10,
                               formattingFn: customFormattingFn
                             }">
@@ -143,7 +143,7 @@
             </div>
             <div class="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
               <h4 class="mb-0">TOTAL OUVERTS :
-                <span class="counters" [countUp]="3654" [options]="{
+                <span class="counters" [countUp]="stats.totalPublicActive" [options]="{
                             duration: 10,
                             formattingFn: customFormattingFn
                           }">
@@ -152,7 +152,7 @@
               </h4>
               <span class="text-light">|</span>
               <h4>TOTAL FERMES :
-                <span class="counters" [countUp]="3654" [options]="{
+                <span class="counters" [countUp]="stats.totalPublicInactive" [options]="{
                               duration: 10,
                               formattingFn: customFormattingFn
                             }">
@@ -200,7 +200,7 @@
             <div class="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
               <h4 class="mb-0">Total Laïcs
                 :
-                <span class="counters" [countUp]="3654" [options]="{
+                <span class="counters" [countUp]="stats.totalPriveLaic" [options]="{
                             duration: 10,
                             formattingFn: customFormattingFn
                           }">
@@ -209,7 +209,7 @@
               </h4>
               <span class="text-light">|</span>
               <h4>Total Confessionnels :
-                <span class="counters" [countUp]="3654" [options]="{
+                <span class="counters" [countUp]="stats.totalPriveConfess" [options]="{
                               duration: 10,
                               formattingFn: customFormattingFn
                             }">
@@ -219,7 +219,7 @@
             </div>
             <div class="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
               <h4 class="mb-0">Total Agréés :
-                <span class="counters" [countUp]="3654" [options]="{
+                <span class="counters" [countUp]="stats.totalPriveAgree" [options]="{
                             duration: 10,
                             formattingFn: customFormattingFn
                           }">
@@ -228,7 +228,7 @@
               </h4>
               <span class="text-light">|</span>
               <h4>Total Clandestins :
-                <span class="counters" [countUp]="3654" [options]="{
+                <span class="counters" [countUp]="stats.totalPriveClando" [options]="{
                               duration: 10,
                               formattingFn: customFormattingFn
                             }">

@@ -18,11 +18,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { DialogModule } from '@angular/cdk/dialog';
 import { GradeModalComponent } from './grade-modal/grade-modal.component';
+import { ProcesVerbalComponent } from './proces-verbal/proces-verbal.component';
+import { ReleveNotesComponent } from './releve-notes/releve-notes.component';
+import { StatsResultsComponent } from './stats-results/stats-results.component';
 
 
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ProcesVerbalComponent, ReleveNotesComponent, StatsResultsComponent],
   imports: [BrowserModule, AppRoutingModule, SharedModule, SiteModule, HttpClientModule,
     FormsModule, ToastModule, ReactiveFormsModule,
   ],

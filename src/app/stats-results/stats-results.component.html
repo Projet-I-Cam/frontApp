@@ -1,0 +1,117 @@
+<div class="page-wrapper">
+  <div class="content content-two">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">Statistiques des résultats</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a [routerLink]="routes.statsResults">Tableau de bord</a>
+            </li>
+            <li class="breadcrumb-item"><a>Gestion des notes</a></li>
+            <li class="breadcrumb-item active">Statistiques des résultats</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+
+
+    <div class="d-flex justify-content-end mb-3">
+      <button class="btn btn-outline-primary" (click)="print()">
+        <i class="bi bi-printer"></i> Imprimer les statistiques
+      </button>
+    </div>
+    <div id="container-stats-results">
+      <h5 class="text-center fw-bold mb-4">ECOLE PUBLIQUE DU CENTRE ADMINISTRATIF</h5>
+      <h4 class="text-center fw-bold mb-4">STATISTIQUES DES RÉSULTATS</h4>
+
+      <table class="table table-bordered table-striped">
+        <thead class="table-light">
+        <tr>
+          <th rowspan="2">N°</th>
+          <th rowspan="2">CLASSE</th>
+          <th colspan="3">INSCRITS</th>
+          <th colspan="3">PRÉSENTS</th>
+          <th colspan="3">ADMIS</th>
+        </tr>
+        <tr>
+          <th>FILLES</th>
+          <th>GARÇONS</th>
+          <th>TOTAL</th>
+
+          <th>FILLES</th>
+          <th>GARÇONS</th>
+          <th>TOTAL</th>
+
+          <th>FILLES</th>
+          <th>GARÇONS</th>
+          <th>TOTAL</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Exemple de ligne -->
+        <tr>
+          <td>1</td>
+          <td>SIL</td>
+          <td>20</td><td>19</td><td>15</td>
+          <td>18</td><td>17</td><td>14</td>
+          <td>38</td><td>36</td><td>29</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>CP</td>
+          <td>22</td><td>21</td><td>18</td>
+          <td>20</td><td>19</td><td>17</td>
+          <td>42</td><td>40</td><td>35</td>
+        </tr>
+        <!-- Ajouter les autres classes ici -->
+        <tr>
+          <td>3</td>
+          <td>SPS</td>
+          <td>--</td><td>--</td><td>--</td>
+          <td>--</td><td>--</td><td>--</td>
+          <td>--</td><td>--</td><td>--</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>CE 1</td>
+          <td>--</td><td>--</td><td>--</td>
+          <td>--</td><td>--</td><td>--</td>
+          <td>--</td><td>--</td><td>--</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>CE 2</td>
+          <td>--</td><td>--</td><td>--</td>
+          <td>--</td><td>--</td><td>--</td>
+          <td>--</td><td>--</td><td>--</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>CM 1</td>
+          <td>--</td><td>--</td><td>--</td>
+          <td>--</td><td>--</td><td>--</td>
+          <td>--</td><td>--</td><td>--</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>CM 2</td>
+          <td>--</td><td>--</td><td>--</td>
+          <td>--</td><td>--</td><td>--</td>
+          <td>--</td><td>--</td><td>--</td>
+        </tr>
+        <!-- Ligne de total -->
+        <tr class="table-secondary fw-bold">
+          <td colspan="2">TOTAL (06 CLASSES)</td>
+          <td>---</td><td>---</td><td>---</td>
+          <td>---</td><td>---</td><td>---</td>
+          <td>---</td><td>---</td><td>---</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
