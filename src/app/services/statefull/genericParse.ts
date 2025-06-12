@@ -546,6 +546,7 @@ export async function getPersonByUserId(userId: string) {
       query.include("municipality.department");
       query.include("municipality.department.region");
       query.include('institution');
+      query.include('user.role');
       const userPointer = Parse.Object.extend("_User").createWithoutData(userId); // Créer un pointeur vers l'utilisateur
       query.equalTo("user", userPointer); // Filtrer par le champ user
       const person = await query.first(); // Récupérer la première correspondance
