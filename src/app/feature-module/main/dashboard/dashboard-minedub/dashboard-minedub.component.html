@@ -17,10 +17,12 @@
     </div>
     <div class="row d-flex align-items-xl-center justify-content-xl-between flex-xl-row flex-column">
       <div class="col-md-7"></div>
+    <!--
       <div class="col-md-4 bg-primary mx-3 rounded-top-3 d-flex align-items-xl-center justify-content-xl-center "
         style="height: 40px;">
         <h4 class="text-white me-2">NOUVEAU PERSONNEL</h4>
       </div>
+    -->
     </div>
     <div class="row">
       <div class="col-md-12">
@@ -54,7 +56,7 @@
               </div>
               <div class="mb-2 mb-xl-0">
                 <div class="d-flex align-items-center flex-wrap mb-2">
-                  <h2 class="text-white me-2">Welcome Back, ABESSOLO ETOGA THIERRY</h2>
+                  <h2 class="text-white me-2">Bienvenue, {{this.currentUser.fullname}}</h2>
                   <a [routerLink]="routes.profile" class="avatar avatar-sm img-rounded bg-gray-800 dark-hover"><i
                       class="ti ti-edit text-white"></i></a>
                 </div>
@@ -65,7 +67,7 @@
                   <h4 class="text-white">Age : 38 ans | AFP : 15 ans | APA : 03 ans</h4>
                 </div>
                 <div class="mt-1">
-                  <h4 class="text-white">Membre depuis le 08/08/2025</h4>
+                  <h4 class="text-white">Membre depuis le {{this.currentUser.createdAt | date:'dd/MM/yyyy'}}</h4>
                 </div>
                 <div class="mt-1">
                   <h4 class="text-white">Fonction : Délégué Départemental</h4>

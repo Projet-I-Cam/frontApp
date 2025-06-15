@@ -16,6 +16,10 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
 import { fetchCurrentPerson } from '../../../../services/statefull/genericParse';
 import { LoginService } from '../../../../auth/services/login.service';
+import { CommonService } from '../../../../shared/common/common.service';
+import { async } from 'rxjs';
+import { globalGet } from '../../../../services/statefull/http';
+import { SidebarService } from '../../../../shared/sidebar/sidebar.service';
 export type ChartOptions = {
   series: ApexAxisChartSeries | any;
   chart: ApexChart | any;
@@ -39,7 +43,11 @@ interface Task {
 })
 export class DashboardMinedubComponent implements OnInit{
    public routes = routes;
-    value!: Date;
+   annees : any[] = [];
+   anneeEnCours: any; // l'année en cours
+   currentUser : any = {};
+   
+   value!: Date;
     person : any = {};
     public student: OwlOptions = {
       loop: true,
@@ -147,7 +155,8 @@ export class DashboardMinedubComponent implements OnInit{
     public chartOptions6: Partial<ChartOptions> | any;
     public chartOptions7: Partial<ChartOptions> | any;
 
-    constructor(private router: Router, private loginService: LoginService) {
+
+  constructor(private common: CommonService, private sidebar: SidebarService, private loginService: LoginService, private router: Router,) {
       this.chartOptions = {
         chart: {
           height: 90,
@@ -401,7 +410,13 @@ export class DashboardMinedubComponent implements OnInit{
     time2: Date | undefined;
     addtime: Date | undefined;
     addtime2: Date | undefined;
-    ngOnInit() {
+    
+    async ngOnInit() {
+      this.annees = await globalGet({T: 'AcademicYear'});
+      // Trouver l'année en cours (isCurrent)
+      this.anneeEnCours = this.annees.find(a => a.isCurrent) || this.annees[0];
+      this.currentUser = this.loginService.getUser();
+
       this.time = new Date();
       this.time.setHours(8);
       this.time.setMinutes(30);
