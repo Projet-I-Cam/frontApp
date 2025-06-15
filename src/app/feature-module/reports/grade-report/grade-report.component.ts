@@ -6,6 +6,8 @@ import { PaginationService, tablePageSize } from '../../../shared/custom-paginat
 import { DataService } from '../../../shared/data/data.service';
 import { gradeReport, apiResultFormat, pageSelection } from '../../../shared/model/pages.model';
 import { routes } from '../../../shared/routes/routes';
+import * as XLSX from "xlsx";
+import * as FileSaver from "file-saver";
 
 @Component({
     selector: 'app-grade-report',
@@ -101,4 +103,35 @@ export class GradeReportComponent {
       });
     }
   }
+
+  exportToExcel(idBloc: string): void {
+    const element = document.getElementById(idBloc);
+    if (!element) return;
+
+    // Trouver le tableau à exporter
+    const table = element.querySelector('table');
+    if (!table) {
+      console.error('Aucun tableau trouvé dans #'+idBloc);
+      return;
+    }
+
+    const worksheet: XLSX.WorkSheet = XLSX.utils.table_to_sheet(table);
+    const workbook: XLSX.WorkBook = {
+      Sheets: { idBloc: worksheet },
+      SheetNames: [idBloc]
+    };
+
+    const excelBuffer: any = XLSX.write(workbook, {
+      bookType: 'xlsx',
+      type: 'array'
+    });
+
+    // Télécharger le fichier
+    const blob: Blob = new Blob([excelBuffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    });
+
+    FileSaver.saveAs(blob, idBloc+'.xlsx');
+  }
+
 }

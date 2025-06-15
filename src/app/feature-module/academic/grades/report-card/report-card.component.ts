@@ -10,6 +10,9 @@ import { MatInputModule } from '@angular/material/input';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { DropdownModule } from 'primeng/dropdown';
 import { SharedModule } from '../../../../shared/shared.module';
+import * as XLSX from "xlsx";
+import * as FileSaver from "file-saver";
+import {DataService} from "../../../../shared/data/data.service";
 
 interface StudentData {
   id: number;
@@ -211,7 +214,7 @@ export class ReportCardComponent implements OnInit {
 
 
 
-  constructor() {
+  constructor(public dataService : DataService) {
     this.competences = [
       {
         id: 1,
@@ -1062,7 +1065,5 @@ export class ReportCardComponent implements OnInit {
     });
   }
 
-
-
-
+  protected readonly DataService = DataService;
 }

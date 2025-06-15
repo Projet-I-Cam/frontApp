@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import {routes} from "../shared/routes/routes";
+import {DataService} from "../shared/data/data.service";
+import * as XLSX from "xlsx";
+import * as FileSaver from "file-saver";
 
 @Component({
   selector: 'app-releve-notes',
@@ -9,7 +12,13 @@ import {routes} from "../shared/routes/routes";
 })
 export class ReleveNotesComponent {
 
+  public students: any[] = [];
 
+  constructor(public dataService : DataService) {
+    this.students = [];
+    this.students = this.dataService.getRandomStudents();
+    // alert(this.students.length);
+  }
   print() {
     const printContents = document.getElementById('container-releve-notes')?.innerHTML;
     const originalContents = document.body.innerHTML;

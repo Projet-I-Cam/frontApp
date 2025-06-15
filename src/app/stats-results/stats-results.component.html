@@ -22,6 +22,9 @@
       <button class="btn btn-outline-primary" (click)="print()">
         <i class="bi bi-printer"></i> Imprimer les statistiques
       </button>
+      <button class="btn btn-outline-primary ms-2" (click)="dataService.exportToExcel('container-stats-results')">
+        <i class="bi bi-file-earmark-excel"></i> Exporter vers Excel
+      </button>
     </div>
     <div id="container-stats-results">
       <h5 class="text-center fw-bold mb-4">ECOLE PUBLIQUE DU CENTRE ADMINISTRATIF</h5>
@@ -52,63 +55,29 @@
         </thead>
         <tbody>
         <!-- Exemple de ligne -->
-        <tr>
-          <td>1</td>
-          <td>SIL</td>
-          <td>20</td><td>19</td><td>15</td>
-          <td>18</td><td>17</td><td>14</td>
-          <td>38</td><td>36</td><td>29</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>CP</td>
-          <td>22</td><td>21</td><td>18</td>
-          <td>20</td><td>19</td><td>17</td>
-          <td>42</td><td>40</td><td>35</td>
-        </tr>
-        <!-- Ajouter les autres classes ici -->
-        <tr>
-          <td>3</td>
-          <td>SPS</td>
-          <td>--</td><td>--</td><td>--</td>
-          <td>--</td><td>--</td><td>--</td>
-          <td>--</td><td>--</td><td>--</td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>CE 1</td>
-          <td>--</td><td>--</td><td>--</td>
-          <td>--</td><td>--</td><td>--</td>
-          <td>--</td><td>--</td><td>--</td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td>CE 2</td>
-          <td>--</td><td>--</td><td>--</td>
-          <td>--</td><td>--</td><td>--</td>
-          <td>--</td><td>--</td><td>--</td>
-        </tr>
-        <tr>
-          <td>6</td>
-          <td>CM 1</td>
-          <td>--</td><td>--</td><td>--</td>
-          <td>--</td><td>--</td><td>--</td>
-          <td>--</td><td>--</td><td>--</td>
-        </tr>
-        <tr>
-          <td>7</td>
-          <td>CM 2</td>
-          <td>--</td><td>--</td><td>--</td>
-          <td>--</td><td>--</td><td>--</td>
-          <td>--</td><td>--</td><td>--</td>
+        <tr *ngFor="let class of classStats; let i = index">
+          <td>{{ i+1 }}</td>
+          <td>{{class.nom}}</td>
+          <td>{{ getGenderCount(class.students, "F") }}</td><td>{{ getGenderCount(class.students, "M") }}</td><td>{{ getTotalCount(class.students) }}</td>
+          <td>{{ getGenderCount(class.students, "F") }}</td><td>{{ getGenderCount(class.students, "M") }}</td><td>{{ getTotalCount(class.students) }}</td>
+          <td>{{ getGenderCount(class.students, "F") - 1 }}</td><td>{{ getGenderCount(class.students, "M") - 1}}</td><td>{{ getTotalCount(class.students) - 2}}</td>
         </tr>
         <!-- Ligne de total -->
         <tr class="table-secondary fw-bold">
-          <td colspan="2">TOTAL (06 CLASSES)</td>
-          <td>---</td><td>---</td><td>---</td>
-          <td>---</td><td>---</td><td>---</td>
-          <td>---</td><td>---</td><td>---</td>
+          <td colspan="2">TOTAL ({{ classStats.length }} CLASSES)</td>
+          <td>{{ getTotalGenderCount('F') }}</td>
+          <td>{{ getTotalGenderCount('M') }}</td>
+          <td>{{ getTotalStudentsCount() }}</td>
+
+          <td>{{ getTotalGenderCount('F') }}</td>
+          <td>{{ getTotalGenderCount('M') }}</td>
+          <td>{{ getTotalStudentsCount() }}</td>
+
+          <td>{{ getTotalGenderCount('F') - classStats.length }}</td> <!-- Ajuste selon ce que tu soustrais -->
+          <td>{{ getTotalGenderCount('M') - classStats.length }}</td>
+          <td>{{ getTotalStudentsCount() - classStats.length * 2 }}</td>
         </tr>
+
         </tbody>
       </table>
     </div>

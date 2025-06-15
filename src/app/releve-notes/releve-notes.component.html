@@ -22,6 +22,9 @@
       <button class="btn btn-outline-primary" (click)="print()">
         <i class="bi bi-printer"></i> Imprimer le relevé de notes
       </button>
+      <button class="btn btn-outline-primary ms-2" (click)="dataService.exportToExcel('container-releve-notes')">
+        <i class="bi bi-file-earmark-excel"></i> Exporter vers Excel
+      </button>
     </div>
     <div id="container-releve-notes">
       <h5 class="text-center mb-2">ECOLE PUBLIQUE DU CENTRE ADMINISTRATIF</h5>
@@ -85,23 +88,25 @@
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td>1</td>
-            <td>Jean KAMGA</td>
+          <tr *ngFor="let student of students; let i = index">
+            <td>{{ student.id }}</td>
+            <td>{{ student.name }}</td>
             <!-- 3 compétences à 3 colonnes = 9 -->
-            <td>12</td><td>14</td><td>13</td>
-            <td>15</td><td>13</td><td>14</td>
-            <td>11</td><td>12</td><td>11.5</td>
+            <!-- 3 compétences à 3 colonnes = 9 colonnes -->
+            <ng-container *ngFor="let i of [0, 1, 2]">
+              <td>{{ student.notes[0] }}</td>
+              <td>{{ student.notes[1] }}</td>
+              <td>{{ student.notes[2] }}</td>
+            </ng-container>
 
-            <!-- 8 compétences à 4 colonnes = 32 -->
-            <td>14</td><td>13</td><td>13.5</td><td>14</td>
-            <td>12</td><td>12</td><td>12</td><td>13</td>
-            <td>13</td><td>14</td><td>13.5</td><td>14</td>
-            <td>15</td><td>14</td><td>14.5</td><td>15</td>
-            <td>13</td><td>12</td><td>12.5</td><td>13</td>
-            <td>14</td><td>13</td><td>13.5</td><td>13</td>
-            <td>16</td><td>15</td><td>15.5</td><td>15</td>
-            <td>14</td><td>14</td><td>14</td><td>14</td>
+            <!-- 8 compétences à 4 colonnes = 32 colonnes -->
+            <ng-container *ngFor="let i of [0, 1, 2, 3, 4, 5, 6, 7]">
+              <td>{{ student.notes[0] }}</td>
+              <td>{{ student.notes[1] }}</td>
+              <td>{{ student.notes[2] }}</td>
+              <td>{{ student.notes[3] }}</td>
+            </ng-container>
+
           </tr>
           <!-- Autres élèves ici -->
           </tbody>

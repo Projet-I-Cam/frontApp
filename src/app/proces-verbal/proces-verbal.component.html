@@ -22,6 +22,9 @@
       <button class="btn btn-outline-primary" (click)="print()">
         <i class="bi bi-printer"></i> Imprimer le Procès Verbal
       </button>
+      <button class="btn btn-outline-primary ms-2" (click)="dataService.exportToExcel('container-proces-verbal')">
+        <i class="bi bi-file-earmark-excel"></i> Exporter vers Excel
+      </button>
     </div>
     <div id="container-proces-verbal">
       <h5 class="text-center mb-2">ECOLE PUBLIQUE DU CENTRE ADMINISTRATIF</h5>
@@ -65,17 +68,48 @@
         </tr>
         </thead>
         <tbody>
-        <!-- Exemple de ligne d'élève -->
-        <tr>
-          <td>1</td>
-          <td>Jean KAMGA</td>
-          <td>14</td><td>B</td>
-          <td>13.5</td><td>B</td>
-          <td>15</td><td>A</td>
-          <td>14.2</td><td>B</td>
-          <td>ADMIS</td>
+        <tr *ngFor="let student of students; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ student.name }}</td>
+
+          <!-- UA1 -->
+          <td>
+            {{ student.notes.length === 0 ? '/' : getUAMoyenne(student.notes, 0) }}
+          </td>
+          <td>
+            {{ student.notes.length === 0 ? '/' : coteFromMoyenne(getUAMoyenne(student.notes, 0)) }}
+          </td>
+
+          <!-- UA2 -->
+          <td>
+            {{ student.notes.length === 0 ? '/' : getUAMoyenne(student.notes, 1) }}
+          </td>
+          <td>
+            {{ student.notes.length === 0 ? '/' : coteFromMoyenne(getUAMoyenne(student.notes, 1)) }}
+          </td>
+
+          <!-- UA3 -->
+          <td>
+            {{ student.notes.length === 0 ? '/' : getUAMoyenne(student.notes, 2) }}
+          </td>
+          <td>
+            {{ student.notes.length === 0 ? '/' : coteFromMoyenne(getUAMoyenne(student.notes, 2)) }}
+          </td>
+
+          <!-- Trimestre -->
+          <td>
+            {{ student.notes.length === 0 ? '/' : getTrimestreMoyenne(student.notes) }}
+          </td>
+          <td>
+            {{ student.notes.length === 0 ? '/' : coteFromMoyenne(getTrimestreMoyenne(student.notes)) }}
+          </td>
+
+          <!-- Observation avec couleur -->
+          <td [style.color]="getObservation(getTrimestreMoyenne(student.notes)).color" class="fw-bold">
+            {{ student.notes.length === 0 ? 'NON CLASSÉ' : getObservation(getTrimestreMoyenne(student.notes)).text }}
+          </td>
         </tr>
-        <!-- Ajouter d'autres lignes ici -->
+
         </tbody>
       </table>
     </div>

@@ -71,6 +71,9 @@
         <button class="btn btn-outline-primary" (click)="printBulletin()">
           <i class="bi bi-printer"></i> Imprimer le bulletin
         </button>
+        <button class="btn btn-outline-primary ms-2" (click)="dataService.exportToExcel('bulletin-content')">
+          <i class="bi bi-file-earmark-excel"></i> Exporter vers Excel
+        </button>
       </div>
       <div id="bulletin-content" class="container my-4" *ngIf="showBulletin && studentData" style="font-family: Arial, sans-serif;">
 
