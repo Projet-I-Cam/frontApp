@@ -5,6 +5,10 @@ import { AdminDashboardComponent } from './main/dashboard/admin-dashboard/admin-
 import {ProcesVerbalComponent} from "../proces-verbal/proces-verbal.component";
 import {ReleveNotesComponent} from "../releve-notes/releve-notes.component";
 import {StatsResultsComponent} from "../stats-results/stats-results.component";
+import {PvByClassComponent} from "../pv-by-class/pv-by-class.component";
+import {RelevesByClassComponent} from "../releves-by-class/releves-by-class.component";
+import {StatsByClassComponent} from "../stats-by-class/stats-by-class.component";
+import {BulletinEnfantComponent} from "../bulletin-enfant/bulletin-enfant.component";
 
 
 const routes: Routes = [
@@ -228,6 +232,10 @@ const routes: Routes = [
       { path: 'releve-notes', component: ReleveNotesComponent},
       { path: 'stats-results', component: StatsResultsComponent},
 
+      { path: 'proces-verbal-steps', component: PvByClassComponent},
+      { path: 'releve-notes-steps', component: RelevesByClassComponent},
+      { path: 'stats-results-steps', component: StatsByClassComponent},
+      { path: 'bulletin-enfant', component: BulletinEnfantComponent},
 
 
     ],

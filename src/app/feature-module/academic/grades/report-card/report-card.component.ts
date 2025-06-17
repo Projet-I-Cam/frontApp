@@ -10,8 +10,6 @@ import { MatInputModule } from '@angular/material/input';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { DropdownModule } from 'primeng/dropdown';
 import { SharedModule } from '../../../../shared/shared.module';
-import * as XLSX from "xlsx";
-import * as FileSaver from "file-saver";
 import {DataService} from "../../../../shared/data/data.service";
 
 interface StudentData {
@@ -165,15 +163,15 @@ export class ReportCardComponent implements OnInit {
 
   // Données exemple pour les élèves
   students = [
-    { id: 1, name: this.getRandomName(), image: 'assets/img/profiles/avatar-01.jpg' },
-    { id: 2, name: this.getRandomName(), image: 'assets/img/profiles/avatar-02.jpg' },
-    { id: 3, name: this.getRandomName(), image: 'assets/img/profiles/avatar-03.jpg' },
-    { id: 4, name: this.getRandomName(), image: 'assets/img/profiles/avatar-01.jpg' },
-    { id: 5, name: this.getRandomName(), image: 'assets/img/profiles/avatar-02.jpg' },
-    { id: 6, name: this.getRandomName(), image: 'assets/img/profiles/avatar-03.jpg' },
-    { id: 7, name: this.getRandomName(), image: 'assets/img/profiles/avatar-01.jpg' },
-    { id: 8, name: this.getRandomName(), image: 'assets/img/profiles/avatar-02.jpg' },
-    { id: 9, name: this.getRandomName(), image: 'assets/img/profiles/avatar-03.jpg' }
+    { id: 1, name: this.getRandomName(0), image: 'assets/img/profiles/avatar-01.jpg' },
+    { id: 2, name: this.getRandomName(1), image: 'assets/img/profiles/avatar-02.jpg' },
+    { id: 3, name: this.getRandomName(2), image: 'assets/img/profiles/avatar-03.jpg' },
+    { id: 4, name: this.getRandomName(3), image: 'assets/img/profiles/avatar-01.jpg' },
+    { id: 5, name: this.getRandomName(4), image: 'assets/img/profiles/avatar-02.jpg' },
+    { id: 6, name: this.getRandomName(5), image: 'assets/img/profiles/avatar-03.jpg' },
+    { id: 7, name: this.getRandomName(6), image: 'assets/img/profiles/avatar-01.jpg' },
+    { id: 8, name: this.getRandomName(7), image: 'assets/img/profiles/avatar-02.jpg' },
+    { id: 9, name: this.getRandomName(8), image: 'assets/img/profiles/avatar-03.jpg' }
   ];
 
   // Données exemple pour les périodes
@@ -1013,12 +1011,21 @@ export class ReportCardComponent implements OnInit {
   }
 
   // Noms fictifs pour la démo
-  private getRandomName(): string {
+  private getRandomName(indice?: number): string {
     const firstNames = ['Jean', 'Marie', 'Pierre', 'Sophie', 'Thomas', 'Emma', 'Lucas', 'Camille', 'Hugo', 'Chloé', 'Léa', 'Maxime'];
     const lastNames = ['NLEME', 'NOUKAP', 'ONANA', 'MBARGA', 'ETOGA', 'OBIANG', 'NGONO', 'BISAI', 'ABOUBAKAR', 'TEKENG', 'AYISSI', 'ESSONO'];
 
-    return `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`;
+    // Si un indice est fourni et qu'il est dans les limites valides
+    if (indice !== undefined && indice >= 0 && indice < firstNames.length && indice < lastNames.length) {
+      return `${firstNames[indice]} ${lastNames[indice]}`;
+    }
+
+    // Sinon, retourne un nom aléatoire
+    const randomFirst = firstNames[Math.floor(Math.random() * firstNames.length)];
+    const randomLast = lastNames[Math.floor(Math.random() * lastNames.length)];
+    return `${randomFirst} ${randomLast}`;
   }
+
 
   private getRandomClass(): string {
     const classes = ['SIL', 'CP', 'CE 1', 'CE 2', 'CM 1', 'CM 2'];

@@ -21,11 +21,15 @@ import { GradeModalComponent } from './grade-modal/grade-modal.component';
 import { ProcesVerbalComponent } from './proces-verbal/proces-verbal.component';
 import { ReleveNotesComponent } from './releve-notes/releve-notes.component';
 import { StatsResultsComponent } from './stats-results/stats-results.component';
+import { PvByClassComponent } from './pv-by-class/pv-by-class.component';
+import { StatsByClassComponent } from './stats-by-class/stats-by-class.component';
+import { RelevesByClassComponent } from './releves-by-class/releves-by-class.component';
+import { BulletinEnfantComponent } from './bulletin-enfant/bulletin-enfant.component';
 
 
 
 @NgModule({
-  declarations: [AppComponent, ProcesVerbalComponent, ReleveNotesComponent, StatsResultsComponent],
+  declarations: [AppComponent, ProcesVerbalComponent, ReleveNotesComponent, StatsResultsComponent, PvByClassComponent, StatsByClassComponent, RelevesByClassComponent],
   imports: [BrowserModule, AppRoutingModule, SharedModule, SiteModule, HttpClientModule,
     FormsModule, ToastModule, ReactiveFormsModule,
   ],

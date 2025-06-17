@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import {routes} from "../shared/routes/routes";
-import * as XLSX from 'xlsx';
-import * as FileSaver from 'file-saver';
 import {DataService} from "../shared/data/data.service";
 
 @Component({

@@ -1391,6 +1391,16 @@ export class DataService {
           route: routes.adminDashboard,
           customSubmenuTwo: false,
           subRoutes: [],
+        },
+        {
+          menuValue: 'Notes de vos enfants',
+          icon: 'notes',
+          hasSubRoute: true,
+          showSubRoute: false,
+          subMenus: [
+            { menuValue: 'Bulletins de notes', route: routes.bulletinEnfant },
+            { menuValue: 'Livret scolaire', route: '' },
+          ]
         }
       ],
     },
@@ -1595,9 +1605,9 @@ export class DataService {
               menuValue: "Notes/Bulletin",
               route: routes.notes
             },
-            { menuValue: 'Procès Verbal', route: routes.procesVerbal },
-            { menuValue: 'Relevé de notes et notes', route: routes.releveNotes },
-            { menuValue: 'Statistiques des résultats', route: routes.statsResults },
+            { menuValue: 'Procès Verbal', route: routes.procesVerbalSteps },
+            { menuValue: 'Relevé de notes et notes', route: routes.relevesNotesSteps },
+            { menuValue: 'Statistiques des résultats', route: routes.statsResultsSteps },
             {
               menuValue: "Livret Scolaire",
               route: routes.studentReportCard
@@ -1894,9 +1904,9 @@ export class DataService {
               menuValue: "Notes/Bulletin",
               route: routes.notes
             },
-            { menuValue: 'Procès Verbal', route: routes.procesVerbal },
-            { menuValue: 'Relevé de notes et notes', route: routes.releveNotes },
-            { menuValue: 'Statistiques des résultats', route: routes.statsResults },
+            { menuValue: 'Procès Verbal', route: routes.procesVerbalSteps },
+            { menuValue: 'Relevé de notes et notes', route: routes.relevesNotesSteps },
+            { menuValue: 'Statistiques des résultats', route: routes.statsResultsSteps },
             {
               menuValue: "Livret Scolaire",
               route: routes.studentReportCard
@@ -2152,9 +2162,9 @@ export class DataService {
               menuValue: "Notes/Bulletin",
               route: routes.notes
             },
-            { menuValue: 'Procès Verbal', route: routes.procesVerbal },
-            { menuValue: 'Relevé de notes et notes', route: routes.releveNotes },
-            { menuValue: 'Statistiques des résultats', route: routes.statsResults },
+            { menuValue: 'Procès Verbal', route: routes.procesVerbalSteps },
+            { menuValue: 'Relevé de notes et notes', route: routes.relevesNotesSteps },
+            { menuValue: 'Statistiques des résultats', route: routes.statsResultsSteps },
             {
               menuValue: "Livret Scolaire",
               route: routes.studentReportCard
@@ -2410,9 +2420,9 @@ export class DataService {
               menuValue: "Notes/Bulletin",
               route: routes.notes
             },
-            { menuValue: 'Procès Verbal', route: routes.procesVerbal },
-            { menuValue: 'Relevé de notes et notes', route: routes.releveNotes },
-            { menuValue: 'Statistiques des résultats', route: routes.statsResults },
+            { menuValue: 'Procès Verbal', route: routes.procesVerbalSteps },
+            { menuValue: 'Relevé de notes et notes', route: routes.relevesNotesSteps },
+            { menuValue: 'Statistiques des résultats', route: routes.statsResultsSteps },
             {
               menuValue: "Livret Scolaire",
               route: routes.studentReportCard
@@ -2641,9 +2651,9 @@ export class DataService {
           showSubRoute: false,
           subMenus: [
             { menuValue: 'Traitement des notes', route: routes.notes },
-            { menuValue: 'Procès Verbal', route: routes.procesVerbal },
-            { menuValue: 'Relevé de notes et notes', route: routes.releveNotes },
-            { menuValue: 'Statistiques des résultats', route: routes.statsResults },
+            { menuValue: 'Procès Verbal', route: routes.procesVerbalSteps },
+            { menuValue: 'Relevé de notes et notes', route: routes.relevesNotesSteps },
+            { menuValue: 'Statistiques des résultats', route: routes.statsResultsSteps },
             { menuValue: 'Bulletins de notes', route: '' },
             { menuValue: 'Livret scolaire', route: '' }
           ]
@@ -2757,22 +2767,45 @@ export class DataService {
   ];
 
   // Récupérer des noms randoms pour les élèves
-  public getRandomName(): { fullName: string, gender: 'M' | 'F' } {
-    const maleFirstNames = ['Jean', 'Pierre', 'Thomas', 'Lucas', 'Hugo', 'Maxime'];
-    const femaleFirstNames = ['Marie', 'Sophie', 'Emma', 'Camille', 'Chloé', 'Léa'];
+  public getRandomName(indice?: number): { fullName: string, gender: 'M' | 'F' } {
+    const firstNames: { name: string, gender: 'M' | 'F' }[] = [
+      { name: 'Jean', gender: 'M' },
+      { name: 'Marie', gender: 'F' },
+      { name: 'Pierre', gender: 'M' },
+      { name: 'Sophie', gender: 'F' },
+      { name: 'Thomas', gender: 'M' },
+      { name: 'Emma', gender: 'F' },
+      { name: 'Lucas', gender: 'M' },
+      { name: 'Camille', gender: 'F' },
+      { name: 'Hugo', gender: 'M' },
+      { name: 'Chloé', gender: 'F' },
+      { name: 'Maxime', gender: 'M' },
+      { name: 'Léa', gender: 'F' },
+    ];
     const lastNames = ['NLEME', 'NOUKAP', 'ONANA', 'MBARGA', 'ETOGA', 'OBIANG', 'NGONO', 'BISAI', 'ABOUBAKAR', 'TEKENG', 'AYISSI', 'ESSONO'];
 
-    const isMale = Math.random() < 0.5;
-    const firstName = isMale
-      ? maleFirstNames[Math.floor(Math.random() * maleFirstNames.length)]
-      : femaleFirstNames[Math.floor(Math.random() * femaleFirstNames.length)];
+    // Si un indice est fourni et valide
+    if (indice !== undefined && indice >= 0 && indice < firstNames.length && indice < lastNames.length) {
+      const { name: firstName, gender } = firstNames[indice];
+      const lastName = lastNames[indice];
 
+      return {
+        fullName: `${firstName} ${lastName}`,
+        gender
+      };
+    }
+
+    // Mode aléatoire
+    const randomIndex = Math.floor(Math.random() * firstNames.length);
+    const { name: firstName, gender } = firstNames[randomIndex];
     const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+
     return {
       fullName: `${firstName} ${lastName}`,
-      gender: isMale ? 'M' : 'F'
+      gender
     };
   }
+
 
 
   public getRandomNotes(debut: number, fin: number): number {
@@ -2786,7 +2819,7 @@ export class DataService {
 
   public getRandomStudents(): any[] {
     return Array.from({ length: 10 }, (_, i) => {
-      const identity = this.getRandomName();
+      const identity = this.getRandomName(i);
 
       const notes: number[] = [];
 
@@ -2818,7 +2851,7 @@ export class DataService {
 
   public getRandomStudentsV2PV(): any[] {
     return Array.from({ length: 10 }, (_, i) => {
-      const identity = this.getRandomName();
+      const identity = this.getRandomName(i);
 
       let notes: number[] = [];
 

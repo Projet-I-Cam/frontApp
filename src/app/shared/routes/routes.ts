@@ -1050,7 +1050,21 @@ export class routes {
   public static get statsResults(): string {
     return this.baseUrl + '/stats-results';
   }
-
+  public static get procesVerbalSteps(): string {
+    return this.baseUrl + '/proces-verbal-steps';
+  }
+  public static get relevesNotesSteps():string
+  {
+    return this.baseUrl + '/releve-notes-steps';
+  }
+  public static get statsResultsSteps():string
+  {
+    return this.baseUrl + '/stats-results-steps';
+  }
+  public static get bulletinEnfant():string
+  {
+    return this.baseUrl + '/bulletin-enfant';
+  }
 }
 
 
