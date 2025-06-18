@@ -1,0 +1,96 @@
+<div class="page-wrapper">
+  <div class="content content-two">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">Statistiques des résultats</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a [routerLink]="routes.statsResults">Tableau de bord</a>
+            </li>
+            <li class="breadcrumb-item"><a>Gestion des notes</a></li>
+            <li class="breadcrumb-item active">Statistiques des résultats</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <!-- À placer juste après le Page Header -->
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <label for="selectClasse" class="form-label"><strong>Sélectionnez une classe :</strong></label>
+        <select id="selectClasse" [(ngModel)]="selectedClasse" class="form-select">
+          <option [ngValue]="null" disabled selected>-- Choisir une classe --</option>
+          <option *ngFor="let classe of classes" [value]="classe">{{ classe }}</option>
+        </select>
+      </div>
+    </div>
+
+
+    <div class="d-flex justify-content-end mb-3">
+      <button class="btn btn-outline-primary" (click)="print()">
+        <i class="bi bi-printer"></i> Imprimer les statistiques
+      </button>
+      <button class="btn btn-outline-primary ms-2" (click)="dataService.exportToExcel('container-stats-results')">
+        <i class="bi bi-file-earmark-excel"></i> Exporter vers Excel
+      </button>
+    </div>
+    <div id="container-stats-results">
+      <h5 class="text-center fw-bold mb-4">ECOLE PUBLIQUE DU CENTRE ADMINISTRATIF</h5>
+      <h4 class="text-center fw-bold mb-4">STATISTIQUES DES RÉSULTATS</h4>
+
+      <table class="table table-bordered table-striped">
+        <thead class="table-light">
+        <tr>
+          <th rowspan="2">N°</th>
+          <th rowspan="2">CLASSE</th>
+          <th colspan="3">INSCRITS</th>
+          <th colspan="3">PRÉSENTS</th>
+          <th colspan="3">ADMIS</th>
+        </tr>
+        <tr>
+          <th>FILLES</th>
+          <th>GARÇONS</th>
+          <th>TOTAL</th>
+
+          <th>FILLES</th>
+          <th>GARÇONS</th>
+          <th>TOTAL</th>
+
+          <th>FILLES</th>
+          <th>GARÇONS</th>
+          <th>TOTAL</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Exemple de ligne -->
+        <tr *ngFor="let class of classStats; let i = index">
+          <td>{{ i+1 }}</td>
+          <td>{{class.nom}}</td>
+          <td>{{ getGenderCount(class.students, "F") }}</td><td>{{ getGenderCount(class.students, "M") }}</td><td>{{ getTotalCount(class.students) }}</td>
+          <td>{{ getGenderCount(class.students, "F") }}</td><td>{{ getGenderCount(class.students, "M") }}</td><td>{{ getTotalCount(class.students) }}</td>
+          <td>{{ getGenderCount(class.students, "F") - 1 }}</td><td>{{ getGenderCount(class.students, "M") - 1}}</td><td>{{ getTotalCount(class.students) - 2}}</td>
+        </tr>
+        <!-- Ligne de total -->
+        <tr class="table-secondary fw-bold">
+          <td colspan="2">TOTAL ({{ classStats.length }} CLASSES)</td>
+          <td>{{ getTotalGenderCount('F') }}</td>
+          <td>{{ getTotalGenderCount('M') }}</td>
+          <td>{{ getTotalStudentsCount() }}</td>
+
+          <td>{{ getTotalGenderCount('F') }}</td>
+          <td>{{ getTotalGenderCount('M') }}</td>
+          <td>{{ getTotalStudentsCount() }}</td>
+
+          <td>{{ getTotalGenderCount('F') - classStats.length }}</td> <!-- Ajuste selon ce que tu soustrais -->
+          <td>{{ getTotalGenderCount('M') - classStats.length }}</td>
+          <td>{{ getTotalStudentsCount() - classStats.length * 2 }}</td>
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

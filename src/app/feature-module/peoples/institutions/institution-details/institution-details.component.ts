@@ -44,6 +44,8 @@ export class InstitutionDetailsComponent implements OnInit{
       religiousGroup: [{ value: '', disabled: true }, [Validators.required]],
       teachingGroup: [{ value: '', disabled: true }, [Validators.required]],
       description: [{ value: '', disabled: true }],
+      sections: [{ value: '', disabled: true }],
+      isPrivateInstituion: [{ value: '', disabled: true }],
     });
   }
   ngOnInit(): void {
@@ -58,7 +60,7 @@ export class InstitutionDetailsComponent implements OnInit{
             objectId: params['id']
           },
           isOne: true,
-          includes: ['owner', 'municipality']
+          includes: ['owner', 'municipality', 'sections']
         }).then((institution: any) => {
           console.log(' institution institution institution ', institution)
           this.institution = institution
@@ -67,7 +69,9 @@ export class InstitutionDetailsComponent implements OnInit{
             registrationDate: new Date(institution?.registrationDate?.iso),
             municipality: institution?.municipality?.objectId,
             isInstitutionLaique: institution?.isInstitutionLaique ? "Laïque" : "Confessionnel",
-            ownerName: institution?.owner?.firstName + " " + institution?.owner?.lastName
+            isPrivateInstituion: typeof institution.isPrivateInstituion ==="boolean" ? institution.isPrivateInstituion ? "Non" : 'Oui' : "N/A",
+            ownerName: institution?.owner?.firstName + " " + institution?.owner?.lastName,
+            sections: institution?.sections?.map((s: any) => s.name_fr)?.join(', '),
           });
           this.loading = false
         })

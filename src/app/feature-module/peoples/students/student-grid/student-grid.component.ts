@@ -50,6 +50,8 @@ export class StudentGridComponent implements OnInit {
   statuts : any[] = [{item: "Actif", value: true}, {item: "Inactif", value: false}];
   selectedStatut : boolean = true;
   academicYears : any[] = [];
+  academicName : string = "";
+  className : string = "";
 
 
   constructor(
@@ -194,6 +196,15 @@ export class StudentGridComponent implements OnInit {
       this.students = await listInscriptions(f);
       this.totalItems = this.students?.length || 0;
       this.rows = this.students?.length || 0;
+      console.log("liste des élèves ici : ");
+      console.log(this.students);
+      if(this.students.length)
+      {
+        console.log(this.students[0])
+        console.log(this.students[0].institution)
+        this.academicName = this.students[0]?.institution.name;
+        this.className  = this.students[0]?.institution.className;
+      }
 
     } catch (error) {
       console.error("Erreur lors du chargement des étudiants:", error);
@@ -361,4 +372,29 @@ export class StudentGridComponent implements OnInit {
     return str.toLowerCase() === 'true';
   }
 
+  // Fonction pour imprimer la liste des élèves
+  printListStudent() {
+    const printContents = document.getElementById('list-student-content')?.innerHTML;
+    const originalContents = document.body.innerHTML;
+
+    if (printContents) {
+      document.body.innerHTML = printContents;
+      window.print();
+      document.body.innerHTML = originalContents;
+      window.location.reload(); // recharger pour restaurer l'état Angular
+    }
+  }
+
+  // Fonction pour imprimer la liste des élèves
+  printListStudentNoPic() {
+    const printContents = document.getElementById('list-student-content-no-pic')?.innerHTML;
+    const originalContents = document.body.innerHTML;
+
+    if (printContents) {
+      document.body.innerHTML = printContents;
+      window.print();
+      document.body.innerHTML = originalContents;
+      window.location.reload(); // recharger pour restaurer l'état Angular
+    }
+  }
 }

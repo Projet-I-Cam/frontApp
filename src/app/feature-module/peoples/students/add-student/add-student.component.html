@@ -162,10 +162,9 @@
 
                 <div class="col-md-4">
                   <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Classe</mat-label>
+                    <mat-label>Classe</mat-label> 
                     <mat-select formControlName="class">
-                      <mat-option *ngFor="let cls of classes" [value]="cls.objectId"
-                        [disabled]="!studentForm.get('section')?.value">
+                      <mat-option *ngFor="let cls of classes" [value]="cls.objectId" [disabled]="!studentForm.get('section')?.value">
                         {{ cls.name_fr }}
                       </mat-option>
                     </mat-select>
@@ -272,7 +271,25 @@
                   </div>
                 </div>
 
-                <div *ngIf="parentGroup.get('LinkExistedParent')?.value">
+                 <div class="row" *ngIf="parentGroup.get('LinkExistedParent')?.value">
+                  <div class="col-md-4">
+                    <div class="mb-3">
+                      <label class="form-label">Rechercher le parent</label>
+                      <p-dropdown
+                      formControlName="fatherObjectId"
+                      [options]="filteredPerson"
+                      [loading]="loading"
+                      [filter]="true"
+                      placeholder="Rechercher le parent"
+                      [virtualScroll]="true"
+                      [itemSize]="30"
+                      (onFilter)="searchParent($event)">
+                    </p-dropdown>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- <div *ngIf="parentGroup.get('LinkExistedParent')?.value">
                   <div class="row g-3">
                     <div class="col-md-6">
                       <mat-form-field appearance="outline" class="w-100">
@@ -288,7 +305,7 @@
                       </mat-form-field>
                     </div>
                   </div>
-                </div>
+                </div> -->
 
                 <div *ngIf="!parentGroup.get('LinkExistedParent')?.value">
                   <div class="row g-3">
@@ -381,7 +398,7 @@
 
           <!-- Submit Button -->
           <div class="text-center">
-            <button type="submit" mat-raised-button color="primary" [disabled]="studentForm.invalid || isSubmitting">
+            <button type="submit" mat-raised-button color="primary" [disabled]=" isSubmitting">
               <span *ngIf="!isSubmitting">Enregistrer</span>
               <span *ngIf="isSubmitting">
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>

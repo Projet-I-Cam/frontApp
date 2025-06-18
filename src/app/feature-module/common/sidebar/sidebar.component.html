@@ -21,9 +21,9 @@
                 @for (menu of mainTittle?.menu; track menu) {
                 @if (menu?.hasSubRoute === false) {
                 <li [class.active]="menu.route === currentPath">
-                  <a   
-                    (click)="expandSubMenus(menu)"  
-                    [routerLink]="menu?.route" 
+                  <a
+                    (click)="expandSubMenus(menu)"
+                    [routerLink]="menu?.route"
                   >
                     <i *ngIf="menu.icon; else anotherIcon" class="ti" [class]="'ti-'+menu.icon"></i>
                     <ng-template #anotherIcon>

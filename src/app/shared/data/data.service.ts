@@ -8,6 +8,8 @@ import { Section } from '../model/institution.model';
 import { apiResultFormat, classRoomData } from '../model/pages.model';
 import { routes } from '../routes/routes';
 import { SettingsService } from '../settings/settings.service';
+import * as XLSX from "xlsx";
+import * as FileSaver from "file-saver";
 
 @Injectable({
   providedIn: 'root',
@@ -442,12 +444,20 @@ export class DataService {
     }
   }
 
-  public async getClassRoomList(): Promise<apiResultFormat> {
-
+  public async getClassRoomList(institution? : any): Promise<apiResultFormat> {
+    const filters: any = {}
+    console.log('institution institution institution ', institution)
+    if(institution){
+      filters.institution = {
+        objectId: institution?.objectId,
+        className: "Institution"
+      }
+    }
+    console.log('institution institution institution ', institution, filters.institution)
     const data: any = await globalGet({
       T: 'Classroom',
-      filters: {},
-      includes: [],
+      filters: filters,
+      includes: ['classe', 'teacherChief', 'teacherSecond', 'institution'],
       curentPage: 1,
       size: undefined,
     });
@@ -1037,6 +1047,9 @@ export class DataService {
               customSubmenuTwo: false,
               subRoutes: [],
             },
+            { menuValue: 'Procès Verbal', route: routes.procesVerbal },
+            { menuValue: 'Relevé de notes et notes', route: routes.releveNotes },
+            { menuValue: 'Statistiques des résultats', route: routes.statsResults },
             {
               menuValue: 'File Manager',
               hasSubRoute: false,
@@ -1370,7 +1383,7 @@ export class DataService {
       page: '99',
       menu: [
         {
-          menuValue: 'Dashboard2222',
+          menuValue: 'Dashboard',
           icon: 'layout-2',
           base: 'dashboard',
           hasSubRoute: false,
@@ -1378,6 +1391,16 @@ export class DataService {
           route: routes.adminDashboard,
           customSubmenuTwo: false,
           subRoutes: [],
+        },
+        {
+          menuValue: 'Notes de vos enfants',
+          icon: 'notes',
+          hasSubRoute: true,
+          showSubRoute: false,
+          subMenus: [
+            { menuValue: 'Bulletins de notes', route: routes.bulletinEnfant },
+            { menuValue: 'Livret scolaire', route: '' },
+          ]
         }
       ],
     },
@@ -1463,10 +1486,12 @@ export class DataService {
           showSubRoute: false,
           subMenus: [
             { menuValue: 'Saisie des notes', route: routes.gradeEntry },
-            { menuValue: 'Relevé de notes et notes', route: '' },
+            { menuValue: 'Procès Verbal', route: routes.procesVerbal },
+            { menuValue: 'Relevé de notes et notes', route: routes.releveNotes },
+            { menuValue: 'Statistiques des résultats', route: routes.statsResults },
             { menuValue: 'Traitement des notes', route: '' },
             { menuValue: 'Bulletins de notes', route: routes.reportCard },
-            { menuValue: 'Livret scolaire', route: '' }
+            { menuValue: 'Livret scolaire', route: '' },
           ]
         },
         {
@@ -1580,6 +1605,9 @@ export class DataService {
               menuValue: "Notes/Bulletin",
               route: routes.notes
             },
+            { menuValue: 'Procès Verbal', route: routes.procesVerbalSteps },
+            { menuValue: 'Relevé de notes et notes', route: routes.relevesNotesSteps },
+            { menuValue: 'Statistiques des résultats', route: routes.statsResultsSteps },
             {
               menuValue: "Livret Scolaire",
               route: routes.studentReportCard
@@ -1657,12 +1685,12 @@ export class DataService {
           subMenus: [
             {
               menuValue: 'Ajouter un personnel',
-              route: 'peoples/minebase/staffs',
+              route: routes.addStaff,
               customSubmenuTwo: false,
             },
             {
               menuValue: 'Liste du Personnel',
-              route: 'peoples/minebase/staffs',
+              route: routes.staffList,
               customSubmenuTwo: false,
             },
             {
@@ -1824,11 +1852,11 @@ export class DataService {
           customSubmenuTwo: false,
           subRoutes: [],
         },
-        { 
+        {
           menuValue: 'Annuaire',
           icon: 'phone',
           hasSubRoute: false,
-          showSubRoute: false, 
+          showSubRoute: false,
           route: '',
           customSubmenuTwo: false,
           subRoutes: [],
@@ -1876,6 +1904,9 @@ export class DataService {
               menuValue: "Notes/Bulletin",
               route: routes.notes
             },
+            { menuValue: 'Procès Verbal', route: routes.procesVerbalSteps },
+            { menuValue: 'Relevé de notes et notes', route: routes.relevesNotesSteps },
+            { menuValue: 'Statistiques des résultats', route: routes.statsResultsSteps },
             {
               menuValue: "Livret Scolaire",
               route: routes.studentReportCard
@@ -1921,12 +1952,12 @@ export class DataService {
           subMenus: [
             {
               menuValue: 'Ajouter un personnel',
-              route: 'peoples/minebase/staffs',
+              route: routes.addStaff,
               customSubmenuTwo: false,
             },
             {
               menuValue: 'Liste du Personnel',
-              route: 'peoples/minebase/staffs',
+              route: routes.staffList,
               customSubmenuTwo: false,
             },
             {
@@ -2131,6 +2162,9 @@ export class DataService {
               menuValue: "Notes/Bulletin",
               route: routes.notes
             },
+            { menuValue: 'Procès Verbal', route: routes.procesVerbalSteps },
+            { menuValue: 'Relevé de notes et notes', route: routes.relevesNotesSteps },
+            { menuValue: 'Statistiques des résultats', route: routes.statsResultsSteps },
             {
               menuValue: "Livret Scolaire",
               route: routes.studentReportCard
@@ -2176,12 +2210,12 @@ export class DataService {
           subMenus: [
             {
               menuValue: 'Ajouter un personnel',
-              route: 'peoples/minebase/staffs',
+              route: routes.addStaff,
               customSubmenuTwo: false,
             },
             {
               menuValue: 'Liste du Personnel',
-              route: 'peoples/minebase/staffs',
+              route: routes.staffList,
               customSubmenuTwo: false,
             },
             {
@@ -2386,6 +2420,9 @@ export class DataService {
               menuValue: "Notes/Bulletin",
               route: routes.notes
             },
+            { menuValue: 'Procès Verbal', route: routes.procesVerbalSteps },
+            { menuValue: 'Relevé de notes et notes', route: routes.relevesNotesSteps },
+            { menuValue: 'Statistiques des résultats', route: routes.statsResultsSteps },
             {
               menuValue: "Livret Scolaire",
               route: routes.studentReportCard
@@ -2431,12 +2468,12 @@ export class DataService {
           subMenus: [
             {
               menuValue: 'Ajouter un personnel',
-              route: 'peoples/minebase/staffs',
+              route: routes.addStaff,
               customSubmenuTwo: false,
             },
             {
               menuValue: 'Liste du Personnel',
-              route: 'peoples/minebase/staffs',
+              route: routes.staffList,
               customSubmenuTwo: false,
             },
             {
@@ -2614,6 +2651,9 @@ export class DataService {
           showSubRoute: false,
           subMenus: [
             { menuValue: 'Traitement des notes', route: routes.notes },
+            { menuValue: 'Procès Verbal', route: routes.procesVerbalSteps },
+            { menuValue: 'Relevé de notes et notes', route: routes.relevesNotesSteps },
+            { menuValue: 'Statistiques des résultats', route: routes.statsResultsSteps },
             { menuValue: 'Bulletins de notes', route: '' },
             { menuValue: 'Livret scolaire', route: '' }
           ]
@@ -2725,4 +2765,158 @@ export class DataService {
       ]
     }
   ];
+
+  // Récupérer des noms randoms pour les élèves
+  public getRandomName(indice?: number): { fullName: string, gender: 'M' | 'F' } {
+    const firstNames: { name: string, gender: 'M' | 'F' }[] = [
+      { name: 'Jean', gender: 'M' },
+      { name: 'Marie', gender: 'F' },
+      { name: 'Pierre', gender: 'M' },
+      { name: 'Sophie', gender: 'F' },
+      { name: 'Thomas', gender: 'M' },
+      { name: 'Emma', gender: 'F' },
+      { name: 'Lucas', gender: 'M' },
+      { name: 'Camille', gender: 'F' },
+      { name: 'Hugo', gender: 'M' },
+      { name: 'Chloé', gender: 'F' },
+      { name: 'Maxime', gender: 'M' },
+      { name: 'Léa', gender: 'F' },
+    ];
+    const lastNames = ['NLEME', 'NOUKAP', 'ONANA', 'MBARGA', 'ETOGA', 'OBIANG', 'NGONO', 'BISAI', 'ABOUBAKAR', 'TEKENG', 'AYISSI', 'ESSONO'];
+
+    // Si un indice est fourni et valide
+    if (indice !== undefined && indice >= 0 && indice < firstNames.length && indice < lastNames.length) {
+      const { name: firstName, gender } = firstNames[indice];
+      const lastName = lastNames[indice];
+
+      return {
+        fullName: `${firstName} ${lastName}`,
+        gender
+      };
+    }
+
+    // Mode aléatoire
+    const randomIndex = Math.floor(Math.random() * firstNames.length);
+    const { name: firstName, gender } = firstNames[randomIndex];
+    const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+
+    return {
+      fullName: `${firstName} ${lastName}`,
+      gender
+    };
+  }
+
+
+
+  public getRandomNotes(debut: number, fin: number): number {
+    const step = 0.25;
+    const minSteps = Math.ceil(debut / step);
+    const maxSteps = Math.floor(fin / step);
+    const randomStep = Math.floor(Math.random() * (maxSteps - minSteps + 1)) + minSteps;
+    return parseFloat((randomStep * step).toFixed(2));
+  }
+
+
+  public getRandomStudents(): any[] {
+    return Array.from({ length: 10 }, (_, i) => {
+      const identity = this.getRandomName(i);
+
+      const notes: number[] = [];
+
+      // 3 compétences à 3 notes
+      for (let j = 0; j < 3; j++) {
+        notes.push(this.getRandomNotes(0, 12));
+        notes.push(this.getRandomNotes(0, 15));
+        notes.push(this.getRandomNotes(0, 3));
+      }
+
+      // 8 compétences à 4 notes
+      for (let j = 0; j < 8; j++) {
+        notes.push(this.getRandomNotes(4, 12));
+        notes.push(this.getRandomNotes(5, 15));
+        notes.push(this.getRandomNotes(1, 3));
+        notes.push(this.getRandomNotes(2, 6));
+      }
+
+      return {
+        id: i + 1,
+        rollNo: `S${String(i + 1).padStart(3, '0')}`,
+        name: identity.fullName,
+        gender: identity.gender,
+        image: `assets/img/profiles/avatar-0${(i % 9) + 1}.jpg`,
+        notes: notes
+      };
+    });
+  }
+
+  public getRandomStudentsV2PV(): any[] {
+    return Array.from({ length: 10 }, (_, i) => {
+      const identity = this.getRandomName(i);
+
+      let notes: number[] = [];
+
+      if (i === 9) {
+        // Élève non classé (notes vides)
+        notes = [];
+      } else {
+        if (i === 5) {
+          // Élève recalé : notes basses entre 0 et 9.9
+          for (let j = 0; j < 3; j++) {
+            notes.push(this.getRandomNotes(0, 9.9)); // UA1
+            notes.push(this.getRandomNotes(0, 9.9)); // UA2
+            notes.push(this.getRandomNotes(0, 9.9)); // UA3
+          }
+        } else {
+          // Autres élèves : notes entre 8 et 20 (majorité bonnes notes)
+          for (let j = 0; j < 3; j++) {
+            notes.push(this.getRandomNotes(8, 20)); // UA1
+            notes.push(this.getRandomNotes(8, 20)); // UA2
+            notes.push(this.getRandomNotes(8, 20)); // UA3
+          }
+        }
+      }
+
+      return {
+        id: i + 1,
+        rollNo: `S${String(i + 1).padStart(3, '0')}`,
+        name: identity.fullName,
+        gender: identity.gender,
+        image: `assets/img/profiles/avatar-0${(i % 9) + 1}.jpg`,
+        notes: notes
+      };
+    });
+  }
+
+
+  exportToExcel(idBloc: string): void {
+    const element = document.getElementById(idBloc);
+    if (!element) return;
+
+    // Trouver le tableau à exporter
+    const table = element.querySelector('table');
+    if (!table) {
+      console.error('Aucun tableau trouvé dans #'+idBloc);
+      return;
+    }
+
+    const worksheet: XLSX.WorkSheet = XLSX.utils.table_to_sheet(table);
+    const workbook: XLSX.WorkBook = {
+      Sheets: { [idBloc]: worksheet },
+      SheetNames: [idBloc]
+    };
+
+    const excelBuffer: any = XLSX.write(workbook, {
+      bookType: 'xlsx',
+      type: 'array'
+    });
+
+    // Télécharger le fichier
+    const blob: Blob = new Blob([excelBuffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    });
+
+    FileSaver.saveAs(blob, idBloc+'.xlsx');
+  }
+
+
 }

@@ -39,7 +39,7 @@ const routes: Routes = [
       },
       {
         path: 'student-grid',
-        component: StudentGridComponent,
+        component: StudentListComponent//StudentGridComponent,
       },
       {
         path: 'student-list',

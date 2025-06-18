@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormControl  } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import Parse from 'parse'; // Ensure Parse is imported properly
 
@@ -27,6 +27,7 @@ export class GeneralSettingsComponent implements OnInit {
   last = '';
   institution: any = null;
   person: any = null;
+  options: any = [];
 
   constructor(
     private common: CommonService,
@@ -52,7 +53,9 @@ export class GeneralSettingsComponent implements OnInit {
       teachingGroup: ['', [Validators.required]],
       longitude: ['', [Validators.required]],
       latitude: ['', [Validators.required]],
+      isPrivateInstituion: ['public'],
       description: [''],
+      sections: this.fb.array([]),
       logo: [null],
       photo: [null],
       emails: [''],
@@ -60,8 +63,32 @@ export class GeneralSettingsComponent implements OnInit {
       phones: [''],
     });
     
+    
   }
 
+  isChecked(optionId: number): boolean {
+  return this.selectedOptionsArray.value.includes(optionId);
+}
+
+// Gère les changements de checkbox
+onCheckboxChange(event: any, option: any) {
+  const selectedOptionsArray = this.selectedOptionsArray;
+  
+  if (event.target.checked) {
+    selectedOptionsArray.push(new FormControl(option.value));
+  } else {
+    const index = selectedOptionsArray.controls
+      .findIndex(x => x.value === option.value);
+    selectedOptionsArray.removeAt(index);
+  }
+}
+
+    get selectedOptionsArray(): FormArray {
+      return this.institutionForm.get('sections') as FormArray;
+    }
+    get isInstitutionLaique() {
+      return this.institutionForm.get('isInstitutionLaique');
+    }
     ngOnInit(): void {
       const userId: string = Parse.User.current()?._getId() || ""
       getPersonByUserId(userId).then(async (person: any) => {
@@ -71,13 +98,22 @@ export class GeneralSettingsComponent implements OnInit {
           filters: {
             owner: { className: "Person", objectId: person?.objectId}
           },
-          includes: ['owner'],
+          includes: ['owner', 'sections'],
           isOne: true
         })
-        console.log('institution institution institution ', institution)
+        console.log('institution institution institution ', institution?.sections)
         this.person = person
         this.institution = institution
 
+        const sections = await globalGet({
+          T: "Section",
+          filters: {}
+        })
+        console.log('sections sections sections ', sections)
+        this.options = sections?.map((sect: any) =>({value: sect?.objectId, label: sect?.name_fr}))
+        const selectedOptionsArray = this.selectedOptionsArray;
+        institution?.sections?.map((s: any) => selectedOptionsArray.push(new FormControl(s.objectId)))
+        
         this.institutionForm.patchValue({
           phones: institution?.phones?.join(', '),
           emails: institution?.emails?.join(', '),
@@ -90,6 +126,8 @@ export class GeneralSettingsComponent implements OnInit {
           description: institution?.description,
           latitude: institution?.geoPoint?.latitude,
           longitude: institution?.geoPoint?.longitude,
+          isPrivateInstituion: institution?.isPrivateInstituion? 'private' :  'public',
+          sections: selectedOptionsArray
         });
       })
     }
@@ -109,6 +147,9 @@ export class GeneralSettingsComponent implements OnInit {
     }
   }
     async onSubmit(): Promise<any> {
+
+     console.log('✅ Valeurs sélectionnées :', this.selectedOptionsArray);
+
       console.log('Form submited 1', this.institutionForm.value)
       if (this.institutionForm.valid) {
         try {
@@ -125,13 +166,29 @@ export class GeneralSettingsComponent implements OnInit {
           delete formData.longitude
           formData.phones = formData.phones ? [...formData.phones.split(',')] : []
           formData.emails = formData.emails ? [...formData.emails.split(',')] : []
+          formData.sections = formData.sections?.length ? [...formData.sections.map((section: any) => ({
+            __type: "Pointer",
+            className: "Section",
+            objectId: section
+          }) )] : []
           if(formData.isInstitutionLaique ===  "Oui"){
             formData.isInstitutionLaique = true
           }else{
             formData.isInstitutionLaique = false
           }
+          if(formData.isPrivateInstituion ===  "private"){
+            formData.isPrivateInstituion = true
+          }else{
+            formData.isPrivateInstituion = false
+          }
 
           console.log('Form submited 2', formData)
+          Object.keys(formData).forEach(key => {
+            if ( typeof formData[key] !=="boolean" &&  !formData[key]) {
+              delete formData[key];
+            }
+          });
+          console.log('Form submited 3', formData)
           const r = await globalPut({
             T: "Institution",
             dataObject: formData, 

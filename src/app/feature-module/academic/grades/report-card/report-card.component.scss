@@ -494,3 +494,11 @@ body {
 .compact-spacing {
   margin-bottom: 3px;
 }
+
+.module-container {
+  margin-bottom: 0 !important;
+}
+
+.module-container:not(:last-child) .table {
+  margin-bottom: 0;
+}

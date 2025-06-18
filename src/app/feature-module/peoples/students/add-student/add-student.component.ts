@@ -12,7 +12,7 @@ import { Class, Person, Student, AcademicYear } from '../../../../shared/model/s
 import { routes } from '../../../../shared/routes/routes';
 import { SharedModule } from '../../../../shared/shared.module';
 import { FilterStudent, getCurrentAcademicYear, listInscriptions } from '../../../../services/statefull/genericParse';
-import { globalGet } from '../../../../services/statefull/http';
+import { globalGet } from '../../../../services/statefull/http'; 
 import { LoginService } from '../../../../auth/services/login.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Institution } from '../../../../shared/model/institution.model';
@@ -98,6 +98,7 @@ private checkInitializationComplete() {
   async ngOnInit() {
     this.initializeForm();
     this.academicYear = await getCurrentAcademicYear();
+    console.log('this.academicYear  ', this.academicYear )
     this.studentForm.get('academicYear')?.patchValue(this.academicYear?.objectId || '');
     this.generateRegistrationNumber();
     this.setupFormListeners();
@@ -143,14 +144,18 @@ private checkInitializationComplete() {
   }
 
   async getClasses() {
-    const sectionId = this.studentForm.get('section')?.value;
-    if (!sectionId) return;
+    // const sectionId = this.studentForm.get('section')?.value;
+    // if (!sectionId) return;
 
     try {
       const res: any = await globalGet({
         T: 'Classe',
         filters: {
-          section: { className: 'Section', objectId: sectionId }
+          // instition: { className: 'Section', objectId: sectionId }
+          // institution: {
+          //   objectId: institution?.objectId,
+          //   className: "Institution"
+          // }
         }
       });
       this.classes = res || [];
@@ -172,6 +177,10 @@ private checkInitializationComplete() {
         T: 'Classroom',
         filters: {
           classe: { className: 'Classe', objectId: classId },
+          institution: {
+            objectId: institutionId,
+            className: "Institution"
+          }
           // institution: { className: 'Institution', objectId: institutionId }
         },
         selects: ['objectId', 'name_fr', 'name_en']
@@ -185,6 +194,7 @@ private checkInitializationComplete() {
   }
 
   setupFormListeners() {
+    this.getClasses();
     // With 300ms debounce to prevent rapid changes
     this.studentForm.get('section')?.valueChanges.pipe(
       debounceTime(300),
@@ -304,7 +314,7 @@ private checkInitializationComplete() {
     }
     this.loading = true;
     try {
-      const resp = await this.personService.searchParentByKeyword(query.toLowerCase());
+      const resp = await this.personService.searchParentByKeyword(query.toLowerCase(), true);
       this.filteredPerson = resp || [];
     } catch (error) {
       console.error('Error searching parents:', error);
@@ -357,7 +367,7 @@ private checkInitializationComplete() {
       registrationNumber: UtilsService.getStudentMatricule(),
       classroom: formValues.classroom,
       roleId: null,
-      academicYear: formValues.academicYear,
+      academicYear: this.academicYear?.objectId,//formValues.academicYear,
       class: formValues.class,
       admissionDate: formValues.admissionDate,
       status: formValues.status,

@@ -12,7 +12,9 @@ import {Modal} from "bootstrap";
 })
 export class GradeModalComponent implements OnChanges {
   @Input() grade: any;
+  @Input() subject : any;
   @Output() marksUpdated = new EventEmitter<number>();
+
 
   subGrades: { [key: string]: number } = {
     oral: 0,
@@ -21,9 +23,20 @@ export class GradeModalComponent implements OnChanges {
     savoirEtre: 0,
   };
 
+  maxValues : { [key: string]: number } = {
+    oral: 12,
+    ecrit: 15,
+    pratique: 6,
+    savoirEtre: 3
+  };
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['grade'] && this.grade?.subGrades) {
       this.subGrades = { ...this.grade.subGrades };
+    }
+
+    if (changes['subject'] && this.subject?.name) {
+      console.log('Nouveau sujet sélectionné :', this.subject.name);
     }
   }
 

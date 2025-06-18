@@ -131,6 +131,7 @@ export async function listInscriptions(f: FilterStudent) {
   query.include('classroom.classe');
   query.include('classroom.classe.section');
   query.include('institution');
+  query.descending('createdAt')
 
   try {
     const results = await query.find();
@@ -547,6 +548,7 @@ export async function getPersonByUserId(userId: string) {
       query.include('institution');
       query.include('staffType');
       query.include('institution')
+      query.include('user.role');
       const userPointer = Parse.Object.extend("_User").createWithoutData(userId); // Créer un pointeur vers l'utilisateur
       query.equalTo("user", userPointer); // Filtrer par le champ user
       const person = await query.first(); // Récupérer la première correspondance

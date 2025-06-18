@@ -2,7 +2,10 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="gradeModalLabel">Détails des notes pour {{ grade.studentName }}</h5>
+        <h5 class="modal-title text-center" id="gradeModalLabel">
+          <span>Détails des notes pour {{ grade.studentName }}</span>
+          <span *ngIf="subject?.name"> - {{subject?.name}}</span>
+        </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
       </div>
       <div class="modal-body">
@@ -10,7 +13,16 @@
           <div class="col-md-3" *ngFor="let key of ['oral', 'ecrit', 'pratique', 'savoirEtre']">
             <div class="form-group">
               <label class="form-label text-capitalize">{{ key }}</label>
-              <input type="number" class="form-control" [(ngModel)]="subGrades[key]" min="0" max="20">
+              <div class="input-group">
+                <input
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="subGrades[key]"
+                  [min]=0
+                  [max]=maxValues[key]
+                >
+                <span class="input-group-text">{{ maxValues[key] }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -20,7 +32,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Annuler</button>
         <button type="button" class="btn btn-primary" (click)="save()">Enregistrer</button>
       </div>
     </div>

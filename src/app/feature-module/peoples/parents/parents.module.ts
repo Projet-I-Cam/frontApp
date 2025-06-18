@@ -18,7 +18,7 @@ import { UiSweetalertsRoutingModule } from '../../ui-interface/base-ui/ui-sweeta
     ParentsComponent,
     ParentsListComponent,
     ParentGridComponent,
-    ParentsModalComponent
+    ParentsModalComponent,
   ],
   imports: [
     CommonModule,
