@@ -15,7 +15,11 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
 import { fetchCurrentPerson } from '../../../../services/statefull/genericParse';
 import { LoginService } from '../../../../auth/services/login.service';
-import {globalGet} from "../../../../services/statefull/http";
+import { CommonService } from '../../../../shared/common/common.service';
+import { async } from 'rxjs';
+import { globalGet } from '../../../../services/statefull/http';
+import { SidebarService } from '../../../../shared/sidebar/sidebar.service';
+
 export type ChartOptions = {
   series: ApexAxisChartSeries | any;
   chart: ApexChart | any;
@@ -39,7 +43,43 @@ interface Task {
 })
 export class DashboardMinedubComponent implements OnInit{
    public routes = routes;
-    value!: Date;
+   annees : any[] = [];
+   anneeEnCours: any; // l'année en cours
+   currentUser : any = {};
+   totalInstitutions : any [] = [];
+  
+   totalInstitutionsPublics : any [] = [];
+   totalInstitutionsPublicsOpen : any [] = [];
+   totalInstitutionsPublicsClose : any [] = [];
+
+   totalInstitutionsPrives : any [] = [];
+   totalInstitutionsPrivesAgrees : any [] = [];
+   totalInstitutionsPrivesClandestin : any [] = [];
+   totalInstitutionsLaics : any [] = [];
+   totalInstitutionsConf : any [] = [];
+   
+   totalClassesOp : any [] = [];
+   totalClassesNotOp : any [] = [];
+   
+   totalStudents : any [] = [];
+   totalStudentsBoy : any [] = [];
+   totalStudentsGirl : any [] = [];
+   totalStudentsActive : any [] = [];
+   totalStudentsInactive : any [] = [];
+
+   totalTeachers : any [] = [];
+   totalTeachersMens : any [] = [];
+   totalTeachersWomens : any [] = [];
+   totalTeachersActive : any [] = [];
+   totalTeachersInactive : any [] = [];
+   
+   totalStaffs : any [] = [];
+   totalStaffsMens : any [] = [];
+   totalStaffsWomens : any [] = [];
+   totalStaffsActive : any [] = [];
+   totalStaffsInactive : any [] = [];
+
+   value!: Date;
     person : any = {};
     user: any = null;
     public student: OwlOptions = {
@@ -153,7 +193,8 @@ export class DashboardMinedubComponent implements OnInit{
     public error: string | null = null;
     public stats : any = {};
 
-    constructor(private router: Router, private loginService: LoginService) {
+
+  constructor(private common: CommonService, private sidebar: SidebarService, private loginService: LoginService, private router: Router,) {
       this.chartOptions = {
         chart: {
           height: 90,
@@ -407,7 +448,64 @@ export class DashboardMinedubComponent implements OnInit{
     time2: Date | undefined;
     addtime: Date | undefined;
     addtime2: Date | undefined;
-    ngOnInit() {
+
+    async ngOnInit() {
+      this.annees = await globalGet({T: 'AcademicYear'});
+      
+      this.totalInstitutions = await globalGet({T: 'Institution'});
+      this.totalInstitutionsLaics = this.totalInstitutions.filter(x => x.isInstitutionLaique);
+      this.totalInstitutionsConf = this.totalInstitutions.filter(x => !x.isInstitutionLaique);
+
+      this.totalInstitutionsPublics = this.totalInstitutions.filter(x => !x.isPrivateInstitution);
+      this.totalInstitutionsPublicsOpen = this.totalInstitutions;
+
+      this.totalInstitutionsPrives = this.totalInstitutions.filter(x => x.isPrivateInstitution);
+      //this.totalInstitutionsPublicsClose = ;
+
+      this.totalTeachers = await globalGet({
+        T: 'Person',
+        filters: {
+            isStaff: true,
+          },
+      });
+      this.totalStudents = await globalGet({
+        T: 'Person',
+        filters: {
+            isStudent: true,
+          },
+      });
+/*
+   totalInstitutionsPrivesAgrees : any [] = [];
+   totalInstitutionsPrivesClandestin : any [] = [];
+   totalInstitutionsLaics : any [] = [];
+   totalInstitutionsConf : any [] = [];
+   
+   totalClassesOp : any [] = [];
+   totalClassesNotOp : any [] = [];
+   
+   totalStudents : any [] = [];
+   totalStudentsBoy : any [] = [];
+   totalStudentsGirl : any [] = [];
+   totalStudentsActive : any [] = [];
+   totalStudentsInactive : any [] = [];
+
+   totalTeachers : any [] = [];
+   totalTeachersMens : any [] = [];
+   totalTeachersWomens : any [] = [];
+   totalTeachersActive : any [] = [];
+   totalTeachersInactive : any [] = [];
+   
+   totalStaffs : any [] = [];
+   totalStaffsMens : any [] = [];
+   totalStaffsWomens : any [] = [];
+   totalStaffsActive : any [] = [];
+   totalStaffsInactive : any [] = [];
+*/
+
+      // Trouver l'année en cours (isCurrent)
+      this.anneeEnCours = this.annees.find(a => a.isCurrent) || this.annees[0];
+      this.currentUser = this.loginService.getUser();
+
       this.time = new Date();
       this.time.setHours(8);
       this.time.setMinutes(30);
