@@ -1,0 +1,87 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+}
+.section-title {
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.table th, .table td {
+  vertical-align: middle;
+  text-align: center;
+}
+.signature-zone {
+  margin-top: 2rem;
+}
+
+table th, table td {
+  text-align: center;
+  vertical-align: middle;
+  font-size: 0.75rem;
+}
+.matiere {
+  writing-mode: vertical-lr;
+  transform: rotate(180deg);
+  font-weight: bold;
+}
+
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 10mm;
+  }
+
+  body {
+    zoom: 65%;
+    font-size: 9px;
+  }
+
+  .table-responsive {
+    overflow: visible !important;
+  }
+
+  table {
+    width: 100% !important;
+    table-layout: fixed;
+    font-size: 8px;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal !important;
+    padding: 1px 3px;
+  }
+
+  /* Agrandir la colonne "NOMS ET PRÉNOMS" */
+  th:nth-child(2), td:nth-child(2) {
+    width: 50px;
+    font-size: 7px;
+  }
+
+  th:nth-child(1), td:nth-child(1) {
+    width: 5px;
+    font-size: 7px;
+  }
+
+  /* Réduire toutes les autres colonnes (sauf NOMS) */
+  th:not(:nth-child(2)),
+  td:not(:nth-child(2)) {
+    font-size: 7px;
+    width: 20px;
+  }
+
+  .section-title, h5, h4 {
+    font-size: 9px;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    font-size: 9px;
+    margin-bottom: 0.2rem;
+  }
+}
+

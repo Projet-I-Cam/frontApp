@@ -1,0 +1,128 @@
+<div class="page-wrapper">
+  <div class="content content-two">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">Relevé de notes</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a [routerLink]="routes.releveNotes">Tableau de bord</a>
+            </li>
+            <li class="breadcrumb-item"><a>Gestion des notes</a></li>
+            <li class="breadcrumb-item active">Relevé de notes</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+
+    <!-- À placer juste après le Page Header -->
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <label for="selectClasse" class="form-label"><strong>Sélectionnez une classe :</strong></label>
+        <select id="selectClasse" [(ngModel)]="selectedClasse" class="form-select">
+          <option [ngValue]="null" disabled selected>-- Choisir une classe --</option>
+          <option *ngFor="let classe of classes" [value]="classe">{{ classe }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-end mb-3">
+      <button class="btn btn-outline-primary" (click)="print()">
+        <i class="bi bi-printer"></i> Imprimer le relevé de notes
+      </button>
+      <button class="btn btn-outline-primary ms-2" (click)="dataService.exportToExcel('container-releve-notes')">
+        <i class="bi bi-file-earmark-excel"></i> Exporter vers Excel
+      </button>
+    </div>
+    <div id="container-releve-notes" *ngIf="selectedClasse">
+      <h5 class="text-center mb-2">ECOLE PUBLIQUE DU CENTRE ADMINISTRATIF</h5>
+      <h4 class="section-title mb-2">RELEVE DE NOTES</h4>
+
+      <div class="row g-3 mb-5">
+        <div class="col-md-6">
+          <p><strong>Module :</strong> ____________________________</p>
+        </div>
+        <div class="col-md-6">
+          <p><strong>Classe :</strong> {{ getClasseLabel(selectedClasse) }}</p>
+        </div>
+      </div>
+      <div class="row signature-zone">
+        <div class="col-md-6">
+          <p><strong>Enseignant(e) :</strong> ____________________________</p>
+        </div>
+        <div class="col-md-6">
+          <p><strong>Téléphone :</strong> _________ / _________</p>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+          <thead class="table-light">
+          <tr>
+            <th rowspan="3">N°</th>
+            <th rowspan="3">NOMS ET PRÉNOMS</th>
+
+            <!-- 3 compétences à 3 colonnes -->
+            <th colspan="3">COMMUNIQUER EN FRANÇAIS</th>
+            <th colspan="3">COMMUNICATE IN ENGLISH</th>
+            <th colspan="4">PRATIQUER UNE LANGUE NATIONALE</th>
+            <th colspan="3">UTILISER LES NOTIONS DE BASE EN MATHÉMATIQUES</th>
+
+            <!-- 8 compétences à 4 colonnes -->
+            <th colspan="4">UTILISER LES NOTIONS DE BASE EN SCIENCES ET TECHNOLOGIES</th>
+            <th colspan="4">PRATIQUER LES VALEURS SOCIALES</th>
+            <th colspan="4">PRATIQUER LES VALEURS CITOYENNES</th>
+            <th colspan="4">DEMONTRER L’AUTONOMIE, L’ESPRIT D’INITIATIVE ET DE CREATIVITE ET D’ENTREPRENEURIAT </th>
+            <th colspan="4">UTILISER LES CONCEPTS DE BASE ET LES OUTILS DES TIC</th>
+            <th colspan="4">PRATIQUER LES ACTIVITÉS PHYSIQUES, SPORTIVES POUR LES APPRENANTS</th>
+            <th colspan="4">PRATIQUER LES ACTIVITÉS ARTISTIQUES</th>
+          </tr>
+          <tr>
+            <!-- Sous-colonnes -->
+            <!-- 3 × 3 colonnes -->
+            <th>Oral</th><th>Écrit</th><th>S-E</th>
+            <th>Oral</th><th>Écrit</th><th>S-E</th>
+            <th>Oral</th><th>Écrit</th><th>S-E</th><th>Ptq</th>
+            <th>Oral</th><th>Écrit</th><th>S-E</th>
+
+            <!-- 8 × 4 colonnes -->
+            <th>Oral</th><th>Écrit</th><th>S-E</th><th>Ptq</th>
+            <th>Oral</th><th>Écrit</th><th>S-E</th><th>Ptq</th>
+            <th>Oral</th><th>Écrit</th><th>S-E</th><th>Ptq</th>
+            <th>Oral</th><th>Écrit</th><th>S-E</th><th>Ptq</th>
+            <th>Oral</th><th>Écrit</th><th>S-E</th><th>Ptq</th>
+            <th>Oral</th><th>Écrit</th><th>S-E</th><th>Ptq</th>
+            <th>Oral</th><th>Écrit</th><th>S-E</th><th>Ptq</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let student of students; let i = index">
+            <td>{{ student.id }}</td>
+            <td>{{ student.name }}</td>
+            <!-- 3 compétences à 3 colonnes = 9 -->
+            <!-- 3 compétences à 3 colonnes = 9 colonnes -->
+            <ng-container *ngFor="let i of [0, 1, 2]">
+              <td>{{ student.notes[0] }}</td>
+              <td>{{ student.notes[1] }}</td>
+              <td>{{ student.notes[2] }}</td>
+            </ng-container>
+
+            <!-- 8 compétences à 4 colonnes = 32 colonnes -->
+            <ng-container *ngFor="let i of [0, 1, 2, 3, 4, 5, 6, 7]">
+              <td>{{ student.notes[0] }}</td>
+              <td>{{ student.notes[1] }}</td>
+              <td>{{ student.notes[2] }}</td>
+              <td>{{ student.notes[3] }}</td>
+            </ng-container>
+
+          </tr>
+          <!-- Autres élèves ici -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>

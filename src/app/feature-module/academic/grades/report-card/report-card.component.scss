@@ -87,26 +87,26 @@
   .btn, .breadcrumb, .page-header {
     display: none !important;
   }
-  
+
   .card {
     border: none !important;
     box-shadow: none !important;
   }
-  
+
   .card-body {
     padding: 0 !important;
   }
-  
+
   body {
     background-color: white !important;
   }
-  
+
   .container-fluid {
     width: 100% !important;
     max-width: 100% !important;
     padding: 0 !important;
   }
-  
+
   .report-card-printable {
     margin: 0 !important;
     width: 100% !important;
@@ -200,23 +200,305 @@
   .btn, .page-header {
     display: none !important;
   }
-  
+
   .card {
     border: none !important;
     box-shadow: none !important;
   }
-  
+
   .card-body {
     padding: 0 !important;
   }
-  
+
   .bulletin-container {
     padding: 0;
   }
-  
+
   body {
     margin: 0;
     padding: 0;
     background-color: #fff;
   }
-} 
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 0.5cm;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  .page-break {
+    page-break-before: always;
+  }
+
+  .no-break {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 11px;
+  line-height: 1.2;
+  margin: 0;
+  padding: 0.5cm;
+}
+
+.container {
+  max-width: 100%;
+  padding: 0;
+}
+
+/* En-tête */
+.header-section {
+  margin-bottom: 8px;
+}
+
+.header-section h4 {
+  font-size: 16px;
+  margin-bottom: 3px;
+  color: #0d6efd;
+  font-weight: bold;
+}
+
+.header-section p {
+  font-size: 11px;
+  margin-bottom: 0;
+  color: #6c757d;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -0.75rem;
+  margin-left: -0.75rem;
+}
+
+.mb-4 {
+  margin-bottom: 1.5rem !important;
+}
+
+.bg-light {
+  background-color: #f8f9fa !important;
+}
+
+.rounded {
+  border-radius: 0.375rem !important;
+}
+
+.p-3 {
+  padding: 1rem !important;
+}
+
+.shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+
+.col-md-2 {
+  flex: 0 0 auto;
+  width: 16.66666667%;
+  padding-right: 0.75rem;
+  padding-left: 0.75rem;
+}
+
+.col-md-4 {
+  flex: 0 0 auto;
+  width: 33.33333333%;
+  padding-right: 0.75rem;
+  padding-left: 0.75rem;
+}
+
+.col-md-5 {
+  flex: 0 0 auto;
+  width: 41.66666667%;
+  padding-right: 0.75rem;
+  padding-left: 0.75rem;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.img-thumbnail {
+  padding: 0.25rem;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Image du profil avec tailles exactes */
+.col-md-2 img {
+  width: 100% !important;
+  height: 130px !important;
+  object-fit: cover !important;
+}
+
+/* Paragraphes du profil élève */
+.col-md-5 p, .col-md-4 p {
+  margin-bottom: 0.5rem;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.col-md-5 strong, .col-md-4 strong {
+  color: #212529;
+  font-weight: 600;
+}
+
+/* Titres des compétences */
+.competence-title {
+  background: linear-gradient(135deg, #0d6efd, #0056b3);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+.section-title {
+  background: linear-gradient(135deg, #6c757d, #495057);
+  color: white;
+  padding: 3px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+/* Tableaux */
+.table {
+  font-size: 9px;
+  margin-bottom: 6px;
+  border-collapse: collapse;
+}
+
+.table th {
+  background-color: #e3f2fd;
+  color: #1565c0;
+  font-weight: bold;
+  text-align: center;
+  padding: 3px 2px;
+  font-size: 8px;
+  line-height: 1.1;
+  border: 1px solid #90caf9;
+}
+
+.table td {
+  padding: 2px 3px;
+  text-align: center;
+  font-size: 8px;
+  line-height: 1.2;
+  border: 1px solid #e0e0e0;
+  vertical-align: middle;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #f8f9fa;
+}
+
+.table-light {
+  background-color: #f1f3f4;
+}
+
+.fw-semibold {
+  font-weight: 600;
+  color: #212529;
+}
+
+.bg-info {
+  background-color: #17a2b8 !important;
+  color: white !important;
+}
+
+.bg-info td {
+  font-weight: bold;
+  font-size: 9px;
+}
+
+/* Section résumé */
+.summary-section {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.summary-section h5 {
+  font-size: 13px;
+  color: #0d6efd;
+  border-bottom: 2px solid #0d6efd;
+  padding-bottom: 2px;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.summary-table {
+  font-size: 9px;
+}
+
+.summary-table th {
+  background-color: #e3f2fd;
+  color: #1565c0;
+  font-weight: bold;
+  padding: 4px 6px;
+  font-size: 9px;
+  border: 1px solid #90caf9;
+}
+
+.summary-table td {
+  padding: 4px 6px;
+  border: 1px solid #e0e0e0;
+  font-size: 9px;
+}
+
+/* Signatures */
+.signature-section {
+  margin-top: 15px;
+  font-size: 10px;
+}
+
+.signature-box {
+  min-height: 40px;
+  border-bottom: 1px solid #6c757d;
+  margin-top: 20px;
+}
+
+/* Couleurs pour l'impression */
+.text-primary { color: #0d6efd !important; }
+.text-secondary { color: #6c757d !important; }
+.text-success { color: #198754 !important; }
+.text-white { color: white !important; }
+.bg-primary { background-color: #0d6efd !important; }
+.bg-secondary { background-color: #6c757d !important; }
+.bg-light { background-color: #f8f9fa !important; }
+
+/* Optimisation pour 2 pages */
+.module-section {
+  margin-bottom: 6px;
+}
+
+.competence-section {
+  margin-bottom: 8px;
+}
+
+/* Ajustements spécifiques pour le contenu */
+.compact-spacing {
+  margin-bottom: 3px;
+}
+
+.module-container {
+  margin-bottom: 0 !important;
+}
+
+.module-container:not(:last-child) .table {
+  margin-bottom: 0;
+}

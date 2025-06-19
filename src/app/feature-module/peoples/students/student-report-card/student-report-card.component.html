@@ -1,25 +1,4 @@
-<!-- Page Wrapper -->
-<div class="page-wrapper">
-  <div class="content">
-    <!-- Page Header -->
-    <div class="page-header">
-      <div class="row">
-        <div class="col-sm-12">
-          <ul class="breadcrumb">
-            <li class="breadcrumb-item">
-              <a [routerLink]="routes.adminDashboard">Dashboard </a>
-            </li>
-            <li class="breadcrumb-item">
-              <a [routerLink]="routes.studentsList">Élèves</a>
-            </li>
-            <li class="breadcrumb-item active">Bulletin de notes</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <!-- /Page Header -->
-
-    <div class="row" *ngIf="!selectedReport">
+<div class="row" *ngIf="!selectedReport">
       <div class="col-md-12">
         <div class="card bg-white">
           <div class="card-header">
@@ -74,7 +53,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="col-md-12 mt-4">
         <div class="card bg-white">
           <div class="card-header">
@@ -134,7 +113,7 @@
             </button>
           </div>
         </div>
-        
+
         <div class="col-12">
           <div class="card bg-white">
             <div class="card-body report-content">
@@ -146,7 +125,7 @@
                 <h3 class="report-title mt-3">BULLETIN DE NOTES</h3>
                 <div class="report-period mb-2">{{ selectedReport.examType }} - Année scolaire {{ selectedReport.academicYear }}</div>
               </div>
-              
+
               <!-- Informations de l'Élève -->
               <div class="student-info mb-4">
                 <div class="row">
@@ -170,7 +149,7 @@
                   </div>
                 </div>
               </div>
-              
+
               <!-- Tableau des notes -->
               <div class="marks-table mb-4">
                 <table class="table table-bordered">
@@ -200,7 +179,7 @@
                   </tfoot>
                 </table>
               </div>
-              
+
               <!-- Informations supplémentaires -->
               <div class="additional-info mb-4">
                 <div class="row">
@@ -248,7 +227,7 @@
                   </div>
                 </div>
               </div>
-              
+
               <!-- Remarques -->
               <div class="remarks mb-4">
                 <div class="card border">
@@ -267,7 +246,7 @@
                   </div>
                 </div>
               </div>
-              
+
               <!-- Signatures -->
               <div class="signatures mt-5">
                 <div class="row text-center">
@@ -297,7 +276,3 @@
       </div>
     </div>
     <!-- /Rapport de notes -->
-
-  </div>
-</div>
-<!-- /Page Wrapper --> 

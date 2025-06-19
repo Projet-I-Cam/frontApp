@@ -19,87 +19,212 @@
         <!-- /Page Header -->
 
         <!-- Greeting Section -->
-        <div class="row">
-            <div class="col-md-12 d-flex">
-                <div class="card flex-fill bg-info bg-03">
-                    <div class="card-body">
-                        <h1 class="text-white mb-1"> Good Morning Ms.Teena</h1>
-                        <p class="text-white mb-3">Have a Good day at work</p>
-                        <p class="text-light">Notice : There is a staff meeting at 9AM today, Dont forget to
-                            Attend!!!
-                        </p>
-                    </div>
+        <div class="card bg-dark">
+          <div class="overlay-img">
+            <img src="assets/img/bg/shape-04.png" alt="img" class="img-fluid shape-01">
+            <img src="assets/img/bg/shape-01.png" alt="img" class="img-fluid shape-02">
+            <img src="assets/img/bg/shape-02.png" alt="img" class="img-fluid shape-03">
+            <img src="assets/img/bg/shape-03.png" alt="img" class="img-fluid shape-04">
+          </div>
+          <div class="card-body">
+            <div class="d-flex align-items-xl-center justify-content-xl-between flex-xl-row flex-column">
+              <div class="mb-3 mb-xl-0 gap-2">
+                <div class="d-flex align-items-center flex-wrap mb-2">
+                  <h2 class="text-white me-2">Welcome Back, {{person.firstName}} {{person.lastName}}</h2>
+                  <a [routerLink]="routes.profile" class="avatar avatar-sm img-rounded bg-gray-800 dark-hover"><i
+                      class="ti ti-edit text-white"></i></a>
                 </div>
+                <div class="d-flex align-items-center gap-5 flex-wrap mb-2">
+                  <h4 class="text-white">
+                    ADMINISTRATEUR DES SALES DE CLASSE:
+                    <span *ngFor="let classroom of classrooms; let i = index">
+                        {{i  === 0 ? "" : ", "}}
+                        {{classroom.name_fr}}
+                    </span>
+                </h4>
+                  <h4 class="text-white me-2">Session début : 2025</h4>
+                </div>
+                <div class="d-flex align-items-center gap-4 flex-wrap mb-2">
+                  <h4 class="text-success me-2">{{classrooms?.[0]?.institution?.name}}</h4>
+                </div>
+                <div class="d-flex align-items-center gap-5 flex-wrap mb-2">
+                  <h4 class="text-success me-2">PUBLIC / FRANCOPHONE</h4>
+                  <h4 class="text-success me-2">Mon matricule : {{person.registrationNumber || "000000000000"}}</h4>
+                </div>
+              </div>
+              <div class="avatar avatar-xxxl bg-danger-transparent p-1">
+                <img src="{{classrooms?.[0]?.institution?.photo?.url}}" alt="img">
+              </div>
             </div>
+          </div>
         </div>
         <!-- /Greeting Section -->
+        <div class="row">
+            <!-- Total classe -->
+            <div class="col-xxl-3 col-sm-6 d-flex">
+                <div class="card flex-fill animate-card border-0 bg-success-subtle">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                    <div class="avatar avatar-lg me-2 p-1">
+                        
+                        <img src="assets/img/icons/teacher.svg" alt="img">
+                    </div>
+                    <div class="overflow-hidden flex-fill">
+                        <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex flex-grow-0 gap-4">
+                            <h3>TOTAL ABSCENCE :</h3>
+                            <h4 class="mb-0">
+                            <span class="counters" [countUp]="0" [options]="{
+                                        duration: 10,
+                                        formattingFn: customFormattingFn
+                                        }">
+                                0
+                            </span>
+                            </h4>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
+                    <h4 class="mb-0">FILLES:
+                        <span class="counters" [countUp]="0" [options]="{
+                                    duration: 10,
+                                    formattingFn: customFormattingFn
+                                    }">
+                        0
+                        </span>
+                    </h4>
+                    <span class="text-light">|</span>
+                    <h4>GARCONS:
+                        <span class="counters" [countUp]="0" [options]="{
+                                        duration: 10,
+                                        formattingFn: customFormattingFn
+                                    }">
+                        0
+                        </span>
+                    </h4>
+                    </div>
+                </div>
+                </div>
+            </div>
 
+            <!-- Total eleve -->
+            <div class="col-xxl-3 col-sm-6 d-flex">
+                <div class="card flex-fill animate-card border-0 bg-success-subtle">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                    <div class="avatar avatar-lg me-2 p-1">
+                        <img src="assets/img/icons/student.svg" alt="img">
+                    </div>
+                    <div class="overflow-hidden flex-fill">
+                        <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex flex-grow-0 gap-4">
+                            <h3>TOTAL ELEVES :</h3>
+                            <h4 class="mb-0">
+                            <span class="counters" [countUp]="2" [options]="{
+                                        duration: 2,
+                                        formattingFn: customFormattingFn
+                                        }">
+                                2
+                            </span>
+                            </h4>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
+                    <h4 class="mb-0">TOTAL FILLE :
+                        <span class="counters" [countUp]="1" [options]="{
+                                    duration: 2,
+                                    formattingFn: customFormattingFn
+                                    }">
+                        1
+                        </span>
+                    </h4>
+                    <span class="text-light">|</span>
+                    <h4>TOTAL GARCONS :
+                        <span class="counters" [countUp]="1" [options]="{
+                                        duration: 2,
+                                        formattingFn: customFormattingFn
+                                    }">
+                        1
+                        </span>
+                    </h4>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
+                    <h4 class="mb-0">ACTIF :
+                        <span class="counters" [countUp]="1" [options]="{
+                                    duration: 2,
+                                    formattingFn: customFormattingFn
+                                    }">
+                        1
+                        </span>
+                    </h4>
+                    <span class="text-light">|</span>
+                    <h4>INACTIF :
+                        <span class="counters" [countUp]="1" [options]="{
+                                        duration: 2,
+                                        formattingFn: customFormattingFn
+                                    }">
+                        1
+                        </span>
+                    </h4>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <!-- Total enseignant -->
+            <!-- <div class="col-xxl-3 col-sm-6 d-flex">
+                <div class="card flex-fill animate-card border-0 bg-success-subtle">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                    <div class="avatar avatar-lg me-2 p-1">
+                        <img src="assets/img/icons/subject.svg" alt="img">
+                    </div>
+                    <div class="overflow-hidden flex-fill">
+                        <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex flex-grow-0 gap-4">
+                            <h3>MOYENNE GENERALE DE MA CLASSE :</h3>
+                            <h4 class="mb-0">
+                            <span class="counters" [countUp]="11" [options]="{
+                                        duration: 10,
+                                        formattingFn: customFormattingFn
+                                        }">
+                                11.05
+                            </span>
+                            </h4>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
+                    <h4 class="mb-0">FEMMES :
+                        <span class="counters" [countUp]="12.06" [options]="{
+                                    duration: 10,
+                                    formattingFn: customFormattingFn
+                                    }">
+                        12.06
+                        </span>
+                    </h4>
+                    <span class="text-light">|</span>
+                    <h4>GARCONS :
+                        <span class="counters" [countUp]="10.56" [options]="{
+                                        duration: 10,
+                                        formattingFn: customFormattingFn
+                                    }">
+                        10.56
+                        </span>
+                    </h4>
+                    </div>
+                </div>
+                </div>
+            </div> -->
+
+        </div>
         <!-- Teacher-Profile -->
         <div class="row">
             <div class="col-xxl-8 col-xl-12">
-                <div class="row">
-                    <div class="col-xxl-7 col-xl-8 d-flex">
-                        <div class="card bg-dark position-relative flex-fill">
-                            <div class="card-body pb-1">
-                                <div class="d-sm-flex align-items-center justify-content-between row-gap-3">
-                                    <div class="d-flex align-items-center overflow-hidden mb-3">
-                                        <div
-                                            class="avatar avatar-xxl rounded flex-shrink-0 border border-2 border-white me-3">
-                                            <img src="assets/img/teachers/teacher-05.jpg" alt="Img">
-                                        </div>
-                                        <div class="overflow-hidden">
-                                            <span class="badge bg-transparent-primary text-primary mb-1">#T594651</span>
-                                            <h3 class="text-white mb-1 text-truncate">Henriques Morgan </h3>
-                                            <div class="d-flex align-items-center flex-wrap text-light row-gap-2">
-                                                <span class="me-2">Classes : I-A, V-B</span>
-                                                <span class="d-flex align-items-center"><i
-                                                        class="ti ti-circle-filled text-warning fs-7 me-1"></i>Physics</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <a [routerLink] = "routes.editTeacher" class="btn btn-primary flex-shrink-0 mb-3">Edit
-                                        Profile</a>
-                                </div>
-                                <div class="student-card-bg">
-                                    <img src="assets/img/bg/circle-shape.png" alt="Bg">
-                                    <img src="assets/img/bg/shape-02.png" alt="Bg">
-                                    <img src="assets/img/bg/shape-04.png" alt="Bg">
-                                    <img src="assets/img/bg/blue-polygon.png" alt="Bg">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xxl-5 col-xl-4 d-flex">
-                        <div class="card flex-fill">
-                            <div class="card-body">
-                                <div class="row align-items-center justify-content-between">
-                                    <div class="col-sm-5">
-                                        <div id="plan_chart" class="mb-3 mb-sm-0 text-center text-sm-start">
-                                            <apx-chart [series]="studentDonutChart.series"
-                                                [chart]="studentDonutChart.chart" [labels]="studentDonutChart.labels"
-                                                [colors]="studentDonutChart.colors"
-                                                [responsive]="studentDonutChart.responsive"
-                                                [legend]="studentDonutChart.legend" [grid]="studentDonutChart.grid"
-                                                [plotOptions]="studentDonutChart.plotOptions"
-                                                [dataLabels]="studentDonutChart.dataLabels"></apx-chart>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-7">
-                                        <div class=" text-center text-sm-start">
-                                            <h4 class="mb-3">Syllabus</h4>
-                                            <p class="mb-2"><i
-                                                    class="ti ti-circle-filled text-success me-1"></i>Completed
-                                                : <span class="fw-semibold">95%</span></p>
-                                            <p><i class="ti ti-circle-filled text-danger me-1"></i>Pending :
-                                                <span class="fw-semibold">5%</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Today's Class -->
                 <div class="card">

@@ -8,6 +8,7 @@ import * as Parse from 'parse';
 })
 export class PersonService {
   private readonly PERSON_CLASS = 'Person';
+  private readonly ENROLLEMENT_CLASS = 'Enrollment';
 
   constructor() { }
 
@@ -58,6 +59,7 @@ getPersonsByStaffType(staffTypeId: string): Observable<any[]> {
     query.include('parents');
     query.include('section');
     query.include('enrollment');
+    query.include('institution')
     return from(query.get(id)).pipe(
       map(person => this.parsePersonObject(person))
     );
@@ -102,71 +104,134 @@ getPersonsByStaffType(staffTypeId: string): Observable<any[]> {
     }
     return toReturn
   }
-  createPerson(personData: any): Observable<any> {
-    const Person = Parse.Object.extend(this.PERSON_CLASS);
-    const person = new Person();
 
-    // Set basic person properties
-    person.set('firstName', personData.firstName);
-    person.set('lastName', personData.lastName);
-    person.set('gender', { "__type": "Pointer", "className": "Gender", "objectId": personData.gender });
-    person.set('section', { "__type": "Pointer", "className": "Section", "objectId": personData.section });
+createPerson(personData: any): Observable<any> {
+  const Person = Parse.Object.extend(this.PERSON_CLASS);
+  const person = new Person();
 
-    person.set('birthDate', personData.dateOfBirth ? new Date(personData.dateOfBirth) : null);
-    person.set('birthPlace', personData.placeOfBirth);
-    person.set('email', personData.email);
-    person.set('phone', personData.phone);
-    person.set('registrationNumber', personData.registrationNumber);
-    // person.set('address', personData.address);
-    if (personData?.isStudent) {
-      person.set('isStudent', true);
-    }
-    if(personData?.parents){
-      person.set('parents', personData.parents);
-    }
-    if(personData?.isParent){
-      person.set('isParent', true);
-    }
-    if (personData?.isStaff) {
-      person.set('isStaff', true);
-      person.set('staffType', { "__type": "Pointer", "className": "StaffType", "objectId": personData.staffType });
-    }
+  // Set basic person properties
+  person.set('firstName', personData.firstName);
+  person.set('lastName', personData.lastName);
+  person.set('gender', { "__type": "Pointer", "className": "Gender", "objectId": personData.gender });
+  person.set('section', { "__type": "Pointer", "className": "Section", "objectId": personData.section });
+  person.set('birthDate', personData.dateOfBirth ? new Date(personData.dateOfBirth) : null);
+  person.set('birthPlace', personData.placeOfBirth);
+  person.set('email', personData.email);
+  person.set('phone', personData.phone);
+  person.set('registrationNumber', personData.registrationNumber);
 
-    // Handle file upload if photo is provided
-    if (personData.photo && personData.photo instanceof File) {
-      const photoFile = new Parse.File(personData.photo.name, personData.photo);
-      person.set('photo', photoFile);
-    }
-
-    return from(person.save()).pipe(
-      map(result => {
-        const usr = new Parse.User();
-        usr.set("username", personData.phone);
-        usr.set("password", personData.phone);
-        usr.set("person", person);
-        if(personData.roleId){
-          usr.set("role", {"__type": "Pointer", "className": "_Role" , "objectId": personData.roleId});
-        }
-        return  usr.signUp().then(user => {
-          person.set("user", usr)
-          return person.save().then(()=>this.parsePersonObject(result))
-        })
-      })
-    );
+  if (personData?.isStudent) {
+    person.set('isStudent', true);
+  }
+  if(personData?.parents){
+    person.set('parents', personData.parents);
+  }
+  if(personData?.isParent){
+    person.set('isParent', true);
+  }
+  if (personData?.isStaff) {
+    person.set('isStaff', true);
+    person.set('staffType', { "__type": "Pointer", "className": "StaffType", "objectId": personData.staffType });
   }
 
-  async searchParentByKeyword(q: string): Promise<any> {
+  // Handle file upload if photo is provided
+  if (personData.photo && personData.photo instanceof File) {
+    const photoFile = new Parse.File(personData.photo.name, personData.photo);
+    person.set('photo', photoFile);
+  }
+
+  return from(person.save().then(async (personResult: Parse.Object) => {
+    const user = new Parse.User();
+
+    // Set username - using email as fallback if username not provided
+    const username = personData.username || personData.email || personData.phone;
+    user.set("username", username);
+
+    // Set password - using phone as default if not provided
+    const password = personData.password || personData.phone;
+    user.set("password", password);
+
+    // Set email if available
+    if (personData.email) {
+      user.set("email", personData.email);
+    }
+
+    // Set role if provided
+    if (personData.roleId) {
+      user.set("role", {"__type": "Pointer", "className": "_Role", "objectId": personData.roleId});
+    }
+
+    // Sign up the user
+    const createdUser = await user.signUp();
+
+    // Now set the user reference on the person object (instead of the other way around)
+    person.set("user", {
+      "__type": "Pointer",
+      "className": "_User",
+      "objectId": createdUser.id
+    });
+
+    await person.save();
+
+    // If person is a student, create enrollment
+    if (personData?.isStudent) {
+      const enrollment = new Parse.Object(this.ENROLLEMENT_CLASS);
+      enrollment.set('person', person);
+      enrollment.set('matricule', personData.registrationNumber);
+      enrollment.set('enrollmentDate', personData.admissionDate ? new Date(personData.admissionDate) : new Date());
+      enrollment.set('isValid', true);
+      enrollment.set('validationDate', new Date());
+
+      if (personData.academicYear) {
+        enrollment.set('academicYear', {
+          "__type": "Pointer",
+          "className": "AcademicYear",
+          "objectId": personData.academicYear
+        });
+      }
+
+      if (personData.classroom) {
+        enrollment.set('classroom', {
+          "__type": "Pointer",
+          "className": "Classroom",
+          "objectId": personData.classroom
+        });
+      }
+
+      if (personData.institution) {
+        enrollment.set('institution', {
+          "__type": "Pointer",
+          "className": "Institution",
+          "objectId": personData.institution
+        });
+      }
+
+      await enrollment.save();
+    }
+
+    return this.parsePersonObject(personResult);
+  }));
+}
+
+  async searchParentByKeyword(q: string, isParent?: boolean): Promise<any> {
     try {
       const queries = ['firstName', 'lastName', 'phone', 'email'].map(field => {
         const qObj = new Parse.Query(this.PERSON_CLASS);
-        qObj.equalTo('isParent', true);
+        qObj.exists("user");
+        if(isParent){
+          qObj.equalTo('isParent', true);
+        }else{
+          qObj.doesNotExist("isStudent");
+        }
         qObj.matches(field, new RegExp(q, 'i'));
         return qObj;
       });
       const mainQuery = Parse.Query.or(...queries);
       mainQuery.limit(30);
-      mainQuery.select('firstName', 'lastName', 'email', 'phone');
+      mainQuery.include("user");
+      // mainQuery.select('firstName', 'lastName', 'email', 'phone', "user.objectId");
       const results = await mainQuery.find();
+      console.log(' results results ', results?.map(r => r?.toJSON()))
       return results.map(person => ({
         label: `${person.get("firstName")} ${person.get("lastName")} - ${person.get("phone")}`,
         value: person.id

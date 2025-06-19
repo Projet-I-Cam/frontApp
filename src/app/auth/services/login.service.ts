@@ -30,7 +30,16 @@ export class LoginService {
   getUser(): any {
     return this.userSubject.value;
   }
+  getCurrentRole(){
+    if(this.isLoggedIn()){
+      const user = this.getUser();
+      return user?.role?.task_name;
+    }
+    else{
+      return null;
+    }
 
+  }
   isLoggedIn(): boolean {
     return !!this.userSubject.value;
   }
@@ -44,28 +53,27 @@ export class LoginService {
     return null;
   }
 
-  // public async getPerson(){
-  //   const user = this.getUser();
-  //   return await getPersonByUserId(user.objectId)
-  //   .then(person => {
-  //       if (person) {
-  //           console.log("Données de la personne :", person);
-  //           return person;
-  //       } else {
-  //           console.log("Aucune personne trouvée pour cet utilisateur. "+user.objectId);
-  //           return null;
-  //       }
-  //   })
-  //   .catch(error => {
-  //       console.error("Erreur lors de la récupération des données de la personne :", error);
-  //       return null;
-  //   });
-  // }
+public async getPerson(): Promise<any> {
+  try {
+    const user = this.getUser();
+    if (!user) return null;
 
-
-  public getPerson(){
-    return this.personSubject.value;
+    const person = await getPersonByUserId(user.objectId);
+    if (person) {
+      console.log("Données de la personne :", person);
+      return person;
+    }
+    console.log("Aucune personne trouvée pour cet utilisateur. "+user.objectId);
+    return null;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des données de la personne :", error);
+    return null;
   }
+}
+
+  // public getPerson(){
+  //   return this.personSubject.value;
+  // }
 }
 
 

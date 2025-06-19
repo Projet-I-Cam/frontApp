@@ -4,13 +4,14 @@ import {
   ApexNonAxisChartSeries,
   ApexResponsive,
   ApexPlotOptions,
-  ApexDataLabels,
+  ApexDataLabels, 
   ApexLegend,
   ApexGrid,
 } from 'ng-apexcharts';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { routes } from '../../../../shared/routes/routes';
 import { LoginService } from '../../../../auth/services/login.service';
+import Parse from 'parse';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries | any;
@@ -34,7 +35,8 @@ export class TeacherDashboardComponent implements OnInit{
   public studentDonutChart: Partial<ChartOptions>;
   public attendanceChart: Partial<ChartOptions>;
   date: Date | undefined;
-  person : any = {};
+  person: any = {};
+  classrooms: any = [];
 
   constructor(private loginService : LoginService) {
     this.date = new Date();
@@ -126,8 +128,23 @@ export class TeacherDashboardComponent implements OnInit{
     };
   }
 
-  ngOnInit(): void {
-    this.person = this.loginService.getPerson();
+  async ngOnInit(): Promise<any> {
+    this.person = await this.loginService.getPerson();
+    if(this.person?.user?.role?.task_name === "enseignant"){
+      const queries = ['teacherChief', 'teacherSecond'].map((k: string) => {
+        const q = new Parse.Query('Classroom')
+        q.equalTo(k, {"__type": "Pointer", "className": "Person" , "objectId": this.person?.objectId})
+        return q
+      })
+      const query = Parse.Query.or(...queries);
+      const result = await query.find()
+      console.log('Classroom Classroom Classroom Classroom ', result)
+      this.classrooms = result?.map(r => r?.toJSON())
+    }
+  }
+
+  customFormattingFn(value: number): string {
+    return value.toString();
   }
   customOptions: OwlOptions = {
     items: 3,

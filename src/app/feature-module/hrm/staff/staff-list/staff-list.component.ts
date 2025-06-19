@@ -6,6 +6,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DataService } from '../../../../shared/data/data.service';
 import { Router } from '@angular/router';
 import { Sort } from '@angular/material/sort';
+import Parse from 'parse';
+import { globalGet } from '../../../../services/statefull/http';
 
 @Component({
     selector: 'app-staff-list',
@@ -16,7 +18,8 @@ import { Sort } from '@angular/material/sort';
 export class StaffListComponent {
   initChecked = false;
   public pageSize = 10;
-  public tableData: Array<staff> = [];
+  public tableData: Array<any> = [];
+  public staffs: any = [];
   public tableDataCopy: Array<staff> = [];
   public actualData: Array<staff> = [];
   public routes = routes;
@@ -28,6 +31,8 @@ export class StaffListComponent {
   public serialNumberArray: Array<number> = [];
   public totalData = 0;
   showFilter = false;
+  institution = null;
+  person = null;
   public pageSelection: pageSelection[] = [];
   dataSource!: MatTableDataSource<staff>;
   public searchDataValue = '';
@@ -37,6 +42,23 @@ export class StaffListComponent {
     private router: Router,
     private pagination: PaginationService
   ) {
+    const user = Parse.User.current()
+    const datax = {
+      T: "Person",
+      isOne: true,
+      filters: {
+        user: {className: "_User", objectId: user?._getId()}
+      },
+      includes: ['institution']
+    }
+
+    globalGet(datax).then(v =>{
+      console.log('GLOBAL GET 1Z ', v)
+      this.institution = v?.institution
+      this.person = v
+      this.getStatff(v?.institution)
+    })
+
     this.data.getStaffList().subscribe((apiRes: apiResultFormat) => {
       this.actualData = apiRes.data;
       this.pagination.tablePageSize.subscribe((res: tablePageSize) => {
@@ -46,6 +68,21 @@ export class StaffListComponent {
         }
       });
     });
+  }
+
+  async getStatff(insti: any){
+    const institution = insti || this.institution
+    const r = await globalGet({
+      T: "Person",
+      filters: {
+        isStaff: true,
+        institution: {"__type": "Pointer", "className": "Institution" , "objectId": institution.objectId}
+      },
+      includes: ['profesionalBackground', 'gender', 'maritalStatus', 'municipality', 'classroom']
+    })
+    this.staffs  = r
+    this.tableData  = r
+    console.log('r r r r r r r r r ', r)
   }
 
   private getTableData(pageOption: pageSelection): void {

@@ -1,0 +1,126 @@
+<!-- student-list.component.html -->
+<div class="page-wrapper">
+  <div class="content">
+    <div class="d-md-flex d-block align-items-center justify-content-between mb-3">
+      <div class="my-auto mb-2">
+        <h3 class="page-title mb-1">Liste des élèves inscrits en {{ academicYear.libelle }}</h3>
+        <nav>
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+              <a [routerLink]="routes.adminDashboard">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">Gestion des élèves</li>
+            <li class="breadcrumb-item active" aria-current="page">Liste des élèves</li>
+          </ol>
+        </nav>
+      </div>
+      <div *ngIf="currentPerson?.user?.role && currentPerson?.user?.role.task_name ==='etablissement'" class="d-flex my-xl-auto right-content align-items-center flex-wrap">
+        <div class="mb-2"> 
+          <a [routerLink]="routes.addStudent" class="btn btn-primary">
+            <i class="ti ti-square-rounded-plus-filled me-2"></i>Ajouter un nouvel élève
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="error && error !=''" class="alert alert-danger text-center mt-2">
+      {{ error }}
+    </div>
+
+    <div *ngIf="loading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    <div *ngIf="error && error !== ''" class="text-center py-5">
+      <div class=" text-danger" >
+        {{ error }}
+      </div>
+    </div>
+
+    <div class="card">
+      <p-table #dt [value]="filteredStudents" [rows]="pageSize" [paginator]="true"
+               [totalRecords]="totalRecords" [rowsPerPageOptions]="pageSizeOptions"
+               [loading]="loading" [lazy]="true" (onLazyLoad)="onPageChange($event)"
+               styleClass="p-datatable-striped" [tableStyle]="{'min-width': '75rem'}"
+               [totalRecords]="totalRecords" (onPage)="onPageChange($event)" [first]="(currentPage - 1) * pageSize"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              class="custom-p-table"  [globalFilterFields]="['matricule', 'createdAt']" [lazy]="true">
+        <ng-template pTemplate="caption">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+          <app-tooltip-content></app-tooltip-content>
+          <div>
+           <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input type="text" pInputText [(ngModel)]="searchValue"
+                   (input)="filterTable()" placeholder="Rechercher par nom ou matricule" />
+          </span>
+            <!-- Clear button (only visible when a filter is applied) -->
+            <button *ngIf="searchValue && searchValue.trim().length > 0"
+                    (click)="dt.clear(); searchValue='';"
+                    class="btn btn-primary btn-sm me-2">
+              <i class="ti ti-x me-2"></i>Clear
+            </button>
+          </div>
+        </div>
+        <div class="d-flex flex-row align-items-center gap-3">
+          <div class="col-12 col-md-2">
+          <p-multiSelect [options]="sexes" [(ngModel)]="selectedSexes"
+                        optionLabel="label" optionValue="value"
+                        placeholder="Genre" (onChange)="filterTable()">
+          </p-multiSelect>
+        </div>
+
+        <div class="col-12 col-md-2">
+          <p-multiSelect [options]="sections" [(ngModel)]="selectedSections"
+                        optionLabel="label" optionValue="value"
+                        placeholder="Section" (onChange)="filterTable()">
+          </p-multiSelect>
+        </div>
+
+        <div class="col-12 col-md-2">
+          <p-multiSelect [options]="classes" [(ngModel)]="selectedClasses"
+                        optionLabel="label" optionValue="value"
+                        placeholder="Classe" (onChange)="filterTable()">
+          </p-multiSelect>
+        </div>
+        </div>
+      </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="matricule">Matricule <p-sortIcon field="matricule"></p-sortIcon></th>
+            <th pSortableColumn="person.firstName">Prénom <p-sortIcon field="person.firstName"></p-sortIcon></th>
+            <th pSortableColumn="person.lastName">Nom <p-sortIcon field="person.lastName"></p-sortIcon></th>
+            <th>Genre</th>
+            <th>Section</th>
+            <th>Classe</th>
+            <th>Salle</th>
+            <th>Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-student>
+          <tr>
+            <td>{{student.matricule || '-'}}</td>
+            <td>{{student.person?.firstName || '-'}}</td>
+            <td>{{student.person?.lastName || '-'}}</td>
+            <td>{{student.person?.gender?.libelle_fr || '-'}}</td>
+            <td>{{student?.person?.section?.name_fr || '-'}}</td>
+            <td>{{student.classroom?.classe?.name_fr || '-'}}</td>
+            <td>{{student.classroom?.name_fr || '-'}}</td>
+            <td>
+              <button pButton icon="ti ti-eye-bolt" class="p-button-rounded p-button-text mr-2"
+                      (click)="editStudent(student)"   tooltip="view student details"></button>
+              <button pButton icon="ti ti-trash" class="p-button-rounded p-button-text p-button-danger"
+                      (click)="confirmDelete(student)" tooltip="delete student"></button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="8" class="text-center">Aucun élève trouvé</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

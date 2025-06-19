@@ -1,11 +1,16 @@
 import { Component } from '@angular/core';
-import { routes } from '../../../../shared/routes/routes';
-import { apiResultFormat, classes } from '../../../../shared/model/pages.model';
-import { pageSelection, PaginationService, tablePageSize } from '../../../../shared/custom-pagination/pagination.service';
-import { MatTableDataSource } from '@angular/material/table';
-import { DataService } from '../../../../shared/data/data.service';
-import { Router } from '@angular/router';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+
+import { pageSelection, PaginationService, tablePageSize } from '../../../../shared/custom-pagination/pagination.service';
+import { DataService } from '../../../../shared/data/data.service';
+import { apiResultFormat, classes } from '../../../../shared/model/pages.model';
+import { routes } from '../../../../shared/routes/routes';
+import { globalGet, globalPost } from '../../../../services/statefull/http';
+import Parse from 'parse';
+
 interface data {
   name: string;
   code: string;
@@ -19,9 +24,15 @@ interface data {
 })
 export class ClassListComponent {
   initChecked = false;
+  submitting = false;
+  public classroomForm: FormGroup;
   selectedStatus: data | undefined;
   public pageSize = 10;
   public tableData: Array<classes> = [];
+  public classrooms: any = [];
+  public classes: any = [];
+  public institution: any = null;
+  public person: any = null;
   public tableDataCopy: Array<classes> = [];
   public actualData: Array<classes> = [];
   public routes = routes;
@@ -41,7 +52,8 @@ export class ClassListComponent {
   constructor(
     private data: DataService,
     private router: Router,
-    private pagination: PaginationService
+    private pagination: PaginationService,
+    private fb: FormBuilder,
   ) {
     this.data.getClass().subscribe((apiRes: apiResultFormat) => {
       this.actualData = apiRes.data;
@@ -52,6 +64,50 @@ export class ClassListComponent {
         }
       });
     });
+
+    this.classroomForm = this.fb.group({
+      name_fr: ['', [Validators.required]],
+      maxCapacity: [50, [Validators.required]],
+      classe: ['', [Validators.required]],
+    });
+  }
+
+  async onSubmit(): Promise<any> {
+        
+      const formData = { ...this.classroomForm.value };
+
+      if (this.classroomForm.valid) {
+        const classId = formData?.classe?.code
+        delete formData.classe
+        formData.name_en = formData.name_fr
+        this.submitting = true;
+        const data = {
+          ...formData,
+          classe: {className: "Classe", objectId: classId},
+          institution: {className: "Institution", objectId: this.institution.objectId}
+        }
+        console.log('formData ', formData, data)
+        const r = await globalPost({
+          T: "Classroom",
+          dataObject: data
+        })
+  
+        const button = document.getElementById('myModalCancel');
+        if(button) button.click();
+  
+        globalGet({
+          T: "Classroom",
+          filters: {
+            institution: {className: "Institution", objectId: this.institution.objectId},
+          },
+          includes: ['classe', 'classe.section']
+        }).then(v =>{
+          console.log('homework homework homework homework ', v)
+          this.classrooms = v
+        })
+  
+        this.submitting = false;
+      }
   }
 
   private getTableData(pageOption: pageSelection): void {
@@ -147,7 +203,41 @@ export class ClassListComponent {
       { name: 'Inactive', code: '2' },
     ];
    
-   
-    
+    const user = Parse.User.current()
+    const data = {
+      T: "Person",
+      isOne: true,
+      filters: {
+        user: {className: "_User", objectId: user?._getId()}
+      },
+      includes: ['institution']
+    }
+
+    globalGet(data).then(v =>{
+      console.log('GLOBAL GET ', v)
+      this.institution = v?.institution
+      this.person = v
+      globalGet({
+        T: "Classroom",
+        filters: {
+          institution: {className: "Institution", objectId: v?.institution?.objectId},
+        },
+        includes: ['classe', 'classe.section']
+      }).then(v =>{
+        console.log('classrooms classrooms classrooms classrooms ', v)
+        this.classrooms = v
+      })
+    })
+
+    globalGet({
+        T: "Classe",
+      }).then(v =>{
+        this.classes = v?.map((r: any) => {
+          return {
+             name: r.name_fr, 
+             code: r.objectId
+          }
+        })
+      })
   }
 }

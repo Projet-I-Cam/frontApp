@@ -61,7 +61,7 @@
                       class="ti ti-edit text-white"></i></a>
                 </div>
                 <div class="mt-1">
-                  <h4 class="text-white">Grade : Professeur des Lycées ESG</h4>
+                  <h4 class="text-white">Grade : Responsable MINEDUB</h4>
                 </div>
                 <div class="mt-1">
                   <h4 class="text-white">Age : 38 ans | AFP : 15 ans | APA : 03 ans</h4>
@@ -70,7 +70,7 @@
                   <h4 class="text-white">Membre depuis le {{this.currentUser.createdAt | date:'dd/MM/yyyy'}}</h4>
                 </div>
                 <div class="mt-1">
-                  <h4 class="text-white">Fonction : Délégué Départemental</h4>
+                  <h4 class="text-white">Fonction : {{user?.role?.name}}</h4>
                 </div>
               </div>
             </div>
@@ -187,7 +187,6 @@
               </div>
             </div>
           </div>
-
          <div class="gridViewScore">
             <div class="HgridVs">
               <img src="assets/img/icons/school.svg" alt="img">

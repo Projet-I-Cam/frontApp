@@ -347,7 +347,7 @@ export class routes {
     return this.peoples + '/guardians/guardian-grid';
   }
   public static get studentResult(): string {
-    return this.peoples + '/student/student-result';
+    return this.peoples + '/students/student-result';
   }
   public static get editStudent(): string {
     return this.peoples + '/students/edit-student';
@@ -360,6 +360,18 @@ export class routes {
   }
   public static get addStudent(): string {
     return this.peoples + '/students/add-student';
+  }
+   public static get reinscrition(): string {
+    return this.peoples + '/students/reinscription';
+  }
+   public static get unactifStudent(): string {
+    return this.peoples + '/students/list-unregistered-students';
+  }
+    public static get tableAbscence(): string {
+    return this.peoples + '/students/absence-list';
+  }
+   public static get tableDiscipline(): string {
+    return this.peoples + '/students/discipline-list';
   }
   public static get addInstitution(): string {
     return this.peoples + '/institutions/add-institution';
@@ -383,7 +395,7 @@ export class routes {
     return this.peoples + '/teachers/teacher-details';
   }
   public static get studentsList(): string {
-    return this.peoples + '/students/student-grid';
+    return this.peoples + '/students/student-list';
   }
   public static get studentsGrid(): string {
     return this.peoples + '/students/student-grid';
@@ -424,6 +436,7 @@ export class routes {
   public static get myStudents(): string {
     return this.peoples + '/students/my-students';
   }
+
 
 
 
@@ -820,11 +833,11 @@ export class routes {
   public static get departmentsList(): string {
     return this.administrativeDivision + '/departments';
   }
-  
+
   public static get municipalitiesList(): string {
     return this.administrativeDivision + '/municipalities';
   }
-  
+
 
 
 
@@ -1028,7 +1041,30 @@ export class routes {
   public static get pupilManagementTransfers(): string {
     return this.pupilManagement + '/transfers';
   }
-
+  public static get procesVerbal(): string {
+    return this.baseUrl + '/proces-verbal';
+  }
+  public static get releveNotes(): string {
+    return this.baseUrl + '/releve-notes';
+  }
+  public static get statsResults(): string {
+    return this.baseUrl + '/stats-results';
+  }
+  public static get procesVerbalSteps(): string {
+    return this.baseUrl + '/proces-verbal-steps';
+  }
+  public static get relevesNotesSteps():string
+  {
+    return this.baseUrl + '/releve-notes-steps';
+  }
+  public static get statsResultsSteps():string
+  {
+    return this.baseUrl + '/stats-results-steps';
+  }
+  public static get bulletinEnfant():string
+  {
+    return this.baseUrl + '/bulletin-enfant';
+  }
 }
 
 

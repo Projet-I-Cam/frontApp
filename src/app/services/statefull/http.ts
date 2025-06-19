@@ -4,9 +4,14 @@ import ParseClass from '../../parseClass';
 
 const CLASS: any = ParseClass
 
+function sanitizeFilename(filename: string) {
+    const withoutAccents = filename.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    return withoutAccents.replace(/[^a-zA-Z0-9.\-_]/g, "_").substring(0, 255);
+}
 export interface BaseGetIO {
     T: any; // la classe par de base. vous pouvez regarder app/parseClass.ts
     filters?: {}; //les contraintes
+    matches?: {}; //les contraintes
     includes?: Array<String>; // les jointures
     curentPage?: number; // pour la pagination. le currentpage peu etre 1 ou 2 pour la page 1 et 2
     size?: number; // le size le nombre max a recuperer par exemple je veux une pagination 10 par 10
@@ -16,13 +21,14 @@ export interface BaseGetIO {
 
 export interface BasePostIO {
     T: any;
-    dataObject: {}
+    dataObject: {},
 }
 
 export interface BasePutIO {
     T: any;
     objectId: string,
-    dataObject: {}
+    dataObject: {},
+    geoPoint?: any
 }
 
 export interface BaseDeleteIO {
@@ -30,7 +36,7 @@ export interface BaseDeleteIO {
     objectId: string
 }
 
-export const globalGet = async({T, filters, includes, curentPage, size, selects, isOne} : BaseGetIO): Promise<any> => {
+export const globalGet = async({T, filters, includes, curentPage, size, selects, isOne, matches} : BaseGetIO): Promise<any> => {
     try {
         const query = new Parse.Query(CLASS?.[T])
         if(filters){
@@ -40,6 +46,11 @@ export const globalGet = async({T, filters, includes, curentPage, size, selects,
                 }else{
                     query.equalTo(key, {"__type": "Pointer", "className": value?.className , "objectId": value?.objectId})
                 }
+            });
+        }
+        if(matches){
+            Object.entries(matches).forEach(([key, value]: any) => {
+                query.matchesQuery(key, value)
             });
         }
         if(includes && includes.length){
@@ -106,7 +117,7 @@ export const globalPost = async({T, dataObject} : BasePostIO): Promise<any> => {
                 });
         
             }else if(value instanceof File){
-                const parseFile = new Parse.File(value.name, value);
+                const parseFile = new Parse.File(sanitizeFilename(value.name), value);
                 query.set(key, parseFile);
             } else {
         
@@ -127,17 +138,40 @@ export const globalPost = async({T, dataObject} : BasePostIO): Promise<any> => {
     }
 }
 
-export const globalPut = async({T, dataObject, objectId} : BasePutIO): Promise<any> => {
+export const globalPut = async({T, dataObject, objectId, geoPoint} : BasePutIO): Promise<any> => {
     try {
         const query = new Parse.Query(CLASS?.[T])
         const toUpdate = await query.get(objectId)
-        Object.entries(dataObject).forEach(([key, value]: any) => {
+        Object.entries(dataObject).forEach(([key, value]: [string, any]) => {
             if(typeof value === "string" || Array.isArray(value) || value instanceof Date && !isNaN(value.getTime()) || typeof value === "boolean" || typeof value === "number"){
-                toUpdate.set(key, value)
-            }else{
-                toUpdate.set(key, {"__type": "Pointer", "className": value?.className , "objectId": value?.objectId})
+        
+                toUpdate.set(key, value);
+        
+            } else if (value && typeof value === "object" && value.className && value.objectId) {
+        
+                toUpdate.set(key, {
+        
+                    __type: "Pointer",
+        
+                    className: value.className,
+        
+                    objectId: value.objectId
+        
+                });
+        
+            }else if(value instanceof File){
+                const parseFile = new Parse.File(sanitizeFilename(value.name), value);
+                toUpdate.set(key, parseFile);
+            } else {
+        
+                console.warn(`Invalid value for key "${key}":`, value);
+                return;
             }
+        
         });
+        if(geoPoint){
+            toUpdate.set(geoPoint?.field, geoPoint.value);
+        }
         const r =  await toUpdate.save()
         return {
             message: "Objet mise a jour",

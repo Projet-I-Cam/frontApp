@@ -13,6 +13,12 @@ import { StudentLibraryComponent } from './student-library/student-library.compo
 import { EditStudentComponent } from './edit-student/edit-student.component';
 import { StudentGridComponent } from './student-grid/student-grid.component';
 import { MyStudentsComponent } from './my-students/my-students.component';
+import { StudentListComponent } from './student-list/student-list.component';
+import { StudentReinscriptionComponent } from './student-reinscription/student-reinscription.component';
+import { StudentUnregisteredListComponent } from './student-unregistered-list/student-unregistered-list.component';
+import { StudentsAbscenceListComponent } from './students-abscence-list/students-abscence-list.component';
+import { StudentsBehaviourListComponent } from './students-behaviour-list/students-behaviour-list.component';
+import {StudentResultComponent} from "./student-result/student-result.component";
 
 const routes: Routes = [
   {
@@ -28,15 +34,23 @@ const routes: Routes = [
         component: AddStudentComponent,
       },
       {
+        path: 'reinscription',
+        component: StudentReinscriptionComponent,
+      },
+      {
         path: 'student-grid',
-        component: StudentGridComponent,
+        component: StudentListComponent//StudentGridComponent,
+      },
+      {
+        path: 'student-list',
+        component: StudentListComponent,
       },
       {
         path: 'student-promotion',
         component: StudentPromotionComponent,
       },
       {
-        path: 'student-details',
+        path: 'student-details/:id',
         component: StudentDetailsComponent,
       },
       {
@@ -67,6 +81,22 @@ const routes: Routes = [
         path: 'my-students',
         component: MyStudentsComponent,
       },
+      {
+        path: 'list-unregistered-students',
+        component: StudentUnregisteredListComponent,
+      },
+      {
+        path: 'absence-list',
+        component: StudentsAbscenceListComponent,
+      },
+      {
+        path: 'discipline-list',
+        component: StudentsBehaviourListComponent,
+      },
+      {
+        path: 'student-result',
+        component: StudentResultComponent,
+      }
     ],
   },
 ];
@@ -75,4 +105,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class StudentsRoutingModule {}
+export class StudentsRoutingModule { }

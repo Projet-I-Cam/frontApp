@@ -17,7 +17,7 @@ import { globalGet } from '../../../../services/statefull/http';
   standalone: false,
   templateUrl: './my-students.component.html',
   styleUrl: './my-students.component.scss',
-  
+
 })
 export class MyStudentsComponent implements OnInit{
 
@@ -63,31 +63,31 @@ export class MyStudentsComponent implements OnInit{
      private renderer: Renderer2,
      private loginService: LoginService
    ) {}
- 
+
   async ngOnInit() {
     this.load=true;
-    this.academicYear = await getCurrentAcademicYear();    
+    this.academicYear = await getCurrentAcademicYear();
     this.currentUser = this.loginService.getUser();
     this.person = this.loginService.getPerson();
     this.filter.parentId = this.person.objectId
     if(!this.filter.yearId){
       this.filter.yearId = this.academicYear.objectId;
     }
-    this.loadStudents(this.filter);    
+    this.loadStudents(this.filter);
   }
 
-  
+
 
   async loadStudents(f: FilterStudent) {
     this.isLoading = true;
-  
+
     try {
- 
       // Charger les inscriptions avec les filtres appliqués
-      this.students = await listInscriptions({yearId: f.yearId, parentId: f.parentId});
+      this.students = await listInscriptions({yearId: f.yearId, parentId: f.parentId}); 
       this.totalItems = this.students?.length || 0;
       this.rows = this.students?.length || 0;
       this.filteredStudents = this.students;
+      console.log(this.filteredStudents);
       this.loadFilterData();
     } catch (error) {
       console.error("Erreur lors du chargement des étudiants:", error);
@@ -135,7 +135,7 @@ export class MyStudentsComponent implements OnInit{
         return matchesSchool && matchesSection && matchesClasse;
     });
 }
-  
+
 
   onSchoolChange(schoolId: string) {
       this.selectedSchool = schoolId;
@@ -162,7 +162,7 @@ export class MyStudentsComponent implements OnInit{
   // loadStudents(): void {
   //   this.isLoading = true;
   //   this.error = '';
-    
+
   //   this.studentService.getAllStudents()
   //     .pipe(
   //       finalize(() => {
@@ -194,7 +194,7 @@ export class MyStudentsComponent implements OnInit{
 
   viewDetails(id: string): void {
     this.isLoading = true;
-    
+
   }
 
   public handleApplyClick(): void {
@@ -212,9 +212,9 @@ export class MyStudentsComponent implements OnInit{
   }
 
   async getMesEnfants2() {
-    const parentQuery = new Parse.Query('Person');    
+    const parentQuery = new Parse.Query('Person');
     const parent = await parentQuery.get(this.person.objectId);
-    
+
     if (!parent) {
         console.log('Parent non trouvé');
         return;
@@ -226,12 +226,12 @@ export class MyStudentsComponent implements OnInit{
     children.forEach(child => {
       console.log('Enfant:', {
         id: child.id,
-        firstName: child.get('firstName'), 
-        lastName: child.get('lastName'), 
-        photo: child.get('photo'), 
+        firstName: child.get('firstName'),
+        lastName: child.get('lastName'),
+        photo: child.get('photo'),
           // Add more fields as needed
       });
-  })    
+  })
     return children;
   }
 
@@ -240,7 +240,7 @@ export class MyStudentsComponent implements OnInit{
     const parent = new Parse.Query('Person')
     parent.equalTo('isParent', true)
     const p = await parent.first()
-    
+
     const elevs = new Parse.Query('Person')
     elevs.equalTo('parents', p)
     const els = await elevs.find()

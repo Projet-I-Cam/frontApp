@@ -1,0 +1,67 @@
+<div class="row my-3 g-3">
+  <div class="d-flex align-items-center justify-content-between">
+    <h4>Informations Scolaires</h4>
+  </div>
+
+  <!-- Institution Information -->
+  <div class="col-md-6">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Informations de l'établissement</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p><strong>Nom:</strong> {{ institutionData?.name || 'Non spécifié' }}</p>
+        <p><strong>Adresse:</strong> {{ institutionData?.address || 'Non spécifié' }}</p>
+        <p><strong>Date d'enregistrement:</strong> {{ (institutionData?.registrationDate?.iso | date: 'mediumDate') || 'Non spécifié' }}</p>
+        <p><strong>Statut:</strong> {{ institutionData?.isActive ? 'Actif' : 'Inactif' }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Location Information -->
+  <div class="col-md-6">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Localisation</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p><strong>Municipalité:</strong> {{ institutionData?.municipality?.name || 'Non spécifié' }}</p>
+        <p><strong>Département:</strong> {{ institutionData?.municipality?.department?.name || 'Non spécifié' }}</p>
+        <p><strong>Région:</strong> {{ institutionData?.municipality?.department?.region?.name_fr || 'Non spécifié' }}</p>
+        <p><strong>Code région:</strong> {{ institutionData?.municipality?.department?.region?.code || 'Non spécifié' }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Owner Information -->
+  <div class="col-md-6 mt-3">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Propriétaire/Responsable</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p><strong>Nom:</strong> {{ institutionData?.owner?.lastName || 'Non spécifié' }}</p>
+        <p><strong>Prénom:</strong> {{ institutionData?.owner?.firstName || 'Non spécifié' }}</p>
+        <p><strong>Email:</strong> {{ institutionData?.owner?.email || 'Non spécifié' }}</p>
+        <p><strong>Téléphone:</strong> {{ institutionData?.owner?.phone || 'Non spécifié' }}</p>
+        <div *ngIf="institutionData?.owner?.certificateOppointment?.url">
+          <strong>Certificat:</strong>
+          <a [href]="institutionData.owner.certificateOppointment.url" target="_blank">Voir le certificat</a>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Dates Information -->
+  <div class="col-md-6 mt-3">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Dates</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p><strong>Créé le:</strong> {{ (institutionData?.createdAt | date: 'mediumDate') || 'Non spécifié' }}</p>
+        <p><strong>Dernière modification:</strong> {{ (institutionData?.updatedAt | date: 'mediumDate') || 'Non spécifié' }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

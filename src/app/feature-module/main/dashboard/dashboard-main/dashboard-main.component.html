@@ -7,7 +7,7 @@
 @else if (role === 'parent') {
   <app-parent-dashboard></app-parent-dashboard>
 }
-@else if (role === 'administration') {
+@else if (["administration", "regional", "departemental", "arrondissement"].includes(role)) {
   <app-dashboard-minedub></app-dashboard-minedub>
 }
 @else{

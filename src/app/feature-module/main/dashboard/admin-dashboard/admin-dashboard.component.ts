@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { OwlOptions } from 'ngx-owl-carousel-o';
-
+import Parse from 'parse';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -13,9 +13,11 @@ import {
 } from 'ng-apexcharts';
 import { routes } from '../../../../shared/routes/routes';
 import { Router } from '@angular/router';
-import { fetchCurrentPerson } from '../../../../services/statefull/genericParse';
+import { fetchCurrentPerson, getCurrentAcademicYear } from '../../../../services/statefull/genericParse';
 import { AuthService } from '../../../../services/auth.service';
 import { LoginService } from '../../../../auth/services/login.service';
+
+
 export type ChartOptions = {
   series: ApexAxisChartSeries | any;
   chart: ApexChart | any;
@@ -42,6 +44,16 @@ export class AdminDashboardComponent implements OnInit {
   public routes = routes;
   value!: Date;
   person : any = {};
+  academicYear: any;
+  institutionId: any;
+  teacherStat: any;
+  studentStat: any;
+  classStat: any;
+  staffStats: any;
+  isLoading: boolean = false;
+  error: string | null = null;
+  recentActivities= [];
+
   public student: OwlOptions = {
     loop: true,
     margin: 24,
@@ -54,7 +66,7 @@ export class AdminDashboardComponent implements OnInit {
       '<i class="fas fa-chevron-left"></i>',
       '<i class="fas fa-chevron-right"></i>',
     ],
-   
+
    responsive: {
       0: {
         items: 1,
@@ -72,7 +84,7 @@ export class AdminDashboardComponent implements OnInit {
       '<i class="fas fa-chevron-left"></i>',
       '<i class="fas fa-chevron-right"></i>',
     ],
-    
+
     responsive: {
       0: {
         items: 1,
@@ -330,7 +342,7 @@ export class AdminDashboardComponent implements OnInit {
     this.chartOptions6 = {
       chart: {
         height: 260,
-       
+
         type: 'donut',
         toolbar: {
           show: false,
@@ -417,7 +429,7 @@ export class AdminDashboardComponent implements OnInit {
       dots: false,
       autoplay: false,
       smartSpeed: 1000,
-      rtl: isRtl, 
+      rtl: isRtl,
       navText: [
         '<i class="fas fa-chevron-left"></i>',
         '<i class="fas fa-chevron-right"></i>',
@@ -435,12 +447,12 @@ export class AdminDashboardComponent implements OnInit {
       dots: false,
       autoplay: false,
       smartSpeed: 1000,
-      rtl: isRtl, 
+      rtl: isRtl,
       navText: [
         '<i class="fas fa-chevron-left"></i>',
         '<i class="fas fa-chevron-right"></i>',
       ],
-      
+
       responsive: {
         0: {
           items: 1,
@@ -448,9 +460,194 @@ export class AdminDashboardComponent implements OnInit {
       },
     };
 
-    this.person = this.loginService.getPerson();
+    this.person = await this.loginService.getPerson();
+    this.academicYear = await getCurrentAcademicYear();
+    this.institutionId = this.person?.institution?.objectId;
+     await this.loadDashboardData();
+     console.log(this.person)
   }
-    
+loadDashboardData(): Promise<void> {
+  this.isLoading = true;
+  this.error = null;
+
+  return new Promise((resolve, reject) => {
+    if (!this.institutionId) {
+      this.isLoading = false;
+      reject(new Error('No institution found for the current user'));
+      return;
+    }
+
+    Promise.all([
+      this.getClassStatistics(),
+      this.getStudentStatistics(),
+      this.getTeacherStatistics(),
+      this.getStaffStatistics()
+    ])
+    .then(([classStats, studentStats, teacherStats, staffStats]) => {
+      this.classStat = classStats;
+      this.studentStat = studentStats;
+      this.teacherStat = teacherStats;
+      this.staffStats = staffStats;
+
+      console.log(this.staffStats);
+      console.log(this.teacherStat);
+      console.log(this.studentStat);
+      console.log(this.classStat);
+
+      resolve();
+    })
+    .catch(error => {
+      console.log('error ', error);
+      this.error = error;
+      reject(error);
+    })
+    .finally(() => {
+      this.isLoading = false;
+    });
+  });
+}
+
+    async getTeacherStatistics(): Promise<any> {
+    const Person = Parse.Object.extend('Person');
+    const query = new Parse.Query(Person);
+
+    query.equalTo('institution', Parse.Object.extend('Institution').createWithoutData(this.institutionId));
+    query.equalTo('isStaff', true);
+    query.equalTo('staffType', Parse.Object.extend('StaffType').createWithoutData('teacher')); // Assuming you have a StaffType for teachers
+    query.include('gender');
+
+    const results = await query.find();
+
+    return {
+      totalTeachers: results.length,
+      byGender: {
+        male: results.filter(p => p.get('gender')?.get('libelle_fr')?.toLowerCase().includes('homme')).length || 0,
+        female: results.filter(p => p.get('gender')?.get('libelle_fr')?.toLowerCase().includes('femme')).length || 0
+      },
+      byStatus: {
+        active: results.filter(p => p.get('isActive')).length || 0,
+        inactive: results.filter(p => !p.get('isActive')).length || 0
+      }
+    };
+  }
+
+   async getStaffStatistics(): Promise<any> {
+    const Person = Parse.Object.extend('Person');
+    const query = new Parse.Query(Person);
+
+    query.equalTo('institution', Parse.Object.extend('Institution').createWithoutData(this.institutionId));
+    query.equalTo('isStaff', true);
+    query.include('gender');
+
+    const results = await query.find();
+
+    return {
+      totalStaff: results.length,
+      byGender: {
+        male: results.filter(p => p.get('gender')?.get('libelle_fr')?.toLowerCase().includes('homme')).length || 0,
+        female: results.filter(p => p.get('gender')?.get('libelle_fr')?.toLowerCase().includes('femme')).length || 0
+      },
+      byStatus: {
+        active: results.filter(p => p.get('isActive')).length || 0,
+        inactive: results.filter(p => !p.get('isActive')).length || 0
+      }
+    };
+  }
+
+  async getStudentStatistics(): Promise<any> {
+    const Enrollment = Parse.Object.extend('Enrollment');
+    const query = new Parse.Query(Enrollment);
+
+    query.equalTo('institution', Parse.Object.extend('Institution').createWithoutData(this.institutionId));
+    query.equalTo('academicYear', Parse.Object.extend('AcademicYear').createWithoutData(this.academicYear.objectId));
+    query.include('classroom');
+    query.include('classroom.classe');
+    query.include('classroom.classe.classroomLevel');
+    query.include('section');
+    query.equalTo('isValid', true);
+    query.include('person');
+    query.include('person.gender');
+
+    const results = await query.find();
+
+    const statistics: any = {
+      totalStudents: results.length,
+      byGender: {
+        male: 0,
+        female: 0
+      },
+      byStatus: {
+        active: 0,
+        inactive: 0
+      },
+      byLevel: {},
+      bySection: {}
+    };
+
+    results.forEach(enrollment => {
+      const gender = enrollment.get('person')?.get('gender')?.get('slug') || '';
+
+      if (gender == 'male') {
+        statistics.byGender.male++;
+      } else if (gender == 'female') {
+        statistics.byGender.female++;
+      }
+
+      // Assuming active status based on enrollment validity
+      if (enrollment.get('isValid')) {
+        statistics.byStatus.active++;
+      } else {
+        statistics.byStatus.inactive++;
+      }
+
+      const level = enrollment.get('classroom')?.get('classe')?.get('classroomLevel')?.get('libelle') || 'Unknown';
+      statistics.byLevel[level] = (statistics.byLevel[level] || 0) + 1;
+
+      const section = enrollment.get('section')?.get('name_fr') || 'Unknown';
+      statistics.bySection[section] = (statistics.bySection[section] || 0) + 1;
+    });
+
+    return statistics;
+  }
+async getClassStatistics(): Promise<any> {
+    const Classroom = Parse.Object.extend('Classroom');
+    const query = new Parse.Query(Classroom);
+
+    query.equalTo('institution', Parse.Object.extend('Institution').createWithoutData(this.institutionId));
+    query.equalTo('academicYear', Parse.Object.extend('AcademicYear').createWithoutData(this.academicYear.objectId));
+    query.include('classe');
+    query.include('section');
+    query.include('classe.classroomLevel');
+
+    const results = await query.find();
+
+    const statistics: any = {
+      totalClasses: results.length,
+      byLevel: {},
+      bySection: {},
+      byStatus: {
+        active: 0,
+        inactive: 0
+      }
+    };
+
+    results.forEach(classroom => {
+      const level = classroom.get('classe')?.get('classroomLevel')?.get('libelle') || 'Unknown';
+      statistics.byLevel[level] = (statistics.byLevel[level] || 0) + 1;
+
+      const section = classroom.get('section')?.get('name_fr') || 'Unknown';
+      statistics.bySection[section] = (statistics.bySection[section] || 0) + 1;
+
+      if (classroom.get('isActive')) {
+        statistics.byStatus.active++;
+      } else {
+        statistics.byStatus.inactive++;
+      }
+    });
+
+    return statistics;
+  }
+
 
   tasks: Task[] = [
     {

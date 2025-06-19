@@ -1,0 +1,277 @@
+<div class="page-wrapper">
+  <!-- Barre de navigation avec titre -->
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">Bulletins Scolaires</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a [routerLink]="routes.adminDashboard">Tableau de bord</a>
+            </li>
+            <li class="breadcrumb-item"><a>Notes</a></li>
+            <li class="breadcrumb-item active">Bulletins Scolaires</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="!showBulletin">
+      <div class="col-sm-12">
+        <div class="card card-table comman-shadow">
+          <div class="card-body">
+            <!-- Filters -->
+            <div class="row filter-row">
+              <div class="col-lg-4 col-md-4 d-none">
+                <div class="form-group">
+                  <label>Classe</label>
+                  <p-dropdown [options]="classes" [(ngModel)]="selectedClass" optionLabel="name" placeholder="Sélectionner une classe" styleClass="w-100"></p-dropdown>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-4">
+                <div class="form-group">
+                  <label>Enfant</label>
+                  <p-dropdown [options]="students" [(ngModel)]="selectedStudent" optionLabel="name" placeholder="Sélectionner un enfant" styleClass="w-100"></p-dropdown>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-4">
+                <div class="form-group">
+                  <label>Période</label>
+                  <p-dropdown [options]="terms" [(ngModel)]="selectedTerm" optionLabel="name" placeholder="Sélectionner une période" styleClass="w-100"></p-dropdown>
+                </div>
+              </div>
+            </div>
+            <!-- /Filters -->
+
+            <!-- Button Row -->
+            <div class="row mt-4">
+              <div class="col-12 text-center">
+                <button class="btn btn-primary" [disabled]="!selectedClass || !selectedStudent || !selectedTerm" (click)="generateBulletin()">Afficher le Bulletin</button>
+              </div>
+            </div>
+            <!-- /Button Row -->
+
+            <!-- No Selection Warning -->
+            <div class="row mt-4" *ngIf="!selectedClass || !selectedStudent || !selectedTerm">
+              <div class="col-12 text-center">
+                <div class="alert alert-info">
+                  Veuillez sélectionner une classe, un élève et une période pour générer le bulletin.
+                </div>
+              </div>
+            </div>
+            <!-- /No Selection Warning -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Report Card -->
+    <!-- report-card.component.html -->
+    <div class="d-flex justify-content-end mb-3">
+      <button class="btn btn-outline-primary" (click)="printBulletin()">
+        <i class="bi bi-printer"></i> Imprimer le bulletin
+      </button>
+      <button class="btn btn-outline-primary ms-2" (click)="dataService.exportToExcel('bulletin-content')">
+        <i class="bi bi-file-earmark-excel"></i> Exporter vers Excel
+      </button>
+    </div>
+    <div id="bulletin-content" class="container my-4" *ngIf="showBulletin && studentData" style="font-family: Arial, sans-serif;">
+
+      <div class="text-center mb-1">
+        <h3 class="text-black" style="font-weight: 900; font-size: x-large">Bulletin de Notes</h3>
+        <h4 class="text-primary fw-bold">{{ selectedTerm.name }}</h4>
+        <h5 class="text-primary fw-bold">{{ studentData.schoolName }}</h5>
+        <p class="text-secondary" style="text-align: right;">Année Scolaire : {{ studentData.schoolYear }}</p>
+      </div>
+
+      <div class="row mb-1 bg-light rounded p-2 shadow-sm">
+        <div class="col-md-2 text-center">
+          <img [src]="studentData.profileImage" alt="Photo de l'élève" class="img-thumbnail" style="width: 100%; height: 190px; object-fit: cover;">
+        </div>
+        <div class="col-md-5">
+          <p><strong>Nom :</strong> {{ studentData.name }}</p>
+          <p><strong>Date de naissance :</strong> {{ studentData.dob }}</p>
+          <p><strong>Sexe :</strong> {{ studentData.gender ? studentData.gender : '---' }}</p>
+          <p><strong>État de santé :</strong> <span class="text-success">APTE</span></p>
+          <p><strong>Contact :</strong> {{ studentData.phone ? studentData.phone : '---' }}</p>
+        </div>
+        <div class="col-md-4">
+          <p><strong>Classe :</strong> {{ studentData.class }}</p>
+          <p><strong>Section :</strong> {{ studentData.section }}</p>
+          <p><strong>Niveau :</strong> II</p>
+          <p><strong>Admission No :</strong> {{ studentData.admissionNo }}</p>
+          <p><strong>Trimestre :</strong> {{ studentData.term }}</p>
+        </div>
+      </div>
+
+      <div *ngFor="let comp of competences" class="mb-1">
+        <div *ngFor="let mod of comp.modules; let modIndex = index" class="module-container">
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped align-middle">
+              <thead class="table-primary">
+              <!-- ✅ L'en-tête compétence ne s'affiche que pour le premier module -->
+              <tr *ngIf="modIndex === 0">
+                <th class="text-uppercase">Compétence</th>
+                <th class="text-uppercase" [attr.colspan]="mod.unites.length * 2 +1">
+                  {{ comp.title }} ({{ comp.totalPoints }} Points)
+                </th>
+              </tr>
+
+              <tr>
+                <th rowspan="2" class="text-center align-middle">Module</th>
+                <th rowspan="2" class="text-center align-middle">Unité d'Apprentissage</th>
+                <th colspan="2" *ngFor="let ua of mod.unites" class="text-center">{{ ua.name }}</th>
+              </tr>
+              <tr>
+                <ng-container *ngFor="let ua of mod.unites">
+                  <th class="text-center">Note</th>
+                  <th class="text-center">Cote</th>
+                </ng-container>
+              </tr>
+              </thead>
+              <tbody>
+              <ng-container *ngIf="filteredEvaluationTypes(mod) as shownTypes">
+                <tr *ngFor="let evalType of shownTypes; let i = index" class="table-light">
+                  <td *ngIf="i === 0" [attr.rowspan]="shownTypes.length + 2"
+                      style="width: 200px !important; height: 60px; word-break: break-word; white-space: normal; overflow-wrap: break-word;">
+                    {{ mod.title }} ({{ mod.totalPoints }} Points)
+                  </td>
+                  <td class="fw-semibold">{{ evalType.label }} ({{ evalType.points }} pts)</td>
+                  <ng-container *ngFor="let ua of mod.unites">
+                    <td class="text-center">{{ getEvaluationNote(ua.evaluations, evalType.value) }}</td>
+                    <td class="text-center">{{ getEvaluationCote(ua.evaluations, evalType.value) }}</td>
+                  </ng-container>
+                </tr>
+
+                <!-- Totaux -->
+                <tr class="fw-bold bg-info text-white">
+                  <td>Total des points</td>
+                  <ng-container *ngFor="let ua of mod.unites">
+                    <td class="text-center">{{ getTotalNote(ua, shownTypes) }}</td>
+                    <td class="text-center">{{ getAverageCote(ua, shownTypes) }}</td>
+                  </ng-container>
+                </tr>
+
+                <!-- Moyennes -->
+                <tr class="fw-bold bg-info text-white">
+                  <td>Cote moyenne</td>
+                  <ng-container *ngFor="let ua of mod.unites">
+                    <td class="text-center" colspan="2">
+                      {{ getAverageCote(ua, shownTypes) }}
+                    </td>
+                  </ng-container>
+                </tr>
+
+                <!-- Cote module -->
+                <tr class="fw-bold bg-primary text-white">
+                  <td>Cote Module</td>
+                  <td [attr.colspan]="mod.unites.length * 2 + 1">
+                    Compétence Acquise mais susceptible d'évoluer ( A )
+                  </td>
+                </tr>
+              </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="mt-1">
+        <h5 class="mb-1 border-bottom pb-2 text-primary">Résumé et Observations</h5>
+        <table class="table table-bordered">
+          <tbody>
+          <tr>
+            <!-- Colonne QR code ajoutée ici -->
+            <td rowspan="7" class="text-center align-middle">
+              <div class="col-md-12 text-center">
+                <img [src]="studentData.profileImage" alt="QR Code" class="img-thumbnail" style="width: 100%; height: 100px; object-fit: cover;">
+              </div>
+            </td>
+            <th>Discipline</th>
+            <td>{{ studentData.conduct }}</td>
+            <th>Total des Absences</th>
+            <td>{{ attendanceData && attendanceData[1] ? attendanceData[1].absent : '---' }}</td>
+          </tr>
+          <tr>
+            <th>Absences Justifiées</th>
+            <td>--</td>
+            <th>Absences Non Justifiées</th>
+            <td>--</td>
+          </tr>
+          <tr>
+            <th>Travail Elève</th>
+            <td>{{ result }}</td>
+            <th>Rang</th>
+            <td>{{ studentData.rank }}</td>
+          </tr>
+          <tr>
+            <th>Cote du 2ème Trimestre Elève</th>
+            <td>{{ studentData.average }}</td>
+            <th>Cote de la classe</th>
+            <td>{{ studentData.classAverage }}</td>
+          </tr>
+          <tr>
+            <th>Premier(e)</th>
+            <td>--</td>
+            <th>Dernier(e)</th>
+            <td>--</td>
+          </tr>
+          <tr>
+            <th>Observations 2ème Trimestre</th>
+            <td colspan="3">{{ studentData.teacherRemarks }}</td>
+          </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered">
+          <tbody>
+          <tr>
+            <!-- Colonne 1 : Signature Enseignant -->
+            <td style="width: 33%; vertical-align: top; padding: 0;">
+              <table style="width: 100%; height: 100%; border: 1px solid black; border-collapse: collapse;">
+                <tr style="border-bottom: 1px solid black;">
+                  <td class="fw-bold text-center p-1">Signature Enseignant(e)</td>
+                </tr>
+                <tr>
+                  <td style="height: 60px;"></td>
+                </tr>
+              </table>
+            </td>
+
+            <!-- Colonne 2 : Évaluations -->
+            <td style="width: 34%; vertical-align: top; text-align: center;">
+              <table style="width: 100%; border-collapse: collapse;">
+                <tr style="border-bottom: 1px solid black;">
+                  <td>A+</td>
+                  <td>A</td>
+                  <td>ECA</td>
+                  <td>NA</td>
+                </tr>
+                <tr>
+                  <td>02</td>
+                  <td>05</td>
+                  <td>00</td>
+                  <td>00</td>
+                </tr>
+              </table>
+            </td>
+
+            <!-- Colonne 3 : Signature Parent -->
+            <td style="width: 33%; vertical-align: top; padding: 0;">
+              <table style="width: 100%; height: 100%; border: 1px solid black; border-collapse: collapse;">
+                <tr style="border-bottom: 1px solid black;">
+                  <td class="fw-bold text-center p-1">Signature Parent</td>
+                </tr>
+                <tr>
+                  <td style="height: 60px;"></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+    <!-- /Report Card -->
+  </div>
+</div>

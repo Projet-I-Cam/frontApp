@@ -30,11 +30,30 @@ export class UtilsService {
   static async getSection(){
     return (await new Parse.Query(ParseClass.Section).find()) //?.map(section => section.toJSON())
   }
+  static async getMaritalStatus(){
+    return (await new Parse.Query(ParseClass.MaritalStatus).find()) //?.map(section => section.toJSON())
+  }
   static async getGender(){
     return (await new Parse.Query(ParseClass.Gender).find()) //?.map(section => section.toJSON())
   }
   static async getTypeOfFather(){
     return (await new Parse.Query(ParseClass.TypeOfParent).find()) //?.map(section => section.toJSON())
+  }
+
+  static async searchMunicipalityByKeyword(q: string): Promise<any> {
+      try {
+        const qObj = new Parse.Query(ParseClass.Municipality);
+        qObj.matches("name", new RegExp(q, 'i'));
+        qObj.limit(30);
+        const results = await qObj.find();
+        return results.map(municipality => ({
+          label: `${municipality.get("name")}`,
+          value: municipality.id
+        }));
+      } catch (error) {
+        console.error(' error searchMunicipalityByKeyword', error)
+        return []
+      }
   }
   static getStudentMatricule(){
     const date = new Date();

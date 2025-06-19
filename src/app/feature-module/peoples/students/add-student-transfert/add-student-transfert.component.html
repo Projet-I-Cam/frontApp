@@ -1,0 +1,114 @@
+<div class="p-fluid grid">
+  <div class="col-12">
+    <h5>Nouveau transfert d'élève</h5>
+  </div>
+
+  <form class="grid" [formGroup]="transferForm" (ngSubmit)="onSubmit()">
+
+     <div class="row">
+      <div class="col-12 col-md-6 p-1">
+      <div class="field">
+        <label for="studentId">ID Élève *</label>
+        <input id="studentId" type="text" pInputText formControlName="studentId" class="w-full">
+        <small *ngIf="transferForm.get('studentId')?.invalid && transferForm.get('studentId')?.touched"
+               class="p-error block">ID Élève requis</small>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 p-1">
+      <div class="field">
+        <label for="studentName">Nom Élève *</label>
+        <input id="studentName" type="text" pInputText formControlName="studentName" class="w-full">
+        <small *ngIf="transferForm.get('studentName')?.invalid && transferForm.get('studentName')?.touched"
+               class="p-error block">Nom requis</small>
+      </div>
+    </div>
+     </div>
+
+     <div class="row">
+      <div class="col-12 col-md-6 p-1">
+      <div class="field">
+        <label for="transferDate">Date de transfert *</label>
+        <p-calendar id="transferDate" formControlName="transferDate"
+                   [showIcon]="true" dateFormat="dd/mm/yy" styleClass="w-full"></p-calendar>
+        <small *ngIf="transferForm.get('transferDate')?.invalid && transferForm.get('transferDate')?.touched"
+               class="p-error block">Date requise</small>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 p-1">
+      <div class="field">
+        <label for="transferCertificateNumber">N° certificat *</label>
+        <input id="transferCertificateNumber" type="text" pInputText formControlName="transferCertificateNumber" class="w-full">
+        <small *ngIf="transferForm.get('transferCertificateNumber')?.invalid && transferForm.get('transferCertificateNumber')?.touched"
+               class="p-error block">Numéro requis</small>
+      </div>
+    </div>
+    </div>
+
+     <div class="row">
+        <div class="col-12 col-md-6 p-1">
+      <div class="field">
+        <label for="fromSchool">École d'origine *</label>
+        <input id="fromSchool" type="text" pInputText formControlName="fromSchool" class="w-full">
+        <small *ngIf="transferForm.get('fromSchool')?.invalid && transferForm.get('fromSchool')?.touched"
+               class="p-error block">École requise</small>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 p-1">
+      <div class="field">
+        <label for="toSchool">École de destination *</label>
+        <input id="toSchool" type="text" pInputText formControlName="toSchool" class="w-full">
+        <small *ngIf="transferForm.get('toSchool')?.invalid && transferForm.get('toSchool')?.touched"
+               class="p-error block">Destination requise</small>
+      </div>
+    </div>
+
+</div>
+
+     <div class="row">
+       <div class="col-12 col-md-6 p-1">
+      <div class="field">
+        <label for="reason">Raison du transfert *</label>
+        <textarea id="reason" pInputTextarea formControlName="reason" class="form-control"></textarea>
+        <small *ngIf="transferForm.get('reason')?.invalid && transferForm.get('reason')?.touched"
+               class="p-error block">Raison requise</small>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 p-1">
+      <div class="field">
+        <label for="status">Statut *</label>
+        <p-dropdown id="status" [options]="[
+          {label: 'En attente', value: 'En attente'},
+          {label: 'En cours', value: 'En cours'},
+          {label: 'Approuvé', value: 'Approuvé'},
+          {label: 'Rejeté', value: 'Rejeté'},
+          {label: 'Terminé', value: 'Terminé'}
+        ]" formControlName="status" styleClass="w-full"></p-dropdown>
+      </div>
+    </div>
+     </div>
+
+
+    <div class="col-12 col-md-6 p-1">
+      <div class="field">
+        <label for="documents">Documents</label>
+        <p-fileUpload id="documents" mode="basic" chooseLabel="Ajouter fichiers"
+                     multiple (onSelect)="uploadDocument($event)" accept=".pdf,.jpg,.png"
+                     styleClass="w-full"></p-fileUpload>
+        <small class="p-text-secondary block">Formats acceptés: PDF, JPG, PNG (max 5MB)</small>
+        <div *ngIf="transferForm.get('documents')?.value?.length" class="mt-2">
+          <p-chips *ngFor="let doc of transferForm.get('documents')?.value" class="mr-2 mb-2"></p-chips>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex-row p-1 flex justify-content-center">
+      <button pButton type="button" label="Annuler" icon="pi pi-times"
+              class="p-button-text col-12 col-md-3 btn btn-secondary mx-3"></button>
+      <button pButton type="submit" label="Enregistrer" icon="pi pi-check" class="col-12 col-md-3 btn btn-primary "></button>
+    </div>
+  </form>
+</div>

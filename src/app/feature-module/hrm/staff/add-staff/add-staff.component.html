@@ -6,15 +6,15 @@
       class="d-md-flex d-block align-items-center justify-content-between mb-3"
     >
       <div class="my-auto mb-2">
-        <h3 class="mb-1">Add Staff</h3>
+        <h3 class="mb-1">Ajouter un personnel</h3>
         <nav>
           <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item">
               <a [routerLink] = "routes.adminDashboard">Dashboard</a>
             </li>
-            <li class="breadcrumb-item">HRM</li>
+            <li class="breadcrumb-item">RH</li>
             <li class="breadcrumb-item active" aria-current="page">
-              Add Staff
+              Ajouter un personnel
             </li>
           </ol>
         </nav>
@@ -24,7 +24,10 @@
 
     <div class="row">
       <div class="col-md-12">
-        <form (ngSubmit)="onSubmit()">
+        <div class="login-danger" *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
+        <form [formGroup]="staffForm" (ngSubmit)="onSubmit()">
           <!-- Personal Information -->
           <div class="card">
             <div class="card-header bg-light">
@@ -34,7 +37,7 @@
                 >
                   <i class="ti ti-info-square-rounded fs-16"></i>
                 </span>
-                <h4 class="text-dark">Personal Information</h4>
+                <h4 class="text-dark">Informations personnelles</h4>
               </div>
             </div>
             <div class="card-body pb-1">
@@ -57,6 +60,8 @@
                               type="file"
                               class="form-control image-sign"
                               multiple=""
+                              (change)="onFileSelect($event)"
+                              #fileInput
                             />
                           </div>
                           <a
@@ -72,196 +77,154 @@
                     </div>
                   </div>
                 </div>
-                <div class="row row-cols-xxl-5 row-cols-md-6">
-                  <div class="col-xxl col-xl-3 col-md-6">
+                <div class="row">
+                  <div class="col-12 col-md-4">
                     <div class="mb-3">
-                      <label class="form-label">First Name</label>
-                      <input type="text" class="form-control" />
+                      <label class="form-label">Nom<span class="login-danger">*</span></label>
+                      <input type="text" class="form-control" formControlName="firstName" [ngClass]="{'is-invalid': staffForm.get('firstName')?.invalid && staffForm.get('firstName')?.touched}" />
                     </div>
                   </div>
-                  <div class="col-xxl col-xl-3 col-md-6">
+                  <div class="col-12 col-md-4">
                     <div class="mb-3">
-                      <label class="form-label">Last Name</label>
-                      <input type="text" class="form-control" />
+                      <label class="form-label">Prénom<span class="login-danger">*</span></label>
+                      <input type="text" class="form-control" formControlName="lastName" [ngClass]="{'is-invalid': staffForm.get('lastName')?.invalid && staffForm.get('lastName')?.touched}" />
                     </div>
                   </div>
-                  <div class="col-xxl col-xl-3 col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Role</label>
 
-                      <p-dropdown
-                        [options]="[
-                          { label: 'Teacher', value: '1' },
-                          { label: 'Accountant', value: '2' },
-                          { label: 'Librarian', value: '3' }
-                        ]"
-                        placeholder="Select"
-                        class="select"
-                      ></p-dropdown>
-                    </div>
-                  </div>
-                  <div class="col-xxl col-xl-3 col-md-6">
+                  <div class="col-12 col-md-4">
                     <div class="mb-3">
-                      <label class="form-label">Department</label>
-                      <p-dropdown
-                        [options]="[
-                          { label: 'Admin', value: '1' },
-                          { label: 'Management', value: '2' },
-                          { label: 'Academic', value: '3' },
-                          { label: 'Library', value: '4' }
-                        ]"
-                        placeholder="Select"
-                        class="select"
-                      ></p-dropdown>
-                    </div>
-                  </div>
-                  <div class="col-xxl col-xl-3 col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Designation</label>
-                      <p-dropdown
-                        [options]="[
-                          { label: 'Teacher', value: '1' },
-                          { label: 'Accountant', value: '2' },
-                          { label: 'Librarian', value: '3' }
-                        ]"
-                        placeholder="Select"
-                        class="select"
-                      ></p-dropdown>
-                    </div>
-                  </div>
-                  <div class="col-xxl col-xl-3 col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Gender</label>
-                      <p-dropdown
-                        [options]="[
-                          { label: 'Female', value: '1' },
-                          { label: 'Male', value: '2' }
-                        ]"
-                        placeholder="Select"
-                        class="select"
-                      ></p-dropdown>
-                    </div>
-                  </div>
-                  <div class="col-xxl col-xl-3 col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Primary Contact Number</label>
-                      <input type="text" class="form-control" />
-                    </div>
-                  </div>
-                  <div class="col-xxl col-xl-3 col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Email Address</label>
-                      <input type="email" class="form-control" />
-                    </div>
-                  </div>
-                  <div class="col-xxl col-xl-3 col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Blood Group</label>
-                      <p-dropdown
-                        [options]="[
-                          { label: 'Select', value: '' },
-                          { label: 'O +ve', value: 'O +ve' },
-                          { label: 'B +ve', value: 'B +ve' },
-                          { label: 'B -ve', value: 'B -ve' }
-                        ]"
-                        placeholder="Select"
-                        class="select"
-                      ></p-dropdown>
-                    </div>
-                  </div>
-                  <div class="col-xxl col-xl-3 col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Marital Status</label>
-                      <p-dropdown
-                        [options]="[
-                          { label: 'Select', value: '' },
-                          { label: 'Single', value: 'Single' },
-                          { label: 'Married', value: 'Married' }
-                        ]"
-                        placeholder="Select"
-                        class="select"
-                      ></p-dropdown>
-                    </div>
-                  </div>
-                  <div class="col-xxl col-xl-3 col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Father’s Name</label>
-                      <input type="text" class="form-control" />
-                    </div>
-                  </div>
-                  <div class="col-xxl col-xl-3 col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Mother’s Name</label>
-                      <input type="text" class="form-control" />
-                    </div>
-                  </div>
-                  <div class="col-xxl col-xl-3 col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Date of Birth</label>
+                      <label class="form-label">Date de naissance<span class="login-danger">*</span></label>
                       <div class="input-icon position-relative">
                         <span class="input-icon-addon">
                           <i class="ti ti-calendar"></i>
                         </span>
                         <input
-                          type="text"
-                          class="form-control datetimepicker"
-                          placeholder="dd-mm-yyyy"
-                          bsDatepicker
-                        />
+                            type="text"
+                            [ngClass]="{'is-invalid': staffForm.get('dateOfBirth')?.invalid && staffForm.get('dateOfBirth')?.touched}"
+                            class="form-control datetimepicker"
+                            placeholder="jj-mm-aaaa"
+                            bsDatepicker
+                            formControlName="birthDate"
+                          />
                       </div>
                     </div>
                   </div>
-                  <div class="col-xxl col-xl-3 col-md-6">
+                  <div class="col-12 col-md-4">
                     <div class="mb-3">
-                      <label class="form-label">Date of Joining</label>
-                      <div class="input-icon position-relative">
-                        <span class="input-icon-addon">
-                          <i class="ti ti-calendar"></i>
-                        </span>
-                        <input
-                          type="text"
-                          class="form-control datetimepicker"
-                          placeholder="dd-mm-yyyy"
-                          bsDatepicker
-                        />
-                      </div>
+                      <label class="form-label">Lieu de naissance<span class="login-danger">*</span></label>
+                      <input type="text" class="form-control" formControlName="birthPlace" [ngClass]="{'is-invalid': staffForm.get('birthPlace')?.invalid && staffForm.get('birthPlace')?.touched}" />
                     </div>
                   </div>
-                  <div class="col-xxl col-xl-3 col-md-6">
+                  <div class="col-12 col-md-4">
                     <div class="mb-3">
-                      <label class="form-label">Language Known</label>
-                      <p-chips class="input-tags" [ngModelOptions]="{standalone: true}"
-                                            [(ngModel)]="values"></p-chips>
+                      <label class="form-label">Genre<span class="login-danger">*</span></label>
+                      <p-dropdown
+                          [options]="sexes"
+                          placeholder="Sélectionner"
+                          class="select"
+                          [ngClass]="{'is-invalid': staffForm.get('gender')?.invalid && staffForm.get('gender')?.touched}"
+                          formControlName="gender"
+                        ></p-dropdown>
                     </div>
                   </div>
-                  <div class="col-xxl-4 col-xl-3 col-md-6">
+
+                  <div class="col-12 col-md-4">
                     <div class="mb-3">
-                      <label class="form-label">Qualification</label>
-                      <input type="text" class="form-control" />
+                      <label class="form-label">Situation matrimoniale<span class="login-danger">*</span></label>
+                      <p-dropdown
+                          [options]="maritalStatuses"
+                          placeholder="Sélectionner"
+                          class="select"
+                          [ngClass]="{'is-invalid': staffForm.get('maritalStatuses')?.invalid && staffForm.get('maritalStatuses')?.touched}"
+                          formControlName="maritalStatus"
+                        ></p-dropdown>
                     </div>
                   </div>
-                  <div class="col-xxl-4 col-xl-3 col-md-6">
+
+                  <div class="col-12 col-md-4">
+                    <label class="form-label">Nationalité <span class="login-danger">*</span></label>
+                    <ng-select
+                      [items]="countries"
+                      bindLabel="nameFr"
+                      formControlName="countryCode"
+                      placeholder="Selectionner"
+                      [searchable]="true"
+                      [clearable]="true">
+
+                      <!-- Template pour l’option dans la liste déroulante -->
+                      <ng-template ng-option-tmp let-item="item" let-index="index">
+                        <img
+                          [src]="item.flag"
+                          alt="{{item.nameFr}} drapeau"
+                          width="20"
+                          height="15"
+                          style="margin-right: 8px; vertical-align: middle;">
+                        {{ item.nameFr }}
+                      </ng-template>
+
+                      <!-- Template pour l’élément sélectionné affiché dans le champ -->
+                      <ng-template  ng-label-tmp let-item="item" let-clear="clear">
+                        <img
+                          [src]="item.flag"
+                          *ngIf="item"
+                          alt="{{item.nameFr}} drapeau"
+                          width="20"
+                          height="15"
+                          style="margin-right: 8px; vertical-align: middle;">
+                        {{ item.nameFr }}
+                        <span *ngIf="item" (click)="clear(item)" class="ng-select-clear-button">&times;</span>
+                      </ng-template>
+                    </ng-select>
+                  </div>
+
+                  <div class="col-12 col-md-4">
                     <div class="mb-3">
-                      <label class="form-label">Work Experience</label>
-                      <input type="text" class="form-control" />
+                      <label class="form-label">Arrondissement<span class="login-danger">*</span></label>
+                      <p-dropdown
+                        formControlName="municipality"
+                        [options]="filteredMunicipality"
+                        [loading]="loadingMunicipality"
+                        [filter]="true"
+                        placeholder="Rechercher l'arrondissement"
+                        [virtualScroll]="true"
+                        [itemSize]="30"
+                        (onFilter)="searchMun($event)"
+                      >
+                      </p-dropdown>
                     </div>
                   </div>
-                  <div class="col-xxl-4 col-xl-3 col-md-6">
+                  <div class="col-12 col-md-4">
                     <div class="mb-3">
-                      <label class="form-label">Note</label>
-                      <input type="text" class="form-control" />
+                      <label class="form-label">Religion</label>
+                      <p-dropdown
+                        [options]="[
+                          { label: 'Select', value: '' },
+                          { label: 'christianisme', value: 'Christianisme' },
+                          { label: 'musulmane', value: 'Musulmane' }
+                        ]"
+                        placeholder="Select"
+                        class="select"
+                      ></p-dropdown>
                     </div>
                   </div>
-                  <div class="col-xxl-6 col-xl-3 col-md-6">
+
+
+                  <div class="col-12 col-md-4">
                     <div class="mb-3">
-                      <label class="form-label">Address</label>
-                      <input type="text" class="form-control" />
+                      <label class="form-label">Telephone<span class="login-danger">*</span></label>
+                      <input type="text" class="form-control" formControlName="phone" [ngClass]="{'is-invalid': staffForm.get('phone')?.invalid && staffForm.get('phone')?.touched}" />
                     </div>
                   </div>
-                  <div class="col-xxl-6 col-xl-3 col-md-6">
+                  <div class="col-12 col-md-4">
                     <div class="mb-3">
-                      <label class="form-label">Permanent Address</label>
-                      <input type="text" class="form-control" />
+                      <label class="form-label">Email</label>
+                      <input type="email" class="form-control" formControlName="email" [ngClass]="{'is-invalid': staffForm.get('email')?.invalid && staffForm.get('email')?.touched}" />
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-4">
+                    <div class="mb-3">
+                      <label class="form-label">Address<span class="login-danger">*</span></label>
+                      <input type="text" class="form-control" formControlName="address" [ngClass]="{'is-invalid': staffForm.get('address')?.invalid && staffForm.get('address')?.touched}" />
                     </div>
                   </div>
                 </div>
@@ -271,7 +234,7 @@
           <!-- /Personal Information -->
 
           <!-- Payroll -->
-          <div class="card">
+          <div class="card" formGroupName="profesionalBackground">
             <div class="card-header bg-light">
               <div class="d-flex align-items-center">
                 <span
@@ -279,57 +242,115 @@
                 >
                   <i class="ti ti-user-shield fs-16"></i>
                 </span>
-                <h4 class="text-dark">Payroll</h4>
+                <h4 class="text-dark">Informations de gestion de carrière</h4>
               </div>
             </div>
             <div class="card-body pb-1">
               <div class="row">
-                <div class="col-lg-3 col-md-6">
+                <div class="col-12 col-md-4">
                   <div class="mb-3">
-                    <label class="form-label">EPF No</label>
-                    <input type="text" class="form-control" />
-                  </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">Basic Salary</label>
-                    <input type="text" class="form-control" />
-                  </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">Contract Type</label>
+                    <label class="form-label">Statut<span class="login-danger">*</span></label>
                     <p-dropdown
                       [options]="[
-                        { label: 'Select', value: '' },
-                        { label: 'Permanent', value: 'Permanent' },
-                        { label: 'Temporary', value: 'Temporary' }
+                        { label: 'Fonctionnaire', value: 'Fonctionnaire' },
+                        { label: 'Contractuel', value: 'Contractuel' },
+                        { label: 'Maître', value: 'maître' }
                       ]"
+                      [ngClass]="{'is-invalid': profesionalBackground.get('status')?.invalid && profesionalBackground.get('status')?.touched}"
+                      formControlName="status"
                       placeholder="Select"
                       class="select"
                     ></p-dropdown>
                   </div>
                 </div>
-                <div class="col-lg-3 col-md-6">
+
+                <div class="col-12 col-md-4">
                   <div class="mb-3">
-                    <label class="form-label">Work Shift</label>
-                    <p-dropdown
-                      [options]="[
-                        { label: 'Select', value: '' },
-                        { label: 'Morning', value: 'Morning' },
-                        { label: 'Afternoon', value: 'Afternoon' }
-                      ]"
-                      placeholder="Select"
-                      class="select"
-                    ></p-dropdown>
+                    <label class="form-label">Matricule<span class="login-danger">*</span></label>
+                    <input type="text" class="form-control" formControlName="registrationNumber" [ngClass]="{'is-invalid': profesionalBackground.get('registrationNumber')?.invalid && profesionalBackground.get('registrationNumber')?.touched}" />
                   </div>
                 </div>
-                <div class="col-lg-3 col-md-6">
+                <div class="col-12 col-md-4">
                   <div class="mb-3">
-                    <label class="form-label">Work Location</label>
-                    <input type="text" class="form-control" />
+                    <label class="form-label">NIU</label>
+                    <input type="text" class="form-control" formControlName="NIU" [ngClass]="{'is-invalid': profesionalBackground.get('NIU')?.invalid && profesionalBackground.get('NIU')?.touched}" />
                   </div>
                 </div>
+                <div class="col-12 col-md-4">
+                  <div class="mb-3">
+                    <label class="form-label">Grade</label>
+                    <input type="text" class="form-control" formControlName="grade" [ngClass]="{'is-invalid': profesionalBackground.get('grade')?.invalid && profesionalBackground.get('grade')?.touched}" />
+                  </div>
+                </div>
+                <div class="col-12 col-md-4">
+                  <div class="mb-3">
+                    <label class="form-label">Position actuelle</label>
+                    <input type="text" class="form-control" formControlName="currentPosition" [ngClass]="{'is-invalid': profesionalBackground.get('currentPosition')?.invalid && profesionalBackground.get('currentPosition')?.touched}" />
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-4">
+                  <div class="mb-3">
+                    <label class="form-label">Référence acte de mutation</label>
+                    <input type="text" class="form-control" formControlName="mutationActRef" />
+                  </div>
+                </div>
+                <div class="col-12 col-md-4">
+                  <div class="mb-3">
+                    <label class="form-label">Ref acte de nomination</label>
+                    <input type="file" class="form-control"
+                      (change)="onFileSelect($event, 'refActeIntegration')"
+                        #fileInput
+                     />
+                  </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="mb-3">
+                      <label class="form-label">Date de prise de service<span class="login-danger">*</span></label>
+                      <div class="input-icon position-relative">
+                        <span class="input-icon-addon">
+                          <i class="ti ti-calendar"></i>
+                        </span>
+                        <input
+                            type="text"
+                            [ngClass]="{'is-invalid': profesionalBackground.get('startDate')?.invalid && profesionalBackground.get('startDate')?.touched}"
+                            class="form-control datetimepicker"
+                            placeholder="jj-mm-aaaa"
+                            bsDatepicker
+                            formControlName="startDate"
+                          />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-4">
+                    <div class="mb-3">
+                      <label class="form-label">Date d'entrée a la FP<span class="login-danger">*</span></label>
+                      <div class="input-icon position-relative">
+                        <span class="input-icon-addon">
+                          <i class="ti ti-calendar"></i>
+                        </span>
+                        <input
+                            type="text"
+                            [ngClass]="{'is-invalid': profesionalBackground.get('fpStartDate')?.invalid && profesionalBackground.get('fpStartDate')?.touched}"
+                            class="form-control datetimepicker"
+                            placeholder="jj-mm-aaaa"
+                            bsDatepicker
+                            formControlName="fpStartDate"
+                          />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-4">
+                    <div class="mb-3">
+                      <label class="form-label">Ref acte d'integration</label>
+                      <input type="file" class="form-control"
+                        (change)="onFileSelect($event, 'nominationActRef')"
+                        #fileInput
+                        />
+                    </div>
+                  </div>
               </div>
             </div>
           </div>
@@ -344,33 +365,21 @@
                 >
                   <i class="ti ti-users fs-16"></i>
                 </span>
-                <h4 class="text-dark">Leaves</h4>
+                <h4 class="text-dark">Information Professionel</h4>
               </div>
             </div>
             <div class="card-body pb-1">
               <div class="row">
-                <div class="col-lg-3 col-md-6">
+                <div class="col-12 col-md-4">
                   <div class="mb-3">
-                    <label class="form-label">Medical Leaves</label>
-                    <input type="text" class="form-control" />
-                  </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">Casual Leaves</label>
-                    <input type="text" class="form-control" />
-                  </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">Maternity Leaves</label>
-                    <input type="text" class="form-control" />
-                  </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">Sick Leaves</label>
-                    <input type="text" class="form-control" />
+                    <label class="form-label">Classe en charge<span class="login-danger">*</span></label>
+                    <p-dropdown
+                        [options]="classrooms"
+                        placeholder="Sélectionner"
+                        class="select"
+                        [ngClass]="{'is-invalid': staffForm.get('classroom')?.invalid && staffForm.get('classroom')?.touched}"
+                        formControlName="classroom"
+                      ></p-dropdown>
                   </div>
                 </div>
               </div>
@@ -379,7 +388,7 @@
           <!-- /Leaves -->
 
           <!-- Bank Details -->
-          <div class="card">
+          <!-- <div class="card">
             <div class="card-header bg-light">
               <div class="d-flex align-items-center">
                 <span
@@ -424,11 +433,11 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- /Bank Details -->
 
           <!-- Transport Information -->
-          <div class="card">
+          <!-- <div class="card">
             <div
               class="card-header bg-light d-flex align-items-center justify-content-between"
             >
@@ -493,11 +502,11 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- /Transport Information -->
 
           <!-- Hostel Information -->
-          <div class="card">
+          <!-- <div class="card">
             <div class="card-header bg-light">
               <div class="d-flex align-items-center">
                 <span
@@ -547,11 +556,11 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- /Hostel Information -->
 
           <!-- Social Media Links -->
-          <div class="card">
+          <!-- <div class="card">
             <div class="card-header bg-light">
               <div class="d-flex align-items-center">
                 <span
@@ -590,11 +599,11 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- /Social Media Links -->
 
           <!-- Documents -->
-          <div class="card">
+          <!-- <div class="card">
             <div class="card-header bg-light">
               <div class="d-flex align-items-center">
                 <span
@@ -646,11 +655,11 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- /Documents -->
 
           <!-- Password -->
-          <div class="card">
+          <!-- <div class="card">
             <div class="card-header bg-light">
               <div class="d-flex align-items-center">
                 <span
@@ -677,7 +686,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- /Password -->
 
           <div class="text-end">

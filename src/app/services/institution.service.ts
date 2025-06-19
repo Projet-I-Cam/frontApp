@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import * as Parse from 'parse';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { globalPost } from './statefull/http';
+import { globalPost, globalPut } from './statefull/http';
 
 @Injectable({
   providedIn: 'root'
 })
+
+
 export class InstitutionService {
   private readonly INSTITUTION_CLASS = 'Institution';
 
@@ -25,6 +27,11 @@ export class InstitutionService {
         return results.map((r: any) => r?.toJSON())
       })
     );
+  }
+
+  sanitizeFilename(filename: string) {
+    const withoutAccents = filename.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    return withoutAccents.replace(/[^a-zA-Z0-9.\-_]/g, "_").substring(0, 255);
   }
 
   /**
@@ -96,8 +103,8 @@ export class InstitutionService {
 
     // Set logo if provided
     if (institutionData.logo && institutionData.logo instanceof File) {
-      const logoFile = new Parse.File(institutionData.logo.name, institutionData.logo);
-      institution.set('logo', logoFile);
+      const logoFile = new Parse.File(this.sanitizeFilename(institutionData.logo.name), institutionData.logo);
+      institution.set('logo', logoFile); 
     }
 
 
@@ -146,6 +153,16 @@ export class InstitutionService {
         console.log('Here owners final saving')
         institution.set('owner', ownnerClass)
         await institution.save()
+        await globalPut({
+          T: 'Person',
+          dataObject: {
+            institution: {
+              className: "Institution",
+              objectId: institution?.id
+            }
+          },
+          objectId: ownnerClass?.objectId || ownnerClass?.id
+        })
       }
     });
     return from(institution.save()).pipe(
@@ -203,7 +220,7 @@ export class InstitutionService {
         
         // Update logo if provided
         if (institutionData.logo && institutionData.logo instanceof File) {
-          const logoFile = new Parse.File(institutionData.logo.name, institutionData.logo);
+          const logoFile = new Parse.File(this.sanitizeFilename(institutionData.logo.name), institutionData.logo);
           institution.set('logo', logoFile);
         }
         

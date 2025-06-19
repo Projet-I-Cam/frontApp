@@ -50,7 +50,9 @@ export class StudentGridComponent implements OnInit {
   statuts : any[] = [{item: "Actif", value: true}, {item: "Inactif", value: false}];
   selectedStatut : boolean = true;
   academicYears : any[] = [];
-  
+  academicName : string = "";
+  className : string = "";
+
 
   constructor(
     private router: Router,
@@ -68,10 +70,10 @@ export class StudentGridComponent implements OnInit {
     this.loadFilterData();
   }
 
-  loadStudents3(): void { 
+  loadStudents3(): void {
     this.isLoading = true;
     this.error = '';
-    
+
     this.studentService.getAllStudents()
       .pipe(
         finalize(() => {
@@ -98,7 +100,7 @@ export class StudentGridComponent implements OnInit {
     this.academicYears = await globalGet({T: 'AcademicYear'});
   }
 
-  async loadStudents2(academicYearId:any){     
+  async loadStudents2(academicYearId:any){
     this.isLoading = true;
     switch (this.currentUser .role.task_name) {
       case "super":
@@ -106,7 +108,7 @@ export class StudentGridComponent implements OnInit {
         // Accès aux inscriptions pour toutes les institutions et l'année donnée
         this.students = await listInscriptions({ yearId: academicYearId });
         break;
-  
+
       // Accès aux inscriptions pour linstitution et l'année donnée
       case "etablissement":
         if (this.currentPerson.institution) {
@@ -115,7 +117,7 @@ export class StudentGridComponent implements OnInit {
           this.students = [];
         }
       break;
-  
+
       case "regional":
         if (this.currentPerson.region) {
           this.students = await listInscriptions({ yearId: academicYearId, regionId: this.currentPerson.region.id });
@@ -123,7 +125,7 @@ export class StudentGridComponent implements OnInit {
           this.students = [];
         }
       break;
-  
+
       case "departement":
         if (this.currentPerson.department) {
           this.students = await listInscriptions({ yearId: academicYearId, departId: this.currentPerson.department.id });
@@ -131,7 +133,7 @@ export class StudentGridComponent implements OnInit {
           this.students = [];
         }
       break;
-  
+
       case "arrondissement":
         if (this.currentPerson.arrondissement) {
           this.students = await listInscriptions({ yearId: academicYearId, arronId: this.currentPerson.arrondissement.id });
@@ -139,17 +141,17 @@ export class StudentGridComponent implements OnInit {
           this.students = [];
         }
       break;
-  
+
       case "enseignant":
         this.students = await listInscriptions({ yearId: academicYearId, enseignantId: this.currentUser .id });
       break;
-  
+
       default:
         console.error("Rôle non reconnu ou accès non autorisé.");
         this.students = [];
       break;
     }
-    
+
     this.totalItems = this.students?.length || 0;
     this.rows = this.students?.length || 0;
     this.isLoading = false;
@@ -158,7 +160,7 @@ export class StudentGridComponent implements OnInit {
 
   async loadStudents(f: FilterStudent) {
     this.isLoading = true;
-  
+
     try {
       // Définir les filtres en fonction du rôle
       switch (this.currentUser .role.task_name) {
@@ -166,35 +168,44 @@ export class StudentGridComponent implements OnInit {
         case "administration":
           // Accès aux inscriptions pour toutes les institutions et l'année donnée
           break; // Pas besoin de modifier f ici
-  
+
         case "etablissement":
           f.schoolId = this.currentPerson.institution?.id;
           break;
-  
+
         case "regional":
           f.regionId = this.currentPerson?.municipality?.departement?.region?.id;
           break;
-  
+
         case "departement":
           f.departId = this.currentPerson?.municipality?.departement?.id;
           break;
-  
+
         case "arrondissement":
           f.arronId = this.currentPerson?.municipality?.id;
           break;
-  
+
         default:
           console.error("Rôle non reconnu ou accès non autorisé.");
           this.students = [];
           this.isLoading = false;
           return;
       }
-  
+
       // Charger les inscriptions avec les filtres appliqués
       this.students = await listInscriptions(f);
       this.totalItems = this.students?.length || 0;
       this.rows = this.students?.length || 0;
-  
+      console.log("liste des élèves ici : ");
+      console.log(this.students);
+      if(this.students.length)
+      {
+        console.log(this.students[0])
+        console.log(this.students[0].institution)
+        this.academicName = this.students[0]?.institution.name;
+        this.className  = this.students[0]?.institution.className;
+      }
+
     } catch (error) {
       console.error("Erreur lors du chargement des étudiants:", error);
       this.students = [];
@@ -203,7 +214,7 @@ export class StudentGridComponent implements OnInit {
       console.log(this.students);
     }
   }
-  
+
 
   // Méthode pour voir les détails d'un étudiant
   viewDetails(id: string): void {
@@ -214,7 +225,7 @@ export class StudentGridComponent implements OnInit {
         console.log('Student details received:', student);
         this.selectedStudent = student;
         this.isLoading = false;
-        
+
         // Ouvrir le modal
         this.openModal();
       },
@@ -231,27 +242,27 @@ export class StudentGridComponent implements OnInit {
     // Définir une méthode pour vérifier si Bootstrap est disponible
     const isBootstrapAvailable = typeof window.bootstrap !== 'undefined';
     console.log('Bootstrap available:', isBootstrapAvailable);
-    
+
     // Réinitialiser le modal à chaque fois pour éviter les problèmes
     const modalElement = document.querySelector('#view-details') as HTMLElement;
-    
+
     if (!modalElement) {
       console.error('Modal element not found in DOM with querySelector');
       alert('Erreur: Élément modal non trouvé dans le DOM.');
       return;
     }
-    
+
     console.log('Modal element found:', modalElement);
-    
+
     if (isBootstrapAvailable) {
       try {
         // Essayons de repartir de zéro à chaque fois pour éviter les problèmes
         this.modalInstance = null;
-        
+
         // Créer une nouvelle instance
         this.modalInstance = new window.bootstrap.Modal(modalElement);
         console.log('New Modal instance created');
-        
+
         // Montrer le modal
         this.modalInstance.show();
         console.log('Modal show() method called');
@@ -262,20 +273,20 @@ export class StudentGridComponent implements OnInit {
     } else {
       console.warn('Bootstrap is not defined, trying manual approach');
     }
-    
+
     // Méthode alternative: manipulation directe du DOM
     try {
       console.log('Using DOM manipulation as fallback');
-      
+
       // Ajouter la classe 'show' au modal et afficher
       modalElement.classList.add('show');
       modalElement.style.display = 'block';
       modalElement.setAttribute('aria-modal', 'true');
       modalElement.removeAttribute('aria-hidden');
-      
+
       // Ajouter modal-open à body
       document.body.classList.add('modal-open');
-      
+
       // Ajouter un backdrop manuellement
       const backdropExists = document.querySelector('.modal-backdrop');
       if (!backdropExists) {
@@ -283,7 +294,7 @@ export class StudentGridComponent implements OnInit {
         backdrop.className = 'modal-backdrop fade show';
         document.body.appendChild(backdrop);
       }
-      
+
       // Ajouter un gestionnaire de clic pour fermer le modal
       const closeButtons = modalElement.querySelectorAll('[data-bs-dismiss="modal"]');
       closeButtons.forEach(button => {
@@ -291,7 +302,7 @@ export class StudentGridComponent implements OnInit {
           this.closeModal(modalElement);
         });
       });
-      
+
       console.log('Modal displayed with DOM manipulation');
     } catch (domError) {
       console.error('DOM manipulation failed:', domError);
@@ -305,9 +316,9 @@ export class StudentGridComponent implements OnInit {
     modalElement.style.display = 'none';
     modalElement.setAttribute('aria-hidden', 'true');
     modalElement.removeAttribute('aria-modal');
-    
+
     document.body.classList.remove('modal-open');
-    
+
     const backdrop = document.querySelector('.modal-backdrop');
     if (backdrop) {
       backdrop.parentNode?.removeChild(backdrop);
@@ -320,7 +331,7 @@ export class StudentGridComponent implements OnInit {
       classeId: this.selectedClasse,
       sectionId: this.selectedSection,
       genderId: this.selectedGender,
-      statut: this.convertStringToBoolean(this.selectedStatut) 
+      statut: this.convertStringToBoolean(this.selectedStatut)
     };
     //this.students = [];
     console.log(f);
@@ -354,11 +365,36 @@ export class StudentGridComponent implements OnInit {
 
   public changePage(pageIndex: number): void {
     this.currentPage = pageIndex;
-    // Vous pouvez ici implémenter une logique pour charger uniquement les données 
+    // Vous pouvez ici implémenter une logique pour charger uniquement les données
     // de la page actuelle si vous avez beaucoup d'étudiants
   }
   convertStringToBoolean(str:any) {
     return str.toLowerCase() === 'true';
-  } 
-  
+  }
+
+  // Fonction pour imprimer la liste des élèves
+  printListStudent() {
+    const printContents = document.getElementById('list-student-content')?.innerHTML;
+    const originalContents = document.body.innerHTML;
+
+    if (printContents) {
+      document.body.innerHTML = printContents;
+      window.print();
+      document.body.innerHTML = originalContents;
+      window.location.reload(); // recharger pour restaurer l'état Angular
+    }
+  }
+
+  // Fonction pour imprimer la liste des élèves
+  printListStudentNoPic() {
+    const printContents = document.getElementById('list-student-content-no-pic')?.innerHTML;
+    const originalContents = document.body.innerHTML;
+
+    if (printContents) {
+      document.body.innerHTML = printContents;
+      window.print();
+      document.body.innerHTML = originalContents;
+      window.location.reload(); // recharger pour restaurer l'état Angular
+    }
+  }
 }

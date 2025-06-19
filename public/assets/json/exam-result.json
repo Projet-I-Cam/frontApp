@@ -1,8 +1,8 @@
 {
   "data": [
     {
-      "admissionNo": "AD9892434",
-      "studentName": "Janet",
+      "admissionNo": "Trimestre 1",
+      "studentName": "Anaëlle",
       "english": 95,
       "spanish": 93,
       "physics": 88,
@@ -19,8 +19,8 @@
       "key": 1
     },
     {
-      "admissionNo": "AD9892433",
-      "studentName": "Joann",
+      "admissionNo": "Trimestre 1",
+      "studentName": "Raphaël",
       "english": 30,
       "spanish": 35,
       "physics": 36,
@@ -37,8 +37,8 @@
       "key": 2
     },
     {
-      "admissionNo": "AD98924",
-      "studentName": "Kathleen",
+      "admissionNo": "Trimestre 3",
+      "studentName": "Julie",
       "english": 70,
       "spanish": 80,
       "physics": 85,
@@ -55,8 +55,8 @@
       "key": 3
     },
     {
-      "admissionNo": "AD9892431",
-      "studentName": "Gifford",
+      "admissionNo": "Trimestre 2",
+      "studentName": "Anaëlle",
       "english": 60,
       "spanish": 68,
       "physics": 65,
@@ -73,8 +73,8 @@
       "key": 4
     },
     {
-      "admissionNo": "AD98924",
-      "studentName": "Lisa",
+      "admissionNo": "Trimestre 2",
+      "studentName": "Raphaël",
       "english": 36,
       "spanish": 30,
       "physics": 40,
@@ -91,8 +91,8 @@
       "key": 5
     },
     {
-      "admissionNo": "AD9892429",
-      "studentName": "Ralph",
+      "admissionNo": "Trimestre 2",
+      "studentName": "Julie",
       "english": 43,
       "spanish": 50,
       "physics": 62,
@@ -109,8 +109,8 @@
       "key": 6
     },
     {
-      "admissionNo": "AD98924",
-      "studentName": "Julie",
+      "admissionNo": "Trimestre 3",
+      "studentName": "Anaëlle",
       "english": 72,
       "spanish": 80,
       "physics": 75,
@@ -127,8 +127,8 @@
       "key": 7
     },
     {
-      "admissionNo": "AD9892427",
-      "studentName": "Ryan",
+      "admissionNo": "Trimestre 3",
+      "studentName": "Raphaël",
       "english": 40,
       "spanish": 48,
       "physics": 42,
@@ -145,8 +145,8 @@
       "key": 8
     },
     {
-      "admissionNo": "AD9892426",
-      "studentName": "Susan",
+      "admissionNo": "Trimestre 3",
+      "studentName": "Julie",
       "english": 60,
       "spanish": 62,
       "physics": 65,
@@ -161,24 +161,6 @@
       "roll": "Roll No : 35005",
       "img": "assets/img/students/student-09.jpg",
       "key": 9
-    },
-    {
-      "admissionNo": "AD9892425",
-      "studentName": "Susan",
-      "english": 72,
-      "spanish": 78,
-      "physics": 85,
-      "chemistry": 83,
-      "maths": 86,
-      "computer": 90,
-      "envScience": 92,
-      "total": 586,
-      "percent": 83,
-      "grade": "A+",
-      "result": "Pass",
-      "roll": "Roll No : 35004",
-      "img": "assets/img/students/student-10.jpg",
-      "key": 10
     }
   ],
   "totalData": 10

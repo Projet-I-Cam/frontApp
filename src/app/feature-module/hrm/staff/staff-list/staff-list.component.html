@@ -20,9 +20,9 @@
                   </nav>
             </div>
             <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
-                <app-tooltip-content />              
+                <app-tooltip-content />
                   <div class="mb-2">
-                
+
                     <a [routerLink] = "routes.addStaff" class="btn btn-primary d-flex align-items-center"><i
                         class="ti ti-square-rounded-plus me-2"></i>Add Staff</a>
                   </div>
@@ -30,11 +30,11 @@
         </div>
         <!-- /Page Header -->
 
-        
+
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between flex-wrap pb-0">
                 <h4 class="mb-3">Staff List</h4>
-                <div class="d-flex align-items-center flex-wrap">		
+                <div class="d-flex align-items-center flex-wrap">
                     <div class="input-icon-start mb-3 me-2 position-relative">
                         <app-date-range-picker />
                     </div>
@@ -50,7 +50,7 @@
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Name</label>
-                                               
+
                                                 <p-dropdown [options]="[
                                                 { label: 'Select', value: '' },
                                                 { label: 'Kevin', value: 'Kevin' },
@@ -64,7 +64,7 @@
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Department</label>
-                                               
+
                                                 <p-dropdown [options]="[
                                                 { label: 'Select', value: '' },
                                                 { label: 'Admin', value: 'Admin' },
@@ -76,7 +76,7 @@
                                         <div class="col-md-6">
                                             <div class="mb-0">
                                                 <label class="form-label">Designation</label>
-                                               
+
                                                 <p-dropdown [options]="[
                                                 { label: 'Select', value: '' },
                                                 { label: 'Technical Head', value: 'Technical Head' },
@@ -90,7 +90,7 @@
                                         <div class="col-md-6">
                                             <div class="mb-0">
                                                 <label class="form-label">More Filter</label>
-                                               
+
                                                 <p-dropdown [options]="[
                                                 { label: 'Select', value: '' },
                                                 { label: 'ID', value: 'ID' },
@@ -102,17 +102,17 @@
                                               ]" placeholder="Select" class="select"></p-dropdown>
                                             </div>
                                         </div>
-                                        
+
                                     </div>
                                 </div>
                                 <div class="p-3 d-flex align-items-center justify-content-end">
                                     <a href="javascript:void(0);" class="btn btn-light me-3">Reset</a>
                                     <button type="submit" class="btn btn-primary">Apply</button>
                                 </div>
-                            </form>									
+                            </form>
                         </div>
                     </div>
-                    
+
                     <div class="dropdown mb-3">
                         <a href="javascript:void(0);" class="btn btn-outline-light bg-white dropdown-toggle"  data-bs-toggle="dropdown"><i class="ti ti-sort-ascending-2 me-2"></i>Sort by A-Z </a>
                         <ul class="dropdown-menu p-3">
@@ -137,7 +137,7 @@
                             </li>
                         </ul>
                     </div>
-                </div>	
+                </div>
             </div>
             <div class="card-body p-0 py-3">
                 <div class="table-top px-3">
@@ -172,45 +172,43 @@
                                         <input class="form-check-input" type="checkbox" id="select-all"(click)="selectAll(initChecked)"  [(ngModel)]="initChecked">
                                     </div>
                                 </th>
-                                <th mat-sort-header="id">ID</th>
-                            <th mat-sort-header="name">Name</th>
-                            <th mat-sort-header="department">Department</th>
-                            <th mat-sort-header="designation">Designation </th>
-                            <th mat-sort-header="phone">Phone</th>
-                            <th mat-sort-header="email">Email</th>
-                            <th mat-sort-header="join">Date of Join</th>
-                            <th>Action</th>
+                                <th mat-sort-header="name">Nom complet</th>
+                                <th mat-sort-header="department">classe</th>
+                                <th mat-sort-header="phone">Phone</th>
+                                <th mat-sort-header="email">Email</th>
+                                <th mat-sort-header="phone">Grade</th>
+                                <th mat-sort-header="phone">NIU</th>
+                                <th mat-sort-header="phone">Current position</th>
+                                <th mat-sort-header="phone">status</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @for (table of tableData; track table) {
+                            @for (table of staffs; track table) {
                             <tr>
                                 <td>
                                     <div class="form-check form-check-md">
-                                        <input class="form-check-input" type="checkbox"  [(ngModel)]="table.isSelected">
+                                        <input class="form-check-input" type="checkbox" >
                                     </div>
                                 </td>
-                                <td><a [routerLink] = "routes.staffDetails" class="link-primary">{{ table.id }}</a></td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <a [routerLink] = "routes.staffDetails" class="avatar avatar-md"><img
-                                                [src]="table.img"
-                                                class="img-fluid rounded-circle" alt="img"></a>
+                                        <!-- <a [routerLink] = "routes.staffDetails" class="avatar avatar-md"><img
+                                                [src]="table.photo"
+                                                class="img-fluid rounded-circle" alt="img"></a> -->
                                         <div class="ms-2">
-                                            <p class="text-dark mb-0"><a [routerLink] = "routes.staffDetails">{{table.name}}</a>
+                                            <p class="text-dark mb-0"><a [routerLink] = "routes.staffDetails">{{table.firstName}} {{table.lastName}}</a>
                                             </p>
                                         </div>
                                     </div>
                                 </td>
-                                <td>{{table.department}}</td>
-                                <td>{{table.designation}}</td>
+                                <td>{{table.classroom?.name_fr}}</td>
                                 <td>{{table.phone}}</td>
-                                <td>
-                                    {{table.email}}
-                                </td>
-                                <td>
-                                    {{table.dateOfJoin}}
-                                </td>
+                                <td>{{table.email}}</td>
+                                <td>{{table.profesionalBackground?.grade}}</td>
+                                <td>{{table.profesionalBackground?.currentPosition}}</td>
+                                <td>{{table.profesionalBackground?.status}}</td>
+                                <td>{{table.profesionalBackground?.NIU}}</td>
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <div class="dropdown">
@@ -240,13 +238,13 @@
                                 </td>
                             </tr>
                         }
-                        @if (tableData.length === 0) {
+                        @if (staffs.length === 0) {
                             <tr>
                               <td colspan="6">
                                 <h5 class="no-record text-center">No records found</h5>
                               </td>
                             </tr>
-                            }  
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -254,7 +252,7 @@
                 <!-- /Staffs List -->
             </div>
         </div>
-            
+
 
     </div>
 </div>

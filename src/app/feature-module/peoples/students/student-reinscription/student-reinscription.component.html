@@ -1,0 +1,241 @@
+<div class="page-wrapper">
+  <div class="row content content-two">
+    <!-- Page Header -->
+    <div class="d-md-flex d-block align-items-center justify-content-between mb-1">
+      <div class="">
+        <h3 class="mb-1">Reinscription d'un ancien eleve</h3>
+        <nav>
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+              <a [routerLink]="routes.adminDashboard">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a [routerLink]="routes.studentsList">Élèves</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              Re-inscription Élève
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <div *ngIf="isLoadingStudents">
+      <div class="text-center">
+        <span class="spinner-border spinner-border-lg" role="status" aria-hidden="true"></span>
+        Chargement des élèves...
+      </div>
+    </div>
+    <div class="row"  *ngIf="!isLoadingStudents">
+      <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
+        <div class="col-10">
+          <label for="" class="my-2 fs-4">Sélectionner un élève</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Élève</mat-label>
+
+            <!-- Search Input -->
+            <input matInput placeholder="Rechercher un élève..." (keyup)="filterStudents($event)" />
+
+            <mat-select formControlName="person" required (selectionChange)="onStudentSelected($event.value)">
+              <!-- Filtered Students (instead of all students) -->
+              <mat-option *ngFor="let student of filteredStudents" [value]="student">
+                {{ student.person.firstName }} {{ student.person.lastName }} - {{ student.matricule }}
+              </mat-option>
+            </mat-select>
+
+            <mat-error *ngIf="studentForm.get('person')?.invalid">
+              Ce champ est requis
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div *ngIf="selectedStudent" class="col-10">
+          <div class="card mb-4 mt-3">
+            <div class="card-header bg-light">
+              <h4 class="mb-0">Informations sur la precedente inscription</h4>
+            </div>
+            <div class="card-body">
+              <div class="row g-2">
+                <div class="d-flex align-items-center justify-content-between">
+                  <h4 class="">Informations Personnelles</h4>
+                </div>
+                <div>
+                  <div class="row g-3">
+                    <div class="col-md-6 col-lg-4">
+                      <div><strong>Nom</strong></div>
+                      <div>{{ selectedStudent.person.lastName }} {{ selectedStudent.person.firstName }}</div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                      <div><strong>Genre</strong></div>
+                      <div>{{ selectedStudent.person.gender.libelle_fr }}</div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                      <div><strong>Date de naissance</strong></div>
+                      <div>
+                        {{ selectedStudent.person?.birthDate ?
+                        (selectedStudent.person.birthDate.iso | date: 'dd MMM yyyy') : 'Non disponible' }}
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                      <div><strong>Lieu de naissance</strong></div>
+                      <div>{{ selectedStudent.person.birthPlace || 'Non disponible'}}</div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                      <div><strong>Adresse</strong></div>
+                      <div>{{ selectedStudent.person.address || 'Non disponible' }}</div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                      <div><strong>Ville de résidence</strong></div>
+                      <div>{{ selectedStudent.person.cityOfResidence || 'Non disponible' }}</div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                      <div><strong>Quartier</strong></div>
+                      <div>{{ selectedStudent.person.neighborhood || 'Non disponible' }}</div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                      <div><strong>Téléphone</strong></div>
+                      <div>{{ selectedStudent.person.phone || 'Non disponible' }}</div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                      <div><strong>Email</strong></div>
+                      <div>{{ selectedStudent.person.email || 'Non disponible' }}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-between">
+                  <h4 class="">Informations Scolaires</h4>
+                </div>
+                <div>
+                  <div class="row g-3">
+                    <div class="col-md-6 col-lg-4">
+                      <div><strong>Annee Academique</strong></div>
+                      <div>{{ selectedStudent?.academicYear?.libelle || 'Non disponible' }}</div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                      <div><strong>Matricule</strong></div>
+                      <div>{{ selectedStudent?.matricule || 'Non disponible' }}</div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                      <div><strong>Etablissement</strong></div>
+                      <div>{{ selectedStudent?.institution?.name || 'Non disponible' }}</div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                      <div><strong>Section</strong></div>
+                      <div>{{ selectedStudent?.classroom?.classe.section?.name_fr || 'Non disponible' }}</div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                      <div><strong>Classe</strong></div>
+                      <div>{{ selectedStudent?.classroom?.classe.name_fr || 'Non disponible' }}</div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                      <div><strong>Salle de classe</strong></div>
+                      <div>{{ selectedStudent?.classroom?.name_fr || 'Non disponible' }}</div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                      <div><strong>Date d'inscription</strong></div>
+                      <div>
+                        {{ selectedStudent?.enrollmentDate ?
+                        (selectedStudent.enrollmentDate.iso | date: 'dd MMM yyyy') : 'Non disponible' }}
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                      <div><strong>Date de validation d'inscription</strong></div>
+                      <div>
+                        {{ selectedStudent?.validationDate ?
+                        (selectedStudent.validationDate.iso | date: 'dd MMM yyyy') : 'Non disponible' }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Informations Académiques -->
+          <div class="card mb-4 mt-3">
+            <div class="card-header bg-light">
+              <h4 class="mb-0">Informations Académiques pour cette inscription</h4>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Année académique</mat-label>
+                    <mat-select formControlName="academicYear" required>
+                      <mat-option [value]="academicYear.objectId">
+                        {{ academicYear.libelle }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-md-4">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Section</mat-label>
+                    <mat-select formControlName="section" required>
+                      <mat-option *ngFor="let section of sections" [value]="section.value">
+                        {{ section.label }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="studentForm.get('section')?.invalid">
+                      Ce champ est requis
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Classe</mat-label>
+                    <mat-select formControlName="class">
+                      <mat-option *ngFor="let cls of classes" [value]="cls.objectId"
+                        [disabled]="!studentForm.get('section')?.value">
+                        {{ cls.name_fr }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Classroom</mat-label>
+                    <mat-select formControlName="classroom">
+                      <mat-option *ngFor="let room of classRooms" [value]="room.objectId">
+                        {{room.name_fr}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Date d'admission</mat-label>
+                    <input matInput [matDatepicker]="picker2" formControlName="admissionDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+           <div class="text-center">
+            <button type="submit" mat-raised-button color="primary" [disabled]="studentForm.invalid || isSubmitting" class=" col-12">
+              <span *ngIf="!isSubmitting">Enregistrer</span>
+              <span *ngIf="isSubmitting">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Enregistrement...
+              </span>
+            </button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
