@@ -42,7 +42,7 @@
 
         <!-- Dashboard Content -->
 
-        <div class="card bg-green">
+        <div class="card bg-head">
           <div class="overlay-img">
             <img src="assets/img/bg/shape-04.png" alt="img" class="img-fluid shape-01">
             <img src="assets/img/bg/shape-01.png" alt="img" class="img-fluid shape-02">
@@ -82,7 +82,7 @@
     </div>
 
     <div class = "row">
-      <div class="tabBoard">
+      <div class="tabBoard bg-head">
         <div class="textBoard">
           Tableau de Bord
         </div>
@@ -101,7 +101,7 @@
 
       <div class="contentDashboard">
         <div class = "recapScore">
-          <div class="viewScore ets">
+          <div class="viewScore ets bg-lightgreen ">
             <div>Etablissements</div>
             <h1><span class="counters" [countUp]="totalInstitutions.length" [options]="{
                 duration: 10,
@@ -111,7 +111,7 @@
                 </span>
               </h1>
           </div>
-          <div class="viewScore ens">
+          <div class="viewScore ens bg-lightgray">
             <div>Enseignants</div>
             <h1><span class="counters" [countUp]="totalTeachers.length" [options]="{
                 duration: 10,
@@ -121,7 +121,7 @@
                 </span>
               </h1>
           </div>
-          <div class="viewScore std">
+          <div class="viewScore std bg-lightgreen ">
             <div>Elèves</div>
             <h1><span class="counters" [countUp]="totalStudents.length" [options]="{
                 duration: 10,
@@ -131,11 +131,21 @@
                 </span>
               </h1>
           </div>
+          <div class="viewScore staff bg-lightgray">
+            <div>Staffs</div>
+            <h1><span class="counters" [countUp]="totalStaffs.length" [options]="{
+                duration: 10,
+                formattingFn: customFormattingFn
+              }">
+                  {{this.totalStaffs.length}}
+                </span>
+              </h1>
+          </div>
         </div>
 
         <div class = "detailsContenDashboard">
           <div class="gridViewScore">
-            <div class="HgridVs">
+            <div class="HgridVs bg-head">
               <img src="assets/img/icons/school.svg" alt="img">
               <span class="textHgridVs">
                 Publics
@@ -188,7 +198,7 @@
             </div>
           </div>
          <div class="gridViewScore">
-            <div class="HgridVs">
+            <div class="HgridVs bg-head">
               <img src="assets/img/icons/school.svg" alt="img">
               <span class="textHgridVs">
                 Privés
@@ -241,7 +251,7 @@
           </div>
 
           <div class="gridViewScore">
-            <div class="HgridVs">
+            <div class="HgridVs bg-head">
               <img src="assets/img/icons/student.svg" alt="img">
               <span class="textHgridVs">
                 Elèves
@@ -294,7 +304,7 @@
           </div>
 
           <div class="gridViewScore">
-            <div class="HgridVs">
+            <div class="HgridVs bg-head">
               <img src="assets/img/icons/teacher.svg" alt="img">
               <span class="textHgridVs">
                 Enseignants
@@ -347,7 +357,7 @@
           </div>
 
           <div class="gridViewScore">
-            <div class="HgridVs">
+            <div class="HgridVs bg-head">
               <img src="assets/img/icons/staff.svg" alt="img">
               <span class="textHgridVs">
                 Staffs
