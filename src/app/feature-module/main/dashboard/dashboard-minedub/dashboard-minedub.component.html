@@ -42,7 +42,7 @@
 
         <!-- Dashboard Content -->
 
-        <div class="card bg-green">
+        <div class="card bg-head">
           <div class="overlay-img">
             <img src="assets/img/bg/shape-04.png" alt="img" class="img-fluid shape-01">
             <img src="assets/img/bg/shape-01.png" alt="img" class="img-fluid shape-02">
@@ -82,7 +82,7 @@
     </div>
 
     <div class = "row">
-      <div class="tabBoard">
+      <div class="tabBoard bg-head">
         <div class="textBoard">
           Tableau de Bord
         </div>
@@ -101,7 +101,7 @@
 
       <div class="contentDashboard">
         <div class = "recapScore">
-          <div class="viewScore ets">
+          <div class="viewScore ets bg-lightgreen ">
             <div>Etablissements</div>
             <h1><span class="counters" [countUp]="totalInstitutions.length" [options]="{
                 duration: 10,
@@ -111,7 +111,7 @@
                 </span>
               </h1>
           </div>
-          <div class="viewScore ens">
+          <div class="viewScore ens bg-lightgray">
             <div>Enseignants</div>
             <h1><span class="counters" [countUp]="totalTeachers.length" [options]="{
                 duration: 10,
@@ -121,7 +121,7 @@
                 </span>
               </h1>
           </div>
-          <div class="viewScore std">
+          <div class="viewScore std bg-lightgreen ">
             <div>Elèves</div>
             <h1><span class="counters" [countUp]="totalStudents.length" [options]="{
                 duration: 10,
@@ -131,11 +131,21 @@
                 </span>
               </h1>
           </div>
+          <div class="viewScore staff bg-lightgray">
+            <div>Staffs</div>
+            <h1><span class="counters" [countUp]="totalStaffs.length" [options]="{
+                duration: 10,
+                formattingFn: customFormattingFn
+              }">
+                  {{this.totalStaffs.length}}
+                </span>
+              </h1>
+          </div>
         </div>
 
         <div class = "detailsContenDashboard">
           <div class="gridViewScore">
-            <div class="HgridVs">
+            <div class="HgridVs bg-head">
               <img src="assets/img/icons/school.svg" alt="img">
               <span class="textHgridVs">
                 Publics
@@ -158,7 +168,7 @@
                   </div>
                   <div class="f12">{{this.totalInstitutionsPublicsOpen.length}}</div>
                 </div>
-                <div class ="gridVs red">
+                <div class ="gridVsRed">
                   <div>
                     <img src="" />
                     Fermé
@@ -173,22 +183,22 @@
                 <div class ="gridVs">
                   <div>
                     <img src="" />
-                    Classe opérationnelle
+                    Opérationnelle
                   </div>
-                  <div class="f12">{{this.totalInstitutionsPublics.length}}</div>
+                  <div class="f12">{{this.totalClassesOp.length}}</div>
                 </div>
-                <div class ="gridVs red">
+                <div class ="gridVsRed">
                   <div>
                     <img src="" />
-                    Classe en Chantier
+                    En Chantier
                   </div>
-                  <div class="f12">0</div>
+                  <div class="f12">{{this.totalClassesNotOp.length}}</div>
                 </div>
               </div>
             </div>
           </div>
          <div class="gridViewScore">
-            <div class="HgridVs">
+            <div class="HgridVs bg-head">
               <img src="assets/img/icons/school.svg" alt="img">
               <span class="textHgridVs">
                 Privés
@@ -197,7 +207,7 @@
                   duration: 10,
                   formattingFn: customFormattingFn
                 }">
-                    {{this.totalInstitutionsPublics.length}}
+                    {{this.totalInstitutionsPrives.length}}
                 </span>
             </div>
             <div class ="PgridVs">
@@ -208,32 +218,32 @@
                     <img src="" />
                     Agrée
                   </div>
-                  <div class="f12">0</div>
+                  <div class="f12">{{this.totalInstitutionsPrivesAgrees.length}}</div>
                 </div>
-                <div class ="gridVs red">
+                <div class ="gridVsRed">
                   <div>
                     <img src="" />
                     Clandestin
                   </div>
-                  <div class="f12">0</div>
+                  <div class="f12">{{this.totalInstitutionsPrivesClandestin.length}}</div>
                 </div>
               </div>
 
               <div>
-                <p class ="sTitre">Confession</p>
+                <p class ="sTitre">Laïcité</p>
                 <div class ="gridVs">
                   <div>
                     <img src="" />
                     Laics
                   </div>
-                  <div class="f12">0</div>
+                  <div class="f12">{{this.totalInstitutionsLaics.length}}</div>
                 </div>
                 <div class ="gridVs">
                   <div>
                     <img src="" />
                     Confessionnel
                   </div>
-                  <div class="f12">0</div>
+                  <div class="f12">{{this.totalInstitutionsConf.length}}</div>
                 </div>
 
               </div>
@@ -241,16 +251,16 @@
           </div>
 
           <div class="gridViewScore">
-            <div class="HgridVs">
+            <div class="HgridVs bg-head">
               <img src="assets/img/icons/student.svg" alt="img">
               <span class="textHgridVs">
                 Elèves
               </span>
-              <span class="counters fcount" [countUp]="this.totalInstitutionsPrives.length" [options]="{
+              <span class="counters fcount" [countUp]="this.totalStudents.length" [options]="{
                   duration: 10,
                   formattingFn: customFormattingFn
                 }">
-                    {{this.totalInstitutionsPublics.length}}
+                    {{this.totalStudents.length}}
                 </span>
             </div>
             <div class ="PgridVs">
@@ -261,14 +271,14 @@
                     <img src="" />
                     Filles
                   </div>
-                  <div class="f12">0</div>
+                  <div class="f12">{{this.totalStudentsGirl.length}}</div>
                 </div>
                 <div class ="gridVs">
                   <div>
                     <img src="" />
                     Garçons
                   </div>
-                  <div class="f12">0</div>
+                  <div class="f12">{{this.totalStudentsBoy.length}}</div>
                 </div>
               </div>
 
@@ -279,14 +289,14 @@
                     <img src="" />
                     Actif
                   </div>
-                  <div class="f12">0</div>
+                  <div class="f12">{{this.totalStudentsActive.length}}</div>
                 </div>
-                <div class ="gridVs red">
+                <div class ="gridVsRed">
                   <div>
                     <img src="" />
                     Inactif
                   </div>
-                  <div class="f12">0</div>
+                  <div class="f12">{{this.totalStudentsInactive.length}}</div>
                 </div>
 
               </div>
@@ -294,16 +304,16 @@
           </div>
 
           <div class="gridViewScore">
-            <div class="HgridVs">
+            <div class="HgridVs bg-head">
               <img src="assets/img/icons/teacher.svg" alt="img">
               <span class="textHgridVs">
                 Enseignants
               </span>
-              <span class="counters fcount" [countUp]="this.totalInstitutionsPrives.length" [options]="{
+              <span class="counters fcount" [countUp]="this.totalTeachers.length" [options]="{
                   duration: 10,
                   formattingFn: customFormattingFn
                 }">
-                    {{this.totalInstitutionsPublics.length}}
+                    {{this.totalTeachers.length}}
                 </span>
             </div>
             <div class ="PgridVs">
@@ -314,14 +324,14 @@
                     <img src="" />
                     Femmes
                   </div>
-                  <div class="f12">0</div>
+                  <div class="f12">{{this.totalTeachersWomens.length}}</div>
                 </div>
                 <div class ="gridVs">
                   <div>
                     <img src="" />
                     Hommes
                   </div>
-                  <div class="f12">0</div>
+                  <div class="f12">{{this.totalTeachersMens.length}}</div>
                 </div>
               </div>
 
@@ -332,14 +342,14 @@
                     <img src="" />
                     Actif
                   </div>
-                  <div class="f12">0</div>
+                  <div class="f12">{{this.totalTeachersActive.length}}</div>
                 </div>
-                <div class ="gridVs red">
+                <div class ="gridVsRed">
                   <div>
                     <img src="" />
                     Inactif
                   </div>
-                  <div class="f12">0</div>
+                  <div class="f12">{{this.totalTeachersInactive.length}}</div>
                 </div>
 
               </div>
@@ -347,17 +357,17 @@
           </div>
 
           <div class="gridViewScore">
-            <div class="HgridVs">
+            <div class="HgridVs bg-head">
               <img src="assets/img/icons/staff.svg" alt="img">
               <span class="textHgridVs">
                 Staffs
               </span>
             
-              <span class="counters fcount" [countUp]="this.totalInstitutionsPrives.length" [options]="{
+              <span class="counters fcount" [countUp]="this.totalStaffs.length" [options]="{
                   duration: 10,
                   formattingFn: customFormattingFn
                 }">
-                    {{this.totalInstitutionsPublics.length}}
+                    {{this.totalStaffs.length}}
                 </span>
             </div>
             <div class ="PgridVs">
@@ -368,14 +378,14 @@
                     <img src="" />
                     Femmes
                   </div>
-                  <div class="f12">0</div>
+                  <div class="f12">{{this.totalStaffsWomens.length}}</div>
                 </div>
                 <div class ="gridVs">
                   <div>
                     <img src="" />
                     Hommes
                   </div>
-                  <div class="f12">0</div>
+                  <div class="f12">{{this.totalStaffsMens.length}}</div>
                 </div>
               </div>
 
@@ -386,14 +396,14 @@
                     <img src="" />
                     Actif
                   </div>
-                  <div class="f12">0</div>
+                  <div class="f12">{{this.totalStaffsActive.length}}</div>
                 </div>
-                <div class ="gridVs red">
+                <div class ="gridVsRed">
                   <div>
                     <img src="" />
                     Inactif
                   </div>
-                  <div class="f12">0</div>
+                  <div class="f12">{{this.totalStaffsInactive.length}}</div>
                 </div>
 
               </div>
