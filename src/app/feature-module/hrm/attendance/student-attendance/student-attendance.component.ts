@@ -214,7 +214,7 @@ export class StudentAttendanceComponent {
       console.log(' item item item item ', item)
       if(value !== 'Transferer'){
         const options: any = {
-        "to": "xmaelxd1@gmail.com",
+        "to": "wilfriedinfo85@gmail.com",
         "subject": "Information consernation votre enfant",
         "html": "<h3 >Mr nous vous informons que votre enfant {{enfantName}} est <b>'{{status}}'</b> aujourd'hui</h3>",
         "data": {
