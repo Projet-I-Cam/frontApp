@@ -453,14 +453,16 @@ export class DashboardMinedubComponent implements OnInit{
       this.annees = await globalGet({T: 'AcademicYear'});
       
       this.totalInstitutions = await globalGet({T: 'Institution'});
-      this.totalInstitutionsLaics = this.totalInstitutions.filter(x => x.isInstitutionLaique);
-      this.totalInstitutionsConf = this.totalInstitutions.filter(x => !x.isInstitutionLaique);
 
       this.totalInstitutionsPublics = this.totalInstitutions.filter(x => !x.isPrivateInstitution);
-      this.totalInstitutionsPublicsOpen = this.totalInstitutions;
+      this.totalInstitutionsPublicsOpen = this.totalInstitutionsPublics.filter(x => x.isActive);
+      this.totalInstitutionsPublicsClose = this.totalInstitutionsPublics.filter(x => !x.isActive);
 
       this.totalInstitutionsPrives = this.totalInstitutions.filter(x => x.isPrivateInstitution);
-      //this.totalInstitutionsPublicsClose = ;
+      this.totalInstitutionsLaics = this.totalInstitutionsPrives.filter(x => x.isInstitutionLaique);
+      this.totalInstitutionsConf = this.totalInstitutionsPrives.filter(x => !x.isInstitutionLaique);
+      this.totalInstitutionsPrivesAgrees = this.totalInstitutionsPrives.filter(x => x.isAgree);
+      this.totalInstitutionsPrivesClandestin = this.totalInstitutionsPrives.filter(x => !x.isAgree)
 
       this.totalTeachers = await globalGet({
         T: 'Person',
@@ -468,6 +470,9 @@ export class DashboardMinedubComponent implements OnInit{
             isStaff: true,
           },
       });
+
+
+
       this.totalStudents = await globalGet({
         T: 'Person',
         filters: {
@@ -475,10 +480,7 @@ export class DashboardMinedubComponent implements OnInit{
           },
       });
 /*
-   totalInstitutionsPrivesAgrees : any [] = [];
-   totalInstitutionsPrivesClandestin : any [] = [];
-   totalInstitutionsLaics : any [] = [];
-   totalInstitutionsConf : any [] = [];
+
    
    totalClassesOp : any [] = [];
    totalClassesNotOp : any [] = [];
