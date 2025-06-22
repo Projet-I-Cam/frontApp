@@ -3,6 +3,8 @@ import { routes } from '../../../../shared/routes/routes';
 import { globalGet } from '../../../../services/statefull/http';
 import { LoginService } from '../../../../auth/services/login.service';
 import { Router } from '@angular/router';
+import { checkTaskName_Minedub } from '../../../../shared/common/common.service';
+import { getPersonByUserId } from '../../../../services/statefull/genericParse';
 
 @Component({
   selector: 'app-dashboard-content-info',
@@ -11,10 +13,12 @@ import { Router } from '@angular/router';
   styleUrl: './dashboard-content-info.component.scss'
 })
 export class DashboardContentInfoComponent implements OnInit {
-public routes = routes;
+  isAllow : boolean = false;
+  public routes = routes;
    annees : any[] = [];
    anneeEnCours: any; // l'année en cours
    currentUser : any = {};
+   currentPerson : any;
    totalInstitutions : any [] = [];
   
    totalInstitutionsPublics : any [] = [];
@@ -52,12 +56,15 @@ public routes = routes;
     constructor(private loginService: LoginService, private router: Router,) {}
 
      async ngOnInit() {
-        // Trouver l'année en cours (isCurrent)
+        this.currentUser = this.loginService.getUser();
+        this.currentPerson = await getPersonByUserId(this.currentUser.objectId);
+        this.isAllow = checkTaskName_Minedub(this.currentUser?.role?.task_name);
+      
+      // Trouver l'année en cours (isCurrent)
       this.annees = await globalGet({T: 'AcademicYear'});
       this.anneeEnCours = this.annees.find(a => a.isCurrent) || this.annees[0];
-      this.currentUser = this.loginService.getUser();
 
-      this.totalInstitutions = await globalGet({T: 'Institution'});
+      this.totalInstitutions = await globalGet({T: 'Institution' });
 
       this.totalInstitutionsPublics = this.totalInstitutions.filter(x => !x.isPrivateInstitution);
       this.totalInstitutionsPublicsOpen = this.totalInstitutionsPublics.filter(x => x.isActive);
@@ -69,40 +76,69 @@ public routes = routes;
       this.totalInstitutionsPrivesAgrees = this.totalInstitutionsPrives.filter(x => x.isAgree);
       this.totalInstitutionsPrivesClandestin = this.totalInstitutionsPrives.filter(x => !x.isAgree)
 
-      this.totalPersons = await globalGet({T: 'Person', includes: ['gender']});
+      this.totalPersons = await globalGet({T: 'Person', includes: ['gender', 'institution']});
         
       this.totalTeachers = this.totalPersons.filter(x => x.isStaff);
       this.totalTeachersMens = this.totalTeachers.filter(x => x.gender.slug == 'male');
       this.totalTeachersWomens = this.totalTeachers.filter(x => x.gender.slug == 'female');
 
-
       this.totalStudents = this.totalPersons.filter(x => x.isStudent);
       this.totalStudentsBoy = this.totalStudents.filter(x => x.gender.slug == 'male');
       this.totalStudentsGirl = this.totalStudents.filter(x => x.gender.slug == 'female');
 
-    /*
-   totalClassesOp : any [] = [];
-   totalClassesNotOp : any [] = [];
-   
-   totalStudentsActive : any [] = [];
-   totalStudentsInactive : any [] = [];
+    
+      switch(this.currentUser?.role?.task_name)
+      {
+        case 'administration':
+          break;
 
-   totalTeachers : any [] = [];
-   totalTeachersMens : any [] = [];
-   totalTeachersWomens : any [] = [];
-   totalTeachersActive : any [] = [];
-   totalTeachersInactive : any [] = [];
-   
-   totalStaffs : any [] = [];
-   totalStaffsMens : any [] = [];
-   totalStaffsWomens : any [] = [];
-   totalStaffsActive : any [] = [];
-   totalStaffsInactive : any [] = [];
-*/
+        case 'regional':
+          break;
+
+            case 'departemental':
+          break;
+
+            case 'arrondissement':
+          break;
+
+        case 'etablissement':
+          this.totalTeachers = this.totalTeachers.filter(x => x?.institution?.objectId == this.currentPerson?.institution?.objectId);
+          this.totalTeachersMens = this.totalTeachers.filter(x => x.gender.slug == 'male');
+          this.totalTeachersWomens = this.totalTeachers.filter(x => x.gender.slug == 'female');
+
+          this.totalStudents = this.totalStudents.filter(x => x?.institution?.objectId == this.currentPerson?.institution?.objectId);
+          this.totalStudentsBoy = this.totalStudents.filter(x => x.gender.slug == 'male');
+          this.totalStudentsGirl = this.totalStudents.filter(x => x.gender.slug == 'female');
+                  break;
+
+        case 'enseignant':
+                break;
+
+        case 'parent':
+          break;
+      }
+    /*
+      totalClassesOp : any [] = [];
+      totalClassesNotOp : any [] = [];
+      
+      totalStudentsActive : any [] = [];
+      totalStudentsInactive : any [] = [];
+
+      totalTeachers : any [] = [];
+      totalTeachersMens : any [] = [];
+      totalTeachersWomens : any [] = [];
+      totalTeachersActive : any [] = [];
+      totalTeachersInactive : any [] = [];
+      
+      totalStaffs : any [] = [];
+      totalStaffsMens : any [] = [];
+      totalStaffsWomens : any [] = [];
+      totalStaffsActive : any [] = [];
+      totalStaffsInactive : any [] = [];
+    */
     }
 
      customFormattingFn(value: number): string {
       return value.toString();
     }
-
 }

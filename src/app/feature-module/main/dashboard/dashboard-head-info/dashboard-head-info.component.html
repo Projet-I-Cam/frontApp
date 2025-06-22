@@ -1,33 +1,61 @@
 <!-- Dashboard Content -->
-<div class="card bg-head">
-    <div class="overlay-img">
-        <img src="assets/img/bg/shape-04.png" alt="img" class="img-fluid shape-01">
-        <img src="assets/img/bg/shape-01.png" alt="img" class="img-fluid shape-02">
-        <img src="assets/img/bg/shape-02.png" alt="img" class="img-fluid shape-03">
-        <img src="assets/img/bg/shape-03.png" alt="img" class="img-fluid shape-04">
-    </div>
-    <div class="card-body">
-        <div class="d-flex align-items-xl-center justify-content-xl-start flex-xl-row flex-column gap-5">
-            <div class="avatar avatar-xxxl bg-danger-transparent">
-                <img src="assets/img/icons/user-profile.svg" alt="img">
-            </div>
-            <div class="mb-2 mb-xl-0">
-                <div class="d-flex align-items-center flex-wrap mb-2">
-                    <h2 class="text-black me-2">Bienvenue, {{this.currentUser.fullname}}</h2>
-                    <a [routerLink]="routes.profile" class="avatar avatar-sm img-rounded bg-gray-800 dark-hover"><i
-                        class="ti ti-edit text-white"></i></a>
+<app-breadcrumb></app-breadcrumb>
+ <div class="row">
+    <div class="col-md-12"></div>
+    <div class="card bg-head">
+        <div class="overlay-img">
+            <img src="assets/img/bg/shape-04.png" alt="img" class="img-fluid shape-01">
+            <img src="assets/img/bg/shape-01.png" alt="img" class="img-fluid shape-02">
+            <img src="assets/img/bg/shape-02.png" alt="img" class="img-fluid shape-03">
+            <img src="assets/img/bg/shape-03.png" alt="img" class="img-fluid shape-04">
+        </div>
+        <div class="card-body">
+            <div class="d-flex align-items-xl-center justify-content-xl-start flex-xl-row flex-column gap-5">
+                <div class="avatar avatar-xxxl bg-danger-transparent">
+                    <img src="assets/img/icons/user-profile.svg" alt="img">
                 </div>
-                <div class="mt-1">
-                    <h4 class="text-black">Grade : Responsable MINEDUB</h4>
-                </div>
-                <div class="mt-1">
-                    <h4 class="text-black">Age : 38 ans | AFP : 15 ans | APA : 03 ans</h4>
-                </div>
-                <div class="mt-1">
-                    <h4 class="text-black">Membre depuis le {{this.currentUser.createdAt | date:'dd/MM/yyyy'}}</h4>
-                </div>
-                <div class="mt-1">
-                    <h4 class="text-black">Fonction : {{this.currentUser?.role?.name}}</h4>
+                <div class="mb-2 mb-xl-0">
+                    <div class="d-flex align-items-center flex-wrap mb-2">
+                        <h2 class="text-black me-2" *ngIf = "this.currentPerson">Bienvenue, {{this.currentPerson?.firstName + ' ' + this.currentPerson?.lastName}} 
+                            <span class="badge badge-soft-success d-inline-flex align-items-center" *ngIf = "this.isAllowStudent"><i class="ti ti-circle-filled  me-1"></i>Actif</span>
+                        </h2>
+                        <a [routerLink]="routes.profile" class="avatar avatar-sm img-rounded bg-gray-800 dark-hover"><i
+                            class="ti ti-edit text-white"></i></a>
+                    </div>
+                    <div *ngIf="this.isAllow">
+                        <div class="mt-1">
+                            <h4 class="text-black">Age :  <!--{{ calculateAge(this.currentPerson?.birthDate) }}--> 38 ans | AFP : 15 ans | APA : 03 ans</h4>
+                        </div>
+                        <div class="mt-1">
+                            <h4 class="text-black">Fonction : {{this.currentUser?.role?.name}}</h4> <!-- {{this.currentPerson?.StaffType?.libelle_fr}}-->
+                        </div>
+                        <div class="mt-1">
+                            <h4 class="text-black">Membre depuis le {{this.currentUser.createdAt | date:'dd/MM/yyyy'}}</h4>
+                        </div>
+                    </div>
+
+                    <div *ngIf="this.isAllowTeacher" class="Ets">
+                        <div>
+                            <div class="d-flex align-items-center gap-5 flex-wrap mb-2">
+                                <h4 class="text-black">
+                                    Enseignant du :
+                                    <span *ngFor="let classroom of classrooms; let i = index">
+                                        {{i  === 0 ? "" : ", "}}
+                                        {{classroom.name_fr}}
+                                    </span>
+                                </h4>
+                            </div>
+                            <div class="d-flex align-items-center gap-4 flex-wrap mb-2">
+                                <h4 class="text-black me-2">{{classrooms?.[0]?.institution?.name}}</h4>
+                            </div>
+                            <div class="d-flex align-items-center gap-5 flex-wrap mb-2">
+                                <h4 class="text-black me-2">Matricule : {{ this.currentPerson.registrationNumber || "000000000000"}}</h4>
+                            </div>
+                        </div>
+                        <div class="avatar avatar-xxxl p-1 logoEts">
+                            <img src="{{classrooms?.[0]?.institution?.photo?.url}}" alt="img">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
