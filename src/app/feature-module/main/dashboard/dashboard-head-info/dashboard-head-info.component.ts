@@ -25,12 +25,12 @@ export class DashboardHeadInfoComponent implements OnInit {
 
    constructor(private loginService: LoginService, private router: Router){ }
 
-    async ngOnInit(){
+    async ngOnInit() { 
        this.currentUser = this.loginService.getUser();
        this.currentPerson = await getPersonByUserId(this.currentUser.objectId);
        this.isAllow = checkTaskName_Minedub(this.currentUser?.role?.task_name);
-       this.isAllowStudent = checkTaskName_Eleve(this.currentUser?.role?.task_name);
-       this.isAllowTeacher = checkTaskName_Enseignant(this.currentUser?.role?.task_name);
+       this.isAllowStudent = (this.currentUser?.role?.task_name == 'eleve');
+       this.isAllowTeacher = (this.currentUser?.role?.task_name == 'enseignant');
 
        console.log('Head info User : ', this.currentUser);
        console.log('Head info Person : ', this.currentPerson);

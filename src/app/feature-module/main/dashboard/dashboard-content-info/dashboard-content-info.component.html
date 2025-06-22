@@ -17,7 +17,7 @@
 </div>
 
 <div class="contentDashboard">
-<div class = "recapScore" *ngIf="this.isAllow">
+<div class = "recapScore" *ngIf="this.isAllowMinedub">
     <div class="viewScore ets bg-lightgreen ">
     <div>Etablissements</div>
     <h1><span class="counters" [countUp]="totalInstitutions.length" [options]="{
@@ -61,7 +61,7 @@
 </div>
 
 <div class = "detailsContenDashboard">
-    <div class="gridViewScore" *ngIf="this.isAllow">
+    <div class="gridViewScore" *ngIf="this.isAllowMinedub">
     <div class="HgridVs bg-head">
         <img src="assets/img/icons/school.svg" alt="img">
         <span class="textHgridVs">
@@ -114,7 +114,7 @@
         </div>
     </div>
     </div>
-    <div class="gridViewScore" *ngIf="this.isAllow">
+    <div class="gridViewScore" *ngIf="this.isAllowMinedub">
     <div class="HgridVs bg-head">
         <img src="assets/img/icons/school.svg" alt="img">
         <span class="textHgridVs">
@@ -167,7 +167,7 @@
     </div>
     </div>
 
-    <div class="gridViewScore">
+    <div class="gridViewScore" *ngIf="this.isAllowEnseignant">
     <div class="HgridVs bg-head">
         <img src="assets/img/icons/student.svg" alt="img">
         <span class="textHgridVs">
@@ -220,7 +220,7 @@
     </div>
     </div>
 
-    <div class="gridViewScore">
+    <div class="gridViewScore" *ngIf="this.isAllowEtablissement">
     <div class="HgridVs bg-head">
         <img src="assets/img/icons/teacher.svg" alt="img">
         <span class="textHgridVs">
@@ -273,7 +273,7 @@
     </div>
     </div>
 
-    <div class="gridViewScore">
+    <div class="gridViewScore" *ngIf="this.isAllowEtablissement">
     <div class="HgridVs bg-head">
         <img src="assets/img/icons/staff.svg" alt="img">
         <span class="textHgridVs">

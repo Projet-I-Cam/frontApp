@@ -3,7 +3,7 @@ import { routes } from '../../../../shared/routes/routes';
 import { globalGet } from '../../../../services/statefull/http';
 import { LoginService } from '../../../../auth/services/login.service';
 import { Router } from '@angular/router';
-import { checkTaskName_Minedub } from '../../../../shared/common/common.service';
+import { checkTaskName_Enseignant, checkTaskName_Etablissement, checkTaskName_Minedub } from '../../../../shared/common/common.service';
 import { getPersonByUserId } from '../../../../services/statefull/genericParse';
 
 @Component({
@@ -13,7 +13,11 @@ import { getPersonByUserId } from '../../../../services/statefull/genericParse';
   styleUrl: './dashboard-content-info.component.scss'
 })
 export class DashboardContentInfoComponent implements OnInit {
-  isAllow : boolean = false;
+  
+  isAllowMinedub : boolean = false;
+  isAllowEtablissement : boolean = false;
+  isAllowEnseignant : boolean = false;
+
   public routes = routes;
    annees : any[] = [];
    anneeEnCours: any; // l'année en cours
@@ -58,7 +62,9 @@ export class DashboardContentInfoComponent implements OnInit {
      async ngOnInit() {
         this.currentUser = this.loginService.getUser();
         this.currentPerson = await getPersonByUserId(this.currentUser.objectId);
-        this.isAllow = checkTaskName_Minedub(this.currentUser?.role?.task_name);
+        this.isAllowMinedub = checkTaskName_Minedub(this.currentUser?.role?.task_name);
+        this.isAllowEtablissement = checkTaskName_Etablissement(this.currentUser?.role?.task_name);
+        this.isAllowEnseignant = checkTaskName_Enseignant(this.currentUser?.role?.task_name);
       
       // Trouver l'année en cours (isCurrent)
       this.annees = await globalGet({T: 'AcademicYear'});
