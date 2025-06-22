@@ -1,8 +1,3 @@
-.bg-head{
-    //background-color: rgb(133, 193, 126);
-    color : black;
-}
-
 .bg-lightgreen {
     background-color: rgb(241, 247, 255);
 }
@@ -37,8 +32,8 @@
 }
 
 .acYear:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+   border: 1px solid rgb(24, 128, 255);
+   border-radius: 2px;
 }
 
 .contentDashboard {
