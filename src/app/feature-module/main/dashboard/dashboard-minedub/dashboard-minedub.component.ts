@@ -10,13 +10,9 @@ import {
   ApexXAxis,
   ChartComponent,
 } from 'ng-apexcharts';
-import { routes } from '../../../../shared/routes/routes';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../../services/auth.service';
-import { fetchCurrentPerson } from '../../../../services/statefull/genericParse';
 import { LoginService } from '../../../../auth/services/login.service';
 import { CommonService } from '../../../../shared/common/common.service';
-import { async } from 'rxjs';
 import { globalGet } from '../../../../services/statefull/http';
 import { SidebarService } from '../../../../shared/sidebar/sidebar.service';
 
@@ -42,43 +38,6 @@ interface Task {
   styleUrl: './dashboard-minedub.component.scss'
 })
 export class DashboardMinedubComponent implements OnInit{
-   public routes = routes;
-   annees : any[] = [];
-   anneeEnCours: any; // l'année en cours
-   currentUser : any = {};
-   totalInstitutions : any [] = [];
-  
-   totalInstitutionsPublics : any [] = [];
-   totalInstitutionsPublicsOpen : any [] = [];
-   totalInstitutionsPublicsClose : any [] = [];
-
-   totalInstitutionsPrives : any [] = [];
-   totalInstitutionsPrivesAgrees : any [] = [];
-   totalInstitutionsPrivesClandestin : any [] = [];
-   totalInstitutionsLaics : any [] = [];
-   totalInstitutionsConf : any [] = [];
-   
-   totalClassesOp : any [] = [];
-   totalClassesNotOp : any [] = [];
-   
-   totalStudents : any [] = [];
-   totalStudentsBoy : any [] = [];
-   totalStudentsGirl : any [] = [];
-   totalStudentsActive : any [] = [];
-   totalStudentsInactive : any [] = [];
-
-   totalTeachers : any [] = [];
-   totalTeachersMens : any [] = [];
-   totalTeachersWomens : any [] = [];
-   totalTeachersActive : any [] = [];
-   totalTeachersInactive : any [] = [];
-   
-   totalStaffs : any [] = [];
-   totalStaffsMens : any [] = [];
-   totalStaffsWomens : any [] = [];
-   totalStaffsActive : any [] = [];
-   totalStaffsInactive : any [] = [];
-
    value!: Date;
     person : any = {};
     user: any = null;
@@ -450,62 +409,6 @@ export class DashboardMinedubComponent implements OnInit{
     addtime2: Date | undefined;
 
     async ngOnInit() {
-      this.annees = await globalGet({T: 'AcademicYear'});
-      
-      this.totalInstitutions = await globalGet({T: 'Institution'});
-      this.totalInstitutionsLaics = this.totalInstitutions.filter(x => x.isInstitutionLaique);
-      this.totalInstitutionsConf = this.totalInstitutions.filter(x => !x.isInstitutionLaique);
-
-      this.totalInstitutionsPublics = this.totalInstitutions.filter(x => !x.isPrivateInstitution);
-      this.totalInstitutionsPublicsOpen = this.totalInstitutions;
-
-      this.totalInstitutionsPrives = this.totalInstitutions.filter(x => x.isPrivateInstitution);
-      //this.totalInstitutionsPublicsClose = ;
-
-      this.totalTeachers = await globalGet({
-        T: 'Person',
-        filters: {
-            isStaff: true,
-          },
-      });
-      this.totalStudents = await globalGet({
-        T: 'Person',
-        filters: {
-            isStudent: true,
-          },
-      });
-/*
-   totalInstitutionsPrivesAgrees : any [] = [];
-   totalInstitutionsPrivesClandestin : any [] = [];
-   totalInstitutionsLaics : any [] = [];
-   totalInstitutionsConf : any [] = [];
-   
-   totalClassesOp : any [] = [];
-   totalClassesNotOp : any [] = [];
-   
-   totalStudents : any [] = [];
-   totalStudentsBoy : any [] = [];
-   totalStudentsGirl : any [] = [];
-   totalStudentsActive : any [] = [];
-   totalStudentsInactive : any [] = [];
-
-   totalTeachers : any [] = [];
-   totalTeachersMens : any [] = [];
-   totalTeachersWomens : any [] = [];
-   totalTeachersActive : any [] = [];
-   totalTeachersInactive : any [] = [];
-   
-   totalStaffs : any [] = [];
-   totalStaffsMens : any [] = [];
-   totalStaffsWomens : any [] = [];
-   totalStaffsActive : any [] = [];
-   totalStaffsInactive : any [] = [];
-*/
-
-      // Trouver l'année en cours (isCurrent)
-      this.anneeEnCours = this.annees.find(a => a.isCurrent) || this.annees[0];
-      this.currentUser = this.loginService.getUser();
-
       this.time = new Date();
       this.time.setHours(8);
       this.time.setMinutes(30);

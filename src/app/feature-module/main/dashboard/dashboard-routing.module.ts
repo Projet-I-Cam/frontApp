@@ -8,7 +8,11 @@ const routes: Routes = [
     path: '',
     component: DashboardComponent,
     children: [
-      { path: '', component: DashboardMainComponent},
+      { 
+        path: '', 
+        component: DashboardMainComponent,
+        data: { breadcrumb: 'Tableau de bord' }
+      },
     ],
   },
 ];

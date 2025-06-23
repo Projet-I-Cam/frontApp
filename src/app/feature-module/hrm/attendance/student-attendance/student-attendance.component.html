@@ -5,8 +5,8 @@
         <!-- Page Header -->
         <div class="d-md-flex d-block align-items-center justify-content-between mb-3">
             <div class="my-auto mb-2">
-                <h3 class="page-title mb-1">Student Attendance</h3>
-                <nav>
+                <h3 class="page-title mb-1">Fiche de présence</h3>
+                <nav> 
                     <ol class="breadcrumb mb-0">
                         <li class="breadcrumb-item">
                             <a [routerLink] = "routes.adminDashboard">Dashboard</a>
@@ -14,21 +14,20 @@
                         <li class="breadcrumb-item">
                             <a href="javascript:void(0);">Report</a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Student
-                            Attendance</li>
+                        <li class="breadcrumb-item active" aria-current="page">Fiche de présence</li>
                     </ol>
                 </nav>
             </div>
             <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
                 <app-tooltip-content />
             </div>
-        </div>
+        </div> 
         <!-- /Page Header -->
 
         <!-- Student List -->
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between flex-wrap pb-0">
-                <h4 class="mb-3">Student Attendance List</h4>
+                <h4 class="mb-3">Fiche de présence</h4>
                 <div class="d-flex align-items-center flex-wrap">
                     <div class="input-icon-start mb-3 me-2 position-relative">
                         <app-date-range-picker />
@@ -36,11 +35,11 @@
                     <div class="dropdown mb-3 me-2">
                         <a href="javascript:void(0);" class="btn btn-outline-light bg-white dropdown-toggle"
                             data-bs-toggle="dropdown" data-bs-auto-close="outside"><i
-                                class="ti ti-filter me-2"></i>Filter</a>
+                                class="ti ti-filter me-2"></i>Filtrer</a>
                         <div class="dropdown-menu drop-width">
                             <form>
                                 <div class="d-flex align-items-center border-bottom p-3">
-                                    <h4>Filter</h4>
+                                    <h4>Filtrer</h4>
                                 </div>
                                 <div class="p-3 border-bottom">
                                     <div class="row">
@@ -167,79 +166,78 @@
                                             [(ngModel)]="initChecked">
                                     </div>
                                 </th>
-                                <th mat-sort-header="admission">Admission No</th>
-                                <th mat-sort-header="roll">Roll No</th>
-                                <th mat-sort-header="name">Name</th>
-                                <th mat-sort-header="class">Class </th>
-                                <th mat-sort-header="section">Section</th>
-                                <th mat-sort-header="attendance">Attendance</th>
-                                <th style="min-width: 200px;">Notes</th>
+                                <th mat-sort-header="name">Nom complet</th>
+                                <th mat-sort-header="class">Sale de classe </th>
+                                <th mat-sort-header="attendance">Assiduité</th>
+                                <th style="min-width: 300px;">Notes</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @for (data of tableData; track data) {
+                            @for (data of filteredStudents; track data) {
                             <tr>
                                 <td>
                                     <div class="form-check form-check-md">
                                         <input class="form-check-input" type="checkbox"  [(ngModel)]="data.isSelected">
                                     </div>
                                 </td>
-                                <td><a href="javascript:void(0);" class="link-primary">{{data.admissionNo}}</a></td>
-                                <td>{{data.rollNo}}</td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <a href="javascript:void(0);" class="avatar avatar-md"><img
-                                                [src]="data.img"
+                                        <a *ngIf="data?.person?.photo?.url" href="javascript:void(0);" class="avatar avatar-md"><img
+                                                [src]="data?.person?.photo?.url"
                                                 class="img-fluid rounded-circle" alt="img"></a>
                                         <div class="ms-2">
-                                            <p class="text-dark mb-0"><a href="javascript:void(0);">{{data.name}}</a>
+                                            <p class="text-dark mb-0"><a href="javascript:void(0);">{{data.person?.firstName}} {{data.person?.lastName}}</a>
                                             </p>
                                         </div>
                                     </div>
                                 </td>
-                                <td>{{data.class}}</td>
-                                <td>{{data.section}}</td>
+                                <td>{{data.classroom?.name_fr}}</td>
                                 <td>
                                     <div class="d-flex align-items-center check-radio-group flex-nowrap">
                                         <label class="custom-radio">
-                                            <input type="radio" [name]="'attendance-' + data.key" value="Present"
-                                                [(ngModel)]="data.attendance"
-                                                (change)="handleOptionChange(data.key, 'Present')" />
+                                            <input type="radio" [name]="'attendance-' + data.objectId" value="Present"
+                                                [(ngModel)]="data.Present"
+                                                 [checked]="data.attendance === 'Present'"
+                                                (change)="handleOptionChange(data.objectId, 'Present')" />
                                             <span class="checkmark"></span>
                                             Present
                                         </label>
                                         <label class="custom-radio">
-                                            <input type="radio" [name]="'Late-' + data.key" value="Late"
-                                                [(ngModel)]="data.Late"
-                                                (change)="handleOptionChange(data.key, 'Late')" />
+                                            <input type="radio" [name]="'Retard-' + data.objectId" value="Retard"
+                                                [(ngModel)]="data.Retard"
+                                                 [checked]="data.attendance === 'en Retard'"
+                                                (change)="handleOptionChange(data.objectId, 'en Retard')" />
                                             <span class="checkmark"></span>
-                                            Late
+                                            Retard
                                         </label>
                                         <label class="custom-radio">
-                                            <input type="radio" [name]="'attendance-' + data.key" value="Absent"
+                                            <input type="radio" [name]="'attendance-' + data.objectId" value="Absent"
                                                 [(ngModel)]="data.Absent"
-                                                (change)="handleOptionChange(data.key, 'Absent')" />
+                                                [checked]="data.attendance === 'Absent'"
+                                                (change)="handleOptionChange(data.objectId, 'Absent')" />
                                             <span class="checkmark"></span>
                                             Absent
                                         </label>
                                         <label class="custom-radio">
-                                            <input type="radio" [name]="'Holiday-' + data.key" value="Holiday"
-                                                [(ngModel)]="data.Holiday"
-                                                (change)="handleOptionChange(data.key, 'Holiday')" />
+                                            <input type="radio" [name]="'Malade-' + data.objectId" value="Malade"
+                                                [(ngModel)]="data.Malade"
+                                                [checked]="data.attendance === 'Malade'"
+                                                (change)="handleOptionChange(data.objectId, 'Malade')" />
                                             <span class="checkmark"></span>
-                                            Holiday
+                                            Malade
                                         </label>
                                         <label class="custom-radio">
-                                            <input type="radio" [name]="'attendance-' + data.key" value="Halfday"
-                                                [(ngModel)]="data.Halfday"
-                                                (change)="handleOptionChange(data.key, 'Halfday')" />
+                                            <input type="radio" [name]="'attendance-' + data.objectId" value="Transferer"
+                                                [(ngModel)]="data.Transferer"
+                                                [checked]="data.attendance === 'Transferer'"
+                                                (change)="handleOptionChange(data.objectId, 'Transferer')" />
                                             <span class="checkmark"></span>
-                                            Halfday
+                                            Transferer ou démissionnaire
                                         </label>
                                     </div>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" placeholder="Enter Name" />
+                                    <input type="text" [(ngModel)]="data.note" class="form-control" placeholder="Enter Name" />
                                 </td>
                             </tr>
                             

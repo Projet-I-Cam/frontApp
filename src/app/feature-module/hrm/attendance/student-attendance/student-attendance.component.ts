@@ -1,11 +1,23 @@
 import { Component } from '@angular/core';
-import { routes } from '../../../../shared/routes/routes';
-import { apiResultFormat, studentAttendance } from '../../../../shared/model/pages.model';
-import { MatTableDataSource } from '@angular/material/table';
-import { DataService } from '../../../../shared/data/data.service';
-import { pageSelection, PaginationService, tablePageSize } from '../../../../shared/custom-pagination/pagination.service';
-import { Router } from '@angular/router';
 import { Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
+
+import Parse from 'parse';
+import {
+  ConfirmationService,
+  MessageService,
+} from 'primeng/api';
+
+import { LoginService } from '../../../../auth/services/login.service';
+import {
+  getCurrentAcademicYear,
+} from '../../../../services/statefull/genericParse';
+import { UtilsService } from '../../../../services/utilis.service';
+import { routes } from '../../../../shared/routes/routes';
 
 @Component({
     selector: 'app-student-attendance',
@@ -16,58 +28,153 @@ import { Sort } from '@angular/material/sort';
 export class StudentAttendanceComponent {
   public routes = routes;
   // pagination variables
-  public tableData: Array<studentAttendance> = [];
+  public tableData: Array<any> = [];
   public pageSize = 10;
   public serialNumberArray: Array<number> = [];
   public totalData = 0;
   showFilter = false;
-  dataSource!: MatTableDataSource<studentAttendance>;
+  dataSource!: MatTableDataSource<any>;
   public searchDataValue = '';
-  public tableDataCopy: Array<studentAttendance> = [];
-  public actualData: Array<studentAttendance> = [];
+  public tableDataCopy: Array<any> = [];
+  public actualData: Array<any> = [];
   //** pagination variables
   initChecked = false;
 
+   idParam: string = '';
+  filteredStudents: any[] = [];
+  sections: any[] = [];
+  classes: any[] = [];
+  classRooms: any[] = [];
+  classroomArray: any[] = [];
+  sexes: any[] = [];
+  academicYear: any = {};
+  currentPerson: any = {};
+  person: any = {};
+  totalRecords = 0;
+  loading = true;
+  error: string | null = null;
   constructor(
-    private data: DataService,
-    private pagination: PaginationService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
+    private loginService: LoginService
   ) {
-    this.data.getStudentAttendance().subscribe((apiRes: apiResultFormat) => {
-      this.actualData = apiRes.data;
-      this.pagination.tablePageSize.subscribe((res: tablePageSize) => {
-        if (this.router.url == this.routes.studentAttendance) {
-          this.getTableData({ skip: res.skip, limit: res.limit });
-          this.pageSize = res.pageSize;
-        }
-      });
-    });
+    this.loading = true;
+    this.error = null;
+    this.initializeData()
   }
 
-  private getTableData(pageOption: pageSelection): void {
-    this.data.getStudentAttendance().subscribe((apiRes: apiResultFormat) => {
-      this.tableData = [];
-      this.tableDataCopy = [];
-      this.serialNumberArray = [];
-      this.totalData = apiRes.totalData;
-      apiRes.data.map((res: studentAttendance, index: number) => {
-        const serialNumber = index + 1;
-        if (index >= pageOption.skip && serialNumber <= pageOption.limit) {
-          res.id = serialNumber;
-          this.tableData.push(res);
-          this.serialNumberArray.push(serialNumber);
-          this.tableDataCopy.push(res);
-        }
+  // private getTableData(pageOption: pageSelection): void {
+  //   this.data.getStudentAttendance().subscribe((apiRes: apiResultFormat) => {
+  //     this.tableData = [];
+  //     this.tableDataCopy = [];
+  //     this.serialNumberArray = [];
+  //     this.totalData = apiRes.totalData;
+  //     apiRes.data.map((res: studentAttendance, index: number) => {
+  //       const serialNumber = index + 1;
+  //       if (index >= pageOption.skip && serialNumber <= pageOption.limit) {
+  //         res.id = serialNumber;
+  //         this.tableData.push(res);
+  //         this.serialNumberArray.push(serialNumber);
+  //         this.tableDataCopy.push(res);
+  //       }
+  //     });
+  //     this.dataSource = new MatTableDataSource<studentAttendance>(this.actualData);
+  //     this.pagination.calculatePageSize.next({
+  //       totalData: this.totalData,
+  //       pageSize: this.pageSize,
+  //       tableData: this.tableData,
+  //       tableDataCopy: this.tableDataCopy,
+  //       serialNumberArray: this.serialNumberArray,
+  //     });
+  //   });
+  // }
+
+  private async initializeData(): Promise<void> {
+      const [person, sections, academicYear] = await Promise.all([
+        this.loginService.getPerson(), 
+        UtilsService.getSection(),
+        UtilsService.getGender(),
+        getCurrentAcademicYear()
+      ]);
+  
+      this.currentPerson = person;
+      this.academicYear = academicYear;
+      this.sections = sections?.map((sec: any) => ({
+        label: sec?.get('name_fr'),
+        value: sec?._getId()
+      })) || [];
+      this.getTableData(0);
+    }
+  async getTableData(currentPage: number): Promise<void> {
+    try {
+      console.log('this.currentPerson this.currentPerson ', this.currentPerson)
+      this.idParam = this.route.snapshot.paramMap.get('id') || '';
+      const includes = ['person', 'person.gender', 'classroom', 'classroom.classe', 'classroom.classe.section', 'person.section']
+      
+      
+      
+      let queries: any = []
+      if(this.currentPerson?.user?.role?.task_name === "enseignant"){
+        const queriesQ = ['teacherChief', 'teacherSecond'].map((k: string) => {
+        const q = new Parse.Query('Classroom')
+        q.equalTo(k, {"__type": "Pointer", "className": "Person" , "objectId": this.currentPerson?.objectId})
+        return q
+      })
+      const query = Parse.Query.or(...queriesQ);
+      const result = await query.find()
+      console.log('Classroom Classroom Classroom Classroom ', result)
+        this.classroomArray = result
+        queries = result.map((classr: any) => {
+          const q = new Parse.Query('Enrollment')
+          q.equalTo('classroom', classr)
+          return q
+        })
+      }
+      const mainQuery = this.classroomArray.length && this.currentPerson?.user?.role?.task_name === "enseignant" ? Parse.Query.or(...queries) : new Parse.Query('Enrollment');
+      includes.forEach(include => {
+        mainQuery.include(include)
       });
-      this.dataSource = new MatTableDataSource<studentAttendance>(this.actualData);
-      this.pagination.calculatePageSize.next({
-        totalData: this.totalData,
-        pageSize: this.pageSize,
-        tableData: this.tableData,
-        tableDataCopy: this.tableDataCopy,
-        serialNumberArray: this.serialNumberArray,
-      });
-    });
+      if(this.currentPerson?.user?.role?.task_name !== "enseignant"){
+        mainQuery.equalTo("institution", {"__type": "Pointer", "className": "Institution" , "objectId": this.idParam == '' ? this.currentPerson?.institution?.objectId : this.idParam})
+      }
+      // mainQuery.equalTo("academicYear", {"__type": "Pointer", "className": "AcademicYear" , "objectId": this.academicYear?.objectId})
+      mainQuery.equalTo("isValid", true)
+      const results = await mainQuery.find()   
+      const json = results?.map(r => r?.toJSON()).map(d => ({
+        note: null,
+        ...d 
+      }))
+      console.log('DATAT DATAT DATAT DTA =>>>> ', results?.map(r => r?.toJSON()))
+      // const requestConfig: any = {
+      //   T: 'Enrollment',
+      //   includes: ['person', 'person.gender', 'classroom', 'classroom.classe', 'classroom.classe.section', 'person.section'],
+      //   currentPage: currentPage,
+      //   filters: {
+      //     academicYear: {
+      //       className: 'AcademicYear',
+      //       objectId: this.academicYear?.objectId
+      //     },
+      //     institution: {
+      //       className: 'Institution',
+      //       objectId: this.idParam == '' ? this.currentPerson?.institution?.objectId : this.idParam
+      //     },
+      //     isValid: true
+      //   },
+      // };
+      // const res: any = await globalGet(requestConfig);
+
+      // if (res?.error) {
+      //   throw new Error(res.message);
+      // }
+      // console.log('STudent => ', res)
+      this.tableData = json // res || [];
+      this.filteredStudents = [...this.tableData];
+      this.totalRecords = json?.length//res?.count || res?.length || 0;
+    } catch (error) {
+      throw error;
+    }
   }
 
   public sortData(sort: Sort) {
@@ -101,9 +208,29 @@ export class StudentAttendanceComponent {
       });
     }
   }
-  handleOptionChange(key: string, value: string) {
-    const item = this.tableData.find(d => d.key === key);
+  handleOptionChange(objectId: string, value: string) {
+    const item = this.tableData.find(d => d.objectId === objectId);
     if (item) {
+      console.log(' item item item item ', item)
+      if(value !== 'Transferer'){
+        const options: any = {
+        "to": "wilfriedinfo85@gmail.com",
+        "subject": "Information consernation votre enfant",
+        "html": "<h3 >Mr nous vous informons que votre enfant {{enfantName}} est <b>'{{status}}'</b> aujourd'hui</h3>",
+        "data": {
+          status: value,
+          enfantName: item.person?.firstName + " "+ item.person?.lastName
+        }
+      }
+      if(item.note){
+        options.data.note = item.note
+        options.html =  + "<p>{{note}}</p>"
+      }
+      Parse.Cloud.run('sendEmail', {...options}).then(r => {
+        console.log('sendEmail ', r)
+      })
+      }
+
       item.attendance = value;
     }
   }

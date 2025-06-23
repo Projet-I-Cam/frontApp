@@ -1,64 +1,8 @@
 <!-- Page Wrapper -->
 <div class="page-wrapper">
     <div class="content">
-
-        <!-- Page Header -->
-        <div class="d-md-flex d-block align-items-center justify-content-between mb-3">
-            <div class="my-auto mb-2">
-                <h3 class="page-title mb-1">Teacher Dashboard</h3>
-                <nav>
-                    <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item">
-                            <a [routerLink] = "routes.adminDashboard">Dashboard</a>
-                        </li>
-                        <li class="breadcrumb-item active" aria-current="page">Teacher Dashboard</li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
-        <!-- /Page Header -->
-
-        <!-- Greeting Section -->
-        <div class="card bg-dark">
-          <div class="overlay-img">
-            <img src="assets/img/bg/shape-04.png" alt="img" class="img-fluid shape-01">
-            <img src="assets/img/bg/shape-01.png" alt="img" class="img-fluid shape-02">
-            <img src="assets/img/bg/shape-02.png" alt="img" class="img-fluid shape-03">
-            <img src="assets/img/bg/shape-03.png" alt="img" class="img-fluid shape-04">
-          </div>
-          <div class="card-body">
-            <div class="d-flex align-items-xl-center justify-content-xl-between flex-xl-row flex-column">
-              <div class="mb-3 mb-xl-0 gap-2">
-                <div class="d-flex align-items-center flex-wrap mb-2">
-                  <h2 class="text-white me-2">Welcome Back, {{person.firstName}} {{person.lastName}}</h2>
-                  <a [routerLink]="routes.profile" class="avatar avatar-sm img-rounded bg-gray-800 dark-hover"><i
-                      class="ti ti-edit text-white"></i></a>
-                </div>
-                <div class="d-flex align-items-center gap-5 flex-wrap mb-2">
-                  <h4 class="text-white">
-                    ADMINISTRATEUR DES SALES DE CLASSE:
-                    <span *ngFor="let classroom of classrooms; let i = index">
-                        {{i  === 0 ? "" : ", "}}
-                        {{classroom.name_fr}}
-                    </span>
-                </h4>
-                  <h4 class="text-white me-2">Session début : 2025</h4>
-                </div>
-                <div class="d-flex align-items-center gap-4 flex-wrap mb-2">
-                  <h4 class="text-success me-2">{{classrooms?.[0]?.institution?.name}}</h4>
-                </div>
-                <div class="d-flex align-items-center gap-5 flex-wrap mb-2">
-                  <h4 class="text-success me-2">PUBLIC / FRANCOPHONE</h4>
-                  <h4 class="text-success me-2">Mon matricule : {{person.registrationNumber || "000000000000"}}</h4>
-                </div>
-              </div>
-              <div class="avatar avatar-xxxl bg-danger-transparent p-1">
-                <img src="{{classrooms?.[0]?.institution?.photo?.url}}" alt="img">
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- /Greeting Section -->
+        <app-dashboard-head-info></app-dashboard-head-info>
+        
         <div class="row">
             <!-- Total classe -->
             <div class="col-xxl-3 col-sm-6 d-flex">

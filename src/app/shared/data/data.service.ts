@@ -1,15 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { from, map, Observable } from 'rxjs';
+
+import * as FileSaver from 'file-saver';
+import {
+  map,
+  Observable,
+} from 'rxjs';
+import * as XLSX from 'xlsx';
 
 import { LoginService } from '../../auth/services/login.service';
 import { globalGet } from '../../services/statefull/http';
-import { Section } from '../model/institution.model';
-import { apiResultFormat, classRoomData } from '../model/pages.model';
+import { apiResultFormat } from '../model/pages.model';
 import { routes } from '../routes/routes';
-import { SettingsService } from '../settings/settings.service';
-import * as XLSX from "xlsx";
-import * as FileSaver from "file-saver";
 
 @Injectable({
   providedIn: 'root',
@@ -1457,6 +1459,7 @@ export class DataService {
           subMenus: [
             { menuValue: 'Mon collaborateur', route: '' },
             { menuValue: 'Liste des élèves inscrits', route: routes.studentList },
+            { menuValue: 'Fiche de présence', route: routes.studentAttendance },
             { menuValue: 'Projet pédagogique', route: '' },
             { menuValue: 'Programme des cours', route: routes.studentTransfer },
             { menuValue: 'Manuels au programme', route: '' },

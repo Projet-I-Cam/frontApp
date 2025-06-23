@@ -1,0 +1,16 @@
+.card-body{
+    border: 1px solid rgb(207, 207, 207);
+    border-radius: 14px;
+    box-shadow: 0px 0px 5px 0.2px rgb(214, 214, 214);
+}
+
+.Ets {
+    display: flex; /* Active Flexbox */
+    justify-content: space-between; /* Espace entre les éléments */
+    align-items: center; /* Aligne les éléments verticalement au centre */
+    padding: 10px; /* Optionnel : ajout d'un peu d'espace autour */
+}
+
+.logoEts{
+    box-shadow: 0px 0px 5px 0.2px rgb(167, 167, 167);
+}
