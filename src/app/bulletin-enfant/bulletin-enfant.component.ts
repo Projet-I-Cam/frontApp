@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import { routes } from '../shared/routes/routes';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -11,6 +11,9 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { DropdownModule } from 'primeng/dropdown';
 import {SharedModule} from "../shared/shared.module";
 import {DataService} from "../shared/data/data.service";
+import {FilterStudent, getCurrentAcademicYear, listInscriptions} from "../services/statefull/genericParse";
+import {LoginService} from "../auth/services/login.service";
+import {globalGet} from "../services/statefull/http";
 
 interface StudentData {
   id: number;
@@ -157,11 +160,11 @@ export class BulletinEnfantComponent {
   searchResults: StudentSearchResult[] = [];
 
   // Données pour l'année scolaire
-  academicYear: string = '2024-2025';
+  academicYear : any = {};
   reportDate: Date = new Date();
 
   // Données exemple pour les élèves
-  students = [
+ /* students = [
     { id: 1, name: this.getRandomName(0), image: 'assets/img/profiles/avatar-01.jpg' },
     { id: 2, name: this.getRandomName(1), image: 'assets/img/profiles/avatar-02.jpg' },
     { id: 3, name: this.getRandomName(2), image: 'assets/img/profiles/avatar-03.jpg' },
@@ -171,7 +174,7 @@ export class BulletinEnfantComponent {
     { id: 7, name: this.getRandomName(6), image: 'assets/img/profiles/avatar-01.jpg' },
     { id: 8, name: this.getRandomName(7), image: 'assets/img/profiles/avatar-02.jpg' },
     { id: 9, name: this.getRandomName(8), image: 'assets/img/profiles/avatar-03.jpg' }
-  ];
+  ];*/
 
   // Données exemple pour les périodes
   terms = [
@@ -208,10 +211,59 @@ export class BulletinEnfantComponent {
       title: string
     }[]
   }[];
+  load: boolean = true;
+  person : any = {};
+  currentUser : any = {};
+  @Input() filter : FilterStudent = {};
+  filteredStudents: any[] = [];
+  public students: any[] = []; // Liste des étudiants
 
+  async ngOnInit() {
+    this.load=true;
+    this.loadDropdownOptions();
+    this.academicYear = await getCurrentAcademicYear();
+    this.currentUser = this.loginService.getUser();
+    this.person = this.loginService.getPerson();
+    this.filter.parentId = this.person.objectId
+    if(!this.filter.yearId){
+      this.filter.yearId = this.academicYear.objectId;
+    }
+    this.loadStudents(this.filter);
+  }
 
+  async loadStudents(f: FilterStudent) {
+    this.isLoading = true;
 
-  constructor(public dataService : DataService) {
+    try {
+      // Charger les inscriptions avec les filtres appliqués
+      let students = await listInscriptions({yearId: f.yearId, parentId: f.parentId});
+      console.log("Personnes :");
+
+// Tableau d'avatars à alterner (3 avatars par exemple)
+      const avatars = [
+        'assets/img/profiles/avatar-01.jpg',
+        'assets/img/profiles/avatar-02.jpg',
+        'assets/img/profiles/avatar-03.jpg'
+      ];
+
+// Transformation de la liste
+      this.students = students.map((s: any, index: number) => ({
+        id: s['id'],
+        name: `${s['person']['firstName']} ${s['person']['lastName']}`,
+        image: s['person']['photo']?.['url'] || avatars[index % avatars.length]
+      }));
+
+    } catch (error) {
+      console.error("Erreur lors du chargement des étudiants:", error);
+      this.students = [];
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  constructor(public dataService : DataService,
+              private loginService: LoginService
+  ) {
     this.selectedClass = { name: 'CM1', code: 'CM1' }; // Classe fixée
     this.competences = [
       {
@@ -731,9 +783,6 @@ export class BulletinEnfantComponent {
     ];
   }
 
-  ngOnInit(): void {
-    this.loadDropdownOptions();
-  }
 
   // Fonction pour générer le bulletin
   generateBulletin() {

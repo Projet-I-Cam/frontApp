@@ -9,6 +9,7 @@ import {PvByClassComponent} from "../pv-by-class/pv-by-class.component";
 import {RelevesByClassComponent} from "../releves-by-class/releves-by-class.component";
 import {StatsByClassComponent} from "../stats-by-class/stats-by-class.component";
 import {BulletinEnfantComponent} from "../bulletin-enfant/bulletin-enfant.component";
+import {NotesEnfantComponent} from "../notes-enfant/notes-enfant.component";
 
 
 const routes: Routes = [
@@ -236,6 +237,7 @@ const routes: Routes = [
       { path: 'releve-notes-steps', component: RelevesByClassComponent},
       { path: 'stats-results-steps', component: StatsByClassComponent},
       { path: 'bulletin-enfant', component: BulletinEnfantComponent},
+      { path: 'notes-enfant', component: NotesEnfantComponent},
 
 
     ],

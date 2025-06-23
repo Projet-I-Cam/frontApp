@@ -1400,6 +1400,8 @@ export class DataService {
           subMenus: [
             { menuValue: 'Bulletins de notes', route: routes.bulletinEnfant },
             { menuValue: 'Livret scolaire', route: '' },
+            { menuValue: 'Notes disponibles', route: routes.notesEnfant },
+            { menuValue: 'PV', route: routes.procesVerbal },
           ]
         }
       ],

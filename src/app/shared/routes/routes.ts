@@ -1065,6 +1065,10 @@ export class routes {
   {
     return this.baseUrl + '/bulletin-enfant';
   }
+  public static get notesEnfant():string
+  {
+    return this.baseUrl + '/notes-enfant';
+  }
 }
 
 
