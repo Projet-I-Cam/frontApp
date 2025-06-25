@@ -210,16 +210,18 @@ export class StudentAttendanceComponent {
   }
   handleOptionChange(objectId: string, value: string) {
     const item = this.tableData.find(d => d.objectId === objectId);
+    const today = new Date();
     if (item) {
       console.log(' item item item item ', item)
       if(value !== 'Transferer'){
         const options: any = {
         "to": "wilfriedinfo85@gmail.com",
-        "subject": "Information consernation votre enfant",
-        "html": "<h3 >Mr nous vous informons que votre enfant {{enfantName}} est <b>'{{status}}'</b> aujourd'hui</h3>",
+        "subject": "SUIVI SCOLAIRE DE VOS ENFANTS",
+        "html": "<h3 ><b>MINEDUB/I-CAMSCHOOL</b>: chers parents nous vous informons que votre enfant {{enfantName}} est {{status}} dans notre etablissement aujourd'hui {{dateDuJour}}.</h3>",
         "data": {
           status: value,
-          enfantName: item.person?.firstName + " "+ item.person?.lastName
+          enfantName: item.person?.firstName + " "+ item.person?.lastName,
+          dateDuJour: today.toLocaleDateString()
         }
       }
       if(item.note){
