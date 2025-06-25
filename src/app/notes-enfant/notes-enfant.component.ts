@@ -33,13 +33,21 @@ export class NotesEnfantComponent {
   trimestres: string[] = ['Trimestre 1', 'Trimestre 2', 'Trimestre 3'];
 
   modalContent: string = '';
+  selectedModule: any = null;
 
-  @ViewChild('gradeModal', { static: true }) gradeModal!: ElementRef;
+  @ViewChild('gradeModal') gradeModal!: ElementRef;
   modalInstance: any;
+  modalReady = false;
 
-  ngOnInit(): void {
-    // Initialisation de la modal bootstrap
-    this.modalInstance = new Modal(this.gradeModal.nativeElement, {});
+  ngAfterViewChecked(): void {
+    if (this.shouldShowTable() && !this.modalReady && this.gradeModal) {
+      this.modalInstance = new Modal(this.gradeModal.nativeElement);
+      this.modalReady = true;
+    }
+  }
+
+  shouldShowTable(): boolean {
+    return !!(this.selectedEleve && this.selectedTrimestre && this.selectedUA);
   }
 
   modules = [
@@ -638,11 +646,16 @@ export class NotesEnfantComponent {
     return this.valueToCote(average);
   }
 
-  openGradeModal(module: any, selectedUA: any): void {
-    // Préparation du contenu de la modal
-    this.modalContent = this.getPopoverContent(module, selectedUA);
-    // Ouvrir la modal
-    this.modalInstance.show();
+  openGradeModal(module: any, ua: any): void {
+    console.log("contenu à afficher");
+    console.log(this.modalContent);
+
+    this.selectedModule = module;
+    this.modalContent = this.getPopoverContent(module, ua);
+    console.log(this.modalInstance);
+    if (this.modalInstance) {
+      this.modalInstance.show();
+    }
   }
 
 }
