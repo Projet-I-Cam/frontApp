@@ -26,6 +26,7 @@
     width: 55%;
     font-size: 1.7em;
     text-align: center;
+    color : green;
 }
 
 .acYear{
@@ -87,6 +88,9 @@
     float: left;
 }
 
+.bg-white { background-color:  white; }
+.bold { font-weight: bold; }
+
 .PgridVs {
     //border:1px solid #4CAF50;
     background-color: rgb(252, 235, 237);
@@ -112,7 +116,7 @@
 }
 
 .textHgridVs{
-    color: black;
+    color: white;
     width: 70%;
     display: inline-block;
     padding: 2%;
@@ -123,7 +127,7 @@
 .fcount{
  font-weight: bold;
  font-size: 1.2em;
- color:black;
+ color: white;
 }
 
 .gridVs {
@@ -153,7 +157,7 @@
     //background-color: rgb(248, 248, 248);
     font-size: 1.2em;
     font-weight: bold;
-    color :black;
+    color : green;
 }
 
 .f12 {
