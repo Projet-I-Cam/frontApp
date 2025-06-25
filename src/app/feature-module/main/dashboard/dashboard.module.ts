@@ -11,9 +11,10 @@ import { StudentDashboardComponent } from './student-dashboard/student-dashboard
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { DashboardMainComponent } from './dashboard-main/dashboard-main.component';
 import { DashboardMinedubComponent } from './dashboard-minedub/dashboard-minedub.component';
-import { MyStudentsComponent } from '../../peoples/students/my-students/my-students.component';
 import { StudentsModule } from '../../peoples/students/students.module';
-import { StudentListHomeworksComponent } from '../../peoples/students/student-list-homeworks/student-list-homeworks.component';
+import { DashboardHeadInfoComponent } from './dashboard-head-info/dashboard-head-info.component';
+import { BreadcrumbComponent } from '../../common/breadcrumb/breadcrumb.component';
+import { DashboardContentInfoComponent } from './dashboard-content-info/dashboard-content-info.component';
 
 
 @NgModule({
@@ -24,7 +25,10 @@ import { StudentListHomeworksComponent } from '../../peoples/students/student-li
     TeacherDashboardComponent,
     StudentDashboardComponent,
     DashboardMainComponent,
-    DashboardMinedubComponent
+    DashboardMinedubComponent,
+    DashboardHeadInfoComponent,
+    BreadcrumbComponent,
+    DashboardContentInfoComponent
   ],
   imports: [
     CommonModule,
