@@ -1394,6 +1394,7 @@ export class DataService {
           customSubmenuTwo: false,
           subRoutes: [],
         },
+/*
         {
           menuValue: 'Notes de vos enfants',
           icon: 'notes',
@@ -1402,10 +1403,10 @@ export class DataService {
           subMenus: [
             { menuValue: 'Bulletins de notes', route: routes.bulletinEnfant },
             { menuValue: 'Livret scolaire', route: '' },
-            { menuValue: 'Notes disponibles', route: routes.notesEnfant },
             { menuValue: 'PV', route: routes.procesVerbal },
           ]
         }
+*/
       ],
     },
   ];
@@ -2922,6 +2923,41 @@ export class DataService {
 
     FileSaver.saveAs(blob, idBloc+'.xlsx');
   }
+
+  public getRandomTeachersData() {
+    const firstNames = ['SOUP', 'MBARGA', 'NLEME', 'ABAA', 'MEKONGO', 'ONANA', 'ONDOA', 'ASSOA'];
+    const lastNames = ['Hypolite', 'Léonce', 'Liliane', 'Céleste', 'Léocadie', 'Delphine'];
+    const phones = ['695930773', '678593077', '655584811', '66587812', '671728917', '656187006'];
+    const classes = ['SIL', 'CP', 'CPS', 'CE1', 'CE2', 'CM1', 'CM2'];
+
+    const teachers: any[] = [];
+
+    // Étape 1 : Assigner une fois chaque classe
+    for (const cls of classes) {
+      const teacher = {
+        firstName: firstNames[Math.floor(Math.random() * firstNames.length)],
+        lastName: lastNames[Math.floor(Math.random() * lastNames.length)],
+        phone1: phones[Math.floor(Math.random() * phones.length)],
+        class: cls,
+      };
+      teachers.push(teacher);
+    }
+
+    // Étape 2 : Ajouter les enseignants restants (pour arriver à 10)
+    while (teachers.length < 10) {
+      const teacher = {
+        firstName: firstNames[Math.floor(Math.random() * firstNames.length)],
+        lastName: lastNames[Math.floor(Math.random() * lastNames.length)],
+        phone1: phones[Math.floor(Math.random() * phones.length)],
+        class: classes[Math.floor(Math.random() * classes.length)],
+      };
+      teachers.push(teacher);
+    }
+
+    return teachers;
+  }
+
+
 
 
 }

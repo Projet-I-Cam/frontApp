@@ -35,17 +35,17 @@
           <p><strong>Module :</strong> ____________________________</p>
         </div>
         <div class="col-md-6">
-          <p><strong>Classe :</strong> COURS MOYEN 1 (CM1)</p>
+          <p><strong>Classe :</strong> {{teachers[0]?.class}}</p>
         </div>
       </div>
       <div class="row signature-zone">
         <div class="col-md-6">
-          <p><strong>Enseignante 1 :</strong> ____________________________</p>
-          <p><strong>Téléphone :</strong> _________ / _________</p>
+          <p><strong>Enseignante 1 :</strong> <span class="text-decoration-underline">{{teachers[0]?.firstName}} {{teachers[0]?.lastName}}</span></p>
+          <p><strong>Téléphone :</strong> <span class="text-decoration-underline">{{teachers[0]?.phone1}}</span></p>
         </div>
         <div class="col-md-6">
-          <p><strong>Enseignante 2 :</strong> ____________________________</p>
-          <p><strong>Téléphone :</strong> _________ / _________</p>
+          <p><strong>Enseignante 2 :</strong> <span class="text-decoration-underline">{{teachers[1]?.firstName}} {{teachers[1]?.lastName}}</span></p>
+          <p><strong>Téléphone :</strong> <span class="text-decoration-underline">{{teachers[1]?.phone1}}</span></p>
         </div>
       </div>
 

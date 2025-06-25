@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {routes} from "../shared/routes/routes";
 import {DataService} from "../shared/data/data.service";
+import {LoginService} from "../auth/services/login.service";
 
 @Component({
   selector: 'app-proces-verbal',
@@ -12,10 +13,20 @@ export class ProcesVerbalComponent {
 
   protected readonly routes = routes;
   public students: any[] = [];
+  public teachers: any[] = [];
 
-  constructor(public dataService : DataService) {
+  constructor(public dataService : DataService,
+              private loginService: LoginService,
+  ) {
     this.students = [];
     this.students = this.dataService.getRandomStudentsV2PV();
+  }
+
+  async ngOnInit()
+  {
+    this.teachers = await this.dataService.getRandomTeachersData();
+    console.log("personnes concernées : ");
+    console.log(this.teachers);
   }
 
 

@@ -35,6 +35,7 @@ import { StudentsAbscenceListComponent } from './students-abscence-list/students
 import { StudentsBehaviourListComponent } from './students-behaviour-list/students-behaviour-list.component';
 import { AddStudentTransfertComponent } from './add-student-transfert/add-student-transfert.component'
 import { StudentTransferComponent } from './student-transfer/student-transfer.component';
+import {NotesEnfantComponent} from "../../../notes-enfant/notes-enfant.component";
 @NgModule({
   declarations: [
     MyStudentsComponent,
@@ -73,6 +74,7 @@ import { StudentTransferComponent } from './student-transfer/student-transfer.co
     StudentsComponent,
     StudentGridComponent,
     StudentResultComponent,
+    NotesEnfantComponent,
   ],
   providers: [
     StudentService,
@@ -97,7 +99,7 @@ import { StudentTransferComponent } from './student-transfer/student-transfer.co
      StudentsBehaviourListComponent,
      AddStudentTransfertComponent,
     StudentTransferComponent,
-    AddStudentTransfertComponent
+    AddStudentTransfertComponent,
   ]
 })
 export class StudentsModule { }

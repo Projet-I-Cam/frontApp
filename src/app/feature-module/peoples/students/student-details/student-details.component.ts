@@ -31,6 +31,7 @@ export class StudentDetailsComponent implements OnInit {
   institutionData : any;
   userId: any;
   academicYear: any;
+  person : any = {};
 
 
   constructor(
@@ -43,9 +44,13 @@ export class StudentDetailsComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.person = await this.loginService.getPerson();
+    console.log("personne concernée : ");
+    console.log(this.person);
+    console.log(this.person?.isParent);
+
       const user = this.loginService.getUser();
       this.academicYear = await getCurrentAcademicYear();
-
       const role = user?.role?.task_name || 'admin';
       this.loginUserRole = role;
       if (this.loginUserRole == 'eleve') {

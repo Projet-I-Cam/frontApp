@@ -7,6 +7,8 @@ import {DropdownModule} from "primeng/dropdown";
 import {SharedModule} from "../shared/shared.module";
 import { routes } from '../shared/routes/routes';
 import {Modal} from "bootstrap";
+import {FilterStudent, listInscriptions} from "../services/statefull/genericParse";
+import {globalGet} from "../services/statefull/http";
 
 @Component({
   selector: 'app-notes-enfant',
@@ -23,6 +25,7 @@ import {Modal} from "bootstrap";
 
 })
 export class NotesEnfantComponent {
+  @Input() studentData: any;
 
   protected readonly routes = routes;
   public students: any[] = [];
@@ -38,6 +41,19 @@ export class NotesEnfantComponent {
   @ViewChild('gradeModal') gradeModal!: ElementRef;
   modalInstance: any;
   modalReady = false;
+
+  ngOnInit(): void {
+    console.log('studentData', this.studentData);
+    if(this.studentData)
+    {
+      this.selectedEleve = this.studentData?.person?.firstName+''+this.studentData?.person?.lastName;
+      this.students.push(this.selectedEleve);
+    }else
+    {
+      this.students = [];
+      this.students = this.dataService.getRandomStudentsV2PV().slice(0,2);
+    }
+  }
 
   ngAfterViewChecked(): void {
     if (this.shouldShowTable() && !this.modalReady && this.gradeModal) {
@@ -550,8 +566,6 @@ export class NotesEnfantComponent {
     return totalNote;
   }
   constructor(public dataService : DataService) {
-    this.students = [];
-    this.students = this.dataService.getRandomStudentsV2PV().slice(0,2);
   }
 
 

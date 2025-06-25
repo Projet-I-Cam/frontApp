@@ -11,11 +11,19 @@ import {DataService} from "../shared/data/data.service";
 export class ReleveNotesComponent {
 
   public students: any[] = [];
+  public teachers: any[] = [];
 
   constructor(public dataService : DataService) {
     this.students = [];
     this.students = this.dataService.getRandomStudents();
     // alert(this.students.length);
+  }
+
+  async ngOnInit()
+  {
+    this.teachers = await this.dataService.getRandomTeachersData();
+    console.log("personnes concernées : ");
+    console.log(this.teachers);
   }
   print() {
     const printContents = document.getElementById('container-releve-notes')?.innerHTML;

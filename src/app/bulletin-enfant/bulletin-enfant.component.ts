@@ -223,7 +223,10 @@ export class BulletinEnfantComponent {
     this.loadDropdownOptions();
     this.academicYear = await getCurrentAcademicYear();
     this.currentUser = this.loginService.getUser();
-    this.person = this.loginService.getPerson();
+    this.person = await this.loginService.getPerson();
+    console.log("personne concernée : ");
+    console.log(this.person);
+    console.log(this.person?.isParent);
     this.filter.parentId = this.person.objectId
     if(!this.filter.yearId){
       this.filter.yearId = this.academicYear.objectId;

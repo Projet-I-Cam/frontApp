@@ -1,91 +1,74 @@
-<div class="page-wrapper">
-  <div class="content content-two">
-    <!-- Page Header -->
-    <div class="page-header">
-      <div class="row align-items-center">
-        <div class="col">
-          <h3 class="page-title">Notes disponibles</h3>
-          <ul class="breadcrumb">
-            <li class="breadcrumb-item">
-              <a [routerLink]="routes.procesVerbal">Tableau de bord</a>
-            </li>
-            <li class="breadcrumb-item"><a>Notes disponibles</a></li>
-            <li class="breadcrumb-item active">Notes détaillées</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <!-- /Page Header -->
-
-    <!-- Sélecteur de UA -->
-    <div class="d-flex gap-3 align-items-end mb-4">
-      <!-- Select Élève -->
-      <div class="flex-fill">
-        <label for="eleve-select" class="form-label">Élève :</label>
-        <select id="eleve-select" class="form-select" [(ngModel)]="selectedEleve">
-          <option *ngFor="let student of students" [ngValue]="student">{{ student.name }}</option>
-        </select>
-      </div>
-
-      <!-- Select Trimestre -->
-      <div class="flex-fill">
-        <label for="trimestre-select" class="form-label">Trimestre :</label>
-        <select id="trimestre-select" class="form-select" [(ngModel)]="selectedTrimestre">
-          <option *ngFor="let t of trimestres" [value]="t">{{ t }}</option>
-        </select>
-      </div>
-
-      <!-- Select Unité d'Apprentissage -->
-      <div class="flex-fill">
-        <label for="ua-select" class="form-label">Unité d'Apprentissage :</label>
-        <select id="ua-select" class="form-select" [(ngModel)]="selectedUA">
-          <option *ngFor="let ua of availableUAs" [ngValue]="ua">{{ ua }}</option>
-        </select>
-      </div>
+<div class="content">
+  <!-- Sélecteur de UA -->
+  <h4 class="fw-bold mb-2">Veuillez sélectionner un Trimestre et une unité d'apprentissage pour afficher les notes correspondantes</h4>
+  <div class="d-flex gap-3 align-items-end mb-4">
+    <!-- Select Élève -->
+    <div class="flex-fill d-none">
+      <label for="eleve-select" class="form-label">Élève :</label>
+      <select id="eleve-select" class="form-select" [(ngModel)]="selectedEleve">
+        <option *ngFor="let student of students" [ngValue]="student">{{ student.name }}</option>
+      </select>
     </div>
 
+    <!-- Select Trimestre -->
+    <div class="flex-fill">
+      <label for="trimestre-select" class="form-label fw-bold">Trimestre :</label>
+      <select id="trimestre-select" class="form-select" [(ngModel)]="selectedTrimestre">
+        <option *ngFor="let t of trimestres" [value]="t">{{ t }}</option>
+      </select>
+    </div>
 
-
-    <div id="container-proces-verbal" class="table-responsive" *ngIf="selectedEleve && selectedTrimestre && selectedUA">
-      <table class="table table-bordered text-center align-middle">
-        <thead class="table-light">
-        <!-- Ligne 1 : Titre "Module" -->
-        <tr>
-          <th [attr.colspan]="modules.length * 2">Modules</th>
-        </tr>
-
-        <!-- Ligne 2 : Noms des modules -->
-        <tr>
-          <ng-container *ngFor="let module of modules">
-            <th colspan="2">{{ module.title }}</th>
-          </ng-container>
-        </tr>
-
-        <!-- Ligne 3 : Moyenne / Cote -->
-        <tr>
-          <ng-container *ngFor="let module of modules">
-            <th>Note globale</th>
-            <th>Cote</th>
-          </ng-container>
-        </tr>
-        </thead>
-
-        <tbody>
-        <tr>
-          <ng-container *ngFor="let module of modules">
-            <!-- Note Globale (remplacé par appel modal) -->
-            <td style="cursor: pointer;" (click)="openGradeModal(module, selectedUA)">
-              {{ getTotalNote(module, selectedUA) | number: '1.2-2' }} / {{ getTotalPoints(module, selectedUA) }}
-            </td>
-            <!-- Cote Moyenne -->
-            <td>{{ getAverageCote(module) }}</td>
-          </ng-container>
-        </tr>
-        </tbody>
-      </table>
+    <!-- Select Unité d'Apprentissage -->
+    <div class="flex-fill">
+      <label for="ua-select" class="form-label fw-bold">Unité d'Apprentissage :</label>
+      <select id="ua-select" class="form-select" [(ngModel)]="selectedUA">
+        <option *ngFor="let ua of availableUAs" [ngValue]="ua">{{ ua }}</option>
+      </select>
     </div>
   </div>
+
+
+
+  <div id="container-proces-verbal" class="table-responsive" *ngIf="selectedEleve && selectedTrimestre && selectedUA">
+    <table class="table table-bordered text-center align-middle">
+      <thead class="table-light">
+      <!-- Ligne 1 : Titre "Module" -->
+      <tr>
+        <th [attr.colspan]="modules.length * 2">Modules</th>
+      </tr>
+
+      <!-- Ligne 2 : Noms des modules -->
+      <tr>
+        <ng-container *ngFor="let module of modules">
+          <th colspan="2" class="fw-bold">{{ module.title }}</th>
+        </ng-container>
+      </tr>
+
+      <!-- Ligne 3 : Moyenne / Cote -->
+      <tr>
+        <ng-container *ngFor="let module of modules">
+          <th>Note globale</th>
+          <th>Cote</th>
+        </ng-container>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr>
+        <ng-container *ngFor="let module of modules">
+          <!-- Note Globale (remplacé par appel modal) -->
+          <td style="cursor: pointer;" (click)="openGradeModal(module, selectedUA)">
+            {{ getTotalNote(module, selectedUA) | number: '1.2-2' }} / {{ getTotalPoints(module, selectedUA) }}
+          </td>
+          <!-- Cote Moyenne -->
+          <td>{{ getAverageCote(module) }}</td>
+        </ng-container>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
+
 <!-- Modal grade-modalreadonly -->
 <div class="modal fade" id="gradeModal" tabindex="-1" aria-hidden="true" #gradeModal>
   <div class="modal-dialog">
