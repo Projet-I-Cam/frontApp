@@ -1,7 +1,29 @@
 .card-body{
-    border: 1px solid rgb(207, 207, 207);
+    border: 1px solid #4CAF50;
     border-radius: 14px;
     box-shadow: 0px 0px 5px 0.2px rgb(214, 214, 214);
+}
+
+.elegant-border-box {
+  position: relative;
+  padding: 20px;
+  margin: 20px;
+  background-color: #fff; /* Fond blanc */
+  border-radius: 8px; /* Coins arrondis pour toute la div */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Ombre légère */
+  
+  /* Création de la bordure gauche élégante */
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0px;
+    bottom: 0px;
+    width: 10px;
+    background-color: #4CAF50; /* Couleur verte */
+    border-radius: 6px 0px 0px 6px; /* Arrondi seulement à droite */
+    transition: all 0.3s ease; /* Effet de transition doux */
+  }
 }
 
 .Ets {
