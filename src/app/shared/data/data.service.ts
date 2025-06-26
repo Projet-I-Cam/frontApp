@@ -1545,7 +1545,7 @@ export class DataService {
       page: '99',
       menu: [
         {
-          menuValue: 'Dashboard3333',
+          menuValue: 'Tableau de Board',
           icon: 'layout-2',
           base: 'dashboard',
           hasSubRoute: false,
