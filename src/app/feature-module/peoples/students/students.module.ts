@@ -36,6 +36,8 @@ import { StudentsBehaviourListComponent } from './students-behaviour-list/studen
 import { AddStudentTransfertComponent } from './add-student-transfert/add-student-transfert.component'
 import { StudentTransferComponent } from './student-transfer/student-transfer.component';
 import {NotesEnfantComponent} from "../../../notes-enfant/notes-enfant.component";
+import {ReportsModule} from "../../reports/reports.module";
+import {BulletinEnfantComponent} from "../../../bulletin-enfant/bulletin-enfant.component";
 @NgModule({
   declarations: [
     MyStudentsComponent,
@@ -57,25 +59,27 @@ import {NotesEnfantComponent} from "../../../notes-enfant/notes-enfant.component
     StudentTransferComponent,
     AddStudentTransfertComponent
   ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    StudentsRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SharedModule,
-    DropdownModule,
-    CalendarModule,
-    ChipsModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    EditStudentModule,
-    StudentsComponent,
-    StudentGridComponent,
-    StudentResultComponent,
-    NotesEnfantComponent,
-  ],
+    imports: [
+        CommonModule,
+        RouterModule,
+        StudentsRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        SharedModule,
+        DropdownModule,
+        CalendarModule,
+        ChipsModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        EditStudentModule,
+        StudentsComponent,
+        StudentGridComponent,
+        StudentResultComponent,
+        NotesEnfantComponent,
+        ReportsModule,
+        BulletinEnfantComponent
+    ],
   providers: [
     StudentService,
     PersonService

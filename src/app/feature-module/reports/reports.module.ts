@@ -20,27 +20,30 @@ import { StudentReportComponent } from './student-report/student-report.componen
 
 
 @NgModule({
-  declarations: [
-    ReportsComponent,
-    AttendanceReportComponent,
-    ClassReportComponent,
-    DailyAttendanceComponent,
-    FeesReportComponent,
-    GradeReportComponent,
-    StaffDayWiseComponent,
-    StudentAttendanceTypeComponent,
-    StaffReportComponent,
-    LeaveReportComponent,
-    StaffReportComponent,
-    TeacherDayWiseComponent,
-    TeacherReportComponent,
-    StudentDayWiseComponent,
-    StudentReportComponent
-  ],
-  imports: [
-    CommonModule,
-    ReportsRoutingModule,
-    SharedModule
-  ]
+    declarations: [
+        ReportsComponent,
+        AttendanceReportComponent,
+        ClassReportComponent,
+        DailyAttendanceComponent,
+        FeesReportComponent,
+        GradeReportComponent,
+        StaffDayWiseComponent,
+        StudentAttendanceTypeComponent,
+        StaffReportComponent,
+        LeaveReportComponent,
+        StaffReportComponent,
+        TeacherDayWiseComponent,
+        TeacherReportComponent,
+        StudentDayWiseComponent,
+        StudentReportComponent
+    ],
+    exports: [
+        GradeReportComponent
+    ],
+    imports: [
+        CommonModule,
+        ReportsRoutingModule,
+        SharedModule
+    ]
 })
 export class ReportsModule { }

@@ -30,25 +30,25 @@
 
 
   <div id="container-proces-verbal" class="table-responsive" *ngIf="selectedEleve && selectedTrimestre && selectedUA">
-    <table class="table table-bordered text-center align-middle">
-      <thead class="table-light">
-      <!-- Ligne 1 : Titre "Module" -->
-      <tr>
-        <th [attr.colspan]="modules.length * 2">Modules</th>
+    <table class="table table-bordered align-middle text-center">
+      <thead>
+      <!-- Ligne 1 : Titre Modules -->
+      <tr class="d-none">
+        <th [attr.colspan]="modules.length * 2" class="bg-light fw-bold text-uppercase">Modules</th>
       </tr>
 
-      <!-- Ligne 2 : Noms des modules -->
+      <!-- Ligne 2 : Titres des modules -->
       <tr>
         <ng-container *ngFor="let module of modules">
-          <th colspan="2" class="fw-bold">{{ module.title }}</th>
+          <th class="bg-success bg-opacity-10 fw-bold" colspan="2">{{ module.title }}</th>
         </ng-container>
       </tr>
 
       <!-- Ligne 3 : Moyenne / Cote -->
       <tr>
         <ng-container *ngFor="let module of modules">
-          <th>Note globale</th>
-          <th>Cote</th>
+          <th class="bg-info bg-opacity-10">Note globale</th>
+          <th class="bg-info bg-opacity-10">Cote</th>
         </ng-container>
       </tr>
       </thead>
@@ -56,12 +56,12 @@
       <tbody>
       <tr>
         <ng-container *ngFor="let module of modules">
-          <!-- Note Globale (remplacé par appel modal) -->
-          <td style="cursor: pointer;" (click)="openGradeModal(module, selectedUA)">
+          <!-- Note Globale -->
+          <td class="bg-white text-dark fw-black font-arial-black" style="cursor: pointer;" (click)="openGradeModal(module, selectedUA)">
             {{ getTotalNote(module, selectedUA) | number: '1.2-2' }} / {{ getTotalPoints(module, selectedUA) }}
           </td>
-          <!-- Cote Moyenne -->
-          <td>{{ getAverageCote(module) }}</td>
+          <!-- Cote -->
+          <td class="bg-danger bg-opacity-10">{{ getAverageCote(module) }}</td>
         </ng-container>
       </tr>
       </tbody>

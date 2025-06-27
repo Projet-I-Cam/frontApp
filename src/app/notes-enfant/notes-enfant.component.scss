@@ -14,3 +14,14 @@ body {
 .signature-zone {
   margin-top: 2rem;
 }
+/* Ajoute Arial Black uniquement pour les notes */
+.font-arial-black {
+  font-family: "Arial Black", Arial, sans-serif;
+  font-weight: 900;
+}
+
+/* Amélioration de la lisibilité des bordures internes */
+.table th,
+.table td {
+  border: 1px solid #dee2e6 !important;
+}

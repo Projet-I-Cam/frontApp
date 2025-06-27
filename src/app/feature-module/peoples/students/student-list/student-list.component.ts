@@ -1,12 +1,11 @@
 // student-list.component.ts
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Table } from 'primeng/table';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { globalGet } from '../../../../services/statefull/http';
 import { UtilsService } from '../../../../services/utilis.service';
-import { LoginService } from '../../../../auth/services/login.service'; 
+import { LoginService } from '../../../../auth/services/login.service';
 import { routes } from '../../../../shared/routes/routes';
 import {  getCurrentAcademicYear } from '../../../../services/statefull/genericParse';
 import Parse from 'parse';
@@ -62,11 +61,18 @@ export class StudentListComponent implements OnInit {
     private loginService: LoginService
   ) {}
 
+  @ViewChild('dropdownMenu') dropdownMenu!: ElementRef;
+  dropdownVisible = false;
+
+  toggleDropdown() {
+    this.dropdownVisible = !this.dropdownVisible;
+  }
+
   async ngOnInit() {
     try {
       await this.initializeData();
       await this.loadData();
-      
+
     } catch (error) {
       this.handleError(error);
     }
@@ -74,7 +80,7 @@ export class StudentListComponent implements OnInit {
 
   private async initializeData(): Promise<void> {
     const [person, sections, sexes, academicYear] = await Promise.all([
-      this.loginService.getPerson(), 
+      this.loginService.getPerson(),
       UtilsService.getSection(),
       UtilsService.getGender(),
       getCurrentAcademicYear()
@@ -175,7 +181,7 @@ export class StudentListComponent implements OnInit {
       }
       mainQuery.equalTo("academicYear", {"__type": "Pointer", "className": "AcademicYear" , "objectId": this.academicYear?.objectId})
       mainQuery.equalTo("isValid", true)
-      const results = await mainQuery.find()   
+      const results = await mainQuery.find()
       const json = results?.map(r => r?.toJSON())
       console.log('DATAT DATAT DATAT DTA =>>>> ', results?.map(r => r?.toJSON()))
       // const requestConfig: any = {
@@ -298,4 +304,30 @@ export class StudentListComponent implements OnInit {
       life: 5000
     });
   }
+
+  printListStudent() {
+    const printContents = document.getElementById('list-student-content')?.innerHTML;
+    const originalContents = document.body.innerHTML;
+
+    if (printContents) {
+      document.body.innerHTML = printContents;
+      window.print();
+      document.body.innerHTML = originalContents;
+      window.location.reload(); // recharger pour restaurer l'état Angular
+    }
+  }
+
+  // Fonction pour imprimer la liste des élèves
+  printListStudentNoPic() {
+    const printContents = document.getElementById('list-student-content-no-pic')?.innerHTML;
+    const originalContents = document.body.innerHTML;
+
+    if (printContents) {
+      document.body.innerHTML = printContents;
+      window.print();
+      document.body.innerHTML = originalContents;
+      window.location.reload(); // recharger pour restaurer l'état Angular
+    }
+  }
+
 }

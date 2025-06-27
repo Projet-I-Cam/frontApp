@@ -58,8 +58,9 @@
 <!--            <app-student-result></app-student-result>-->
             <app-notes-enfant [studentData]="studentData.person"></app-notes-enfant>
           </p-tabPanel>
-          <p-tabPanel *ngIf="!person?.isParent && loginUserRole != 'eleve'" header="Bulletin">
-            <app-student-report-card></app-student-report-card>
+          <p-tabPanel header="Bulletin">
+<!--            <app-student-report-card></app-student-report-card>-->
+            <app-bulletin-enfant [studentDataOpt]="studentData.person"></app-bulletin-enfant>
           </p-tabPanel>
           <p-tabPanel header="LivretScolaire">
             <h4>En cours de développement...</h4>

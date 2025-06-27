@@ -129,6 +129,7 @@ interface Competence {
   ]
 })
 export class BulletinEnfantComponent {
+  @Input() studentDataOpt?: any;  // optionnel
   public routes = routes;
 
   // Options pour les dropdowns
@@ -219,19 +220,31 @@ export class BulletinEnfantComponent {
   public students: any[] = []; // Liste des étudiants
 
   async ngOnInit() {
-    this.load=true;
-    this.loadDropdownOptions();
-    this.academicYear = await getCurrentAcademicYear();
-    this.currentUser = this.loginService.getUser();
-    this.person = await this.loginService.getPerson();
-    console.log("personne concernée : ");
-    console.log(this.person);
-    console.log(this.person?.isParent);
-    this.filter.parentId = this.person.objectId
-    if(!this.filter.yearId){
-      this.filter.yearId = this.academicYear.objectId;
+    if (this.studentDataOpt) {
+      console.log('Student data fourni :', this.studentDataOpt);
+      let student : any = {};
+      student.id = 2501;
+      student.name = this.studentDataOpt.firstName+' '+this.studentDataOpt.lastName;
+      student.image = this.studentDataOpt?.photo?.url;
+      this.selectedStudent = student;
+      // logique personnalisée ici
+    } else
+    {
+      console.log('Aucune donnée fournie. Fonctionnement par défaut.');
+      this.load=true;
+      this.loadDropdownOptions();
+      this.academicYear = await getCurrentAcademicYear();
+      this.currentUser = this.loginService.getUser();
+      this.person = await this.loginService.getPerson();
+      console.log("personne concernée : ");
+      console.log(this.person);
+      console.log(this.person?.isParent);
+      this.filter.parentId = this.person.objectId
+      if(!this.filter.yearId){
+        this.filter.yearId = this.academicYear.objectId;
+      }
+      this.loadStudents(this.filter);
     }
-    this.loadStudents(this.filter);
   }
 
   async loadStudents(f: FilterStudent) {
