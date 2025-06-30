@@ -114,6 +114,7 @@
         </div>
     </div>
     </div>
+
     <div class="gridViewScore" *ngIf="this.isAllowMinedub">
     <div class="HgridVs bg-head">
         <img src="assets/img/icons/school.svg" alt="img">
@@ -326,93 +327,295 @@
         </div>
     </div>
     </div>
-
-
 </div>
 
- <!-- Quick Links -->
+<div>
+    <!-- Quick Links -->
+     <div class="flinks">
         <div class="card flex-fill">
-          <div class="card-header d-flex align-items-center justify-content-between">
-            <h4 class="card-title">Quick Links</h4>
-          </div>
-          <div class="card-body pb-1">
-            <div class="link-slider">
-              <owl-carousel-o [options]="linkslider">
-                <ng-template carouselSlide>
-                  <div class="item">
-                    <a [routerLink]="routes.classTimeTable"
-                      class="d-block bg-success-transparent ronded p-2 text-center mb-3 class-hover">
-                      <div class="avatar avatar-lg border p-1 border-success rounded-circle mb-2">
-                        <span
-                          class="d-inline-flex align-items-center justify-content-center w-100 h-100 bg-success rounded-circle"><i
-                            class="ti ti-calendar"></i></span>
-                      </div>
-                      <p class="text-dark">Calendar</p>
-                    </a>
-                    <a [routerLink]="routes.feesGroup"
-                      class="d-block bg-secondary-transparent ronded p-2 text-center mb-3 class-hover">
-                      <div class="avatar avatar-lg border p-1 border-secondary rounded-circle mb-2">
-                        <span
-                          class="d-inline-flex align-items-center justify-content-center w-100 h-100 bg-secondary rounded-circle"><i
-                            class="ti ti-license"></i></span>
-                      </div>
-                      <p class="text-dark">Fees</p>
-                    </a>
-                  </div>
-                </ng-template>
-                <ng-template carouselSlide>
-                  <div class="item">
-                    <a [routerLink]="routes.examResults"
-                      class="d-block bg-primary-transparent ronded p-2 text-center mb-3 class-hover">
-                      <div class="avatar avatar-lg border p-1 border-primary rounded-circle mb-2">
-                        <span
-                          class="d-inline-flex align-items-center justify-content-center w-100 h-100 bg-primary rounded-circle"><i
-                            class="ti ti-hexagonal-prism"></i></span>
-                      </div>
-                      <p class="text-dark">Exam Result</p>
-                    </a>
-                    <a [routerLink]="routes.classHomeWork"
-                      class="d-block bg-danger-transparent ronded p-2 text-center mb-3 class-hover">
-                      <div class="avatar avatar-lg border p-1 border-danger rounded-circle mb-2">
-                        <span
-                          class="d-inline-flex align-items-center justify-content-center w-100 h-100 bg-danger rounded-circle"><i
-                            class="ti ti-report-money"></i></span>
-                      </div>
-                      <p class="text-dark">Home Works</p>
-                    </a>
-                  </div>
-                </ng-template>
-                <ng-template carouselSlide>
-                  <div class="item">
-                    <a [routerLink]="routes.studentAttendance"
-                      class="d-block bg-warning-transparent ronded p-2 text-center mb-3 class-hover">
-                      <div class="avatar avatar-lg border p-1 border-warning rounded-circle mb-2">
-                        <span
-                          class="d-inline-flex align-items-center justify-content-center w-100 h-100 bg-warning rounded-circle"><i
-                            class="ti ti-calendar-share"></i></span>
-                      </div>
-                      <p class="text-dark">Attendance</p>
-                    </a>
-                    <a [routerLink]="routes.attendanceReport"
-                      class="d-block bg-skyblue-transparent ronded p-2 text-center mb-3 class-hover">
-                      <div class="avatar avatar-lg border p-1 border-skyblue rounded-circle mb-2">
-                        <span
-                          class="d-inline-flex align-items-center justify-content-center w-100 h-100 bg-skyblue rounded-circle"><i
-                            class="ti ti-file-pencil"></i></span>
-                      </div>
-                      <p class="text-dark">Reports</p>
-                    </a>
-                  </div>
-                </ng-template>
-              </owl-carousel-o>
+        <div class="card-header d-flex align-items-center justify-content-between">
+        <h4 class="card-title">Raccourçis</h4>
+        </div>
+        <div class="card-body pb-1">
+        <div class="link-slider">
+            <owl-carousel-o [options]="linkslider">
+            <ng-template carouselSlide>
+                <div class="item">
+                <a [routerLink]="routes.classTimeTable"
+                    class="d-block bg-success-transparent ronded p-2 text-center mb-3 class-hover">
+                    <div class="avatar avatar-lg border p-1 border-success rounded-circle mb-2">
+                    <span
+                        class="d-inline-flex align-items-center justify-content-center w-100 h-100 bg-success rounded-circle"><i
+                        class="ti ti-calendar"></i></span>
+                    </div>
+                    <p class="text-dark">Calendrier</p>
+                </a>
+                <a [routerLink]="routes.feesGroup"
+                    class="d-block bg-secondary-transparent ronded p-2 text-center mb-3 class-hover">
+                    <div class="avatar avatar-lg border p-1 border-secondary rounded-circle mb-2">
+                    <span
+                        class="d-inline-flex align-items-center justify-content-center w-100 h-100 bg-secondary rounded-circle"><i
+                        class="ti ti-license"></i></span>
+                    </div>
+                    <p class="text-dark">Paiements</p>
+                </a>
+                </div>
+            </ng-template>
+            <ng-template carouselSlide>
+                <div class="item">
+                <a [routerLink]="routes.examResults"
+                    class="d-block bg-primary-transparent ronded p-2 text-center mb-3 class-hover">
+                    <div class="avatar avatar-lg border p-1 border-primary rounded-circle mb-2">
+                    <span
+                        class="d-inline-flex align-items-center justify-content-center w-100 h-100 bg-primary rounded-circle"><i
+                        class="ti ti-hexagonal-prism"></i></span>
+                    </div>
+                    <p class="text-dark">Examens</p>
+                </a>
+                <a [routerLink]="routes.classHomeWork"
+                    class="d-block bg-danger-transparent ronded p-2 text-center mb-3 class-hover">
+                    <div class="avatar avatar-lg border p-1 border-danger rounded-circle mb-2">
+                    <span
+                        class="d-inline-flex align-items-center justify-content-center w-100 h-100 bg-danger rounded-circle"><i
+                        class="ti ti-report-money"></i></span>
+                    </div>
+                    <p class="text-dark">Devoirs</p>
+                </a>
+                </div>
+            </ng-template>
+            <ng-template carouselSlide>
+                <div class="item">
+                <a [routerLink]="routes.studentAttendance"
+                    class="d-block bg-warning-transparent ronded p-2 text-center mb-3 class-hover">
+                    <div class="avatar avatar-lg border p-1 border-warning rounded-circle mb-2">
+                    <span
+                        class="d-inline-flex align-items-center justify-content-center w-100 h-100 bg-warning rounded-circle"><i
+                        class="ti ti-calendar-share"></i></span>
+                    </div>
+                    <p class="text-dark">Présences</p>
+                </a>
+                <a [routerLink]="routes.attendanceReport"
+                    class="d-block bg-skyblue-transparent ronded p-2 text-center mb-3 class-hover">
+                    <div class="avatar avatar-lg border p-1 border-skyblue rounded-circle mb-2">
+                    <span
+                        class="d-inline-flex align-items-center justify-content-center w-100 h-100 bg-skyblue rounded-circle"><i
+                        class="ti ti-file-pencil"></i></span>
+                    </div>
+                    <p class="text-dark">Rapports</p>
+                </a>
+                </div>
+            </ng-template>
+            </owl-carousel-o>
+
+        </div>
+        </div>
+        </div>
+    </div>
+    <!-- /Quick Links -->
+
+    <!-- Class Wise Performance -->
+    <div class="fPerformance">
+        <div class="card flex-fill">
+        <div class="card-header d-flex align-items-center justify-content-between">
+        <h4 class="card-title">Performance</h4>
+        <div class="dropdown">
+            <a href="javascript:void(0);" class="bg-white dropdown-toggle" data-bs-toggle="dropdown"><i
+                class="ti ti-school-bell  me-2"></i>SIL
+            </a>
+            <ul class="dropdown-menu mt-2 p-3">
+            <li>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1">
+                SIL
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1">
+                CP
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1">
+                CE I
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1">
+                CE II
+                </a>
+            </li>
+            </ul>
+        </div>
+        </div>
+        <div class="card-body">
+        <div class="d-md-flex align-items-center justify-content-between">
+            <div class="me-md-3 mb-3 mb-md-0 w-100">
+            <div class="border border-dashed p-3 rounded d-flex align-items-center justify-content-between mb-1">
+                <p class="mb-0 me-2"><i class="ti ti-arrow-badge-down-filled me-2 text-primary"></i>Fort</p>
+                <h5>45</h5>
+            </div>
+            <div class="border border-dashed p-3 rounde d-flex align-items-center justify-content-between mb-1">
+                <p class="mb-0 me-2"><i class="ti ti-arrow-badge-down-filled me-2 text-warning"></i>Moyen
+                </p>
+                <h5>11</h5>
+            </div>
+            <div class="border border-dashed p-3 rounded d-flex align-items-center justify-content-between mb-0">
+                <p class="mb-0 me-2"><i class="ti ti-arrow-badge-down-filled me-2 text-danger"></i>Faible
+                </p>
+                <h5>02</h5>
+            </div>
+            </div>
+            <div id="class-chart" class="text-center text-md-left">
+            <apx-chart [series]="chartOptions7.series" [chart]="chartOptions7.chart"
+                [dataLabels]="chartOptions7.dataLabels" [plotOptions]="chartOptions7.plotOptions"
+                [xaxis]="chartOptions7.xaxis" [colors]="chartOptions7.colors"></apx-chart>
 
             </div>
-          </div>
         </div>
-        <!-- /Quick Links -->
+        </div>
+        </div>
+    </div>
+    <!-- /Class Wise Performance -->
+ 
+     <!-- Top Subjects -->
+      <div class="col-xxl-12 col-xl-6 d-flex">
+        <div class="card flex-fill">
+          <div class="card-header  d-flex align-items-center justify-content-between">
+            <h4 class="card-title">Modules</h4>
+             <div class="dropdown">
+                    <a href="javascript:void(0);" class="bg-white dropdown-toggle" data-bs-toggle="dropdown"><i
+                        class="ti ti-school-bell  me-2"></i>SIL
+                    </a>
+                    <ul class="dropdown-menu mt-2 p-3">
+                    <li>
+                        <a href="javascript:void(0);" class="dropdown-item rounded-1">
+                        SIL
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" class="dropdown-item rounded-1">
+                        CP
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" class="dropdown-item rounded-1">
+                        CE I
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" class="dropdown-item rounded-1">
+                        CE II
+                        </a>
+                    </li>
+                    </ul>
+                </div>
+          </div>
+          <div class="card-body">
+                <div class="alert alert-success d-flex align-items-center mb-24" role="alert">
+                    <i class="ti ti-info-square-rounded me-2 fs-14"></i>
+                    <div class="fs-14">
+                    Ces résultats sont obtenus à partir de l'analyse de l'évolution du programme de la classe
+                    </div>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                    <div class="row align-items-center">
+                        <div class="col-sm-4">
+                        <p class="text-dark">Communiquer en français</p>
+                        </div>
+                        <div class="col-sm-8">
+                        <div class="progress progress-xs flex-grow-1">
+                            <div class="progress-bar bg-primary rounded" role="progressbar" style="width: 20%;"
+                            aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        </div>
+                    </div>
+                    </li>
+                    <li class="list-group-item">
+                    <div class="row align-items-center">
+                        <div class="col-sm-4">
+                        <p class="text-dark">Pratiquer les valeurs sociales et citoyennes</p>
+                        </div>
+                        <div class="col-sm-8">
+                        <div class="progress progress-xs flex-grow-1">
+                            <div class="progress-bar bg-secondary rounded" role="progressbar" style="width: 30%;"
+                            aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        </div>
+                    </div>
+                    </li>
+                    <li class="list-group-item">
+                    <div class="row align-items-center">
+                        <div class="col-sm-4">
+                        <p class="text-dark">Notions de bases en Mathématiques</p>
+                        </div>
+                        <div class="col-sm-8">
+                        <div class="progress progress-xs flex-grow-1">
+                            <div class="progress-bar bg-info rounded" role="progressbar" style="width: 40%;"
+                            aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        </div>
+                    </div>
+                    </li>
+                    <li class="list-group-item">
+                    <div class="row align-items-center">
+                        <div class="col-sm-4">
+                        <p class="text-dark">Concepts et Outils technologique</p>
+                        </div>
+                        <div class="col-sm-8">
+                        <div class="progress progress-xs flex-grow-1">
+                            <div class="progress-bar bg-success rounded" role="progressbar" style="width: 50%;"
+                            aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        </div>
+                    </div>
+                    </li>
+                    <li class="list-group-item">
+                    <div class="row align-items-center">
+                        <div class="col-sm-4">
+                        <p class="text-dark">Communiquer en Anglais</p>
+                        </div>
+                        <div class="col-sm-8">
+                        <div class="progress progress-xs flex-grow-1">
+                            <div class="progress-bar bg-warning rounded" role="progressbar" style="width: 70%;"
+                            aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        </div>
+                    </div>
+                    </li>
+                    <li class="list-group-item">
+                    <div class="row align-items-center">
+                        <div class="col-sm-4">
+                        <p class="text-dark">Pratiquer les activités Physiques, Sportives et Artistique</p>
+                        </div>
+                        <div class="col-sm-8">
+                        <div class="progress progress-xs flex-grow-1">
+                            <div class="progress-bar bg-danger rounded" role="progressbar" style="width: 80%;"
+                            aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        </div>
+                    </div>
+                    </li>
+                    <li class="list-group-item">
+                    <div class="row align-items-center">
+                        <div class="col-sm-4">
+                        <p class="text-dark">Pratiquer les activités Artistiques</p>
+                        </div>
+                        <div class="col-sm-8">
+                        <div class="progress progress-xs flex-grow-1">
+                            <div class="progress-bar bg-primary rounded" role="progressbar" style="width: 85%;"
+                            aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        </div>
+                    </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
-
-  <!-- Schedules -->
+      </div>
+      <!-- /Top Subjects -->
+    
+       <!-- Schedules -->
       <div class="col-xxl-4 col-xl-6 col-md-12 d-flex">
         <div class="card flex-fill">
           <div class="card-header d-flex align-items-center justify-content-between">
@@ -433,12 +636,12 @@
                     <i class="ti ti-user-edit text-info fs-20"></i>
                   </span>
                   <div class="flex-fill">
-                    <h6 class="mb-1"> Réunion Parents, Enseignants</h6>
+                    <h6 class="mb-1">Réunion des Parents, Enseignants</h6>
                     <p class="d-flex align-items-center"><i class="ti ti-calendar me-1"></i>15 Juillet 2024</p>
                   </div>
                 </div>
                 <div class="d-flex align-items-center justify-content-between">
-                  <p class="mb-0"><i class="ti ti-clock me-1"></i>09:10AM - 10:50PM</p>
+                  <p class="mb-0"><i class="ti ti-clock me-1"></i>09:10 - 10:50</p>
                   <div class="avatar-list-stacked avatar-group-sm">
                     <span class="avatar border-0">
                       <img src="assets/img/parents/parent-01.jpg" class="rounded-circle" alt="img">
@@ -453,12 +656,9 @@
                 </div>
               </div>
               <!-- /Event Item -->
-
             </div>
           </div>
         </div>
       </div>
       <!-- /Schedules -->
-
-</div>
 </div>
