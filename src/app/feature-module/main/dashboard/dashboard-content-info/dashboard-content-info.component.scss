@@ -182,12 +182,21 @@
 }
 
 .fPerformance{
-    float : left;
+    display: inline-block;
     margin:0 0.5% 0 0.5%;
     width: 28%;
 }
 
-.fModules{
+.fCalendar{
+    float: left;
+    width: 30%;
+    margin:0 0.5% 0 0.5%;
+}
+
+.fPresences{
+    float: left;
+    width: 48%;
+    margin:0 0.5% 0 0.5%;
 }
 
 /* Style pour ordinateur */
