@@ -57,6 +57,10 @@ export class DashboardContentInfoComponent implements OnInit {
    totalStaffsActive : any [] = [];
    totalStaffsInactive : any [] = [];
 
+   // A supprimer plus tard
+   value = 2;
+   linkslider = '';
+
     constructor(private loginService: LoginService, private router: Router,) {}
 
      async ngOnInit() {
