@@ -175,29 +175,6 @@
     box-shadow: 0px 0px 5px 0.2px rgb(214, 214, 214);
 }
 
-.flinks{
-    float:left;
-    margin:0 0.5% 0 0.5%;
-    width: 70%;
-}
-
-.fPerformance{
-    display: inline-block;
-    margin:0 0.5% 0 0.5%;
-    width: 28%;
-}
-
-.fCalendar{
-    float: left;
-    width: 30%;
-    margin:0 0.5% 0 0.5%;
-}
-
-.fPresences{
-    float: left;
-    width: 48%;
-    margin:0 0.5% 0 0.5%;
-}
 
 /* Style pour ordinateur */
 @media (min-width: 768px) {
@@ -214,6 +191,48 @@
     .gridViewScore {
         width: 47%;
         margin: 0.5%;
+    }
+
+    .fModules{
+        padding: 0.5%;
+        background-color: white;
+        box-shadow: 0px 0px 5px 0.2px rgb(214, 214, 214);
+        border-radius: 12px;
+    }
+            
+    .fModulesCard{
+        padding: 0.5%;
+        border-radius: 12px;
+        margin-bottom: 1%;
+    }
+
+    .fModulesCard .card-title {
+        padding: 1%;
+        color: black;
+    }
+
+    .flinks{
+        float:left;
+        margin:0 0.5% 0 0.5%;
+        width: 70%;
+    }
+
+    .fPerformance{
+        display: inline-block;
+        margin:0 0.5% 0 0.5%;
+        width: 28%;
+    }
+
+     .fPresences{
+        display: inline-block;
+        width: 47%;
+        margin: 1% 0.5% 0 0.5%;
+    }
+
+    .fCalendar{
+        display: inline-block;
+        width: 51%;
+        margin:0 0.5% 0 0.5%;
     }
 }
 
@@ -239,5 +258,29 @@
 
     .recapScore{
         font-size: 0.6em;
+    }
+
+        
+    .flinks{
+        margin:0 0.5% 0 0.5%;
+        width: 98%;
+    }
+
+    .fPerformance{
+        display: inline-block;
+        margin:0 0.5% 0 0.5%;
+        width: 98%;
+    }
+
+     .fPresences{
+        display: inline-block;
+        width: 98%;
+        margin: 1% 0.5% 0 0.5%;
+    }
+
+    .fCalendar{
+        display: inline-block;
+        width: 98%;
+        margin:0 0.5% 0 0.5%;
     }
 }

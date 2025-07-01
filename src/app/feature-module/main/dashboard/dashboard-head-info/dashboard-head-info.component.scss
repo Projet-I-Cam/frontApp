@@ -1,13 +1,18 @@
-.card-body{
+.infoUser{
     border: 1px solid #4CAF50;
     border-radius: 14px;
     box-shadow: 0px 0px 5px 0.2px rgb(214, 214, 214);
 }
 
+.cardBody {
+  flex: 1 1 auto;
+  color: var(--bs-card-color);
+}
+
 .elegant-border-box {
   position: relative;
   padding: 20px;
-  margin: 20px;
+  margin: 2% 0% 2% 0%;
   background-color: #fff; /* Fond blanc */
   border-radius: 8px; /* Coins arrondis pour toute la div */
   box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Ombre légère */
