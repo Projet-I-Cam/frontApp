@@ -1496,7 +1496,7 @@ export class DataService {
             { menuValue: 'Relevé de notes et notes', route: routes.releveNotes },
             { menuValue: 'Statistiques des résultats', route: routes.statsResults },
             { menuValue: 'Traitement des notes', route: '' },
-            { menuValue: 'Bulletins de notes', route: routes.reportCard },
+            // { menuValue: 'Bulletins de notes', route: routes.reportCard },
             { menuValue: 'Livret scolaire', route: '' },
           ]
         },
@@ -2660,7 +2660,7 @@ export class DataService {
             { menuValue: 'Procès Verbal', route: routes.procesVerbalSteps },
             { menuValue: 'Relevé de notes et notes', route: routes.relevesNotesSteps },
             { menuValue: 'Statistiques des résultats', route: routes.statsResultsSteps },
-            { menuValue: 'Bulletins de notes', route: '' },
+            // { menuValue: 'Bulletins de notes', route: '' },
             { menuValue: 'Livret scolaire', route: '' }
           ]
         },

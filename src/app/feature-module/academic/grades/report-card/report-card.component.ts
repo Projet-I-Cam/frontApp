@@ -765,7 +765,7 @@ export class ReportCardComponent implements OnInit {
       conduct: 'Très bien',
       teacherRemarks: 'Élève sérieux et appliqué. Félicitations!',
       principalRemarks: 'Bon trimestre dans l\'ensemble. Continue tes efforts.',
-      schoolName: 'École Primaire La Fontaine',
+      schoolName: 'École Publique du centre Administratif',
       schoolYear: '2024-2025',
       term: this.selectedTerm.name,
       image: this.selectedStudent.image,

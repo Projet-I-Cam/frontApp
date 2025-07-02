@@ -131,6 +131,7 @@ interface Competence {
 export class BulletinEnfantComponent {
   @Input() studentDataOpt?: any;  // optionnel
   public routes = routes;
+  public completeData : any;
 
   // Options pour les dropdowns
   classes: ClassData[] = [];
@@ -220,8 +221,18 @@ export class BulletinEnfantComponent {
   public students: any[] = []; // Liste des étudiants
 
   async ngOnInit() {
+    this.currentUser = this.loginService.getUser();
+    this.person = await this.loginService.getPerson();
+    console.log("current user : ")
+    console.log(this.currentUser);
+    console.log("personne concernée : ");
+    console.log(this.person);
+    console.log(this.person?.isParent);
+
     if (this.studentDataOpt) {
-      console.log('Student data fourni :', this.studentDataOpt);
+      this.completeData = this.studentDataOpt;
+      this.studentDataOpt = this.studentDataOpt?.person;
+      console.log('Complete Data', this.completeData);
       let student : any = {};
       student.id = 2501;
       student.name = this.studentDataOpt.firstName+' '+this.studentDataOpt.lastName;
@@ -234,11 +245,6 @@ export class BulletinEnfantComponent {
       this.load=true;
       this.loadDropdownOptions();
       this.academicYear = await getCurrentAcademicYear();
-      this.currentUser = this.loginService.getUser();
-      this.person = await this.loginService.getPerson();
-      console.log("personne concernée : ");
-      console.log(this.person);
-      console.log(this.person?.isParent);
       this.filter.parentId = this.person.objectId
       if(!this.filter.yearId){
         this.filter.yearId = this.academicYear.objectId;
@@ -830,7 +836,7 @@ export class BulletinEnfantComponent {
       conduct: 'Très bien',
       teacherRemarks: 'Élève sérieux et appliqué. Félicitations!',
       principalRemarks: 'Bon trimestre dans l\'ensemble. Continue tes efforts.',
-      schoolName: 'École Primaire La Fontaine',
+      schoolName: 'École Publique du centre Administratif',
       schoolYear: '2024-2025',
       term: this.selectedTerm.name,
       image: this.selectedStudent.image,
