@@ -216,7 +216,7 @@ export class StudentAttendanceComponent {
       if(value !== 'Transferer'){
         const options: any = {
         "to": "wilfriedinfo85@gmail.com",
-        "subject": "SUIVI SCOLAIRE DE VOS ENFANTS",
+        "subject": "SUIVI SCOLAIRE DE VOS ENFANTS ",
         "html": "<h3 ><b>MINEDUB/I-CAMSCHOOL</b>: chers parents nous vous informons que votre enfant {{enfantName}} est {{status}} dans notre etablissement aujourd'hui {{dateDuJour}}.</h3>",
         "data": {
           status: value,
