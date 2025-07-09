@@ -1,3 +1,4 @@
+<div class="page-wrapper">
 <div class="row" *ngIf="!selectedReport">
       <div class="col-md-12">
         <div class="card bg-white">
@@ -28,7 +29,7 @@
                     <div *ngIf="searchForm.get('academicYear')?.invalid && searchForm.get('academicYear')?.touched" class="text-danger mt-1">
                       L'année académique est requise
                     </div>
-                  </div>
+                  </div> 
                 </div>
                 <div class="col-md-4">
                   <div class="form-group mb-3">
@@ -98,10 +99,10 @@
           </div>
         </div>
       </div>
-    </div>
+</div>
 
     <!-- Rapport de notes -->
-    <div class="report-card" *ngIf="selectedReport" [ngClass]="{'printing': isPrinting}">
+    <div class="report-card"  *ngIf="selectedReport" [ngClass]="{'printing': isPrinting}">
       <div class="row">
         <div class="col-12 mb-3 d-print-none">
           <div class="d-flex justify-content-end">
@@ -276,3 +277,4 @@
       </div>
     </div>
     <!-- /Rapport de notes -->
+</div>

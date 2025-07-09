@@ -1,16 +1,15 @@
 // student-list.component.ts
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import Parse from 'parse';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { MessageService, ConfirmationService } from 'primeng/api';
+
+import { LoginService } from '../../../../auth/services/login.service';
+import { getCurrentAcademicYear } from '../../../../services/statefull/genericParse';
 import { globalGet } from '../../../../services/statefull/http';
 import { UtilsService } from '../../../../services/utilis.service';
-import { LoginService } from '../../../../auth/services/login.service';
 import { routes } from '../../../../shared/routes/routes';
-import {  getCurrentAcademicYear } from '../../../../services/statefull/genericParse';
-import Parse from 'parse';
-
-
 
 @Component({
   selector: 'app-student-list',
@@ -135,7 +134,7 @@ export class StudentListComponent implements OnInit {
         })
         const query = Parse.Query.or(...queries);
         const result = await query.find()
-        console.log('Classroom Classroom Classroom Classroom ', result)
+        console.log('Classroom Classroom Classroom Classroom 1', result)
         this.classroomArray = result
       }
       const institutionId = this.currentPerson?.institution?.objectId;
@@ -171,7 +170,7 @@ export class StudentListComponent implements OnInit {
           q.equalTo('classroom', classr)
           return q
         })
-      }
+      } 
       const mainQuery = classesR.length && this.currentPerson?.user?.role?.task_name === "enseignant" ? Parse.Query.or(...queries) : new Parse.Query('Enrollment');
       includes.forEach(include => {
         mainQuery.include(include)
@@ -184,28 +183,6 @@ export class StudentListComponent implements OnInit {
       const results = await mainQuery.find()
       const json = results?.map(r => r?.toJSON())
       console.log('DATAT DATAT DATAT DTA =>>>> ', results?.map(r => r?.toJSON()))
-      // const requestConfig: any = {
-      //   T: 'Enrollment',
-      //   includes: ['person', 'person.gender', 'classroom', 'classroom.classe', 'classroom.classe.section', 'person.section'],
-      //   currentPage: currentPage,
-      //   filters: {
-      //     academicYear: {
-      //       className: 'AcademicYear',
-      //       objectId: this.academicYear?.objectId
-      //     },
-      //     institution: {
-      //       className: 'Institution',
-      //       objectId: this.idParam == '' ? this.currentPerson?.institution?.objectId : this.idParam
-      //     },
-      //     isValid: true
-      //   },
-      // };
-      // const res: any = await globalGet(requestConfig);
-
-      // if (res?.error) {
-      //   throw new Error(res.message);
-      // }
-      // console.log('STudent => ', res)
       this.tableData = json // res || [];
       this.filteredStudents = [...this.tableData];
       this.totalRecords = json?.length//res?.count || res?.length || 0;

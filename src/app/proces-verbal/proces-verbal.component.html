@@ -107,6 +107,7 @@
           <!-- Observation avec couleur -->
           <td [style.color]="getObservation(getTrimestreMoyenne(student.notes)).color" class="fw-bold">
             {{ student.notes.length === 0 ? 'NON CLASSÉ' : getObservation(getTrimestreMoyenne(student.notes)).text }}
+            <button style="margin-left: 10px;" class="btn btn-outline-primary" (click)="sendNotification(student)">Notifier</button>
           </td>
         </tr>
 

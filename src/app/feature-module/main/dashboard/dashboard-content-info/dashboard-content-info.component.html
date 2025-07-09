@@ -174,11 +174,11 @@
         <span class="textHgridVs">
         Elèves
         </span>
-        <span class="counters fcount" [countUp]="this.totalStudents.length" [options]="{
+        <span class="counters fcount" [countUp]="this.totalRecords" [options]="{
             duration: 10,
             formattingFn: customFormattingFn
         }">
-            {{this.totalStudents.length}}
+            {{this.totalRecords}} 
         </span>
     </div>
     <div class ="PgridVs">
@@ -198,7 +198,7 @@
             </div>
             <div class="f12">{{this.totalStudentsBoy.length}}</div>
         </div>
-        </div>
+        </div> 
 
         <div>
         <p class ="sTitre">Activité</p>
@@ -260,14 +260,14 @@
             <img src="" />
             Actif
             </div>
-            <div class="f12">{{this.totalTeachersActive.length}}</div>
+            <div class="f12">{{this.totalTeachersWomens.length}}</div>
         </div>
         <div class ="gridVs">
             <div>
             <img src="" />
             Inactif
             </div>
-            <div class="f12">{{this.totalTeachersInactive.length}}</div>
+            <div class="f12">{{0}}</div>
         </div>
 
         </div>
@@ -296,14 +296,14 @@
             <img src="" />
             Femmes
             </div>
-            <div class="f12">{{this.totalStaffsWomens.length}}</div>
+            <div class="f12">{{getType('female')}}</div>
         </div>
         <div class ="gridVs">
             <div>
             <img src="" />
             Hommes
             </div>
-            <div class="f12">{{this.totalStaffsMens.length}}</div>
+            <div class="f12">{{getType('male')}}</div>
         </div>
         </div>
 
@@ -314,14 +314,14 @@
             <img src="" />
             Actif
             </div>
-            <div class="f12">{{this.totalStaffsActive.length}}</div>
+            <div class="f12">{{getType('male') + getType('female')}}</div>
         </div>
         <div class ="gridVs">
             <div>
             <img src="" />
             Inactif
             </div>
-            <div class="f12">{{this.totalStaffsInactive.length}}</div>
+            <div class="f12">{{0}}</div>
         </div>
 
         </div>

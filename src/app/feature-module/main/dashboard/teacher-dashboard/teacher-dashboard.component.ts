@@ -11,6 +11,8 @@ import {
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { routes } from '../../../../shared/routes/routes';
 import { LoginService } from '../../../../auth/services/login.service';
+import {  getCurrentAcademicYear } from '../../../../services/statefull/genericParse';
+
 import Parse from 'parse';
 
 export type ChartOptions = {
@@ -36,7 +38,13 @@ export class TeacherDashboardComponent implements OnInit{
   public attendanceChart: Partial<ChartOptions>;
   date: Date | undefined;
   person: any = {};
-  classrooms: any = [];
+  classRooms: any[] = [];
+  classroomArray: any[] = [];
+  currentPerson: any = {};
+  academicYear: any = {};
+  tableData: any[] = [];
+   totalRecords = 0;
+  filteredStudents: any[] = [];
 
   constructor(private loginService : LoginService) {
     this.date = new Date();
@@ -129,6 +137,7 @@ export class TeacherDashboardComponent implements OnInit{
   }
 
   async ngOnInit(): Promise<any> {
+    this.academicYear = await  getCurrentAcademicYear()
     this.person = await this.loginService.getPerson();
     if(this.person?.user?.role?.task_name === "enseignant"){
       const queries = ['teacherChief', 'teacherSecond'].map((k: string) => {
@@ -139,7 +148,39 @@ export class TeacherDashboardComponent implements OnInit{
       const query = Parse.Query.or(...queries);
       const result = await query.find()
       console.log('Classroom Classroom Classroom Classroom ', result)
-      this.classrooms = result?.map(r => r?.toJSON())
+      this.classRooms = result?.map(r => r?.toJSON())
+      await this.getTableData(1)
+    }
+  }
+
+
+  async getTableData(currentPage: number): Promise<void> {
+    try {
+      console.log('this.person this.person ', this.person)
+      const includes = ['person', 'person.gender', 'classroom', 'classroom.classe', 'classroom.classe.section', 'person.section']
+      const classesR = this.classRooms
+      let queries: any = []
+      if(classesR.length && this.person?.user?.role?.task_name === "enseignant"){
+        queries = classesR.map((classr: any) => {
+          const q = new Parse.Query('Enrollment')
+          q.equalTo('classroom', {"__type": "Pointer", "className": "Classroom" , "objectId": classr.objectId})
+          return q
+        })
+      }
+      const mainQuery = classesR.length && this.person?.user?.role?.task_name === "enseignant" ? Parse.Query.or(...queries) : new Parse.Query('Enrollment');
+      includes.forEach(include => {
+        mainQuery.include(include)
+      });
+      mainQuery.equalTo("academicYear", {"__type": "Pointer", "className": "AcademicYear" , "objectId": this.academicYear?.objectId})
+      mainQuery.equalTo("isValid", true)
+      const results = await mainQuery.find()
+      const json = results?.map(r => r?.toJSON())
+      console.log('DATAT DATAT DATAT DTA =>>>> ', results?.map(r => r?.toJSON()))
+      this.tableData = json // res || [];
+      this.filteredStudents = [...this.tableData];
+      this.totalRecords = json?.length//res?.count || res?.length || 0;
+    } catch (error) {
+      throw error;
     }
   }
 

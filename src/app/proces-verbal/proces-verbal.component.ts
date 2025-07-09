@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
-import {routes} from "../shared/routes/routes";
-import {DataService} from "../shared/data/data.service";
-import {LoginService} from "../auth/services/login.service";
+
+import Parse from 'parse';
+
+import { LoginService } from '../auth/services/login.service';
+import { DataService } from '../shared/data/data.service';
+import { routes } from '../shared/routes/routes';
 
 @Component({
   selector: 'app-proces-verbal',
@@ -81,6 +84,24 @@ export class ProcesVerbalComponent {
     return notes.slice(startIndex, startIndex + 3);
   }
 
+  public sendNotification (student: any){
+    console.log('note note note ', student)
+    const note = this.getUAMoyenne(student.notes, 2)
+    console.log('note note note ', note)
+      const options: any = {
+        "to": "wilfriedinfo85@gmail.com",
+        "subject": "MINEDUB/I-CAMSCHOOL : Performance academique",
+        "html": "<h3 >MINEDUB/I-CAMSCHOOL<b>Performance academique</b>: Chers parents nous vous informons que pour le compte du premier trimestre votre enfant {{enfantName}} a obtenu une côte de A+ (Compétence définitivement installée) soit une moyenne de {{note}}.</h3>",
+        "data": {
+          enfantName: student?.name,
+          note: note
+        }
+      }
+      Parse.Cloud.run('sendEmail', {...options}).then(r => {
+        console.log('sendEmail ', r)
+      })
+
+  }
   public getUAMoyenne(notes: number[], uaIndex: number): number {
     const uaNotes = this.getUANotes(notes, uaIndex);
     return this.getAverage(uaNotes);
