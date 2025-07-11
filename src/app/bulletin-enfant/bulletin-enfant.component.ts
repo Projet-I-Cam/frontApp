@@ -14,6 +14,7 @@ import {DataService} from "../shared/data/data.service";
 import {FilterStudent, getCurrentAcademicYear, listInscriptions} from "../services/statefull/genericParse";
 import {LoginService} from "../auth/services/login.service";
 import {globalGet} from "../services/statefull/http";
+import {QRCodeComponent} from "angularx-qrcode";
 
 interface StudentData {
   id: number;
@@ -125,7 +126,8 @@ interface Competence {
     MatInputModule,
     BsDatepickerModule,
     DropdownModule,
-    SharedModule
+    SharedModule,
+    QRCodeComponent
   ]
 })
 export class BulletinEnfantComponent {

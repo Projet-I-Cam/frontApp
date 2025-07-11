@@ -181,7 +181,12 @@
           <!-- Colonne QR code ajoutée ici -->
           <td rowspan="7" class="text-center align-middle">
             <div class="col-md-12 text-center">
-              <img [src]="studentData.profileImage" alt="QR Code" class="img-thumbnail" style="width: 100%; height: 100px; object-fit: cover;">
+              <qrcode
+                [qrdata]="studentData.name + ' - ' + studentData.class"
+                [width]="100"
+                [errorCorrectionLevel]="'M'">
+              </qrcode>
+<!--              <img [src]="studentData.profileImage" alt="QR Code" class="img-thumbnail" style="width: 100%; height: 100px; object-fit: cover;">-->
             </div>
           </td>
           <th>Discipline</th>

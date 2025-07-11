@@ -31,6 +31,7 @@
     "@ng-bootstrap/ng-bootstrap": "^17.0.0",
     "@ng-select/ng-select": "^14.7.0",
     "@popperjs/core": "^2.11.8",
+    "angularx-qrcode": "^20.0.0",
     "apexcharts": "^4.7.0",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.9",
