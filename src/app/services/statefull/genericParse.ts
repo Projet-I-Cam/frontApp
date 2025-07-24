@@ -1,9 +1,15 @@
 import Parse from 'parse'; // Ensure Parse is imported properly
+import {
+  from,
+  Observable,
+  of,
+} from 'rxjs';
+import {
+  catchError,
+  map,
+} from 'rxjs/operators';
 
-import { Observable, from, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
-
 
 export interface FilterStudent {
   personId?: string,
@@ -62,9 +68,22 @@ export async function listInscriptions2(f : FilterStudent) {
     regionQuery.equalTo("objectId", f.regionId);
     query.matchesQuery("person.municipality.department.region", regionQuery);
   }
+  
+  if (f.personId) {
+    query.equalTo('person', {
+      __type: 'Pointer',
+      className: 'Person',
+      objectId: f.personId
+    });
+
+    const regionQuery = new Parse.Query("Region");
+    regionQuery.equalTo("objectId", f.regionId);
+    query.matchesQuery("person.municipality.department.region", regionQuery);
+  }
 
   query.include('person');
   query.include('person.gender');
+  query.include('person.parents');
 
   try {
       const results = await query.find();
@@ -81,7 +100,15 @@ export async function listInscriptions(f: FilterStudent) {
 
   // Fonction utilitaire pour ajouter des filtres
   const addFilter = (query: Parse.Query<any>, className: string, field: string, value: string) => {
-    if (value) {
+    if(field === "parents"){
+      const personQuery = new Parse.Query('Person');
+      personQuery.equalTo('parents', {
+        __type: 'Pointer',
+        className: 'Person',
+        objectId: value
+      });
+      query.matchesQuery('person', personQuery);
+    }else if (value) {
       const subQuery = new Parse.Query(className);
       subQuery.equalTo("objectId", value);
       query.matchesQuery(field, subQuery);
@@ -123,6 +150,10 @@ export async function listInscriptions(f: FilterStudent) {
   addFilter(query, "Region", "person.municipality.department.region", f.regionId || '');
   // ✅ NEW: Filtrer par identifiant de l'élève
   addFilter(query, "Person", "person", f.personId || '');
+  if(f.parentId){
+    addFilter(query, "Person", "parents", f.parentId);
+    // query.equalTo('parents', f.parentId)
+  }
 
   // Inclure les données liées
   query.include('person');

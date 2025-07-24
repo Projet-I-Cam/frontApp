@@ -76,7 +76,7 @@
                 <div class="bg-light rounded p-3 mb-3">
                   <div class="d-flex align-items-center">
                     <a (click)="viewDetails(student.id)" class="avatar avatar-lg me-3">
-                      <img [src]="student?.person?.url || 'assets/img/profiles/avatar-01.jpg'"
+                      <img [src]="student?.person?.photo?.url || 'assets/img/profiles/avatar-01.jpg'"
                         class="img-fluid rounded-circle" alt="Photo" width="60" height="60" />
                     </a>
                     <div>

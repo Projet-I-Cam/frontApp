@@ -1,13 +1,26 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { routes } from '../../../../shared/routes/routes';
-import { PersonService } from '../../../../services/person.service';
-import { ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import {
+  Component,
+  Input,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
+
 import { LoginService } from '../../../../auth/services/login.service';
+import { PersonService } from '../../../../services/person.service';
+import {
+  getCurrentAcademicYear,
+  listInscriptions,
+} from '../../../../services/statefull/genericParse';
 import { globalGet } from '../../../../services/statefull/http';
-import { FilterStudent, getCurrentAcademicYear, listInscriptions } from '../../../../services/statefull/genericParse';
+import { routes } from '../../../../shared/routes/routes';
 
 @Component({
   selector: 'app-student-infos',
@@ -56,7 +69,7 @@ export class StudentInfosComponent {
       });
 
       this.academicData = res[0] || {};
-      console.log('academicData', this.academicData);
+      console.log('academicData', res, this.studentData.objectId);
 
       this.initForm();
       this.initAcademicForm();

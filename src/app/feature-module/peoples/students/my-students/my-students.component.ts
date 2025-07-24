@@ -1,16 +1,28 @@
-import { Component,  Input, OnInit, Renderer2 } from '@angular/core';
-import { routes } from '../../../../shared/routes/routes';
-import { DataService } from '../../../../shared/data/data.service';
-import { UtilsService } from '../../../../services/utilis.service';
-import { AuthService } from '../../../../services/auth.service';
+import {
+  Component,
+  Input,
+  OnInit,
+  Renderer2,
+} from '@angular/core';
 import { Router } from '@angular/router';
-import { PaginationService } from '../../../../shared/custom-pagination/pagination.service';
-import { AlertService } from '../../../../services/alertService';
-import Parse from 'parse';
-import { FilterStudent, getCurrentAcademicYear, listInscriptions } from '../../../../services/statefull/genericParse';
-import { LoginService } from '../../../../auth/services/login.service';
-import { globalGet } from '../../../../services/statefull/http';
 
+import Parse from 'parse';
+
+import { LoginService } from '../../../../auth/services/login.service';
+import { AlertService } from '../../../../services/alertService';
+import { AuthService } from '../../../../services/auth.service';
+import {
+  FilterStudent,
+  getCurrentAcademicYear,
+  listInscriptions,
+} from '../../../../services/statefull/genericParse';
+import { globalGet } from '../../../../services/statefull/http';
+import { UtilsService } from '../../../../services/utilis.service';
+import {
+  PaginationService,
+} from '../../../../shared/custom-pagination/pagination.service';
+import { DataService } from '../../../../shared/data/data.service';
+import { routes } from '../../../../shared/routes/routes';
 
 @Component({
   selector: 'app-my-students',
@@ -68,7 +80,7 @@ export class MyStudentsComponent implements OnInit{
     this.load=true;
     this.academicYear = await getCurrentAcademicYear();
     this.currentUser = this.loginService.getUser();
-    this.person = this.loginService.getPerson();
+    this.person = await this.loginService.getPerson();
     this.filter.parentId = this.person.objectId
     if(!this.filter.yearId){
       this.filter.yearId = this.academicYear.objectId;
@@ -83,6 +95,11 @@ export class MyStudentsComponent implements OnInit{
 
     try {
       // Charger les inscriptions avec les filtres appliqués
+      const person = new Parse.Query('Person')
+      person.equalTo('parents', {"__type": "Pointer", "className": "Person" , "objectId": this.filter.parentId})
+      const resp = await person.find()
+      console.log(' resp resp resp resp resp resp ', resp, this.filter.parentId, f)
+      const daa = await person.find()
       this.students = await listInscriptions({yearId: f.yearId, parentId: f.parentId}); 
       this.totalItems = this.students?.length || 0;
       this.rows = this.students?.length || 0;
