@@ -27,7 +27,6 @@ import { RelevesByClassComponent } from './releves-by-class/releves-by-class.com
 import { BulletinEnfantComponent } from './bulletin-enfant/bulletin-enfant.component';
 import { NotesEnfantComponent } from './notes-enfant/notes-enfant.component';
 
-
 @NgModule({
   declarations: [AppComponent, ProcesVerbalComponent, ReleveNotesComponent, StatsResultsComponent, PvByClassComponent, StatsByClassComponent, RelevesByClassComponent],
   imports: [BrowserModule, AppRoutingModule, SharedModule, SiteModule, HttpClientModule,
