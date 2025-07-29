@@ -25,7 +25,7 @@ jobs:
 
   deployment:
     needs: [building]
-    runs-on: self-hosted
+    runs-on: icam-f2
     # container: docker:stable
     steps:
     - name: Run deploy
