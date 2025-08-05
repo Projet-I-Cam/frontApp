@@ -67,7 +67,7 @@ export class ExamResultsComponent {
         }
       });
     });
-    
+
   }
 
   public handleApplyClick = () => {
